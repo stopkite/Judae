@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/write_id_color"
+        android:layout_width="10dp"
+        android:layout_height="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/write_id_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="글의 제목을 표시합니다."
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/write_id_color"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/write_id_cat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카테고리 이름"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/write_id_title"
+        app:layout_constraintTop_toBottomOf="@id/write_id_title" />
+
+    <TextView
+        android:id="@+id/write_id_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="| 2021.07.14."
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/write_id_cat_name"
+        app:layout_constraintTop_toBottomOf="@id/write_id_title"
+        android:layout_marginStart="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_question"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toEndOf="@id/write_id_date"
+        app:layout_constraintTop_toBottomOf="@id/write_id_title"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/question_divide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="| " />
+
+        <ImageView
+            android:id="@+id/question_icon"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            android:layout_marginStart="3dp"/>
+
+        <TextView
+            android:id="@+id/write_id_qCount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textAlignment="viewStart"
+            android:layout_marginStart="3dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
