@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <RadioButton
-        android:id="@+id/cateRadioBtn"
+        android:id="@+id/popup_category_Rbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="카테고리 이름"

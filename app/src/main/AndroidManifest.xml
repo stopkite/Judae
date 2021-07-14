@@ -21,6 +21,7 @@
         <activity
             android:name=".SavingActivity"
             android:theme="@style/Theme.MyDialog">
+
         </activity>
 
 
