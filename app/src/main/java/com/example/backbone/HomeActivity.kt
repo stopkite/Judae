@@ -1,10 +1,13 @@
 package com.example.backbone
 
+import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
 
+//홈 화면 액티비티
 class HomeActivity : AppCompatActivity() {
 
     // 리사이클러뷰에 붙일 어댑터 선언
@@ -15,6 +18,9 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //DBHelper와 이어주도록 클래스 선언
+        var db:DBHelper = DBHelper(this)
 
         // (activity_home.xml)을 현재 보여줄 화면으로 설정!
         // activity_home.xml 에서 해당 요소들 가져오고 싶을 때
@@ -29,15 +35,21 @@ class HomeActivity : AppCompatActivity() {
         // HomeDocListData 클래스를 담는 배열 생성
         val myDocList = ArrayList<HomeDocListData>()
 
-        // 임시 데이터 집어 넣어봄!  (수영님 여기다 테스트 하면 됩니다.)
-        myDocList.add(
-            HomeDocListData(resources.getColor(R.color.purple_200,null),"글의 제목을 표시합니다.","카테고리 이름",
-            "| 2021.07.21","|",resources.getDrawable(R.drawable.ic_launcher_background,null),"3")
-        )
+        var count :Int = db.getCount()
 
-        myDocList.add(HomeDocListData(resources.getColor(R.color.purple_700),"레이아웃 쫌 빡세네요","앱 개발",
-            "| 2021.07.22",null,null,null))
 
+        //DB에 글 객체를 배열로 받아오기
+        var Array: Array<Writing>
+        Array = db.getWriting()
+
+        //배열로 받아온 글 객체를 순서대로 출력하기.
+        for(i in 0..(Array.size-1))
+        {
+            myDocList.add(
+                HomeDocListData(resources.getColor(R.color.purple_200,null),"${Array[i].Title}","${Array[i].Category}",
+                    "| ${Array[i].Date}","|",resources.getDrawable(R.drawable.ic_launcher_background,null),"${Array[i].Question}")
+            )
+        }
 
         // 어댑터 변수 초기화
         homeDocListAdapter = HomeDocListAdapter(this,myDocList)
@@ -47,12 +59,6 @@ class HomeActivity : AppCompatActivity() {
 
         // 리사이클러 뷰 타입 설정
         docList.layoutManager = LinearLayoutManager(this)
-
-
-
-
-
-
 
     }
 }
