@@ -1,4 +1,4 @@
-package com.example.backbone
+ package com.example.backbone
 
 import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
@@ -36,7 +36,6 @@ class HomeActivity : AppCompatActivity() {
         val myDocList = ArrayList<HomeDocListData>()
 
         var count :Int = db.getCount()
-
 
         //DB에 글 객체를 배열로 받아오기
         var Array: Array<Writing>
