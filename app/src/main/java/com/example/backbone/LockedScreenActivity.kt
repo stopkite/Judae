@@ -1,11 +1,15 @@
 package com.example.backbone
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.backbone.databinding.ActivityLockedScreenBinding
+import java.lang.Exception
 
+//잠금 화면 액티비티
 class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding:ActivityLockedScreenBinding
@@ -13,24 +17,45 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
     // 비밀번호 4자리를 저장할 배열 생성
     private var PWList= mutableListOf<String>()
 
-    // 사용자 비밀번호 4자리
-    var passCode:String =""
+    // 사용자가 입력할 비밀번호 4자리
+    lateinit var passCode:String
 
     // 첫 번째 숫자
-    var PW1:String =""
+    lateinit var PW1:String
 
     // 두 번째 슷자
-    var PW2:String =""
+    lateinit var PW2:String
 
     // 세 번째 숫자
-    var PW3:String =""
+    lateinit var PW3:String
 
     // 네 번째 숫자
-    var PW4:String =""
+    lateinit var PW4:String
 
+    //실제로 사용자 DB에 저장되어 있는 비밀번호 정보
+    lateinit var UserPassWord: String
+
+    //DBHelper와 이어주도록 클래스 선언
+    var db:DBHelper= DBHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //현재 사용자에게 비밀번호를 관리하는 테이블이 있는지 확인
+        //존재한다면 -> 그대로 실행
+        //존재하지 않는다면 -> HomeActivity로 이동
+        try{
+            //User 테이블이 있는지 SQL문으로 돌려보기
+            db.PWisExist()
+        }catch (e: Exception){
+            //존재 하지 않으면 익셉션 발생하므로 그냥 flag 변수 false로 설정해주기.
+            //만약 사용자 User 테이블이 존재하지 않는다면 바로 홈 화면으로 넘어가기
+            var intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+
 
         binding = ActivityLockedScreenBinding.inflate(layoutInflater)
 
@@ -55,8 +80,11 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
 
         when(view) {
+            //0번을 누르면
             binding.key0 -> {
+                //PWList에 0번 입력
                 PWList.add("0")
+                //
                 passNumber(PWList)
             }
 
@@ -122,6 +150,7 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
     // 해당 숫자가 클릭되면 자릿수에 따라 화면에 변화를 주고 각 자리 수를 저장한다
     private fun passNumber(pwList: MutableList<String>) {
 
+                //자릿수에 따른 화면 변화
                 when(PWList.size){
                     0 -> {
                         binding.PW1.colorFilter = null
@@ -149,9 +178,25 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
                     4 -> {  PW4 = PWList[3]
                         binding.PW4.setColorFilter(resources.getColor(R.color.purple_200))
                         passCode = PW1 + PW2 + PW3 + PW4 // 4자리 비밀번호 입력받기 완료!
-                        Toast.makeText(this, passCode, Toast.LENGTH_SHORT).show() // 개발을 위해 임의로 넣은 토스트 메세지 (나중에 지우자!)
 
                         // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
+                        // 기존에 등록해 놓은 비밀번호 내용 불러오기
+                        UserPassWord = db.getUserPassWord()
+                        if(passCode == UserPassWord)
+                        {
+                            //두 내용이 일치하면 홈 화면으로 넘어가기
+                            var intent = Intent(this, HomeActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else{
+                            //비밀번호 일치 하지 않으면 -> 일치하지 않는다는 토스트 메시지 띄우고, 입력되었던 내용 다 지우기
+                            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show()
+                            //입력되었던 내용 다 지우고
+                            PWList.removeAll(PWList)
+                            //해당 내용 UI에 반영하기 위해 콜백 함수로 이용.
+                            passNumber(PWList)
+                        }
 
                     }
                 }

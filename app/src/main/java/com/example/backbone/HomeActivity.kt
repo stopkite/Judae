@@ -35,8 +35,6 @@ class HomeActivity : AppCompatActivity() {
         // HomeDocListData 클래스를 담는 배열 생성
         val myDocList = ArrayList<HomeDocListData>()
 
-        var count :Int = db.getCount()
-
         //DB에 글 객체를 배열로 받아오기
         var Array: Array<Writing>
         Array = db.getWriting()

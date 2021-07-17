@@ -51,22 +51,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         onCreate(db)
     }
 
-    fun getCount():Int
-    {
-        var count:Int
-        var db = this.readableDatabase
-
-        var cursor2: Cursor
-
-        cursor2 =db.rawQuery("SELECT COUNT(*) FROM Writing;", null)
-
-        cursor2.moveToFirst()
-        count = cursor2.getInt(0)
-
-        return count
-        db.close()
-    }
-
     //홈 화면
     //글 객체에 제목, 카테고리 이름, DATE, 해당 글에 저장된 Question갯수 출력
     fun getWriting(): Array<Writing>
@@ -78,8 +62,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var cursor2: Cursor
 
         var anyArray = arrayOf<Writing>()
-
-
 
         var cursor: Cursor = db.rawQuery("SELECT*FROM Writing;", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
@@ -99,21 +81,43 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 writing.Question = cursor2.getInt(0)
             }
 
-            Log.d("태그 글 객체 제목", "${writing.Title}")
             anyArray+=writing
 
         }
 
-        for(i in 0..(anyArray.size-1))
-        {
-            Log.d("홈엑티비티로 넘기는 값", "제목 ${anyArray[i].Title}")
-
-        }
 
         return anyArray
 
         // 디비 닫기
         db.close()
+    }
+    
+    // 잠금 화면
+    // 사용자에게 비밀번호 관리하는 DB 있는지 Boolean으로 반환하는 함수
+    //User 테이블이 존재하면 true반환 없으면 false 반환
+    fun PWisExist()
+    {
+        var db= this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT EXISTS( SELECT 1 FROM User)As flag;", null)
+
+        // 디비 닫기
+        db.close()
+    }
+    
+    //잠금 화면
+    //사용자 User 테이블에 저장되어있는 사용자 디바이스 비밀번호 정보 불러오기
+    fun getUserPassWord(): String
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT*FROM USER;", null)
+
+        cursor.moveToFirst()
+
+        var Userpw: String = cursor.getString(0)
+
+        return Userpw
     }
 
 }
