@@ -11,9 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="비밀번호를 입력해주세요"
+        android:textAllCaps="false"
         android:textSize="25sp"
-        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_appPW"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,12 +24,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lock_info_txt">
+        app:layout_constraintTop_toBottomOf="@+id/lock_info_txt">
 
         <ImageView
             android:id="@+id/PW_1"
@@ -59,12 +62,14 @@
     </LinearLayout>
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ll_appPW"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/ll_appPW"
-        app:layout_constraintTop_toBottomOf="@id/ll_appPW">
+        app:layout_constraintTop_toBottomOf="@+id/ll_appPW">
 
         <TableRow
             android:id="@+id/Row_1"
