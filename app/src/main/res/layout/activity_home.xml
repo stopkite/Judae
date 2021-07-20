@@ -7,7 +7,7 @@
     tools:context=".HomeActivity">
 
     <Button
-        android:id="@+id/cateSelectBtn"
+        android:id="@+id/settingBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -26,13 +26,13 @@
         android:text="전체"
         android:textAlignment="center"
         android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@id/settingBtn"
+        app:layout_constraintEnd_toStartOf="@id/searchBtn"
         app:layout_constraintHorizontal_weight="5"
-        app:layout_constraintStart_toEndOf="@id/cateSelectBtn"
+        app:layout_constraintStart_toEndOf="@id/settingBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/settingBtn"
+        android:id="@+id/searchBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -50,9 +50,9 @@
         android:layout_marginTop="40dp"
         android:background="@color/black"
         app:layout_constraintBottom_toTopOf="@id/writeBtn"
-        app:layout_constraintEnd_toEndOf="@id/settingBtn"
-        app:layout_constraintStart_toStartOf="@id/cateSelectBtn"
-        app:layout_constraintTop_toBottomOf="@id/cateSelectBtn"
+        app:layout_constraintEnd_toEndOf="@id/searchBtn"
+        app:layout_constraintStart_toStartOf="@id/settingBtn"
+        app:layout_constraintTop_toBottomOf="@id/settingBtn"
         app:layout_constraintVertical_weight="2"
         tools:listitem="@layout/home_write_item">
 

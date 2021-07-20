@@ -1,13 +1,13 @@
  package com.example.backbone
 
-import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.ImageButton
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
 
-//홈 화면 액티비티
+ //홈 화면 액티비티
 class HomeActivity : AppCompatActivity() {
 
     // 리사이클러뷰에 붙일 어댑터 선언
@@ -57,5 +57,12 @@ class HomeActivity : AppCompatActivity() {
         // 리사이클러 뷰 타입 설정
         docList.layoutManager = LinearLayoutManager(this)
 
+
+        // 카테고리 설정 창 뜨게 하는 버튼 리스너
+        binding.cateName.setOnClickListener{
+            val bottomSheet = BottomFragmentList()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+
+        }
     }
 }
