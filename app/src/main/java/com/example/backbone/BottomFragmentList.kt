@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomFragmentList()  : BottomSheetDialogFragment(){
 
+
     private lateinit var binding1:FragmentBottomListBinding
 
     // 리사이클러뷰에 붙일 어댑터 선언
