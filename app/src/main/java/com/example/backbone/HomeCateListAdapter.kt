@@ -35,6 +35,6 @@ class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(bind
 
     fun setCateList(myCateList: HomeCateListData){
         binding.homeCateName.text = myCateList.cateName
-        binding.editCateName.setImageDrawable(myCateList.editBtn?.drawable)
+        //binding.editCateName.setImageDrawable(myCateList.editBtn?.drawable)
     }
 }

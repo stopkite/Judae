@@ -1,12 +1,11 @@
 package com.example.backbone
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeWriteItemBinding
 
-class HomeDocListAdapter(context: Context, private val myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
+class HomeDocListAdapter(context: HomeActivity, private val myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
 
     private lateinit var binding: HomeWriteItemBinding
 

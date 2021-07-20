@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:behavior_peekHeight = "200dp"
+    >
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add_cateBtn"
@@ -16,9 +18,11 @@
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_cate_recycler"
+        android:id="@+id/docList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/home_cate_item" />
+        tools:listitem="@layout/home_cate_item"
+        app:layoutManager="LinearLayoutManager"/>
+
 
 </LinearLayout>

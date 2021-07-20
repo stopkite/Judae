@@ -150,56 +150,56 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
     // 해당 숫자가 클릭되면 자릿수에 따라 화면에 변화를 주고 각 자리 수를 저장한다
     private fun passNumber(pwList: MutableList<String>) {
 
-                //자릿수에 따른 화면 변화
-                when(PWList.size){
-                    0 -> {
-                        binding.PW1.colorFilter = null
-                        binding.PW2.colorFilter = null
-                        binding.PW3.colorFilter = null
-                        binding.PW4.colorFilter = null
-                         }
-                    1 -> {  PW1 = PWList[0]
-                            binding.PW1.setColorFilter(resources.getColor(R.color.purple_200))
-                            binding.PW2.colorFilter = null
-                            binding.PW3.colorFilter = null
-                            binding.PW4.colorFilter = null
-                    }
+        //자릿수에 따른 화면 변화
+        when(PWList.size){
+            0 -> {
+                binding.PW1.colorFilter = null
+                binding.PW2.colorFilter = null
+                binding.PW3.colorFilter = null
+                binding.PW4.colorFilter = null
+            }
+            1 -> {  PW1 = PWList[0]
+                binding.PW1.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW2.colorFilter = null
+                binding.PW3.colorFilter = null
+                binding.PW4.colorFilter = null
+            }
 
-                    2 -> {  PW2 = PWList[1]
-                        binding.PW2.setColorFilter(resources.getColor(R.color.purple_200))
-                        binding.PW3.colorFilter = null
-                        binding.PW4.colorFilter = null
-                    }
+            2 -> {  PW2 = PWList[1]
+                binding.PW2.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW3.colorFilter = null
+                binding.PW4.colorFilter = null
+            }
 
-                    3 -> {  PW3 = PWList[2]
-                        binding.PW3.setColorFilter(resources.getColor(R.color.purple_200))
-                        binding.PW4.colorFilter = null}
+            3 -> {  PW3 = PWList[2]
+                binding.PW3.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW4.colorFilter = null}
 
-                    4 -> {  PW4 = PWList[3]
-                        binding.PW4.setColorFilter(resources.getColor(R.color.purple_200))
-                        passCode = PW1 + PW2 + PW3 + PW4 // 4자리 비밀번호 입력받기 완료!
+            4 -> {  PW4 = PWList[3]
+                binding.PW4.setColorFilter(resources.getColor(R.color.purple_200))
+                passCode = PW1 + PW2 + PW3 + PW4 // 4자리 비밀번호 입력받기 완료!
 
-                        // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
-                        // 기존에 등록해 놓은 비밀번호 내용 불러오기
-                        UserPassWord = db.getUserPassWord()
-                        if(passCode == UserPassWord)
-                        {
-                            //두 내용이 일치하면 홈 화면으로 넘어가기
-                            var intent = Intent(this, HomeActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        else{
-                            //비밀번호 일치 하지 않으면 -> 일치하지 않는다는 토스트 메시지 띄우고, 입력되었던 내용 다 지우기
-                            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show()
-                            //입력되었던 내용 다 지우고
-                            PWList.removeAll(PWList)
-                            //해당 내용 UI에 반영하기 위해 콜백 함수로 이용.
-                            passNumber(PWList)
-                        }
-
-                    }
+                // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
+                // 기존에 등록해 놓은 비밀번호 내용 불러오기
+                UserPassWord = db.getUserPassWord()
+                if(passCode == UserPassWord)
+                {
+                    //두 내용이 일치하면 홈 화면으로 넘어가기
+                    var intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
+                else{
+                    //비밀번호 일치 하지 않으면 -> 일치하지 않는다는 토스트 메시지 띄우고, 입력되었던 내용 다 지우기
+                    Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show()
+                    //입력되었던 내용 다 지우고
+                    PWList.removeAll(PWList)
+                    //해당 내용 UI에 반영하기 위해 콜백 함수로 이용.
+                    passNumber(PWList)
+                }
+
+            }
+        }
 
     }
 
