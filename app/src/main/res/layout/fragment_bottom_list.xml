@@ -19,10 +19,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/docList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         tools:listitem="@layout/home_cate_item"
-        app:layoutManager="LinearLayoutManager"/>
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
 
 </LinearLayout>

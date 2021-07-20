@@ -1,7 +1,9 @@
  package com.example.backbone
 
+import android.app.ProgressDialog.show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
 
@@ -58,9 +60,11 @@ class HomeActivity : AppCompatActivity() {
 
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
         binding.cateName.setOnClickListener{
+            //changeFragment(BottomFragmentList())
             val bottomSheet = BottomFragmentList()
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
-
         }
     }
+
+
 }
