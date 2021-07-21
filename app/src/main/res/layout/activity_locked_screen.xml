@@ -10,6 +10,7 @@
         android:id="@+id/lock_info_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="비밀번호를 입력해주세요"
         android:textAllCaps="false"
         android:textSize="25sp"
@@ -67,7 +68,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ll_appPW"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ll_appPW"
         app:layout_constraintTop_toBottomOf="@+id/ll_appPW">
 
@@ -80,7 +81,7 @@
             <ImageButton
                 android:id="@+id/key_1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -88,7 +89,7 @@
             <ImageButton
                 android:id="@+id/key_2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -96,7 +97,7 @@
             <ImageButton
                 android:id="@+id/key_3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -110,7 +111,7 @@
             <ImageButton
                 android:id="@+id/key_4"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -118,7 +119,7 @@
             <ImageButton
                 android:id="@+id/key_5"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -126,7 +127,7 @@
             <ImageButton
                 android:id="@+id/key_6"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -140,7 +141,7 @@
             <ImageButton
                 android:id="@+id/key_7"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -148,7 +149,7 @@
             <ImageButton
                 android:id="@+id/key_8"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -156,7 +157,7 @@
             <ImageButton
                 android:id="@+id/key_9"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -170,7 +171,7 @@
             <ImageButton
                 android:id="@+id/key_reset"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -178,7 +179,7 @@
             <ImageButton
                 android:id="@+id/key_0"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />
@@ -186,7 +187,7 @@
             <ImageButton
                 android:id="@+id/key_del"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_launcher_background" />

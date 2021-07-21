@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/back_cateBtn"
+            android:id="@+id/cate_backBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/add_cateBtn"
+            android:id="@+id/cate_AddBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="end"
@@ -45,7 +45,7 @@
             android:textAlignment="textStart"
             android:textColorHint="#B1A5A5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_cateBtn"/>
+            app:layout_constraintTop_toBottomOf="@+id/cate_AddBtn"/>
 
         <Button
             android:id="@+id/button"
@@ -54,8 +54,8 @@
             android:layout_marginBottom="10dp"
             android:text="삭제"
             app:layout_constraintBottom_toBottomOf="@id/edit_txt"
-            app:layout_constraintEnd_toEndOf="@id/add_cateBtn"
-            app:layout_constraintStart_toStartOf="@id/back_cateBtn" />
+            app:layout_constraintEnd_toEndOf="@id/cate_AddBtn"
+            app:layout_constraintStart_toStartOf="@id/cate_backBtn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

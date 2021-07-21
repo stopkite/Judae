@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/back_cateBtn"
+            android:id="@+id/cate_backBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/add_cateBtn"
+            android:id="@+id/cate_AddBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="end"
@@ -45,7 +45,7 @@
             android:textAlignment="textStart"
             android:textColorHint="#B1A5A5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_cateBtn"/>
+            app:layout_constraintTop_toBottomOf="@+id/cate_AddBtn"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
