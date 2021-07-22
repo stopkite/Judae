@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/myQ_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintEnd_toStartOf="@id/ll_myQ_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_myQ_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/myQ_img"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/myQ_qContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1.질문 내용이 나타납니다?"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+
+        <TextView
+            android:id="@+id/myQ_qTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="질문이 적힌 글의 제목을 표시합니다."
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

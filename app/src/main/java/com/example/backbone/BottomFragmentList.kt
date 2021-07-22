@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.FragmentBottomListBinding
@@ -55,6 +53,7 @@ class BottomFragmentList()  : BottomSheetDialogFragment(){
 
         //그리고 HomeCateListData에 이미지는 넣지 않았어요! 그냥 나중에 그림 파일 나오면 그거 지정시키면 되는 거니깐 ㅎㅎ
         //참고용!
+        //수영아 사랑해...
         myDocList.add(
             HomeCateListData("기본")
         )
