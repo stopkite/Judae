@@ -1,8 +1,13 @@
  package com.example.backbone
 
 import android.app.ProgressDialog.show
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
@@ -15,6 +20,10 @@ class HomeActivity : AppCompatActivity() {
 
     // HomeActivity 를 유지시켜주기 위한 binding 선언
     private lateinit var binding:ActivityHomeBinding
+
+     // navigation을 붙이기 위한 코드
+     lateinit var drawerLayout: DrawerLayout
+     private lateinit var naviAdapter: NavigationAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +73,76 @@ class HomeActivity : AppCompatActivity() {
             val bottomSheet = BottomFragmentList(db)
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
+
+        // 환경 설정 탭(navi)
+        // 버튼을 누르면 환경설정 창이 뜨게 만들기
+        binding.settingBtn.setOnClickListener {
+
+            binding.root.openDrawer(Gravity.LEFT)
+        }
+
+        // 메뉴 목록에 들어갈 데이터 설정
+        var naviList = arrayListOf(
+                NavigationItemModel("나의 질문 리스트"),
+                NavigationItemModel("앱 암호 설정"),
+        )
+
+        // 어댑터 설정
+        naviAdapter = NavigationAdapter(naviList)
+
+        // 어댑터 연결
+        binding.navigationRv.adapter = naviAdapter
+        binding.navigationRv.layoutManager = LinearLayoutManager(this)
+        binding.navigationRv.setHasFixedSize(true)
+
+        binding.navigationRv.addOnItemTouchListener(NaviTouchListener(this, object : ClickListener {
+            override fun onClick(view: View, position: Int) {
+                when (position) {
+                    0 -> {
+                        // 나의 질문 리스트 화면으로 이동
+                        val myQListIntent = Intent(this@HomeActivity,MyQuestionActivity::class.java)
+                        startActivity(myQListIntent)
+                    }
+
+                    1 -> {
+                        // 앱 암호 설정 화면으로 이동
+                    }
+                }
+            }
+        }))
+
+
+        // 카테고리 설정 창 뜨게 하는 버튼 리스너
+        binding.cateName.setOnClickListener{
+            //changeFragment(BottomFragmentList())
+            val bottomSheet = BottomFragmentList(db)
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+        }
     }
+     fun fragmentChange_for_adapter(fragment:Fragment, cate:String ) {
+         var bundle: Bundle = Bundle()
+
+         var db: DBHelper = DBHelper(this)
+         val bottomSheet = BottomFragmentEdit()
+         //bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+         val transaction = supportFragmentManager.beginTransaction()
+         //transaction.replace(R.id.content, bottomSheet, "Edit")
+
+         bundle.putString("cateName", "${cate}")
+         transaction.replace(R.id.content, bottomSheet.apply { arguments = bundle })
+
+         Log.d("태그", "다시 HomeActivity로 옴, ${cate}")
+         transaction.commit()
+     }
+
+     fun onFragmentChange(index: Int) {
+         if (index == 1) {
+
+             supportFragmentManager.beginTransaction().replace(R.id.content, BottomFragmentEdit()).commit()
+         } else if (index == 2) {
+             supportFragmentManager.beginTransaction().replace(R.id.content, BottomFragmentEdit()).commit()
+         }
+     }
 
 
 }
