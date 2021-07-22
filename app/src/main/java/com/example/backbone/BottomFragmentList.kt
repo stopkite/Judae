@@ -20,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
 
     var db:DBHelper = db
-
+    //lateinit var context:Context
     private lateinit var binding1:FragmentBottomListBinding
 
     // 리사이클러뷰에 붙일 어댑터 선언
@@ -37,7 +37,25 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
             container: ViewGroup?,
             savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_list, container, false)
+        var view:View = inflater.inflate(R.layout.fragment_bottom_list, container, false)
+
+        //context = container?.getContext()!!
+        ///밑에는 oncreateview안에 있는거
+        /*
+
+
+        homeCateListAdapter.setItemClickListener(object :BoardRecycle_Adapter.ItemClickListener{
+            fun onClick(view: View, position: Int) {
+                Log.d("SSS", "${position}번 리스트 선택")
+                //밑에는 fragment끼리 이동을 하기 위함임
+
+                hoemActivity?.onFragmentChange(3)
+
+            }
+        })
+        */
+
+        return view
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
@@ -65,11 +83,11 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
         for(i in 0..(categoryList.size-1))
         {
             myDocList.add(
-                    HomeCateListData("${}")
+                    HomeCateListData("${categoryList[i]}")
             )
         }
         // 어댑터 변수 초기화
-        homeCateListAdapter = HomeCateListAdapter(myDocList)
+        homeCateListAdapter = HomeCateListAdapter(myDocList, this)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -79,6 +97,22 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
     }
 
 
+
+
+
+    //mainactivity의 함수를 사용하기 위해 호출해준 부분
+    var hoemActivity: HomeActivity? = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        hoemActivity = getActivity() as HomeActivity
+    }
+
+    //삭제
+    override fun onDetach() {
+        super.onDetach()
+
+        hoemActivity = null
+    }
 
 
     private fun addMoreOnItem() {

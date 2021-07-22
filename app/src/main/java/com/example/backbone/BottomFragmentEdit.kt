@@ -31,6 +31,8 @@ class BottomFragmentEdit()  : BottomSheetDialogFragment(){
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        val view: View = inflater.inflate(R.layout.fragment_bottom_list, container, false)
+        val category=requireArguments().getString("cateName")
         return inflater.inflate(R.layout.fragment_bottom_edit,container,false)
     }
 
