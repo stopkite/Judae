@@ -1,6 +1,7 @@
  package com.example.backbone
 
 import android.app.ProgressDialog.show
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
+import com.google.android.material.internal.ContextUtils.getActivity
 
  //홈 화면 액티비티
 class HomeActivity : AppCompatActivity() {
@@ -29,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //DBHelper와 이어주도록 클래스 선언
-        var db:DBHelper = DBHelper(this)
+        var db: DBHelper = DBHelper(this)
 
         // (activity_home.xml)을 현재 보여줄 화면으로 설정!
         // activity_home.xml 에서 해당 요소들 가져오고 싶을 때
@@ -49,16 +51,15 @@ class HomeActivity : AppCompatActivity() {
         Array = db.getWriting()
 
         //배열로 받아온 글 객체를 순서대로 출력하기.
-        for(i in 0..(Array.size-1))
-        {
+        for (i in 0..(Array.size - 1)) {
             myDocList.add(
-                HomeDocListData(resources.getColor(R.color.purple_200,null),"${Array[i].Title}","${Array[i].Category}",
-                    "| ${Array[i].Date}","|",resources.getDrawable(R.drawable.ic_launcher_background,null),"${Array[i].Question}")
+                    HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
+                            "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
             )
         }
 
         // 어댑터 변수 초기화
-        homeDocListAdapter = HomeDocListAdapter(this,myDocList)
+        homeDocListAdapter = HomeDocListAdapter(this, myDocList)
 
         // 만든 어댑터 recyclerview에 연결
         docList.adapter = homeDocListAdapter
@@ -68,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
-        binding.cateName.setOnClickListener{
+        binding.cateName.setOnClickListener {
             //changeFragment(BottomFragmentList())
             val bottomSheet = BottomFragmentList(db)
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
@@ -100,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
                 when (position) {
                     0 -> {
                         // 나의 질문 리스트 화면으로 이동
-                        val myQListIntent = Intent(this@HomeActivity,MyQuestionActivity::class.java)
+                        val myQListIntent = Intent(this@HomeActivity, MyQuestionActivity::class.java)
                         startActivity(myQListIntent)
                     }
 
@@ -111,38 +112,28 @@ class HomeActivity : AppCompatActivity() {
             }
         }))
 
-
-        // 카테고리 설정 창 뜨게 하는 버튼 리스너
-        binding.cateName.setOnClickListener{
-            //changeFragment(BottomFragmentList())
-            val bottomSheet = BottomFragmentList(db)
-            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
-        }
     }
-     fun fragmentChange_for_adapter(fragment:Fragment, cate:String ) {
+
+     fun fragmentChange_for_adapter(cate:String ) {
          var bundle: Bundle = Bundle()
 
          var db: DBHelper = DBHelper(this)
-         val bottomSheet = BottomFragmentEdit()
-         //bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+         val bottomSheet = BottomFragmentEdit(db, cate)
+         /*
+                  //bottomSheet.show(supportFragmentManager, bottomSheet.tag)
          val transaction = supportFragmentManager.beginTransaction()
          //transaction.replace(R.id.content, bottomSheet, "Edit")
 
          bundle.putString("cateName", "${cate}")
-         transaction.replace(R.id.content, bottomSheet.apply { arguments = bundle })
+         transaction.add(R.id.content, bottomSheet.apply { arguments = bundle })
 
          Log.d("태그", "다시 HomeActivity로 옴, ${cate}")
          transaction.commit()
+          */
+
+         bottomSheet.show(supportFragmentManager, bottomSheet.tag)
      }
 
-     fun onFragmentChange(index: Int) {
-         if (index == 1) {
-
-             supportFragmentManager.beginTransaction().replace(R.id.content, BottomFragmentEdit()).commit()
-         } else if (index == 2) {
-             supportFragmentManager.beginTransaction().replace(R.id.content, BottomFragmentEdit()).commit()
-         }
-     }
 
 
 }

@@ -37,9 +37,6 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
         val cateList = myCateList.get(position)
         holder.setCateList(cateList)
         holder.binding.editCateName.setOnClickListener{
-            //SelectPostFrag는 메인 액티비티에 써져있다.
-            var fragment: Fragment =BottomFragmentEdit()
-            var bundle: Bundle= Bundle()
 
             // 나는 fragment안에 fragment가 있기 때문에 이런식으로 bundle을 붙여줘야했다.
             /*그런게 아니라면
@@ -49,7 +46,7 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
             activity = fragment_s.activity as HomeActivity?
             //change_for_adapter는 mainactivity에 구현
             Log.d("태그", "어댑터에 onBindViewHolder 실행")
-            activity?.fragmentChange_for_adapter(fragment, cateList.cateName)
+            activity?.fragmentChange_for_adapter(cateList.cateName)
         }
         /*
                 holder.itemView.setOnClickListener{

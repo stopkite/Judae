@@ -6,35 +6,51 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import com.example.backbone.databinding.FragmentBottomEditBinding
+import com.example.backbone.databinding.FragmentBottomListBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomFragmentEdit()  : BottomSheetDialogFragment(){
-    //var db:DBHelper = db
+class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragment(){
+    var db:DBHelper = db
     private lateinit var binding:FragmentBottomEditBinding
-    lateinit var cateName:String
 
+    var cateName:String=ctName
 
-    //onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*
+        override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.d("태그", "BottomFragmentEdit onCreate로 옴")
+        Log.d("태그", "BottomFragmentEdit onCreate")
+        arguments?.let{
+            cateName  = it.getString("cateName").toString()
         }
-
+    }
+        override fun onResume() {
+        super.onResume()
+    }
+     */
 
 
 
     override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        var view:View = inflater.inflate(R.layout.fragment_bottom_edit, container, false)
+        return view
+    }
+/*
+   override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?,
     ): View? {
-
+        Log.d("태그", "BottomFragmentEdit onCreateView로 옴")
+        super.onCreateView(inflater, container, savedInstanceState)
         Log.d("태그", "BottomFragmentEdit onCreateView로 옴")
         var view:View = inflater.inflate(R.layout.fragment_bottom_edit, container, false)
         //val view: View = inflater.inflate(R.layout.fragment_bottom_list, container, false)
@@ -44,13 +60,17 @@ class BottomFragmentEdit()  : BottomSheetDialogFragment(){
         return view
     }
 
+ */
+
+
+
+    //To. 아영...부탁헌다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     { super.onViewCreated(view, savedInstanceState)
-        Log.d("태그", "BottomFragmentEdit onCreateView로 옴")
-        val tvName = view.findViewById<TextView>(R.id.edit_txt)
-        val bundle = arguments
-        tvName.text = bundle?.getString("cateName") }
-
-
+        //리스트가 딸려있는 곳의 binding 연결
+        binding = FragmentBottomEditBinding.inflate(layoutInflater)
+        val tvName:EditText = binding.editTxt
+        tvName.hint = "cateName"
+    }
 
 }
