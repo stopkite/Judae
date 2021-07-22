@@ -3,6 +3,7 @@
 import android.app.ProgressDialog.show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
@@ -61,12 +62,25 @@ class HomeActivity : AppCompatActivity() {
          binding.cateName.setOnClickListener {
              //changeFragment(BottomFragmentList())
              val bottomSheet = BottomFragmentList(db)
+             //val bottomSheet = BottomFragmentEdit()
              bottomSheet.show(supportFragmentManager, bottomSheet.tag)
          }
      }
 
-     fun fragmentChange_for_adapter(frag: Fragment) {
-         supportFragmentManager.beginTransaction().replace(R.id.content, frag).commit()
+     fun fragmentChange_for_adapter(fragment:Fragment, cate:String ) {
+         var bundle: Bundle = Bundle()
+
+         var db: DBHelper = DBHelper(this)
+         val bottomSheet = BottomFragmentEdit()
+         //bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+         val transaction = supportFragmentManager.beginTransaction()
+         //transaction.replace(R.id.content, bottomSheet, "Edit")
+
+         bundle.putString("cateName", "${cate}")
+         transaction.replace(R.id.content, bottomSheet.apply { arguments = bundle })
+
+         Log.d("태그", "다시 HomeActivity로 옴, ${cate}")
+         transaction.commit()
      }
 
      fun onFragmentChange(index: Int) {

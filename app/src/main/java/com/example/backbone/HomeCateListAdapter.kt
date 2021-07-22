@@ -5,6 +5,7 @@ import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,13 +36,11 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
     override fun onBindViewHolder(holder: CateHolder, position: Int) {
         val cateList = myCateList.get(position)
         holder.setCateList(cateList)
-        holder.itemView.setOnClickListener{
+        holder.binding.editCateName.setOnClickListener{
             //SelectPostFrag는 메인 액티비티에 써져있다.
             var fragment: Fragment =BottomFragmentEdit()
             var bundle: Bundle= Bundle()
-            bundle.putString("cateName",cateList.cateName.toString())
 
-            fragment.arguments=bundle
             // 나는 fragment안에 fragment가 있기 때문에 이런식으로 bundle을 붙여줘야했다.
             /*그런게 아니라면
             fragment_s.fragmentManager!!.beginTransaction().replace(R.id.content).commit()
@@ -49,7 +48,8 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
 
             activity = fragment_s.activity as HomeActivity?
             //change_for_adapter는 mainactivity에 구현
-            activity?.fragmentChange_for_adapter(fragment)
+            Log.d("태그", "어댑터에 onBindViewHolder 실행")
+            activity?.fragmentChange_for_adapter(fragment, cateList.cateName)
         }
         /*
                 holder.itemView.setOnClickListener{
@@ -94,9 +94,13 @@ class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(bind
     fun setCateList(myCateList: HomeCateListData){
         binding.homeCateName.text = myCateList.cateName
         //binding.editCateName.setImageDrawable(myCateList.editBtn?.drawable)
+        binding.editCateName.setOnClickListener {
+
+        }
     }
     interface ItemClickListener{
         fun onClick(view: View,position: Int)
+
     }
     //를릭 리스너
     private lateinit var itemClickListner: ItemClickListener
