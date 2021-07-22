@@ -42,32 +42,12 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
         view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.category_add).setOnClickListener { view ->
             hoemActivity?.onButtonClicked()
         }
-        //context = container?.getContext()!!
-        ///밑에는 oncreateview안에 있는거
-        /*
-
-
-        homeCateListAdapter.setItemClickListener(object :BoardRecycle_Adapter.ItemClickListener{
-            fun onClick(view: View, position: Int) {
-                Log.d("SSS", "${position}번 리스트 선택")
-                //밑에는 fragment끼리 이동을 하기 위함임
-
-                hoemActivity?.onFragmentChange(3)
-
-            }
-        })
-        */
 
         return view
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //밑에 두 줄은 프레그먼트 띄우고 다른 프레그먼트로 이동할 때 사용하면 될 것 같음!
-        //view.findViewById<View>(R.id.btnAddMoreItems).setOnClickListener { addMoreOnItem() }
-        //(view.findViewById<View>(R.id.rclItems) as RecyclerView).adapter = adapter
-
 
         //리스트가 딸려있는 곳의 binding 연결
         binding1 = FragmentBottomListBinding.inflate(layoutInflater)
@@ -98,10 +78,6 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
         // 만든 어댑터 recyclerview에 연결
         view.findViewById<RecyclerView>(R.id.docList).adapter = homeCateListAdapter
     }
-
-
-
-
 
     //mainactivity의 함수를 사용하기 위해 호출해준 부분
     var hoemActivity: HomeActivity? = null

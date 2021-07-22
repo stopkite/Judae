@@ -144,6 +144,17 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
     }
 
+    //카테고리 화면
+    //BottomFragmentAdd.kt
+    //카테고리 추가하기
+    fun addCategory(category: String)
+    {
+        var db = this.writableDatabase
+        db.execSQL("INSERT INTO Category VALUES ('" + category + "');")
+
+        db.close()
+    }
+
     //질문 리스트 화면
     //MyQuestionActivity.kt
     //카테고리 내용 받아오기

@@ -1,7 +1,5 @@
  package com.example.backbone
 
-import android.app.ProgressDialog.show
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,11 +7,8 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.internal.ContextUtils.getActivity
 
  //홈 화면 액티비티
 class HomeActivity : AppCompatActivity() {
@@ -130,9 +125,8 @@ class HomeActivity : AppCompatActivity() {
 
      //BottomFragmentList.kt에서 카테고리 추가 버튼을 눌렀을 때 발생하는 클릭 리스너
      fun onButtonClicked() {
-         Log.d("태그", "버튼 눌렸다.")
          var db: DBHelper = DBHelper(this)
-         val bottomSheet = BottomFragmentAdd()
+         val bottomSheet = BottomFragmentAdd(db)
          bottomSheet.show(supportFragmentManager, "BottomFragmentAdd")
      }
 
