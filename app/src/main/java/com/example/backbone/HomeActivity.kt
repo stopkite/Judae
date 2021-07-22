@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityHomeBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.internal.ContextUtils.getActivity
 
  //홈 화면 액티비티
@@ -115,21 +116,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
      fun fragmentChange_for_adapter(cate:String ) {
-         var bundle: Bundle = Bundle()
-
          var db: DBHelper = DBHelper(this)
          val bottomSheet = BottomFragmentEdit(db, cate)
-         /*
-                  //bottomSheet.show(supportFragmentManager, bottomSheet.tag)
-         val transaction = supportFragmentManager.beginTransaction()
-         //transaction.replace(R.id.content, bottomSheet, "Edit")
-
-         bundle.putString("cateName", "${cate}")
-         transaction.add(R.id.content, bottomSheet.apply { arguments = bundle })
-
-         Log.d("태그", "다시 HomeActivity로 옴, ${cate}")
-         transaction.commit()
-          */
 
          bottomSheet.show(supportFragmentManager, bottomSheet.tag)
      }
@@ -140,6 +128,13 @@ class HomeActivity : AppCompatActivity() {
          binding.root.closeDrawers()
      }
 
+     //BottomFragmentList.kt에서 카테고리 추가 버튼을 눌렀을 때 발생하는 클릭 리스너
+     fun onButtonClicked() {
+         Log.d("태그", "버튼 눌렸다.")
+         var db: DBHelper = DBHelper(this)
+         val bottomSheet = BottomFragmentAdd()
+         bottomSheet.show(supportFragmentManager, "BottomFragmentAdd")
+     }
 
 
 }

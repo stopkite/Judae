@@ -37,23 +37,10 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
         val cateList = myCateList.get(position)
         holder.setCateList(cateList)
         holder.binding.editCateName.setOnClickListener{
-
-            // 나는 fragment안에 fragment가 있기 때문에 이런식으로 bundle을 붙여줘야했다.
-            /*그런게 아니라면
-            fragment_s.fragmentManager!!.beginTransaction().replace(R.id.content).commit()
-            해주면 된다.*/
-
             activity = fragment_s.activity as HomeActivity?
-            //change_for_adapter는 mainactivity에 구현
-            Log.d("태그", "어댑터에 onBindViewHolder 실행")
+            //fragmentChange_for_adapter mainactivity에 구현
             activity?.fragmentChange_for_adapter(cateList.cateName)
         }
-        /*
-                holder.itemView.setOnClickListener{
-            ViewBindingAdapter.setClickListener()
-            itemClickListner.onClick(it,position)
-        }
-         */
 
     }
 
@@ -61,39 +48,9 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
 
 class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(binding.root){
     var item_Element: TextView = binding.homeCateName
-    /*
-       public fun onClick(View v):
-    {
-        var pos:Int = getAdaterPostition()
-        if(pos != RecyclerView.NO_POSITION)
-        {
-            intent:Intent = Intent(context, HomeActivirt)
-        }
-
-
-        item_Element.text = item.cateName
-        itemView.setOnClickListener {
-            Intent(context, HomeActivity::class.java).apply{
-                putExtra("data", item.toString())
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }.run{requireContext().startActivity(this)}
-        }
-
-     */
-
-
-
-    fun bind(item: HomeCateListData)
-    {
-
-    }
 
     fun setCateList(myCateList: HomeCateListData){
         binding.homeCateName.text = myCateList.cateName
-        //binding.editCateName.setImageDrawable(myCateList.editBtn?.drawable)
-        binding.editCateName.setOnClickListener {
-
-        }
     }
     interface ItemClickListener{
         fun onClick(view: View,position: Int)
@@ -104,8 +61,4 @@ class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(bind
     fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListner = itemClickListener
     }
-
-
-
-
-    }
+}

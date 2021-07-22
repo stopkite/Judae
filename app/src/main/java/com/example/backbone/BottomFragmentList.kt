@@ -39,6 +39,9 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
     ): View? {
         var view:View = inflater.inflate(R.layout.fragment_bottom_list, container, false)
 
+        view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.category_add).setOnClickListener { view ->
+            hoemActivity?.onButtonClicked()
+        }
         //context = container?.getContext()!!
         ///밑에는 oncreateview안에 있는거
         /*

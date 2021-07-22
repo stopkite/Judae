@@ -40,6 +40,7 @@
             android:ems="10"
             android:gravity="start"
             android:textSize="30sp"
+            android:textColor="@color/white"
             android:hint="카테고리 이름"
             android:inputType="textPersonName"
             android:textAlignment="textStart"
