@@ -144,4 +144,39 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
     }
 
+    //질문 리스트 화면
+    //MyQuestionActivity.kt
+    //카테고리 내용 받아오기
+    fun getQuestion(): ArrayList<Question>
+    {
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        var anyArray = ArrayList<Question>()
+
+        var cursor: Cursor = db.rawQuery("SELECT*FROM Question;", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            //클래스 생성에 필요한 내용 받아오기
+            var WritingID:String = cursor.getString(0)
+            var ContentID:String = cursor.getString(1)
+            var QuestionID: Int = cursor.getInt(2)
+            var Content:String = cursor.getString(3)
+            var q:Question = Question(WritingID, ContentID, QuestionID, Content)
+
+            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
+            while(cursor2.moveToNext())
+            {
+                q.WritingTitle = cursor2.getString(2)
+            }
+
+            anyArray.add(q)
+        }
+
+        return anyArray
+
+        // 디비 닫기
+        db.close()
+    }
+
 }

@@ -21,19 +21,6 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
 
     var cateName:String=ctName
 
-    /*
-        override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("태그", "BottomFragmentEdit onCreate")
-        arguments?.let{
-            cateName  = it.getString("cateName").toString()
-        }
-    }
-        override fun onResume() {
-        super.onResume()
-    }
-     */
-
 
 
     override fun onCreateView(

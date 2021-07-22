@@ -20,6 +20,9 @@ class MyQuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //DBHelper와 이어주도록 클래스 선언
+        var db: DBHelper = DBHelper(this)
+
         // 화면 설정 코드
         binding = ActivityMyQuestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -27,11 +30,14 @@ class MyQuestionActivity : AppCompatActivity() {
         // 질문 리사이클러뷰 변수 선언
         val myQList = binding.myQQlist
 
+        // 질문 객체 생성
+        // 질문에 엮인 글의 제목 연결
+        var Array: ArrayList<Question> = db.getQuestion()
+
         // 질문 리스트 데이터 넣기
-        qList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),"1.질문 내용이 나타납니다?","질문에 적힌 글의 제목을 표시합니다."))
-        qList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),"2.질문 내용이 나타납니다?","질문에 적힌 글의 제목을 표시합니다."))
-        qList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),"3.질문 내용이 나타납니다?","질문에 적힌 글의 제목을 표시합니다."))
-        qList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),"4.질문 내용이 나타납니다?","질문에 적힌 글의 제목을 표시합니다."))
+        for (i in 0..(Array.size - 1)) {
+            qList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background), "${Array[i].Content}", "${Array[i].WritingTitle}"))
+        }
 
         // 어댑터 변수 초기화
         qAdapter = MyQListAdapter(qList)
@@ -45,8 +51,6 @@ class MyQuestionActivity : AppCompatActivity() {
 
         // 아이템 구분선 삽입
         myQList.addItemDecoration(dividerItemDecoration)
-
-
 
     }
 }
