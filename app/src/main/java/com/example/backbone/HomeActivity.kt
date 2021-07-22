@@ -67,8 +67,7 @@ class HomeActivity : AppCompatActivity() {
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
         binding.cateName.setOnClickListener {
             //changeFragment(BottomFragmentList())
-            val bottomSheet = BottomFragmentList(db)
-            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+            loadCategory(db)
         }
 
         // 환경 설정 탭
@@ -130,5 +129,9 @@ class HomeActivity : AppCompatActivity() {
          bottomSheet.show(supportFragmentManager, "BottomFragmentAdd")
      }
 
+     fun loadCategory(dbHelper: DBHelper){
+         val bottomSheet = BottomFragmentList(dbHelper)
+         bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+     }
 
 }

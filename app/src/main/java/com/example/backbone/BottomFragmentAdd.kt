@@ -16,6 +16,10 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
 
     private lateinit var binding: FragmentBottomAddBinding
     lateinit var editTxt:EditText
+
+    //mainactivity의 함수를 사용하기 위해 호출해준 부분
+    var hoemActivity: HomeActivity? = null
+
     //DBHelper와 이어주도록 클래스 선언
     var db: DBHelper = db
 
@@ -32,8 +36,8 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
     override fun onAttach(context: Context) {
         super.onAttach(context)
         binding = FragmentBottomAddBinding.inflate(layoutInflater)
+        hoemActivity = getActivity() as HomeActivity
     }
-
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -50,15 +54,19 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
                 val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.beginTransaction().remove(this).commit()
                 fragmentManager.popBackStack()
+                hoemActivity?.loadCategory(db)
             }
         }
         return view
     }
 
+
+
+
     //삭제
     override fun onDetach() {
         super.onDetach()
-
+        hoemActivity = null
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {

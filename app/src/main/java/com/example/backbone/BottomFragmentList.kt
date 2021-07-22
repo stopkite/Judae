@@ -41,6 +41,9 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
 
         view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.category_add).setOnClickListener { view ->
             hoemActivity?.onButtonClicked()
+            val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction().remove(this).commit()
+            fragmentManager.popBackStack()
         }
 
         return view
