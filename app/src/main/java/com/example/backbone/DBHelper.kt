@@ -178,5 +178,4 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
-
 }
