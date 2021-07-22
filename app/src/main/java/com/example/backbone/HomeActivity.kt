@@ -74,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
-        // 환경 설정 탭(navi)
+        // 환경 설정 탭
         // 버튼을 누르면 환경설정 창이 뜨게 만들기
         binding.settingBtn.setOnClickListener {
 
@@ -142,6 +142,12 @@ class HomeActivity : AppCompatActivity() {
          } else if (index == 2) {
              supportFragmentManager.beginTransaction().replace(R.id.content, BottomFragmentEdit()).commit()
          }
+     }
+
+     override fun onStop() {
+         super.onStop()
+         //이전 화면으로 돌아올 때 메뉴바가 닫힌 상태로 돌아올 수 있게 해주는 코드
+         binding.root.closeDrawers()
      }
 
 
