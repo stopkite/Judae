@@ -26,6 +26,7 @@ class BottomFragmentList()  : BottomSheetDialogFragment(){
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("태그", "이게 되기는 하냐?????? 되는 거냐고 onCreate")
     }
 
     override fun onCreateView(
@@ -69,7 +70,7 @@ class BottomFragmentList()  : BottomSheetDialogFragment(){
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         // 만든 어댑터 recyclerview에 연결
-        this.recyclerView.adapter = homeCateListAdapter
+        //recyclerView.adapter = homeCateListAdapter
         view.findViewById<RecyclerView>(R.id.docList).adapter = homeCateListAdapter
     }
 
