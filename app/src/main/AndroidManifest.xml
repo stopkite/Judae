@@ -10,8 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Backbone">
         <activity android:name=".MyQuestionActivity">
+<<<<<<< HEAD
+=======
+        </activity>
+        <activity android:name=".LockedScreenActivity">
+        </activity>
+        <activity android:name=".HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+>>>>>>> kite
 
         </activity>
+<<<<<<< HEAD
         <activity android:name=".LockedScreenActivity">
         </activity>
         <activity android:name=".HomeActivity">
@@ -21,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+=======
+>>>>>>> kite
         <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".SavingActivity"
