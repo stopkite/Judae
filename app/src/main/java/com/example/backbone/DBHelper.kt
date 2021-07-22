@@ -12,7 +12,7 @@ import java.sql.ResultSet
 //Backbone.db 파일을 찾도록 하고 없으면 새로 생성시켜주기.
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
-
+    //추후 수정 예정
         /*
                 Log.d("태그", "실행되냐")
      //대답 테이블
@@ -55,7 +55,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //글 객체에 제목, 카테고리 이름, DATE, 해당 글에 저장된 Question갯수 출력
     fun getWriting(): Array<Writing>
     {
-        Log.d("태그", "getWriting 실행되냐")
         //db읽어올 준비
         var db = this.readableDatabase
 
@@ -118,6 +117,31 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var Userpw: String = cursor.getString(0)
 
         return Userpw
+    }
+
+    //카테고리 화면
+    //BottomFragmentList.kt
+    //카테고리 내용 받아오기
+    fun getCategory(): ArrayList<String>
+    {
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        var anyArray = ArrayList<String>()
+
+        var cursor: Cursor = db.rawQuery("SELECT*FROM Category;", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            var category:String = cursor.getString(0)
+            anyArray.add(category)
+
+        }
+
+
+        return anyArray
+
+        // 디비 닫기
+        db.close()
     }
 
 }

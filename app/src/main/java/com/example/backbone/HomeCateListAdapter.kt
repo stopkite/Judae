@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeCateItemBinding
@@ -32,6 +33,15 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>): RecyclerV
 }
 
 class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(binding.root){
+    var item_Element: TextView = binding.homeCateName
+   public fun onClick(View v):
+    {
+        var pos:Int = getAdaterPostition()
+        if(pos != RecyclerView.NO_POSITION)
+        {
+            intent:Intent = Intent(context, )
+        }
+    }
 
     fun setCateList(myCateList: HomeCateListData){
         binding.homeCateName.text = myCateList.cateName

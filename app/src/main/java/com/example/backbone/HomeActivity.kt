@@ -61,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
         binding.cateName.setOnClickListener{
             //changeFragment(BottomFragmentList())
-            val bottomSheet = BottomFragmentList()
+            val bottomSheet = BottomFragmentList(db)
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
     }
