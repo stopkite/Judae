@@ -39,14 +39,14 @@
             android:layout_height="311dp"
             android:ems="10"
             android:gravity="start"
-            android:textSize="30sp"
             android:hint="카테고리 이름"
-            android:textColor="@color/white"
             android:inputType="textPersonName"
             android:textAlignment="textStart"
+            android:textColor="@color/white"
             android:textColorHint="#B1A5A5"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cate_AddBtn"/>
+            app:layout_constraintTop_toBottomOf="@+id/cate_AddBtn" />
 
         <Button
             android:id="@+id/button"

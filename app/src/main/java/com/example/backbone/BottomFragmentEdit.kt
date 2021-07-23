@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,16 +20,21 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
     var db:DBHelper = db
     private lateinit var binding:FragmentBottomEditBinding
 
-    var cateName:String=ctName
-
-
+    var cateName: String =ctName
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
+
     ): View? {
         var view:View = inflater.inflate(R.layout.fragment_bottom_edit, container, false)
+
+        //카테고리 값 받아와 editTxt에 넣어주기
+        var editt:EditText = view.findViewById(R.id.edit_txt)
+        editt.setText(cateName)
+
         return view
+
     }
 /*
    override fun onCreateView(
@@ -48,16 +54,5 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
     }
 
  */
-
-
-
-    //To. 아영...부탁헌다.
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    { super.onViewCreated(view, savedInstanceState)
-        //리스트가 딸려있는 곳의 binding 연결
-        binding = FragmentBottomEditBinding.inflate(layoutInflater)
-        val tvName:EditText = binding.editTxt
-        tvName.hint = "cateName"
-    }
 
 }
