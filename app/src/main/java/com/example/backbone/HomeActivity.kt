@@ -102,6 +102,8 @@ class HomeActivity : AppCompatActivity() {
 
                     1 -> {
                         // 앱 암호 설정 화면으로 이동
+                        val lockMenuIntent = Intent(this@HomeActivity, LockScreenMenuActivity::class.java)
+                        startActivity(lockMenuIntent)
                     }
                 }
             }
