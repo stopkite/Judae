@@ -30,7 +30,6 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-
     ): View? {
         var view:View = inflater.inflate(R.layout.fragment_bottom_edit, container, false)
 

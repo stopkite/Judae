@@ -2,22 +2,19 @@ package com.example.backbone
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.annotation.Nullable
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.FragmentBottomListBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
+class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(), onClick_interface {
 
     var db:DBHelper = db
     //lateinit var context:Context
@@ -30,6 +27,10 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // HomeCateListData 클래스를 담는 배열 생성
+        var myDocList = ArrayList<HomeCateListData>()
+
+        homeCateListAdapter = HomeCateListAdapter(myDocList, this, this)
     }
 
     override fun onCreateView(
@@ -73,7 +74,7 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
             )
         }
         // 어댑터 변수 초기화
-        homeCateListAdapter = HomeCateListAdapter(myDocList, this)
+        homeCateListAdapter = HomeCateListAdapter(myDocList, this, this)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -97,17 +98,15 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(){
     }
 
 
-    private fun addMoreOnItem() {
+    override fun EditCategory(cateName: String) {
         //추가하기 버튼 누르면 될 것 같음
-        //homeCateListAdapter = HomeCateListAdapter(myDocList)
+        hoemActivity = activity as HomeActivity?
+        //fragmentChange_for_adapter mainactivity에 구현
+        hoemActivity?.fragmentChange_for_adapter(cateName)
+        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.beginTransaction().remove(this).commit()
+        fragmentManager.popBackStack()
     }
-    /*
-        public fun replaceFragment(fragment: Fragment) {
-        var myContext: Context = activity as FragmentActivity
-         var fragmentManager:FragmentManager = myContext.getSupportFragmentManager();
-         var fragmentTransaction:FragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.ContentLayout, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
-    }
-     */
+
 
 }

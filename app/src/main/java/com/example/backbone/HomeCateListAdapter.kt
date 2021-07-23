@@ -19,13 +19,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeCateItemBinding
 
-class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragment_s:Fragment): RecyclerView.Adapter<CateHolder>() {
+//class invite_friend_list_Adapter (val context: Context, val friend_DataArray: MutableList<friend_data>,
+//                                  var list_onClick_interface: list_onClick_interface,
+//                                  ) : RecyclerView.Adapter<mViewH>()
+class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragment_s:Fragment, var onClick_interface: onClick_interface): RecyclerView.Adapter<CateHolder>() {
 
-    private lateinit var binding: HomeCateItemBinding
+    lateinit var fragment:Fragment
+    lateinit var binding: HomeCateItemBinding
     private var activity: HomeActivity? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CateHolder {
         val binding = HomeCateItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-
+        this.fragment = fragment_s
         return CateHolder(binding)
     }
 
@@ -38,9 +43,7 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
         val cateList = myCateList.get(position)
         holder.setCateList(cateList)
         holder.binding.editCateName.setOnClickListener{
-            activity = fragment_s.activity as HomeActivity?
-            //fragmentChange_for_adapter mainactivity에 구현
-            activity?.fragmentChange_for_adapter(cateList.cateName)
+            onClick_interface.EditCategory(cateList.cateName)
         }
     }
 

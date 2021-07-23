@@ -59,9 +59,6 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
         return view
     }
 
-
-
-
     //삭제
     override fun onDetach() {
         super.onDetach()

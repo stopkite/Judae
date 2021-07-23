@@ -111,6 +111,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+     //카테고리 수정 함수
      fun fragmentChange_for_adapter(cate:String ) {
          var db: DBHelper = DBHelper(this)
          val bottomSheet = BottomFragmentEdit(db, cate)
