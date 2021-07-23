@@ -15,7 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
 
     private lateinit var binding: FragmentBottomAddBinding
-    lateinit var editTxt:EditText
 
     //mainactivity의 함수를 사용하기 위해 호출해준 부분
     var hoemActivity: HomeActivity? = null

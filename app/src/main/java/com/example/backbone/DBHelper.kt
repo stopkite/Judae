@@ -155,9 +155,20 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
     }
 
+    //카테고리 화면
+    //BottomFragmentEdit.kt
+    //카테고리 수정하기
+    fun editCategory(Before:String, After:String)
+    {
+        var db = this.writableDatabase
+        db.execSQL("UPDATE Category SET CategoryName = '"+After+"' WHERE CategoryName = '"+Before+"';")
+
+        db.close()
+    }
+
+
     //질문 리스트 화면
     //MyQuestionActivity.kt
-    //카테고리 내용 받아오기
     fun getQuestion(): ArrayList<Question>
     {
         //db읽어올 준비

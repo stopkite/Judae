@@ -15,6 +15,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.adapters.ViewBindingAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeCateItemBinding
 
@@ -41,7 +42,6 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
             //fragmentChange_for_adapter mainactivity에 구현
             activity?.fragmentChange_for_adapter(cateList.cateName)
         }
-
     }
 
 }
