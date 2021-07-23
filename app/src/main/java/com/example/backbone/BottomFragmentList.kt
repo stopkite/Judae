@@ -108,5 +108,4 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(), onClick_i
         fragmentManager.popBackStack()
     }
 
-
 }

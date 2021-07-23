@@ -4,8 +4,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import java.sql.ResultSet
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -136,9 +134,24 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             anyArray.add(category)
 
         }
-
-
         return anyArray
+
+        // 디비 닫기
+        db.close()
+    }
+
+    //카테고리 화면
+    //BottomFragmentAdd.kt
+    //BottomFragmentEdit.kt
+    //카테고리 중복 내용 있는지 확인하기
+    fun isExistCategory(cateName: String): Int {
+        var db= this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT EXISTS( SELECT*FROM Category where CategoryName = '"+cateName+"')As flag;", null)
+
+        cursor.moveToFirst()
+
+        return cursor.getInt(0)
 
         // 디비 닫기
         db.close()
@@ -161,11 +174,26 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     fun editCategory(Before:String, After:String)
     {
         var db = this.writableDatabase
+
+        //카테고리 테이블에서 수정
         db.execSQL("UPDATE Category SET CategoryName = '"+After+"' WHERE CategoryName = '"+Before+"';")
+
+        //글 테이블에서 수정
+        db.execSQL("UPDATE Writing SET Category = '"+After+"' WHERE Category = '"+Before+"';")
 
         db.close()
     }
 
+    //카테고리 화면
+    //BottomFragmentEdit.kt
+    //카테고리 삭제하기
+    fun deleteCategory(cateName: String)
+    {
+        var db = this.writableDatabase
+        db.execSQL("DELETE FROM Category WHERE CategoryName = '"+cateName+"';")
+
+        db.close()
+    }
 
     //질문 리스트 화면
     //MyQuestionActivity.kt

@@ -3,7 +3,6 @@
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,10 +13,12 @@ import com.example.backbone.databinding.ActivityHomeBinding
 class HomeActivity : AppCompatActivity() {
 
     // 리사이클러뷰에 붙일 어댑터 선언
-    private lateinit var homeDocListAdapter: HomeDocListAdapter
+    lateinit var homeDocListAdapter: HomeDocListAdapter
 
     // HomeActivity 를 유지시켜주기 위한 binding 선언
     private lateinit var binding:ActivityHomeBinding
+
+    lateinit var docList: androidx.recyclerview.widget.RecyclerView
 
      // navigation을 붙이기 위한 코드
      lateinit var drawerLayout: DrawerLayout
@@ -25,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
@@ -37,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // xml에서 리사이클러뷰(docList)를 가져와서 변수 선언
-        val docList = binding.docList
+        docList = binding.docList
 
         // HomeDocListData 클래스를 담는 배열 생성
         val myDocList = ArrayList<HomeDocListData>()
@@ -69,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
             //changeFragment(BottomFragmentList())
             loadCategory(db)
         }
+
 
         // 환경 설정 탭
         // 버튼을 누르면 환경설정 창이 뜨게 만들기
@@ -111,6 +114,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+     //화면 띄우기 함수
+     fun Load(){
+
+     }
+
      //카테고리 수정 함수
      fun fragmentChange_for_adapter(cate:String ) {
          var db: DBHelper = DBHelper(this)
@@ -132,9 +140,50 @@ class HomeActivity : AppCompatActivity() {
          bottomSheet.show(supportFragmentManager, "BottomFragmentAdd")
      }
 
-     fun loadCategory(dbHelper: DBHelper){
-         val bottomSheet = BottomFragmentList(dbHelper)
+     //업데이트된 내용 리사이클러뷰에 갱신
+     fun loadAdapter(db:DBHelper){
+         // HomeDocListData 클래스를 담는 배열 생성
+         val myDocList = ArrayList<HomeDocListData>()
+
+         //DB에 글 객체를 배열로 받아오기
+         var Array: Array<Writing>
+         Array = db.getWriting()
+
+         //배열로 받아온 글 객체를 순서대로 출력하기.
+         for (i in 0..(Array.size - 1)) {
+             myDocList.add(
+                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+             )
+         }
+         homeDocListAdapter.setData(myDocList)
+     }
+
+     //수정 후 다시 사용하는 함수
+     public fun loadCategory(db: DBHelper){
+         //homeDocListAdapter.setHasStableIds(true)
+         // HomeDocListData 클래스를 담는 배열 생성
+         val myDocList = ArrayList<HomeDocListData>()
+
+         //DB에 글 객체를 배열로 받아오기
+         var Array: Array<Writing>
+         Array = db.getWriting()
+
+         //배열로 받아온 글 객체를 순서대로 출력하기.
+         for (i in 0..(Array.size - 1)) {
+             myDocList.add(
+                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+             )
+         }
+
+         homeDocListAdapter.notifyDataSetChanged()
+
+         val bottomSheet = BottomFragmentList(db)
          bottomSheet.show(supportFragmentManager, bottomSheet.tag)
      }
 
+     override fun onRestart() {
+         super.onRestart()
+     }
 }

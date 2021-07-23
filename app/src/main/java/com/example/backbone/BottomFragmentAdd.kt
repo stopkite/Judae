@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.FragmentManager
 import com.example.backbone.databinding.FragmentBottomAddBinding
@@ -47,13 +47,19 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
         var view:View = inflater.inflate(R.layout.fragment_bottom_add, container, false)
         var editText = view.findViewById<EditText>(R.id.edit_txt)
         view.findViewById<androidx.appcompat.widget.AppCompatImageButton>(R.id.cate_AddBtn).setOnClickListener { view ->
-            if(!editText.text.equals(""))
+            //중복된 카테고리 이름있는지 검사
+            if(!editText.getText().toString().isEmpty()&&db.isExistCategory(editText.text.toString())==0)
             {
                 db.addCategory(editText.text.toString())
                 val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.beginTransaction().remove(this).commit()
                 fragmentManager.popBackStack()
                 hoemActivity?.loadCategory(db)
+            }
+            else if(!editText.getText().toString().isEmpty()){
+                Toast.makeText(getActivity(), "중복된 카테고리 이름이 있습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(getActivity(), "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show()
             }
         }
         return view

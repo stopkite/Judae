@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeWriteItemBinding
 
-class HomeDocListAdapter(context: HomeActivity, private val myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
+class HomeDocListAdapter(context: HomeActivity, private var myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
 
     private lateinit var binding: HomeWriteItemBinding
 
@@ -25,6 +25,10 @@ class HomeDocListAdapter(context: HomeActivity, private val myDocList:ArrayList<
     // 목록에 보여줄 아이템의 개수
     override fun getItemCount(): Int {
         return myDocList.size
+    }
+    fun setData(data : ArrayList<HomeDocListData>){
+        myDocList = data
+        notifyDataSetChanged()
     }
 
 }
