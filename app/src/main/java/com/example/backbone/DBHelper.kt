@@ -60,7 +60,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var anyArray = arrayOf<Writing>()
 
-        var cursor: Cursor = db.rawQuery("SELECT*FROM Writing;", null)
+        //글 목록 테이블에서 date 순서(최근순)으로 받아오는 sql문
+        var cursor: Cursor = db.rawQuery("select * from Writing order by date DESC;", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //빈 객체 생성

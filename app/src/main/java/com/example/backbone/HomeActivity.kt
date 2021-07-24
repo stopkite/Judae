@@ -48,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
         var Array: Array<Writing>
         Array = db.getWriting()
 
+
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(Array.size - 1)) {
             myDocList.add(
