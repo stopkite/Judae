@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -54,5 +55,11 @@ class SearchActivity : AppCompatActivity() {
 
             }
         })
+        //뒤로가기 버튼 클릭 리스너
+        binding.backBtn.setOnClickListener {
+            // 홈 화면으로 이동
+            val backIntent = Intent(this@SearchActivity, HomeActivity::class.java)
+            startActivity(backIntent)
+        }
     }
 }

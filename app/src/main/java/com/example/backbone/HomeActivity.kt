@@ -111,6 +111,13 @@ class HomeActivity : AppCompatActivity() {
             }
         }))
 
+        //검색 버튼 클릭 리스너
+        binding.searchBtn.setOnClickListener {
+            // 홈 화면으로 이동
+            val searchIntent = Intent(this@HomeActivity, SearchActivity::class.java)
+            startActivity(searchIntent)
+        }
+
     }
 
      //화면 띄우기 함수
