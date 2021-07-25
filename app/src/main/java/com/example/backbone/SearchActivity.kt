@@ -1,9 +1,7 @@
 package com.example.backbone
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -32,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //화면을 키면 기본으로 보여지는 fragment 설정
-        fragment = QuestionTabFragment()
+        fragment = QuestionTabFragment(db)
         fragmentManager = supportFragmentManager
         fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction!!.replace(R.id.frameLayout, fragment)
@@ -45,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
                 // creating cases for fragment
                 when (tab.position) {
                     // '질문' 탭 화면으로 변경
-                    0 -> fragment = QuestionTabFragment()
+                    0 -> fragment = QuestionTabFragment(db)
 
                     // '글' 탭 화면으로 변경
                     1 -> fragment = TitleTabFragment()
@@ -75,8 +73,11 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(query)
                     wList = db.searchWriting(query)
                 }
+                val bundle = Bundle()
+                bundle.putString("text",query);
+                fragment.arguments = bundle;
                 val ft = supportFragmentManager.beginTransaction()
-                ft.detach(QuestionTabFragment()).attach(QuestionTabFragment()).commit()
+                ft.detach(QuestionTabFragment(db)).attach(QuestionTabFragment(db)).commit()
                 (fragment as QuestionTabFragment).qAdapter.notifyDataSetChanged()
                 return false
             }
@@ -88,8 +89,12 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(newText)
                     wList = db.searchWriting(newText)
                 }
+                val bundle = Bundle()
+                bundle.putString("text",newText);
+                fragment.arguments = bundle;
+
                 val ft = supportFragmentManager.beginTransaction()
-                ft.detach(QuestionTabFragment()).attach(QuestionTabFragment()).commit()
+                ft.detach(fragment).attach(fragment).commit()
                 (fragment as QuestionTabFragment).qAdapter.notifyDataSetChanged()
                 return false
             }

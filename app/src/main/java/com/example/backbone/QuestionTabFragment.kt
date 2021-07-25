@@ -3,15 +3,13 @@ package com.example.backbone
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.backbone.databinding.ActivityMyQuestionBinding
-import com.example.backbone.databinding.FragmentBottomListBinding
 import com.example.backbone.databinding.FragmentQuestionTabBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,17 +21,20 @@ private const val ARG_PARAM2 = "param2"
  * Use the [QuestionTabFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class QuestionTabFragment : Fragment() {
+class QuestionTabFragment(db: DBHelper) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
+    //DBHelper와 이어주도록 클래스 선언
+    var db: DBHelper = db
+
     private lateinit var binding:FragmentQuestionTabBinding
     // 리사이클러뷰에 붙일 어댑터 선언
-    lateinit var  qAdapter:MyQListAdapter
+    lateinit var  qAdapter:QuestionTabAdapter
 
     private lateinit var recyclerView: RecyclerView
-
+    lateinit var text:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +44,17 @@ class QuestionTabFragment : Fragment() {
         }
         // HomeCateListData 클래스를 담는 배열 생성
         var myDocList = ArrayList<MyQListData>()
-
-        qAdapter = MyQListAdapter(myDocList, this)
+        qAdapter = QuestionTabAdapter(myDocList, this)
 
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?,
     ): View? {
         var view:View = inflater.inflate(R.layout.fragment_question_tab, container, false)
         // Inflate the layout for this fragment
+
         return view
     }
 
@@ -70,12 +71,13 @@ class QuestionTabFragment : Fragment() {
         // Question 클래스를 담는 배열 생성
         var qList = ArrayList<Question>()
 
-        //searchActivity 함수를 사용하기 위해 호출해준 부분
-        var searchActivity: SearchActivity? = null
-        if (searchActivity != null) {
-            //Question내용을 받아오기
-            qList = searchActivity.qList
+        val bundle = arguments
+        if (bundle != null) {
+            text = bundle!!.getString("text").toString()
+            qList =db.searchQuestion(text)
+            Log.d("태그", "${text}")
         }
+
 
         //질문 데이터 받아온 객체를 순서대로 출력하기.
         for(i in 0..(qList.size-1))
@@ -88,7 +90,7 @@ class QuestionTabFragment : Fragment() {
         myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),
                 "내용", "글제목"))
         // 어댑터 변수 초기화
-        qAdapter = MyQListAdapter(myDocList, this)
+        qAdapter = QuestionTabAdapter(myDocList, this)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -103,8 +105,7 @@ class QuestionTabFragment : Fragment() {
         super.onAttach(context)
         searchActivity = getActivity() as SearchActivity
     }
-
-
+/*
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -117,11 +118,14 @@ class QuestionTabFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            QuestionTabFragment().apply {
+            QuestionTabFragment(db).apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
     }
+ */
+
+
 }
