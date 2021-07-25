@@ -45,6 +45,8 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(binding.root)
 
+        UserPassWord = intent.getStringExtra("key").toString()
+
         // 각각의 버튼에 클릭 이벤트 달아주기
         binding.key0.setOnClickListener(this)
         binding.key1.setOnClickListener(this)
@@ -61,10 +63,24 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
 
         //체크 버튼 클릭 리스너
         binding.pwSetBtn.setOnClickListener {
-            // 암호 설정 화면으로 이동
-            val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
-            startActivity(lockSetIntent)
-            finish()
+            if(PWList.size==4)
+            {
+                if(intent.hasExtra("key"))
+                {
+                    db.updatePassword(UserPassWord, passCode)
+                }else{
+                    db.createPassword(passCode)
+                }
+
+                // 암호 설정 화면으로 이동
+                val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
+                startActivity(lockSetIntent)
+                finish()
+            }
+            else{
+                Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         //뒤로가기 버튼 클릭 리스너

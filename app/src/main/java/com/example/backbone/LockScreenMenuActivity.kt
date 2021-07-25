@@ -20,7 +20,6 @@ class LockScreenMenuActivity : AppCompatActivity() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("태그", "액ㅣㅣㅣ 실행")
 
         binding = ActivityLockScreenMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)

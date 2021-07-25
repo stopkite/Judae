@@ -3,6 +3,7 @@ package com.example.backbone
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.backbone.databinding.ActivityLockedScreenBinding
@@ -183,11 +184,13 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                     if (intent.hasExtra("key")) {
                         // 암호 변경 화면일 경우 암호 설정 화면으로 넘어가기
                         val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
+                        lockSetIntent.putExtra("key", "${UserPassWord}")
+                        Log.d("태그","${UserPassWord}")
                         startActivity(lockSetIntent)
                         finish()
-
                     } else {
                         // 암호 설정 비활성화 화면일 암호 설정 메뉴 화면으로 넘어가기
+                        db.removePassword()
                         finish()
                     }
                 }
