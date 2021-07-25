@@ -80,8 +80,6 @@ class QuestionTabFragment() : Fragment() {
                     "${qList[i].Content}", "${qList[i].WritingTitle}"))
 
         }
-        myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),
-                "내용", "글제목"))
         // 어댑터 변수 초기화
         qAdapter = QuestionTabAdapter(myDocList, this)
 
