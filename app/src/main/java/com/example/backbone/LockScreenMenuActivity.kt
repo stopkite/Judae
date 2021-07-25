@@ -37,7 +37,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
             //만약 사용자 User 테이블이 존재하지 않는다면 switch 버튼 비활성화
             binding.switchBtn.isChecked = false
             //만약 사용자 User 테이블이 존재하지 않는다면 암호 변경 리스너 비활성화
-            binding.changePWTxt.isEnabled = true
+            binding.changePWTxt.isEnabled = false
             //만약 사용자 User 테이블이 존재하지 않는다면 암호 변경 글씨 색 회색으로
             binding.changePWTxt.setTextColor(Color.parseColor("#808080"))
         }
