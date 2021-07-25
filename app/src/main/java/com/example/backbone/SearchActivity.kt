@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
-    private lateinit var fragment:Fragment
+    lateinit var fragment:Fragment
     private lateinit var fragmentManager:FragmentManager
     private lateinit var fragmentTransaction: FragmentTransaction
 
@@ -28,26 +28,29 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val fm = supportFragmentManager
+        val ft = fm.beginTransaction()
 
         //화면을 키면 기본으로 보여지는 fragment 설정
-        fragment = QuestionTabFragment(db)
+        fragment = QuestionTabFragment()
         fragmentManager = supportFragmentManager
         fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction!!.replace(R.id.frameLayout, fragment)
         fragmentTransaction!!.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         fragmentTransaction!!.commit()
-
         // 각각의 탭들을 누를 때, framgent 변경
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 // creating cases for fragment
                 when (tab.position) {
                     // '질문' 탭 화면으로 변경
-                    0 -> fragment = QuestionTabFragment(db)
+
+                    0 -> fragment = QuestionTabFragment()
 
                     // '글' 탭 화면으로 변경
                     1 -> fragment = TitleTabFragment()
                 }
+
                 val fm = supportFragmentManager
                 val ft = fm.beginTransaction()
                 ft.replace(R.id.frameLayout, fragment)
@@ -73,12 +76,12 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(query)
                     wList = db.searchWriting(query)
                 }
-                val bundle = Bundle()
-                bundle.putString("text",query);
-                fragment.arguments = bundle;
-                val ft = supportFragmentManager.beginTransaction()
-                ft.detach(QuestionTabFragment(db)).attach(QuestionTabFragment(db)).commit()
-                (fragment as QuestionTabFragment).qAdapter.notifyDataSetChanged()
+                fragment = QuestionTabFragment()
+                val fm = supportFragmentManager
+                val ft = fm.beginTransaction()
+                ft.replace(R.id.frameLayout, fragment)
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                ft.commit()
                 return false
             }
 
@@ -89,13 +92,12 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(newText)
                     wList = db.searchWriting(newText)
                 }
-                val bundle = Bundle()
-                bundle.putString("text",newText);
-                fragment.arguments = bundle;
-
-                val ft = supportFragmentManager.beginTransaction()
-                ft.detach(fragment).attach(fragment).commit()
-                (fragment as QuestionTabFragment).qAdapter.notifyDataSetChanged()
+                fragment = QuestionTabFragment()
+                val fm = supportFragmentManager
+                val ft = fm.beginTransaction()
+                ft.replace(R.id.frameLayout, fragment)
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                ft.commit()
                 return false
             }
         })

@@ -21,13 +21,10 @@ private const val ARG_PARAM2 = "param2"
  * Use the [QuestionTabFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class QuestionTabFragment(db: DBHelper) : Fragment() {
+class QuestionTabFragment() : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    //DBHelper와 이어주도록 클래스 선언
-    var db: DBHelper = db
 
     private lateinit var binding:FragmentQuestionTabBinding
     // 리사이클러뷰에 붙일 어댑터 선언
@@ -59,6 +56,7 @@ class QuestionTabFragment(db: DBHelper) : Fragment() {
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         //리스트가 딸려있는 곳의 binding 연결
         binding = FragmentQuestionTabBinding.inflate(layoutInflater)
@@ -71,13 +69,8 @@ class QuestionTabFragment(db: DBHelper) : Fragment() {
         // Question 클래스를 담는 배열 생성
         var qList = ArrayList<Question>()
 
-        val bundle = arguments
-        if (bundle != null) {
-            text = bundle!!.getString("text").toString()
-            qList =db.searchQuestion(text)
-            Log.d("태그", "${text}")
-        }
 
+        qList = searchActivity!!.qList
 
         //질문 데이터 받아온 객체를 순서대로 출력하기.
         for(i in 0..(qList.size-1))
