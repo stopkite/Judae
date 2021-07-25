@@ -10,7 +10,8 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.backbone.databinding.ActivitySearchBinding
 import com.google.android.material.tabs.TabLayout
 
-
+//검색 기능 문제점
+//현재 프레임레이아웃에 올려져있는 프래그먼트 정보를 못 받아오는 중입니다.
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding:ActivitySearchBinding
     lateinit var fragment:Fragment
