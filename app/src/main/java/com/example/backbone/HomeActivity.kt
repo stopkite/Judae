@@ -27,7 +27,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 
