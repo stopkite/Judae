@@ -69,6 +69,15 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
             hoemActivity?.loadCategory(db)
         }
 
+        //뒤로가기 버튼
+        view.findViewById<androidx.appcompat.widget.AppCompatImageButton>(R.id.cate_backBtn).setOnClickListener { view ->
+            // 카테고리 리스트 화면으로 이동
+            val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction().remove(this).commit()
+            fragmentManager.popBackStack()
+            hoemActivity?.loadCategory(db)
+        }
+
         return view
 
     }

@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Backbone">
-        <activity android:name=".LockScreenMenuActivity"></activity>
-        <activity android:name=".MyQuestionActivity"></activity>
-        <activity android:name=".LockedScreenActivity"></activity>
+        <activity android:name=".SearchActivity">
+        </activity>
+        <activity android:name=".LockScreenMenuActivity" />
+        <activity android:name=".MyQuestionActivity" />
+        <activity android:name=".LockedScreenActivity" />
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +24,9 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".SavingActivity"
-            android:theme="@style/Theme.MyDialog"></activity>
-        <activity android:name=".LockedScreenSetActivity"></activity>
-        <activity android:name=".LockedScreenOnceActivity"></activity>
+            android:theme="@style/Theme.MyDialog" />
+        <activity android:name=".LockedScreenSetActivity" />
+        <activity android:name=".LockedScreenOnceActivity" />
     </application>
 
 </manifest>

@@ -9,7 +9,6 @@ import com.example.backbone.databinding.ActivityLockedScreenBinding
 import com.example.backbone.databinding.LockScreenSetBinding
 import java.lang.Exception
 
-//암호 생성 할 때 사용하는 액티비티
 //암호 설정 액티비티
 class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -62,25 +61,17 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
 
         //체크 버튼 클릭 리스너
         binding.pwSetBtn.setOnClickListener {
-            //4자리 다 받으면 실행하기
-            if(PWList.size == 4)
-            {
-                db.createPassword(passCode)
-
-                // 암호 설정 화면으로 이동
-                val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
-                startActivity(lockSetIntent)
-                finish()
-            }else{
-                Toast.makeText(this, "비밀번호 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
+            // 암호 설정 화면으로 이동
+            val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
+            startActivity(lockSetIntent)
+            finish()
         }
 
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 암호 설정 화면으로 이동
-            val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
-            startActivity(lockSetIntent)
+            val lockMenuIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
+            startActivity(lockMenuIntent)
             finish()
         }
     }

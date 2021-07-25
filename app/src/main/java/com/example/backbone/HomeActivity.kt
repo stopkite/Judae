@@ -27,7 +27,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 
@@ -112,6 +111,13 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }))
+
+        //검색 버튼 클릭 리스너
+        binding.searchBtn.setOnClickListener {
+            // 홈 화면으로 이동
+            val searchIntent = Intent(this@HomeActivity, SearchActivity::class.java)
+            startActivity(searchIntent)
+        }
 
     }
 

@@ -52,5 +52,11 @@ class MyQuestionActivity : AppCompatActivity() {
         // 아이템 구분선 삽입
         myQList.addItemDecoration(dividerItemDecoration)
 
+        //뒤로가기 버튼 클릭 리스너
+        binding.myQBackBtn.setOnClickListener {
+            // 홈 화면으로 이동
+            finish()
+        }
+
     }
 }
