@@ -52,7 +52,6 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(), onClick_i
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //리스트가 딸려있는 곳의 binding 연결
         binding1 = FragmentBottomListBinding.inflate(layoutInflater)
         // xml에서 리사이클러뷰를 가져와서 변수 선언함.

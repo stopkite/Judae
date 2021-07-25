@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.media.Image
+import java.sql.Blob
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -268,5 +270,77 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.execSQL("UPDATE User SET PassWord = '"+new+"' WHERE PassWord = '"+last+"';")
 
         db.close()
+    }
+
+    //질문 검색
+    //SearchActivity
+    fun searchQuestion(key: String): ArrayList<Question>
+    {
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        // 질문 리스트를 담기 위한 배열 생성
+        var qList = ArrayList<Question>()
+
+        var cursor: Cursor = db.rawQuery( "SELECT*FROM Question WHERE Content like '"+key+"%'", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+            var WritingID: String = cursor.getString(0)
+            var ContentID: String = cursor.getString(1)
+            var QuestionID: Int = cursor.getInt(2)
+            var Content: String = cursor.getString(3)
+            var q: Question = Question(WritingID, ContentID, QuestionID, Content)
+            
+            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
+            while(cursor2.moveToNext())
+            {
+                q.WritingTitle = cursor2.getString(2)
+            }
+
+            qList.add(q)
+        }
+
+        return qList
+
+        db.close()
+    }
+
+    //글 검색
+    //SearchActivity
+    fun searchWriting(key: String): ArrayList<Content>
+    {
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        // 글 리스트를 담기 위한 배열 생성
+        var wList = ArrayList<Content>()
+
+        var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '"+key+"%'", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+            var WriteID: String = cursor.getString(0)
+            var ContentID: Int = cursor.getInt(1)
+            var content: String = cursor.getString(2)
+            var Image: ByteArray = cursor.getBlob(3)
+
+            var Content: Content = Content(WriteID, ContentID, content, Image)
+
+            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${Content.WriteID};", null)
+            while(cursor2.moveToNext())
+            {
+                Content.WritingTitle = cursor2.getString(2)
+            }
+
+            wList.add(Content)
+        }
+
+        return wList
+
+        db.close()
+
     }
 }
