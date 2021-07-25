@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeWriteItemBinding
@@ -48,5 +49,15 @@ class Holder(val binding: HomeWriteItemBinding): RecyclerView.ViewHolder(binding
         binding.questionDivide.text = docListData.divideTxt
         binding.questionIcon.setImageDrawable(docListData.icon)
         binding.writeIdQCount.text = docListData.qCount
+    }
+
+    interface ItemClickListener{
+        fun onClick(view: View, position: Int)
+
+    }
+    //를릭 리스너
+    private lateinit var itemClickListner: ItemClickListener
+    fun setItemClickListener(itemClickListener: ItemClickListener) {
+        this.itemClickListner = itemClickListener
     }
 }

@@ -7,4 +7,5 @@ public interface onClick_interface {
 
     fun EditCategory(cateName: String)
 
+
 }

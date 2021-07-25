@@ -42,7 +42,6 @@ class LockScreenMenuActivity : AppCompatActivity() {
             binding.changePWTxt.isEnabled = false
             //만약 사용자 User 테이블이 존재하지 않는다면 암호 변경 글씨 색 회색으로
             binding.changePWTxt.setTextColor(Color.parseColor("#808080"))
-            Log.d("태그", "테이블 있음")
         }
 
         //뒤로가기 버튼 클릭 리스너
