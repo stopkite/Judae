@@ -176,12 +176,20 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                 // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
                 // 기존에 등록해 놓은 비밀번호 내용 불러오기
                 UserPassWord = db.getUserPassWord()
+                // 두 내용이 일치하면 화면 전환
                 if(passCode == UserPassWord)
                 {
-                    //두 내용이 일치하면 암호 설정 화면으로 넘어가기
-                    val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
-                    startActivity(lockSetIntent)
-                    finish()
+                   //intent가 값을 가지고 있을 때 (암호 비활성화 시)
+                    if (intent.hasExtra("key")) {
+                        // 암호 변경 화면일 경우 암호 설정 화면으로 넘어가기
+                        val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
+                        startActivity(lockSetIntent)
+                        finish()
+
+                    } else {
+                        // 암호 설정 비활성화 화면일 암호 설정 메뉴 화면으로 넘어가기
+                        finish()
+                    }
                 }
                 else{
                     //비밀번호 일치 하지 않으면 -> 일치하지 않는다는 토스트 메시지 띄우고, 입력되었던 내용 다 지우기

@@ -70,8 +70,6 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 암호 설정 화면으로 이동
-            //val lockSetIntent = Intent(this@LockedScreenSetActivity, LockScreenMenuActivity::class.java)
-            //startActivity(lockSetIntent)
             finish()
         }
     }
