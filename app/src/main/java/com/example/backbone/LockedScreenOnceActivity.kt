@@ -65,7 +65,6 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
             // 암호 설정 화면으로 이동
             val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
             startActivity(lockSetIntent)
-            finish()
         }
 
     }
@@ -188,6 +187,8 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
 
                     } else {
                         // 암호 설정 비활성화 화면일 암호 설정 메뉴 화면으로 넘어가기
+                        val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
+                        startActivity(lockSetIntent)
                         finish()
                     }
                 }
