@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.backbone.databinding.ActivityLockedScreenBinding
 import java.lang.Exception
 
+//스플래쉬 화면 뒤에 나오는 맨 처음 나오는 잠금화면
 //잠금 화면 액티비티
 class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
 

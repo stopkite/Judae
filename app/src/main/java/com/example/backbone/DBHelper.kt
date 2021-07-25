@@ -229,4 +229,44 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
+
+    //비밀번호 생성
+    //LockedScreenActivity
+    fun createPassword(PassWord: String)
+    {
+        var db = this.writableDatabase
+
+        try{
+            //해당 테이블이 존재한다면??
+            PWisExist()
+        }catch (e: Exception)
+        {
+            db.execSQL("CREATE TABLE User (PassWord TEXT);")
+        }
+
+        db.execSQL("INSERT INTO User VALUES ('" + PassWord + "');")
+        db.close()
+    }
+
+    //비밀번호 삭제
+    //LockedScreenActivity
+    fun removePassword()
+    {
+        var db = this.writableDatabase
+
+        db.execSQL("DROP TABLE User;")
+        db.close()
+    }
+
+    //비밀번호 변경
+    //LokedScreenOnceActivity
+    fun updatePassword(last:String, new:String)
+    {
+        var db = this.writableDatabase
+
+        //유저 비밀번호 테이블에서 수정
+        db.execSQL("UPDATE User SET PassWord = '"+new+"' WHERE PassWord = '"+last+"';")
+
+        db.close()
+    }
 }

@@ -10,8 +10,12 @@ import com.example.backbone.databinding.LockScreenSetBinding
 import com.example.backbone.databinding.LockScreenSetOnceBinding
 import java.lang.Exception
 
+//암호 삭제, 변경할 때 사용되는 액티비티
 //암호 확인 액티비티
 class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
+
+    //이전 화면으로부터 받아온 인텐트 id
+    var state = intent.getStringExtra("state").toString()
 
     private lateinit var binding:LockScreenSetOnceBinding
 
@@ -63,8 +67,8 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 암호 설정 화면으로 이동
-            //val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
-            //startActivity(lockSetIntent)
+            val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
+            startActivity(lockSetIntent)
             finish()
         }
 
@@ -176,20 +180,30 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                 // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
                 // 기존에 등록해 놓은 비밀번호 내용 불러오기
                 UserPassWord = db.getUserPassWord()
-                if(passCode == UserPassWord)
+                if(state=="Delete"&&passCode == UserPassWord)
                 {
+                    //삭제하는 DB 실행
+                    db.removePassword()
+
                     //두 내용이 일치하면 암호 설정 화면으로 넘어가기
                     val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
                     startActivity(lockSetIntent)
                     finish()
                 }
-                else{
+                else if(state=="Delete"&&passCode != UserPassWord){
                     //비밀번호 일치 하지 않으면 -> 일치하지 않는다는 토스트 메시지 띄우고, 입력되었던 내용 다 지우기
                     Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show()
                     //입력되었던 내용 다 지우고
                     PWList.removeAll(PWList)
                     //해당 내용 UI에 반영하기 위해 콜백 함수로 이용.
                     passNumber(PWList)
+                }else if(state=="Update"){
+                    //수정하는 DB 실행
+                    db.updatePassword(UserPassWord, passCode)
+                    //두 내용이 일치하면 암호 설정 화면으로 넘어가기
+                    val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
+                    startActivity(lockSetIntent)
+                    finish()
                 }
 
             }

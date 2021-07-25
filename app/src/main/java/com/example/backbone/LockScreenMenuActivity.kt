@@ -45,14 +45,17 @@ class LockScreenMenuActivity : AppCompatActivity() {
         // 앱 암호 설정 스위치 이동시 창 뜨게 하는 버튼 리스너
         binding.switchBtn.setOnCheckedChangeListener { CompoundButton, onSwitch ->
             if (onSwitch){
+                // 비밀번호 생성
                 // 스위치 활성화시 암호 설정 화면으로 이동
                 val lockScreenSetIntent = Intent(this@LockScreenMenuActivity, LockedScreenSetActivity::class.java)
                 startActivity(lockScreenSetIntent)
             }
 
             else {
+                // 비밀번호 삭제
                 //스위치 비활성화시 암호 확인 화면으로 이동
                 val lockScreenIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
+                lockScreenIntent.putExtra("state", "Delete")
                 startActivity(lockScreenIntent)
             }
 
@@ -62,6 +65,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
         binding.changePWTxt.setOnClickListener {
             // 앱 암호 설정 화면으로 이동
             val lockScreenSetIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
+            lockScreenSetIntent.putExtra("state", "Update")
             startActivity(lockScreenSetIntent)
         }
 
