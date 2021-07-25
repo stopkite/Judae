@@ -50,7 +50,7 @@ class HomeCateListAdapter(var myCateList:ArrayList<HomeCateListData>, val fragme
 }
 
 class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(binding.root){
-    var item_Element: TextView = binding.homeCateName
+    //var item_Element: TextView = binding.homeCateName
 
     fun setCateList(myCateList: HomeCateListData){
         binding.homeCateName.text = myCateList.cateName
