@@ -53,18 +53,29 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     }
 
     //홈 화면
+    //HomeActivity
+    //cateName인자의 값에 따라 검색하는 sql 내용이 달라짐
     //글 객체에 제목, 카테고리 이름, DATE, 해당 글에 저장된 Question갯수 출력
-    fun getWriting(): Array<Writing>
+    fun getWriting(cateName: String): Array<Writing>
     {
         //db읽어올 준비
         var db = this.readableDatabase
 
+        var cursor: Cursor
         var cursor2: Cursor
 
         var anyArray = arrayOf<Writing>()
 
-        //글 목록 테이블에서 date 순서(최근순)으로 받아오는 sql문
-        var cursor: Cursor = db.rawQuery("select * from Writing order by date DESC;", null)
+        if(cateName.equals("전체")) {
+            //매개변수로 받아온 내용 없으면 전체 카테고리로 취급
+            //글 목록 테이블에서 date 순서(최근순)으로 받아오는 sql문
+            cursor = db.rawQuery("select * from Writing order by date DESC;", null)
+        }else{
+            //매개변수로 받아온 내용을 카테고리로 가진 Writing 객체 불러오기
+            //글 목록 테이블에서 date 순서(최근순)으로 받아오는 sql문
+            cursor = db.rawQuery("select * from Writing WHERE Category = '"+cateName+"' order by date DESC;", null)
+        }
+
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //빈 객체 생성
@@ -81,11 +92,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             {
                 writing.Question = cursor2.getInt(0)
             }
-
             anyArray+=writing
 
         }
-
 
         return anyArray
 
@@ -240,10 +249,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var db = this.writableDatabase
 
         try{
-            //해당 테이블이 존재한다면??
+            //해당 테이블이 존재한다면?? catch문 들어가지 않고 가기
             PWisExist()
         }catch (e: Exception)
         {
+            //해당 테이블이 존재하지 않는다면?? -> 해당 테이블 새로 생성하기.
             db.execSQL("CREATE TABLE User (PassWord TEXT);")
         }
 
@@ -257,6 +267,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.writableDatabase
 
+        //패스워드 정보가 담긴 User 테이블을 삭제하기
         db.execSQL("DROP TABLE User;")
         db.close()
     }

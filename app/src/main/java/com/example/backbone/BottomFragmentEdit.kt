@@ -34,24 +34,26 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
 
         //수정 버튼
         view.findViewById<androidx.appcompat.widget.AppCompatImageButton>(R.id.cate_AddBtn).setOnClickListener { view ->
+            //User 테이블에 해당 카테고리 내용이 중복 안 되는 내용인지, 공백이 아닌지 확인하기
             if(editText.getText().toString().length != 0&&db.isExistCategory(editText.text.toString())==0)
             {
-                //수정 실행
+                //수정 실행 - 이전 카테고리 내용과 새로운 카테고리 내용을 넣음
+                //이전 카테고리 내용을 찾아와 해당 row의 값을 새로운 카테고리 내용으로 변경해줌.
                 db.editCategory(cateName, editText.text.toString())
                 //수정 후 다시 업데이트된 카테고리 리스트 화면을 가기 위한 코드
                 val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.beginTransaction().remove(this).commit()
                 fragmentManager.popBackStack()
 
-                //홈 화면에도 변경사항 반영되게 하기
-                hoemActivity?.loadAdapter(db)
-
-                //카테고리 화면 띄우게 하기
+                //홈 화면에 해당 카테고리가 띄워져 있다면 내용 갱신
+                //그 후 카테고리 화면 띄우게 하기
                 hoemActivity?.loadCategory(db)
             }
             else if(editText.text.toString().equals(cateName)){
+                //이전 카테고리 내용과 중복 된다면?
                 Toast.makeText(getActivity(), "이전 카테고리 이름입니다.", Toast.LENGTH_SHORT).show()
             }else if(!editText.getText().toString().isEmpty()){
+                //중복된 카테고리 이름이 있다면?
                 Toast.makeText(getActivity(), "중복된 카테고리 이름이 있습니다.", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(getActivity(), "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show()
@@ -60,7 +62,7 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
         
         //삭제 버튼
         view.findViewById<Button>(R.id.cate_DeleteBtn).setOnClickListener { view ->
-            //삭제 실행
+            //DB에서 삭제 실행
             db.deleteCategory(cateName)
             //삭제 후 다시 업데이트된 카테고리 리스트 화면을 가기 위한 코드
             val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
