@@ -7,5 +7,5 @@ public interface onClick_interface {
 
     fun EditCategory(cateName: String)
 
-
+    fun LoadWriting(cateName: String)
 }

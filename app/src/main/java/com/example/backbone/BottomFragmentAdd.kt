@@ -44,13 +44,19 @@ class BottomFragmentAdd(db: DBHelper)  : BottomSheetDialogFragment(){
             savedInstanceState: Bundle?,
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        //화면에 띄울 view 정의하기
         var view:View = inflater.inflate(R.layout.fragment_bottom_add, container, false)
+        //새로운 카테고리 내용을 입력받을 에디트 텍스트 연결해주기
         var editText = view.findViewById<EditText>(R.id.edit_txt)
+        
+        //해당 뷰에서 추가하기 버튼을 눌렀을 때 이벤트 정의
         view.findViewById<androidx.appcompat.widget.AppCompatImageButton>(R.id.cate_AddBtn).setOnClickListener { view ->
             //중복된 카테고리 이름있는지 검사
             if(!editText.getText().toString().isEmpty()&&db.isExistCategory(editText.text.toString())==0)
             {
+                //db에서 카테고리 추가하기 실행
                 db.addCategory(editText.text.toString())
+                //추가한 후 현재 화면 지우기
                 val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.beginTransaction().remove(this).commit()
                 fragmentManager.popBackStack()
