@@ -181,16 +181,21 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                 if(passCode == UserPassWord)
                 {
                    //intent가 값을 가지고 있을 때 (암호 비활성화 시)
-                    if (intent.hasExtra("key")) {
+                    if (intent.hasExtra("reset")) {
                         // 암호 변경 화면일 경우 암호 설정 화면으로 넘어가기
                         val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
-                        lockSetIntent.putExtra("key", "${UserPassWord}")
+                        lockSetIntent.putExtra("reset", "${UserPassWord}")
                         Log.d("태그","${UserPassWord}")
                         startActivity(lockSetIntent)
                         finish()
-                    } else {
-                        // 암호 설정 비활성화 화면일 암호 설정 메뉴 화면으로 넘어가기
+                    } else if (intent.hasExtra("no")) {
+                        // 암호 비활성화 화면일 경우 암호 메뉴 화면으로 넘어가기
+                        val lockMenuIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
+                        lockMenuIntent.putExtra("no", "${UserPassWord}")
                         db.removePassword()
+                        startActivity(lockMenuIntent)
+                        finish()
+                    } else {
                         finish()
                     }
                 }

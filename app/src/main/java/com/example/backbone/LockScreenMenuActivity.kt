@@ -61,6 +61,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
             else {
                 //스위치 비활성화시 암호 확인 화면으로 이동
                 val lockScreenIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
+                lockScreenIntent.putExtra("no", "no")
                 startActivity(lockScreenIntent)
             }
 
@@ -70,7 +71,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
         binding.changePWTxt.setOnClickListener {
             // 앱 암호 설정 화면으로 이동
             val lockScreenSetIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
-            lockScreenSetIntent.putExtra("key", "reset")
+            lockScreenSetIntent.putExtra("reset", "reset")
             startActivity(lockScreenSetIntent)
         }
 
