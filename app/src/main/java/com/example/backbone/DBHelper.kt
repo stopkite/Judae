@@ -294,7 +294,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 질문 리스트를 담기 위한 배열 생성
         var qList = ArrayList<Question>()
 
-        var cursor: Cursor = db.rawQuery( "SELECT*FROM Question WHERE Content like '"+key+"%'", null)
+        var cursor: Cursor = db.rawQuery( "SELECT*FROM Question WHERE Content like '%"+key+"%'", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
@@ -329,7 +329,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 글 리스트를 담기 위한 배열 생성
         var wList = ArrayList<Writing>()
 
-        var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '"+key+"%'", null)
+        var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '%"+key+"%'", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기

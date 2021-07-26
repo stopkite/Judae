@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -75,10 +76,12 @@ class TitleTabFragment : Fragment() {
 
 
         wList = searchActivity!!.wList
+        wList.distinct()
 
         //글 데이터 받아온 객체를 순서대로 출력하기.
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(wList.size - 1)) {
+            Log.d("태그", "${wList[0].Title}")
             myDocList.add(
                 SearchDocListData("${wList[i].Title}", "${wList[i].Category}",
                     "| ${wList[i].Date}")
