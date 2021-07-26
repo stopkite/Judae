@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.HomeWriteItemBinding
 
-class HomeDocListAdapter(context: HomeActivity, private var myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
+class HomeDocListAdapter(context: HomeActivity, var myDocList:ArrayList<HomeDocListData>): RecyclerView.Adapter<Holder>(){
 
     private lateinit var binding: HomeWriteItemBinding
 
@@ -40,15 +40,15 @@ class HomeDocListAdapter(context: HomeActivity, private var myDocList:ArrayList<
 class Holder(val binding: HomeWriteItemBinding): RecyclerView.ViewHolder(binding.root){
 
     // 화면에 데이터를 세팅하는 setDocList()메서드 구현
-    fun setDocList(docListData: HomeDocListData){
+    fun setDocList(myDocList: HomeDocListData){
 
-        binding.writeIdColor.setColorFilter(docListData.color)
-        binding.writeIdTitle.text = docListData.title
-        binding.writeIdCatName.text = docListData.catName
-        binding.writeIdDate.text = docListData.date
-        binding.questionDivide.text = docListData.divideTxt
-        binding.questionIcon.setImageDrawable(docListData.icon)
-        binding.writeIdQCount.text = docListData.qCount
+        binding.questionIcon.setImageDrawable(myDocList.icon)
+        binding.writeIdColor.setColorFilter(myDocList.color)
+        binding.writeIdTitle.text = myDocList.title
+        binding.writeIdCatName.text = myDocList.catName
+        binding.writeIdDate.text = myDocList.date
+        binding.questionDivide.text = myDocList.divideTxt
+        binding.writeIdQCount.text = myDocList.qCount
     }
 
     interface ItemClickListener{
@@ -61,3 +61,4 @@ class Holder(val binding: HomeWriteItemBinding): RecyclerView.ViewHolder(binding
         this.itemClickListner = itemClickListener
     }
 }
+

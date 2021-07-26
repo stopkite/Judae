@@ -27,11 +27,19 @@ class TitleTabAdapter(var myDocList:ArrayList<HomeDocListData>, val fragment_s: 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val docListData =  myDocList.get(position)
         holder.setDocList(docListData)
+
+        // 아이템 간 간격 설정
+        val layoutParams = holder.itemView.layoutParams
+        layoutParams.height = 80.toPx()
+        holder.itemView.requestLayout()
     }
 
     // 목록에 보여줄 아이템의 개수
     override fun getItemCount(): Int {
         return myDocList.size
     }
+
+    // px을 dp 단위로 바꿔주는 코드 (layoutParamas가 px로만 값을 받기 때문에 바꿔줘야 한다.)
+    fun Int.toPx():Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 }

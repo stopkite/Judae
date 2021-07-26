@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +48,9 @@ class LockScreenMenuActivity : AppCompatActivity() {
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 홈 화면으로 이동
+            val HomeIntent = Intent(this@LockScreenMenuActivity, HomeActivity::class.java)
+            HomeIntent.putExtra("home", "lock")
+            startActivity(HomeIntent)
             finish()
         }
 
