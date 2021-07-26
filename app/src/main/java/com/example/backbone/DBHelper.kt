@@ -324,9 +324,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var WriteID: String = cursor.getString(0)
             var ContentID: Int = cursor.getInt(1)
             var content: String = cursor.getString(2)
-            var Image: ByteArray = cursor.getBlob(3)
+            //var Image: ByteArray = cursor.getBlob(3)
 
-            var Content: Content = Content(WriteID, ContentID, content, Image)
+            var Content: Content = Content(WriteID, ContentID, content)
 
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${Content.WriteID};", null)
