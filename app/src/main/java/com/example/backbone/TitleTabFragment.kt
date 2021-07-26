@@ -44,7 +44,7 @@ class TitleTabFragment : Fragment() {
         }
 
         // HomeCateListData 클래스를 담는 배열 생성
-        var myDocList = ArrayList<HomeDocListData>()
+        var myDocList = ArrayList<SearchDocListData>()
         wAdapter = TitleTabAdapter(myDocList, this)
     }
 
@@ -68,7 +68,7 @@ class TitleTabFragment : Fragment() {
         recyclerView = binding.titleList
 
         // 글 리스트를 담기 위한 배열 생성
-        var myDocList = ArrayList<HomeDocListData>()
+        var myDocList = ArrayList<SearchDocListData>()
 
         // 글 클래스를 담는 배열 생성
         var wList = ArrayList<Writing>()
@@ -80,8 +80,8 @@ class TitleTabFragment : Fragment() {
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(wList.size - 1)) {
             myDocList.add(
-                HomeDocListData(resources.getColor(R.color.purple_200, null), "${wList[i].Title}", "${wList[i].Category}",
-                    "| ${wList[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${wList[i].Question}")
+                SearchDocListData("${wList[i].Title}", "${wList[i].Category}",
+                    "| ${wList[i].Date}")
             )
         }
         // 어댑터 변수 초기화

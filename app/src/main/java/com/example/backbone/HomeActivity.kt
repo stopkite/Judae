@@ -79,6 +79,10 @@ class HomeActivity : AppCompatActivity() {
             loadCategory(db)
         }
 
+        if (intent.hasExtra("home")) {
+            // 뒤로가기 버튼을 통해 넘어온 홈화면이라면
+            binding.root.openDrawer(Gravity.LEFT)
+        }
 
         // 환경 설정 탭
         // 버튼을 누르면 환경설정 창이 뜨게 만들기
