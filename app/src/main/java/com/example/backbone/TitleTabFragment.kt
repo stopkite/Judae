@@ -73,15 +73,11 @@ class TitleTabFragment : Fragment() {
 
         // 글 클래스를 담는 배열 생성
         var wList = ArrayList<Writing>()
-
-
         wList = searchActivity!!.wList
-        wList.distinct()
 
         //글 데이터 받아온 객체를 순서대로 출력하기.
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(wList.size - 1)) {
-            Log.d("태그", "${wList[0].Title}")
             myDocList.add(
                 SearchDocListData("${wList[i].Title}", "${wList[i].Category}",
                     "| ${wList[i].Date}")

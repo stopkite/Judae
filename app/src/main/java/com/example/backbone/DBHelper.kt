@@ -326,27 +326,45 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         //db읽어올 준비
         var db = this.readableDatabase
 
-        // 글 리스트를 담기 위한 배열 생성
-        var wList = ArrayList<Writing>()
 
-        var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '%"+key+"%'", null)
+        var wIDList = ArrayList<String>()
+
+        var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '%"+key+"%';", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
             var WriteID: String = cursor.getString(0)
+            wIDList.add(WriteID)
+        }
 
+        var cursor2: Cursor = db.rawQuery( "SELECT*FROM Writing WHERE Title like '%"+key+"%';", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor2.moveToNext()) {
+                //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+                var WriteID: String = cursor2.getString(0)
+                wIDList.add(WriteID)
+        }
+
+        wIDList.distinct()
+
+        // 글 리스트를 담기 위한 배열 생성
+        var wList = ArrayList<Writing>()
+
+        for (i in 0..(wIDList.distinct().size - 1))
+        {
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${WriteID};", null)
-            while(cursor2.moveToNext())
+            var cursor3:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = "+wIDList.distinct()[i].toString()+";", null)
+            while(cursor3.moveToNext())
             {
                 //빈 객체 생성
                 var writing:Writing = Writing()
 
-                writing.WriteID = cursor2.getInt(0)
-                writing.content = cursor2.getString(1)
-                writing.Title =  cursor2.getString(2)
-                writing.Date =  cursor2.getString(3)
-                writing.Category =  cursor2.getString(4)
+                writing.WriteID = cursor3.getInt(0)
+                writing.content = cursor3.getString(1)
+                writing.Title =  cursor3.getString(2)
+                writing.Date =  cursor3.getString(3)
+                writing.Category =  cursor3.getString(4)
+
                 wList.add(writing)
             }
         }
