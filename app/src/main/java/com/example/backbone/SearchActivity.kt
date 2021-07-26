@@ -21,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var fragmentTransaction: FragmentTransaction
 
     // 글 리스트를 담기 위한 배열 생성
-    var wList = ArrayList<Content>()
+    var wList = ArrayList<Writing>()
     // 질문 리스트를 담기 위한 배열 생성
     var qList = ArrayList<Question>()
     //DBHelper와 이어주도록 클래스 선언

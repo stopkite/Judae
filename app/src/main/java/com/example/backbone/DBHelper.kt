@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.media.Image
+import android.util.Log
 import java.sql.Blob
 
 //sql문으로 DB 연결시켜주는 클래스
@@ -309,33 +310,34 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
     //글 검색
     //SearchActivity
-    fun searchWriting(key: String): ArrayList<Content>
+    fun searchWriting(key: String): ArrayList<Writing>
     {
         //db읽어올 준비
         var db = this.readableDatabase
 
         // 글 리스트를 담기 위한 배열 생성
-        var wList = ArrayList<Content>()
+        var wList = ArrayList<Writing>()
 
         var cursor: Cursor = db.rawQuery( "SELECT*FROM Content WHERE Content like '"+key+"%'", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
             //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
             var WriteID: String = cursor.getString(0)
-            var ContentID: Int = cursor.getInt(1)
-            var content: String = cursor.getString(2)
-            //var Image: ByteArray = cursor.getBlob(3)
-
-            var Content: Content = Content(WriteID, ContentID, content)
 
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${Content.WriteID};", null)
+            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${WriteID};", null)
             while(cursor2.moveToNext())
             {
-                Content.WritingTitle = cursor2.getString(2)
-            }
+                //빈 객체 생성
+                var writing:Writing = Writing()
 
-            wList.add(Content)
+                writing.WriteID = cursor2.getInt(0)
+                writing.content = cursor2.getString(1)
+                writing.Title =  cursor2.getString(2)
+                writing.Date =  cursor2.getString(3)
+                writing.Category =  cursor2.getString(4)
+                wList.add(writing)
+            }
         }
 
         return wList
