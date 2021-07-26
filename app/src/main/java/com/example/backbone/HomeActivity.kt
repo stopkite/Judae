@@ -83,7 +83,6 @@ class HomeActivity : AppCompatActivity() {
         // 환경 설정 탭
         // 버튼을 누르면 환경설정 창이 뜨게 만들기
         binding.settingBtn.setOnClickListener {
-
             binding.root.openDrawer(Gravity.LEFT)
         }
 
