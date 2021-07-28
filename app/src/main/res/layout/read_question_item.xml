@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <ImageView
+        android:id="@+id/qIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/qTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="Enter Your Q Here"
+        android:textColor="@color/white"
+        android:textColorHint="#61686A"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/qIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/aImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="@id/qTitle"
+        app:layout_constraintEnd_toEndOf="@id/qTitle"
+        app:layout_constraintTop_toBottomOf="@id/qTitle"
+        app:layout_constraintBottom_toTopOf="@id/cl_linkArea"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_linkArea"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/qTitle"
+        app:layout_constraintStart_toStartOf="@id/qTitle"
+        app:layout_constraintTop_toBottomOf="@id/aImg">
+
+        <TextView
+            android:id="@+id/linkTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="여름밤"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/cl_linkArea"
+            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+
+        <ImageView
+            android:id="@+id/linkIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="@id/linkTitle"
+            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
+
+        <TextView
+            android:id="@+id/linkUri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqw"
+            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            app:layout_constraintStart_toEndOf="@id/linkIcon"
+            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
+
+        <ImageView
+            android:id="@+id/linkImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
+            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/aIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@color/cardview_light_background"
+        app:layout_constraintEnd_toEndOf="@id/qIcon"
+        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
+
+    <TextView
+        android:id="@+id/aTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="top"
+        android:hint="질문에 대한 답을 입력하세요."
+        android:textColor="@color/white"
+        android:textColorHint="#61686A"
+        app:layout_constraintStart_toEndOf="@id/aIcon"
+        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
