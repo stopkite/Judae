@@ -36,17 +36,17 @@ class WritingActivity : AppCompatActivity() {
 
         writeList.add(WriteListData(qIcon,qTitle,resources.getDrawable(R.drawable.ic_launcher_background),linkLayout,
         "공부 안하고 a+ 받는 법","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background)
-        ,aIcon,aTxt,addBtn))
+        ,aIcon,aTxt,null))
 
         writeList.add(WriteListData(qIcon,qTitle,resources.getDrawable(R.drawable.ic_launcher_background),linkLayout,
             "공부 안하고 a+ 받는 법","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background)
-            ,aIcon,aTxt,addBtn))
+            ,aIcon,aTxt,null))
 
         writeList.add(WriteListData(qIcon,qTitle,resources.getDrawable(R.drawable.ic_launcher_background),linkLayout,
             "공부 안하고 a+ 받는 법","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background)
-            ,aIcon,aTxt,addBtn))
+            ,aIcon,aTxt,null))
 
-        writeList.add(WriteListData(null,null,null,linkLayout,
+        writeList.add(WriteListData(null,null,null,null,
             null,null,null,null
             ,aIcon,aTxt,addBtn))
 
