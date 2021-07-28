@@ -32,7 +32,7 @@ class WritingAdapter (var writeList:ArrayList<WriteListData>): RecyclerView.Adap
 
 class WritingHolder(val binding: WriteQuestionItemBinding): RecyclerView.ViewHolder(binding.root){
     fun setWriteList(myWriteList:WriteListData){
-        binding.qIcon.setImageDrawable(myWriteList.qIcon?.drawable)
+        //binding.qIcon.setImageDrawable(myWriteList.qIcon?.drawable)
 
         if(myWriteList.qTitle == null){
             binding.qTitle.visibility = View.GONE
@@ -54,7 +54,7 @@ class WritingHolder(val binding: WriteQuestionItemBinding): RecyclerView.ViewHol
         binding.linkIcon.setImageDrawable(myWriteList.linkIcon)
         binding.linkImg.setImageDrawable(myWriteList.linkImg)
 
-        binding.aIcon.setImageDrawable(myWriteList.aIcon?.drawable)
+        //binding.aIcon.setImageDrawable(myWriteList.aIcon?.drawable)
         binding.aTxt.text = myWriteList.aTxt?.text
 
         // 대답 추가 버튼

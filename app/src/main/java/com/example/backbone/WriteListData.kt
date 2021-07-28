@@ -6,9 +6,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 
-data class WriteListData(var qIcon:ImageView?, var qTitle:EditText?, var aImg:Drawable?,
+data class WriteListData(var qTitle:EditText?, var aImg:Drawable?,
                          var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon:Drawable?, var linkImg:Drawable?,
-                         var aIcon:ImageView?, var aTxt: EditText?, var addAnswer: ImageButton?)
+                         var aTxt: EditText?, var addAnswer: ImageButton?)
+
+
 
 /*
 질문 아이콘 = qIcon
