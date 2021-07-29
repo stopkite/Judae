@@ -85,8 +85,8 @@ class WritingActivity : AppCompatActivity() {
         binding.docList.adapter = writingAdapter
 
         //질문 추가
-        writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
-        null,null,null,aTxt,addBtn))
+        writingAdapter.addItems(WriteQuestionData(qIcon.drawable,qTitle,null,null,null,null,null,
+        null,null,null,aIcon.drawable,aTxt,addBtn))
 
         //본문추가
         writingAdapter.addItems(WriteContentData(contentImg,null,null,null,null,null,
