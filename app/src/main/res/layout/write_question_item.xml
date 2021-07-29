@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/black">
 
+    <!-- 질문 추가 -->
     <ImageView
         android:id="@+id/qIcon"
         android:layout_width="30dp"
@@ -23,6 +24,7 @@
         android:layout_marginTop="20dp"
         android:background="@null"
         android:gravity="top"
+        android:autoLink="web"
         android:hint="Enter Your Q Here"
         android:textColor="@color/white"
         android:textColorHint="#61686A"
@@ -40,52 +42,7 @@
         app:layout_constraintStart_toStartOf="@id/qTitle"
         app:layout_constraintEnd_toEndOf="@id/qTitle"
         app:layout_constraintTop_toBottomOf="@id/qTitle"
-        app:layout_constraintBottom_toTopOf="@id/cl_linkArea"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_linkArea"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="@id/qTitle"
-        app:layout_constraintStart_toStartOf="@id/qTitle"
-        app:layout_constraintTop_toBottomOf="@id/aImg">
-
-        <TextView
-            android:id="@+id/linkTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="여름밤"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/cl_linkArea"
-            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
-
-        <ImageView
-            android:id="@+id/linkIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintStart_toStartOf="@id/linkTitle"
-            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
-
-        <TextView
-            android:id="@+id/linkUri"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqw"
-            app:layout_constraintEnd_toStartOf="@id/linkImg"
-            app:layout_constraintStart_toEndOf="@id/linkIcon"
-            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
-
-        <ImageView
-            android:id="@+id/linkImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
-            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toTopOf="@id/aTxt"/>
 
 
     <ImageView
@@ -95,28 +52,115 @@
         android:layout_marginTop="20dp"
         android:src="@color/cardview_light_background"
         app:layout_constraintEnd_toEndOf="@id/qIcon"
-        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
+        app:layout_constraintTop_toBottomOf="@id/aImg" />
 
     <EditText
         android:id="@+id/aTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:autoLink="web"
         android:gravity="top"
         android:hint="질문에 대한 답을 입력하세요."
         android:textColor="@color/white"
         android:textColorHint="#61686A"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/aIcon"
-        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
+        app:layout_constraintTop_toBottomOf="@id/aImg" />
+
+    <EditText
+        android:id="@+id/linkInsertTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="#9A9090"
+        android:hint="링크를 입력하세요."
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
+        app:layout_constraintStart_toStartOf="@id/aTxt"
+        app:layout_constraintTop_toBottomOf="@id/aTxt" />
+
+    <Button
+        android:id="@+id/linkInsertBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
+        app:layout_constraintTop_toBottomOf="@id/aTxt" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_linkArea"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/addAnswer"
+        app:layout_constraintEnd_toEndOf="@id/linkInsertBtn"
+        app:layout_constraintStart_toStartOf="@id/linkInsertTxt"
+        app:layout_constraintTop_toBottomOf="@id/linkInsertTxt">
+
+        <TextView
+            android:id="@+id/linkTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="서울여자대학교"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/cl_linkArea"
+            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+
+        <TextView
+            android:id="@+id/linkContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            app:layout_constraintStart_toStartOf="@id/linkTitle"
+            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
+
+
+        <ImageView
+            android:id="@+id/linkIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="@id/linkContent"
+            app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+        <TextView
+            android:id="@+id/linkUri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqw"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            app:layout_constraintStart_toEndOf="@id/linkIcon"
+            app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+        <ImageView
+            android:id="@+id/linkImg"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
+            app:layout_constraintStart_toEndOf="@id/linkContent"
+            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/addAnswer"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        app:layout_constraintStart_toStartOf="@id/aIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/aTxt"
         android:src="@drawable/ic_launcher_background"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aIcon"
+        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
