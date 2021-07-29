@@ -69,6 +69,7 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="#61686A"
                 android:textSize="45sp"
+                android:autoLink="web"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
                 app:layout_constraintTop_toTopOf="@id/cl_inScroll" />
@@ -89,6 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="링크를 입력하세요."
+                android:autoLink="web"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@id/cl_linkArea"
                 app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
@@ -110,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="top"
+                android:autoLink="web"
                 android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
                 android:textColor="@android:color/white"
                 android:textColorHint="#61686A"
