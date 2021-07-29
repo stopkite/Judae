@@ -6,6 +6,11 @@ class Answer {
     var AnswerID: Int = -1
     var Content: String = ""
 
+    //이미지
+    var Image: ByteArray? = null
+    //링크
+    var Link: String = ""
+
     //기본 생성자
     constructor()
     {

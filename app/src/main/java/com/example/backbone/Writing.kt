@@ -9,6 +9,11 @@ class Writing {
     var Category:String=""
     var Question:Int = 0
 
+    //이미지
+    var Image: ByteArray? = null
+    //링크
+    var Link: String = ""
+
     //기본 생성자 - 단일한 데이터만 필요할 때 사용할 예정
     constructor()
     {
