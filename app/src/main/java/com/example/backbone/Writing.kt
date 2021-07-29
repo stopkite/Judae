@@ -1,10 +1,19 @@
 package com.example.backbone
 
+import android.graphics.drawable.Drawable
+import android.view.View
+
 //글 클래스
 class Writing {
     var WriteID: Int = -1
     var content:String = ""
     var Title: String=""
+    var Img: ByteArray? = null
+    var linkLayout: View? = null
+    var linkTitle:String = ""
+    var linkUri:String = ""
+    var linkIcon: ByteArray? = null
+    var linkImg: ByteArray? = null
     var Date: String=""
     var Category:String=""
     var Question:Int = 0

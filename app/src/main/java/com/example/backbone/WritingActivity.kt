@@ -34,22 +34,24 @@ class WritingActivity : AppCompatActivity() {
         val addBtn= binding2.addAnswer
         val linkLayout = binding2.clLinkArea
 
-        // 질문 - 대답 기능을 담을 배열 선언
-        val writeList = ArrayList<WriteListData>()
-
-
         // activity_writing.xml에서 view들 가져오기
         val docContent = binding.docContent
         val docTitle = binding.docTitle
+        val titleImg = binding.titleImg
+        val wlinkLayout = binding.clLinkArea
 
-        /*this.WriteID = WriteID
-        this.content = content
-        this.Title = Title
-        this.Date = Date
-        this.Category = Category*/
+
+        // 질문 - 대답 기능을 담을 배열 선언
+        val writeList = ArrayList<WriteListData>()
 
         // 본문 담을 배열 선언
         val writingList = ArrayList<Writing>()
+
+        // 질문 담을 배열 선언
+        val questionList = ArrayList<Question>()
+
+        // 답변 담을 배열 선언
+        val answerList = ArrayList<Answer>()
 
 
         writingAdapter = WritingAdapter(writeList)
@@ -60,8 +62,8 @@ class WritingActivity : AppCompatActivity() {
         //뒤로가기 버튼 클릭 리스너
         binding.cancelButton.setOnClickListener {
             // 홈 화면으로 이동
-            val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
-            startActivity(backIntent)
+            //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
+            //startActivity(backIntent)
             finish()
         }
 
@@ -69,37 +71,54 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
             //본문 객체 생성
-            var count = 0;
-            writingList.add(Writing(count, docContent.toString(), docTitle.toString(), "2021-02-18", "기본"))
-            count++
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             //adap.notifyDataSetChanged()
         }
 
-        //하단의 '링크' 버튼 클릭 리스너
-        binding.addLinkBtn.setOnClickListener {
-            // 링크 생성
+        aTxt.setOnFocusChangeListener(object : View.OnFocusChangeListener {
+            override fun onFocusChange(view: View, hasFocus: Boolean) {
+                if (hasFocus) {
+                    // 커서가 answer에 있을 때
+                    // 하단의 '링크' 버튼 클릭 리스너
+                    binding.addLinkBtn.setOnClickListener {
+                        // 링크 answer 부분에 생성
 
-        }
+                    }
 
-        //하단의 '사진' 버튼 클릭 리스너
-        binding.addLinkBtn.setOnClickListener {
-            // 사진 생성
-        }
+                    //하단의 '사진' 버튼 클릭 리스너
+                    binding.addLinkBtn.setOnClickListener {
+                        // 사진 answer 부분에 생성
+                    }
+                } else {
+                    // 커서가 answer 밖에 있을 때
+                    // 하단의 '링크' 버튼 클릭 리스너
+                    binding.addLinkBtn.setOnClickListener {
+                        // 본문 answer 부분에 생성
+
+                    }
+
+                    //하단의 '사진' 버튼 클릭 리스너
+                    binding.addLinkBtn.setOnClickListener {
+                        // 본문 answer 부분에 생성
+                    }
+                }
+            }
+        })
+
 
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
             // 질문 생성
             writeList.add(WriteListData(qTitle,null,null,null,
-                    null,null,null, aTxt, addBtn))
+                    null,null,null, aTxt, null))
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
 
         }
         
-        //답변 추가 버튼 클릭 리스너
+        /*//답변 추가 버튼 클릭 리스너
         binding2.addAnswer.setOnClickListener {
             // 답변 생성
             writeList.add(WriteListData(qTitle, null,null,null,
@@ -107,7 +126,7 @@ class WritingActivity : AppCompatActivity() {
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
-        }
+        }*/
 
 
         // 리사이클러 뷰 타입 설정
