@@ -21,38 +21,58 @@
             android:id="@+id/cancelTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:text="카테고리 선택"
+            android:layout_marginEnd="20dp"
+            android:text="편집 화면에서 나가시겠습니까?"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@id/cl_writing"
             app:layout_constraintStart_toStartOf="@id/cl_writing"
             app:layout_constraintTop_toTopOf="@id/cl_writing" />
 
-        <Button
-            android:id="@+id/cate_saveBtn"
+        <TextView
+            android:id="@+id/cancelContent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:text="저장"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/cateList"
-            app:layout_constraintStart_toStartOf="@+id/cateList"
-            app:layout_constraintTop_toBottomOf="@+id/cateList" />
+            android:text="변경화면은 사라집니다."
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@id/cancelBtn"
+            app:layout_constraintEnd_toEndOf="@id/cl_writing"
+            app:layout_constraintStart_toStartOf="@id/cl_writing"
+            app:layout_constraintTop_toBottomOf="@id/cancelTitle" />
 
-        <ListView
-            android:id="@+id/cateList"
-            android:layout_width="310dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="11dp"
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="10dp"
+            android:text="취소"
+            app:layout_constraintEnd_toStartOf="@id/confirmBtn"
+            app:layout_constraintStart_toStartOf="@+id/cancelContent"
+            app:layout_constraintTop_toBottomOf="@id/cancelContent" />
+
+
+        <Button
+            android:id="@+id/confirmBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="확인"
             app:layout_constraintEnd_toEndOf="@+id/cancelTitle"
-            app:layout_constraintStart_toStartOf="@+id/cancelTitle"
-            app:layout_constraintTop_toBottomOf="@id/cancelTitle"
-            tools:listitem="@layout/save_category_item">
+            app:layout_constraintStart_toEndOf="@id/cancelBtn"
+            app:layout_constraintTop_toBottomOf="@id/cancelContent" />
 
-        </ListView>
+
+
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
