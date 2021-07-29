@@ -46,11 +46,14 @@ class WritingActivity : AppCompatActivity() {
         val qTitle = binding2.qTitle
         val aTxt = binding2.aTxt
         val addBtn= binding2.addAnswer
-        val linkLayout = binding2.clLinkArea
+        val qlinkLayout = binding2.clLinkArea
 
         //write_content_item.xml에서 view들 가져오기
         val docContent = binding3.docContent
         val contentImg = binding3.contentImg
+        val clinkLayout = binding3.clLinkArea
+        val clinkInsertTxt = binding3.linkInsertTxt
+        val clinkInsertBtn = binding3.linkInsertBtn
 
 
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
@@ -67,8 +70,8 @@ class WritingActivity : AppCompatActivity() {
             // 확인 버튼 다이얼로그
             binding4.confirmBtn.setOnClickListener {
                 // 홈 화면으로 이동
-                val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
-                startActivity(backIntent)
+                //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
+                //startActivity(backIntent)
                 finish()
             }
 
@@ -79,69 +82,58 @@ class WritingActivity : AppCompatActivity() {
 
         }
 
-
         //어댑터 연결
         writingAdapter = WriteMultiAdapter()
         binding.docList.adapter = writingAdapter
 
-        //질문 추가
-        writingAdapter.addItems(WriteQuestionData(qIcon.drawable,qTitle,null,null,null,null,null,
-        null,null,null,aIcon.drawable,aTxt,addBtn))
 
-        //본문추가
-        writingAdapter.addItems(WriteContentData(contentImg,null,null,null,null,null,
-            null,null,null,docContent))
+        //기본 질문 생성
+        writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
+            null,null,null,aTxt,null))
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
 
 
-
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
             //본문 객체 생성
-            var count = 0;
-            //writingList.add(Writing(count, docContent.toString(), docTitle.toString(), "2021-02-18", "기본"))
-            count++
+            writingAdapter.addItems(WriteContentData(null,null,null,null,null,null,
+                null,null,null, docContent))
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            //adap.notifyDataSetChanged()
+            writingAdapter.notifyDataSetChanged()
         }
 
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
-            // 링크 생성
+            // 본문에 링크 생성
+            writingAdapter.addItems(WriteContentData(null,clinkInsertTxt, clinkInsertBtn, clinkLayout,null,null,
+                null,null,null, null))
 
+            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
+            writingAdapter.notifyDataSetChanged()
         }
 
         //하단의 '사진' 버튼 클릭 리스너
-        binding.addLinkBtn.setOnClickListener {
-            // 사진 생성
+        binding.addImgBtn.setOnClickListener {
+            // 본문에 이미지 생성
+            writingAdapter.addItems(WriteContentData(contentImg,null,null,null,null,null,
+                null,null,null, null))
+
+            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
+            writingAdapter.notifyDataSetChanged()
         }
 
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
-            // 질문 생성
-//            writeList.add(WriteListData(qTitle,null,null,null,
-//                    null,null,null, aTxt, addBtn))
+            // 질문 추가
+            writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
+                null,null,null,aTxt,null))
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
 
         }
-        
-        //답변 추가 버튼 클릭 리스너
-        binding2.addAnswer.setOnClickListener {
-            // 답변 생성
-//            writeList.add(WriteListData(qTitle, null,null,null,
-//                null,null,null, aTxt, addBtn))
-
-            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
-        }
-
-
-
-
     }
 }

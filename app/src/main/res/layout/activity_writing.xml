@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@id/docContent"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"

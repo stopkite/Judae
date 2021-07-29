@@ -60,9 +60,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         fun setQList(item: WriteQuestionData) {
 
-            // 질문 아이콘
-            binding.qIcon.setImageDrawable(item.qIcon)
-
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
             }else{
@@ -98,9 +95,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding.linkIcon.setImageDrawable(item.linkIcon)
             binding.linkImg.setImageDrawable(item.linkImg)
 
-            // 대답 아이콘
-            binding.aIcon.setImageDrawable(item.aIcon)
-
             // 대답
             binding.aTxt.text = item.aTxt?.text
 
@@ -124,6 +118,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     class MyContentHolder(val binding2:WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
 
         fun setContentList(item: WriteContentData) {
+
             // 본문 삽입 이미지
             binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
 
@@ -154,8 +149,12 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding2.linkIcon.setImageDrawable(item.linkIcon)
             binding2.linkImg.setImageDrawable(item.linkImg)
 
-            //본문내용(텍스트)
-            binding2.docContent.text = item.docContent?.text
+            // 본문내용(텍스트)
+            if(item.docContent == null){
+                binding2.docContent.visibility = View.GONE
+            }else{
+                binding2.docContent.text = item.docContent?.text
+            }
 
         }
 

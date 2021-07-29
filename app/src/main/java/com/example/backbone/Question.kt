@@ -8,11 +8,6 @@ class Question {
     var ContentID: String = ""
     var QuestionID: Int = -1
     var Content: String = ""
-    var Img: ByteArray? = null
-    var linkTitle:String = ""
-    var linkUri:String = ""
-    var linkIcon: ByteArray? = null
-    var linkImg: ByteArray? = null
 
     //MyQuestionActivity에 띄우기 위해 필요한 해당 질문이 속한 글 제목
     var WritingTitle: String = ""
