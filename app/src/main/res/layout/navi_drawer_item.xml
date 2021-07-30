@@ -12,7 +12,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:text="나의 질문 리스트"
-        android:textColor="@color/white"
+        android:textColor="@color/ivory"
         android:textSize="18sp" />
 
 </LinearLayout>

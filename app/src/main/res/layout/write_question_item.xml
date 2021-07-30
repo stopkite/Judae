@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black">
+    android:background="@color/darkBlue">
 
     <!-- 질문 추가 -->
     <ImageView
@@ -26,8 +26,8 @@
         android:gravity="top"
         android:autoLink="web"
         android:hint="Enter Your Q Here"
-        android:textColor="@color/white"
-        android:textColorHint="#61686A"
+        android:textColor="@color/ivory"
+        android:textColorHint="@color/darkGray"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/qIcon"
@@ -62,8 +62,8 @@
         android:autoLink="web"
         android:gravity="top"
         android:hint="질문에 대한 답을 입력하세요."
-        android:textColor="@color/white"
-        android:textColorHint="#61686A"
+        android:textColor="@color/ivory"
+        android:textColorHint="@color/darkGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/aIcon"
         app:layout_constraintTop_toBottomOf="@id/aImg" />

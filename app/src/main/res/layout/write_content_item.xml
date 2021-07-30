@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    android:background="@color/darkBlue"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -44,8 +44,8 @@
         android:background="@null"
         android:gravity="top"
         android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
-        android:textColor="@android:color/white"
-        android:textColorHint="#61686A"
+        android:textColor="@color/ivory"
+        android:textColorHint="@color/darkGray"
         android:textSize="25sp"
         android:autoLink="web"
         app:layout_constraintBottom_toTopOf="@id/linkInsertTxt"

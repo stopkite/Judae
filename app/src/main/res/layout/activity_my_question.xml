@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/darkBlue"
     tools:context=".MyQuestionActivity">
 
     <Button
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="My Qusetions"
-        android:textColor="@color/white"
+        android:textColor="@color/ivory"
         android:textSize="35sp"
         app:layout_constraintStart_toStartOf="@id/myQ_backBtn"
         app:layout_constraintTop_toBottomOf="@id/myQ_backBtn" />
