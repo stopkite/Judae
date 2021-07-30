@@ -18,7 +18,7 @@
         android:id="@+id/ll_myQ_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,8 +40,8 @@
             android:id="@+id/myQ_qTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_regular"
             android:text="질문이 적힌 글의 제목을 표시합니다."
             android:textColor="#99ECECEC"
             android:textSize="12sp" />

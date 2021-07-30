@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.FragmentQuestionTabBinding
@@ -76,12 +77,19 @@ class QuestionTabFragment() : Fragment() {
         for(i in 0..(qList.size-1))
         {
 
-            myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_launcher_background),
+            myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_search_question),
                     "${qList[i].Content}", "${qList[i].WritingTitle}"))
 
         }
         // 어댑터 변수 초기화
         qAdapter = QuestionTabAdapter(myDocList, this)
+
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration = DividerItemDecoration(this.context,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        view.findViewById<RecyclerView>(R.id.qList).addItemDecoration(dividerItemDecoration)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
