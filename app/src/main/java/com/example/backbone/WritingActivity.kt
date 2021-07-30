@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
@@ -87,9 +88,20 @@ class WritingActivity : AppCompatActivity() {
         binding.docList.adapter = writingAdapter
 
 
+        //시작할 때 titler과 content만 뜨도록 하기
+        binding.contentImg.visibility = View.GONE
+        //binding.clLinkArea.visibility = View.GONE
+        binding.linkContent.visibility = View.GONE
+        binding.linkUri.visibility = View.GONE
+        binding.linkInsertTxt.visibility = View.GONE
+        binding.linkInsertBtn.visibility = View.GONE
+        binding.linkImg.visibility = View.GONE
+        binding.linkIcon.visibility = View.GONE
+        binding.linkTitle.visibility = View.GONE
+
         //기본 질문 생성
-        writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
-            null,null,null,aTxt,null))
+        //writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
+        //    null,null,null,aTxt,null))
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
@@ -108,7 +120,7 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
             // 본문에 링크 생성
-            writingAdapter.addItems(WriteContentData(null,clinkInsertTxt, clinkInsertBtn, clinkLayout,null,null,
+            writingAdapter.addItems(WriteContentData(null,clinkInsertTxt, clinkInsertBtn, null,null,null,
                 null,null,null, null))
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌

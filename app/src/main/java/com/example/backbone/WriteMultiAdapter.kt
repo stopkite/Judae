@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.media.CamcorderProfile.get
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.backbone.databinding.WriteQuestionItemBinding
 class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
+    private lateinit var binding3:ActivityWritingBinding
 
     private val items = mutableListOf<WriteItem>()
 
@@ -45,11 +47,14 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (holder) {
+
             is MyQHolder -> {
                 holder.setQList(items[position] as WriteQuestionData)
             }
             is MyContentHolder -> {
+
                 holder.setContentList(items[position] as WriteContentData)
             }
         }
