@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/darkBlue"
     tools:context=".WritingActivity">
 
     <Toolbar
@@ -67,8 +67,8 @@
                 android:gravity="top"
                 android:autoLink="web"
                 android:hint="Enter Your title here"
-                android:textColor="@android:color/white"
-                android:textColorHint="#61686A"
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
                 android:textSize="45sp"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
@@ -93,8 +93,8 @@
                 android:gravity="top"
                 android:autoLink="web"
                 android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
-                android:textColor="@android:color/white"
-                android:textColorHint="#61686A"
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="@id/contentImg"
                 app:layout_constraintStart_toStartOf="@id/contentImg"
@@ -173,7 +173,6 @@
                 app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
                 app:layout_constraintStart_toStartOf="@id/cl_linkArea"
                 app:layout_constraintTop_toBottomOf="@id/cl_linkArea"
-                app:layout_constraintBottom_toBottomOf="@id/cl_inScroll"
                 tools:listitem="@layout/read_question_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

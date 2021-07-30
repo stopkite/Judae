@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1.질문 내용이 나타납니다?"
-            android:textColor="@color/white"
+            android:textColor="@color/ivory"
             android:textSize="24sp" />
 
 
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="질문이 적힌 글의 제목을 표시합니다."
-            android:textColor="@color/white"
+            android:textColor="#ECECEC"
             android:textSize="16sp" />
 
     </LinearLayout>

@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="카테고리 이름"
-        android:textColor="@color/white"
+        android:textColor="#ECECEC"
         app:layout_constraintStart_toStartOf="@id/write_id_title"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />
 
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="| 2021.07.14."
-        android:textColor="@color/white"
+        android:textColor="#ECECEC"
         app:layout_constraintStart_toEndOf="@id/write_id_cat_name"
         app:layout_constraintTop_toBottomOf="@id/write_id_title"
         android:layout_marginStart="5dp"/>
@@ -57,7 +57,7 @@
             android:id="@+id/question_divide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="#ECECEC"
             android:text="| " />
 
         <ImageView
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="3"
-            android:textColor="@android:color/white"
+            android:textColor="#ECECEC"
             android:textAlignment="viewStart"
             android:layout_marginStart="3dp"/>
 

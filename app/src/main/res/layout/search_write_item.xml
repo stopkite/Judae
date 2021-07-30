@@ -12,7 +12,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:text="글의 제목을 표시합니다."
-        android:textColor="@color/white"
+        android:textColor="@color/ivory"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="카테고리 이름"
-        android:textColor="@color/white"
+        android:textColor="@color/ivory"
         app:layout_constraintStart_toStartOf="@id/write_id_title"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />
 
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="| 2021.07.14."
-        android:textColor="@color/white"
+        android:textColor="@color/ivory"
         app:layout_constraintStart_toEndOf="@id/write_id_cat_name"
         app:layout_constraintTop_toBottomOf="@id/write_id_title"
         android:layout_marginStart="5dp"/>

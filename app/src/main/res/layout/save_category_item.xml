@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="카테고리 이름"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/white" />
+        style="@style/Widget.App.RadioButton"
+        android:textColor="@color/ivory" />
 
 </LinearLayout>

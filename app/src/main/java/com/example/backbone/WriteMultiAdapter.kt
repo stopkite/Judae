@@ -1,24 +1,20 @@
 package com.example.backbone
 
-import android.content.Context
+import android.media.CamcorderProfile.get
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
-import org.jsoup.Jsoup
-import org.w3c.dom.Document
-import kotlin.concurrent.thread
 
-class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
+    private lateinit var binding3:ActivityWritingBinding
 
-    val context:Context = context
     private val items = mutableListOf<WriteItem>()
 
     companion object {
@@ -51,20 +47,14 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (holder) {
+
             is MyQHolder -> {
-                /*
-                                holder.setQList(items[position] as WriteQuestionData)
-                    Glide.with(context)
-                    .load(items[position].linkIcon)
-                    .fitCenter()
-                    .into(holder.binding.linkIcon)
-
-                 */
-
-
+                holder.setQList(items[position] as WriteQuestionData)
             }
             is MyContentHolder -> {
+
                 holder.setContentList(items[position] as WriteContentData)
             }
         }
@@ -74,9 +64,6 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun setQList(item: WriteQuestionData) {
-
-            // 질문 아이콘
-            binding.qIcon.setImageDrawable(item.qIcon)
 
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
@@ -106,16 +93,12 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
             }else{
                 binding.linkInsertBtn.visibility = item.linkInsertTxt?.visibility!!
             }
-            
+
             // 링크된 요소들
             binding.linkTitle.text = item.linkTitle
-            binding.linkUri.text = item.linkUri.toString()
-            binding.linkContent.text = item.linkContent.toString()
+            binding.linkUri.text = item.linkUri
             binding.linkIcon.setImageDrawable(item.linkIcon)
             binding.linkImg.setImageDrawable(item.linkImg)
-
-            // 대답 아이콘
-            binding.aIcon.setImageDrawable(item.aIcon)
 
             // 대답
             binding.aTxt.text = item.aTxt?.text
@@ -140,6 +123,7 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
     class MyContentHolder(val binding2:WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
 
         fun setContentList(item: WriteContentData) {
+
             // 본문 삽입 이미지
             binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
 
@@ -166,13 +150,16 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
 
             // 링크된 요소들
             binding2.linkTitle.text = item.linkTitle
-            binding2.linkContent.text = item.linkContent.toString()
             binding2.linkUri.text = item.linkUri
-            //binding2.linkIcon.setImageDrawable(item.linkIcon)
+            binding2.linkIcon.setImageDrawable(item.linkIcon)
             binding2.linkImg.setImageDrawable(item.linkImg)
 
-            //본문내용(텍스트)
-            binding2.docContent.text = item.docContent?.text
+            // 본문내용(텍스트)
+            if(item.docContent == null){
+                binding2.docContent.visibility = View.GONE
+            }else{
+                binding2.docContent.text = item.docContent?.text
+            }
 
         }
 
@@ -208,6 +195,6 @@ uri = linkUri
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
-        //this.notifyDataSetChanged()
+        this.notifyDataSetChanged()
     }
 }

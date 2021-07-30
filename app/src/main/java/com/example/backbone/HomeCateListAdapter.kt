@@ -74,7 +74,7 @@ class CateHolder(val binding: HomeCateItemBinding): RecyclerView.ViewHolder(bind
     }
     //리스트 첫번째의 수정 버튼은 GONE처리(아예 레이아웃에도 사라지도록 처리하기)
     fun setLayout(){
-        binding.editCateName.setVisibility(View.GONE)
+        binding.editCateName.visibility = View.GONE
     }
     interface ItemClickListener{
         fun onClick(view: View,position: Int)

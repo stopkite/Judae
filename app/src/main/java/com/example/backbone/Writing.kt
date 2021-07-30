@@ -1,5 +1,8 @@
 package com.example.backbone
 
+import android.graphics.drawable.Drawable
+import android.view.View
+
 //글 클래스
 class Writing {
     var WriteID: Int = -1

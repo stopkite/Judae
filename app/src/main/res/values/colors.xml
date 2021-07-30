@@ -6,5 +6,17 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+
+
+    <color name="darkBlue">#27282C</color>
+    <color name="ivory">#ECECEC</color>
+    <color name="greenMain">#4AA19C</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="darkGray">#7A7E8B</color>
+    <color name="darkGreen">#356C69</color>
+    <color name="TouchBlack">#333740</color>
+
+
+
+
 </resources>

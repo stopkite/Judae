@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/darkBlue"
     tools:context=".WritingActivity">
 
     <Toolbar
@@ -63,13 +63,14 @@
                 android:id="@+id/docTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autoLink="web"
                 android:background="@null"
                 android:gravity="top"
                 android:hint="Enter Your title here"
-                android:textColor="@android:color/white"
-                android:textColorHint="#61686A"
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
                 android:textSize="45sp"
-                android:autoLink="web"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
                 app:layout_constraintTop_toTopOf="@id/cl_inScroll" />
@@ -80,10 +81,25 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background"
-                app:layout_constraintBottom_toTopOf="@id/docContent"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
                 app:layout_constraintTop_toBottomOf="@id/docTitle" />
+
+            <EditText
+                android:id="@+id/docContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/docTitle"
+                app:layout_constraintTop_toBottomOf="@id/contentImg" />
 
             <EditText
                 android:id="@+id/linkInsertTxt"
@@ -92,9 +108,8 @@
                 android:hint="링크를 입력하세요."
                 android:autoLink="web"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@id/cl_linkArea"
                 app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
-                app:layout_constraintStart_toStartOf="@id/docContent"
+                app:layout_constraintStart_toStartOf="@id/cl_inScroll"
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
             <Button
@@ -106,21 +121,7 @@
                 app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
-            <EditText
-                android:id="@+id/docContent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="top"
-                android:autoLink="web"
-                android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
-                android:textColor="@android:color/white"
-                android:textColorHint="#61686A"
-                android:textSize="25sp"
-                app:layout_constraintBottom_toTopOf="@id/linkInsertTxt"
-                app:layout_constraintEnd_toEndOf="@id/contentImg"
-                app:layout_constraintStart_toStartOf="@id/contentImg"
-                app:layout_constraintTop_toBottomOf="@id/contentImg" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_linkArea"
@@ -175,11 +176,10 @@
 
                 <ImageView
                     android:id="@+id/linkImg"
-                    android:layout_width="100dp"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_launcher_background"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
                     app:layout_constraintStart_toEndOf="@id/linkContent"
                     app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
@@ -192,11 +192,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
-                app:layout_constraintStart_toStartOf="@id/cl_linkArea"
-                app:layout_constraintTop_toBottomOf="@id/cl_linkArea"
-                app:layout_constraintBottom_toBottomOf="@id/cl_inScroll"
-                app:layoutManager="LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/docTitle"
+                app:layout_constraintStart_toStartOf="@id/docTitle"
+                app:layout_constraintTop_toBottomOf="@+id/cl_linkArea"
                 tools:listitem="@layout/write_question_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
