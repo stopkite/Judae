@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityWritingBinding
@@ -88,9 +89,10 @@ class WritingActivity : AppCompatActivity() {
         binding.docList.adapter = writingAdapter
 
 
-        //시작할 때 titler과 content만 뜨도록 하기
+        //시작할 때 title과 content만 뜨도록 하기
         binding.contentImg.visibility = View.GONE
-        //binding.clLinkArea.visibility = View.GONE
+
+
         binding.linkContent.visibility = View.GONE
         binding.linkUri.visibility = View.GONE
         binding.linkInsertTxt.visibility = View.GONE
@@ -98,6 +100,10 @@ class WritingActivity : AppCompatActivity() {
         binding.linkImg.visibility = View.GONE
         binding.linkIcon.visibility = View.GONE
         binding.linkTitle.visibility = View.GONE
+
+        binding.clLinkArea.visibility = View.GONE
+
+
 
         //기본 질문 생성
         //writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
