@@ -1,18 +1,24 @@
 package com.example.backbone
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
+import org.jsoup.Jsoup
+import org.w3c.dom.Document
+import kotlin.concurrent.thread
 
-class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
 
+    val context:Context = context
     private val items = mutableListOf<WriteItem>()
 
     companion object {
@@ -47,7 +53,16 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MyQHolder -> {
-                holder.setQList(items[position] as WriteQuestionData)
+                /*
+                                holder.setQList(items[position] as WriteQuestionData)
+                    Glide.with(context)
+                    .load(items[position].linkIcon)
+                    .fitCenter()
+                    .into(holder.binding.linkIcon)
+
+                 */
+
+
             }
             is MyContentHolder -> {
                 holder.setContentList(items[position] as WriteContentData)
@@ -91,10 +106,11 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             }else{
                 binding.linkInsertBtn.visibility = item.linkInsertTxt?.visibility!!
             }
-
+            
             // 링크된 요소들
             binding.linkTitle.text = item.linkTitle
-            binding.linkUri.text = item.linkUri
+            binding.linkUri.text = item.linkUri.toString()
+
             binding.linkIcon.setImageDrawable(item.linkIcon)
             binding.linkImg.setImageDrawable(item.linkImg)
 
@@ -151,7 +167,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             // 링크된 요소들
             binding2.linkTitle.text = item.linkTitle
             binding2.linkUri.text = item.linkUri
-            binding2.linkIcon.setImageDrawable(item.linkIcon)
+            //binding2.linkIcon.setImageDrawable(item.linkIcon)
             binding2.linkImg.setImageDrawable(item.linkImg)
 
             //본문내용(텍스트)
@@ -191,6 +207,6 @@ uri = linkUri
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
-        this.notifyDataSetChanged()
+        //this.notifyDataSetChanged()
     }
 }
