@@ -7,23 +7,26 @@
     android:background="@color/darkBlue"
     tools:context=".SearchActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/searchTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/songmyung_regular"
         android:text="SEARCH"
         android:textColor="@color/ivory"
-        android:textSize="40sp"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="@id/backBtn"
         app:layout_constraintTop_toBottomOf="@id/backBtn" />
 
@@ -31,14 +34,15 @@
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="11dp"
-        android:background="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_search_area"
+        android:clickable="true"
         android:layoutDirection="rtl"
         android:queryHint="검색어"
         android:searchHintIcon="@null"
-        android:clickable="true"
+        android:searchIcon="@drawable/ic_search"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,11 +50,13 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
+        style="@style/Widget.App.TabLayout"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@+id/searchView"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:tabIndicatorFullWidth="false">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -68,14 +74,15 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tabLayout"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout">
-    </FrameLayout>
 
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

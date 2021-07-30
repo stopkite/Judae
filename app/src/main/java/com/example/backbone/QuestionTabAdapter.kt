@@ -28,7 +28,7 @@ class QuestionTabAdapter(var myQList:ArrayList<MyQListData>, val fragment_s: Fra
 
         // 아이템 간 간격 설정
         val layoutParams = holder.itemView.layoutParams
-        layoutParams.height = 80.toPx()
+        layoutParams.height = 59.toPx()
         holder.itemView.requestLayout()
 
     }
