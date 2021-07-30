@@ -111,6 +111,14 @@ class HomeActivity : AppCompatActivity() {
 
         // 어댑터 연결
         binding.navigationRv.adapter = naviAdapter
+
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration2 = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration2.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        binding.root.findViewById<RecyclerView>(R.id.navigation_rv).addItemDecoration(dividerItemDecoration)
+
         binding.navigationRv.layoutManager = LinearLayoutManager(this)
         binding.navigationRv.setHasFixedSize(true)
 

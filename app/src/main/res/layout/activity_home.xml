@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkBlue"
+    tools:openDrawer="start"
     tools:context=".HomeActivity">
 
     <!-- Home Activity -->
@@ -131,29 +132,32 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/black"
+        android:background="@color/darkBlue"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/navi_text_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="58dp"
             android:text="Menu"
-            android:textColor="@color/white"
-            android:textSize="40sp"
+            android:textColor="@color/ivory"
+            android:textSize="36sp"
+            android:fontFamily="@font/songmyung_regular"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/navigation_rv"
-            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_width="250dp"
             android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
             android:layout_weight="1"
-            tools:listitem="@layout/navi_drawer_item"
             android:scrollbarThumbHorizontal="@null"
-            android:scrollbarThumbVertical="@null">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:scrollbarThumbVertical="@null"
+            tools:listitem="@layout/navi_drawer_item"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
     <!-- Custom Navigation Drawer End -->
