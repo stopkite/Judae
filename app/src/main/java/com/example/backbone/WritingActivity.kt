@@ -104,11 +104,6 @@ class WritingActivity : AppCompatActivity() {
         binding.clLinkArea.visibility = View.GONE
 
 
-
-        //기본 질문 생성
-        //writingAdapter.addItems(WriteQuestionData(qTitle,null,null,null,null,null,
-        //    null,null,null,aTxt,null))
-
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
 
