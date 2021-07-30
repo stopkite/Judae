@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.FragmentQuestionTabBinding
@@ -89,13 +88,6 @@ class TitleTabFragment : Fragment() {
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
-
-        // 아이템 구분선 색상 설정
-        val dividerItemDecoration = DividerItemDecoration(this.context,LinearLayoutManager.VERTICAL)
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
-
-        // 아이템 구분선 삽입
-        view.findViewById<RecyclerView>(R.id.titleList).addItemDecoration(dividerItemDecoration)
 
         // 만든 어댑터 recyclerview에 연결
         view.findViewById<RecyclerView>(R.id.titleList).adapter = wAdapter

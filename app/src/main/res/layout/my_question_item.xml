@@ -6,10 +6,10 @@
 
     <ImageView
         android:id="@+id/myQ_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_search_question"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toStartOf="@id/ll_myQ_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,8 +18,8 @@
         android:id="@+id/ll_myQ_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/myQ_img"
@@ -30,21 +30,18 @@
             android:id="@+id/myQ_qContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
             android:text="1.질문 내용이 나타납니다?"
             android:textColor="@color/ivory"
-            android:textSize="14sp" />
+            android:textSize="24sp" />
 
 
         <TextView
             android:id="@+id/myQ_qTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:layout_marginTop="4dp"
             android:text="질문이 적힌 글의 제목을 표시합니다."
-            android:textColor="#99ECECEC"
-            android:textSize="12sp" />
+            android:textColor="#ECECEC"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

@@ -11,13 +11,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-
         <!-- Customize your theme here. -->
-        <!-- 라디오 버튼 custom -->
         <item name="radioButtonStyle">@style/Widget.App.RadioButton</item>
-        <!-- 탭 레이아웃 custim -->
-        <item name="tabStyle">@style/Widget.App.TabLayout</item>
-        <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
     </style>
 
     <style name="Theme.MyDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -39,26 +34,11 @@
     <style name="Widget.App.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.RadioButton</item>
     </style>
+
     <style name="ThemeOverlay.App.RadioButton" parent="">
         <item name="colorOnSurface">@color/ivory</item>
         <item name="colorSecondary">@color/greenMain</item>
     </style>
-
-    <!-- 탭 레이아웃 커스튬 -->
-    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TabLayout</item>
-        <item name="tabTextAppearance">@style/TextAppearance.App.Button</item>
-    </style>
-    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-    <style name="ThemeOverlay.App.TabLayout" parent="">
-        <item name="colorPrimary">@color/greenMain</item>
-        <item name="colorSurface">@color/darkBlue</item>
-        <item name="colorOnSurface">@color/darkGray</item>
-    </style>
-
 
 </resources>
 
