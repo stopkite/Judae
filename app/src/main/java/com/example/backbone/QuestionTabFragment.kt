@@ -77,7 +77,7 @@ class QuestionTabFragment() : Fragment() {
         for(i in 0..(qList.size-1))
         {
 
-            myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_search_question),
+            myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_q_list_question),
                     "${qList[i].Content}", "${qList[i].WritingTitle}"))
 
         }

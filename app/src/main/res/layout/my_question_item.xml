@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_search_question"
+        android:src="@drawable/ic_q_list_question"
         app:layout_constraintEnd_toStartOf="@id/ll_myQ_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

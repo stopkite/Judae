@@ -6,7 +6,9 @@ import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityHomeBinding
 
  //홈 화면 액티비티
@@ -58,8 +60,8 @@ class HomeActivity : AppCompatActivity() {
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(Array.size - 1)) {
             myDocList.add(
-                    HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                            "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                    HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                            "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
             )
         }
 
@@ -69,12 +71,19 @@ class HomeActivity : AppCompatActivity() {
         // 만든 어댑터 recyclerview에 연결
         docList.adapter = homeDocListAdapter
 
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        binding.root.findViewById<RecyclerView>(R.id.docList).addItemDecoration(dividerItemDecoration)
+
         // 리사이클러 뷰 타입 설정
         docList.layoutManager = LinearLayoutManager(this)
 
 
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
-        binding.cateName.setOnClickListener {
+        binding.clDropCate.setOnClickListener {
             //changeFragment(BottomFragmentList())
             loadCategory(db)
         }
@@ -131,7 +140,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         //글쓰기 화면으로 이동하는 버튼 리스너
-        binding.writeBtn.setOnClickListener {
+        binding.clHomeWriteBtn.setOnClickListener {
             // 글쓰기 화면으로 이동
             val writeIntent = Intent(this@HomeActivity, WritingActivity::class.java)
             startActivity(writeIntent)
@@ -168,8 +177,8 @@ class HomeActivity : AppCompatActivity() {
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
 
@@ -208,8 +217,8 @@ class HomeActivity : AppCompatActivity() {
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
 

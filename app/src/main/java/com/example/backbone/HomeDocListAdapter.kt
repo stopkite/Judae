@@ -43,7 +43,6 @@ class Holder(val binding: HomeWriteItemBinding): RecyclerView.ViewHolder(binding
     fun setDocList(myDocList: HomeDocListData){
 
         binding.questionIcon.setImageDrawable(myDocList.icon)
-        binding.writeIdColor.setColorFilter(myDocList.color)
         binding.writeIdTitle.text = myDocList.title
         binding.writeIdCatName.text = myDocList.catName
         binding.writeIdDate.text = myDocList.date

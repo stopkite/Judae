@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Backbone">
-        <activity android:name=".WritingActivity"></activity>
+        <activity android:name=".WritingActivity"/>
         <activity android:name=".ReadingActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".LockScreenMenuActivity" />
@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".SavingActivity"
             android:theme="@style/Theme.MyDialog" />
