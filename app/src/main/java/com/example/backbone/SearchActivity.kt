@@ -200,7 +200,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.searchView.setOnClickListener(View.OnClickListener
-        { binding.searchView.setIconified(false) })
+        { binding.searchView.setIconified(false)})
 
     }
 
