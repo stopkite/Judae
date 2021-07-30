@@ -13,11 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.jsoup.Jsoup
 
 
 class WritingActivity : AppCompatActivity() {
@@ -88,8 +90,8 @@ class WritingActivity : AppCompatActivity() {
         writingAdapter = WriteMultiAdapter()
         binding.docList.adapter = writingAdapter
 
-
-        //시작할 때 title과 content만 뜨도록 하기
+                /*
+                        //시작할 때 title과 content만 뜨도록 하기
         binding.contentImg.visibility = View.GONE
 
 
@@ -102,6 +104,8 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
 
         binding.clLinkArea.visibility = View.GONE
+                 */
+
 
 
 
@@ -112,12 +116,60 @@ class WritingActivity : AppCompatActivity() {
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
 
+        binding.linkInsertTxt.setText("https://blog.naver.com/rapael860429/222441480711")
+        var linkUri:String = binding.linkInsertTxt.getText().toString()
+        var title:String = ""
+        var content:String = ""
+
+
+        //네트워크를 통한 작업이기 때문에 비동기식으로 구현을 해야 한다.
+        Thread(Runnable {
+            //linkIcon에 파비콘 추출해서 삽입하기
+            Log.d("태그그", "${linkUri}")
+            val doc = Jsoup.connect("${linkUri}").get()
+
+            //이미지 들고 오기
+            val favicon = doc.select("link[rel=shortcut icon]").first().attr("href")
+            Log.d("태그그", "${favicon}")
+
+            //제목 들고 오기
+            //val Title = doc.select("meta[name=\"title\"]").attr("content")
+            val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
+
+            val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
+            title = doc2.title()
+            content = doc2.select("meta[property=\"og:description\"]").attr("content")
+
+            Log.d("태그그", "${title}")
+            Log.d("태그그", "${content}")
+
+            val linkImg = doc.select("link[rel=\"image_src\"]").attr("src")
+            Log.d("태그그", "${linkImg}")
+
+            //val links = doc.select("a[href]")
+
+            Log.d("태그그", "여기 읽히냐")
+            //
+
+            this@WritingActivity.runOnUiThread(java.lang.Runnable {
+                //println(doc)
+                //어답터 연결하기
+                binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                var adapter = WriteMultiAdapter()
+                binding.docList.adapter = adapter
+            })
+        }).start()
+
+        Log.d("태그", "${title}")
+        binding.linkUri.text = linkUri
+        binding.linkTitle.text = title
+        binding.linkContent.text = content
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
             //본문 객체 생성
-            writingAdapter.addItems(WriteContentData(null,null,null,null,null,null,
-                null,null,null, docContent))
+            writingAdapter.addItems(WriteContentData(null,null,null,null,title,content,
+                linkUri,null,null, docContent))
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
