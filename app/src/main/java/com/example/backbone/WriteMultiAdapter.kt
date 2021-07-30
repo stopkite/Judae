@@ -110,7 +110,7 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
             // 링크된 요소들
             binding.linkTitle.text = item.linkTitle
             binding.linkUri.text = item.linkUri.toString()
-
+            binding.linkContent.text = item.linkContent.toString()
             binding.linkIcon.setImageDrawable(item.linkIcon)
             binding.linkImg.setImageDrawable(item.linkImg)
 
@@ -166,6 +166,7 @@ class WriteMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.Vie
 
             // 링크된 요소들
             binding2.linkTitle.text = item.linkTitle
+            binding2.linkContent.text = item.linkContent.toString()
             binding2.linkUri.text = item.linkUri
             //binding2.linkIcon.setImageDrawable(item.linkIcon)
             binding2.linkImg.setImageDrawable(item.linkImg)

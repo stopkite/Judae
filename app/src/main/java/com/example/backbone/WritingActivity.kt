@@ -83,7 +83,8 @@ class WritingActivity : AppCompatActivity() {
 
         binding.linkInsertTxt.setText("https://blog.naver.com/rapael860429/222441480711")
         var linkUri:String = binding.linkInsertTxt.getText().toString()
-        var title:String = null
+        var title:String = ""
+        var content:String = ""
 
 
         //네트워크를 통한 작업이기 때문에 비동기식으로 구현을 해야 한다.
@@ -101,8 +102,8 @@ class WritingActivity : AppCompatActivity() {
             val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
 
             val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
-            val title = doc2.title()
-            val content = doc2.select("meta[property=\"og:description\"]").attr("content")
+            title = doc2.title()
+            content = doc2.select("meta[property=\"og:description\"]").attr("content")
 
             Log.d("태그그", "${title}")
             Log.d("태그그", "${content}")
@@ -128,11 +129,11 @@ class WritingActivity : AppCompatActivity() {
 
         //질문 추가
         writingAdapter.addItems(WriteQuestionData(qIcon.drawable, qTitle, null, null, null, null, null,
-                linkUri, null, null, aIcon.drawable, aTxt, addBtn))
+                null, linkUri, null, null, aIcon.drawable, aTxt, addBtn))
 
         //본문추가
-        writingAdapter.addItems(WriteContentData(contentImg, null, null, null, null, null,
-                linkUri, null, null, docContent))
+        writingAdapter.addItems(WriteContentData(contentImg, null, null, null, title, content,
+                 linkUri, null, null, docContent))
 
 
         // 리사이클러 뷰 타입 설정
