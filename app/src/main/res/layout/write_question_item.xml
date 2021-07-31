@@ -103,13 +103,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="서울여자대학교"
-            android:textColor="@color/black"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="15sp"
             android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            android:text="서울여자대학교서울여자대학교서울여자대학교서울여자대학교서울여자대학교서울여자대학교"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/cl_linkArea"
             app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
 
@@ -117,13 +117,13 @@
             android:id="@+id/linkContent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
-            android:maxLines="2"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
-            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            android:maxLines="2"
+            android:text="서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/linkTitle"
             app:layout_constraintTop_toBottomOf="@id/linkTitle" />
 
@@ -141,28 +141,15 @@
             android:id="@+id/linkUri"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
             android:singleLine="true"
-            android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqw"
+            android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqwhttp://wwww.youtube.com/watch?v=MDeuDrlBKqw"
             android:textSize="9sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/linkImg"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/linkIcon"
             app:layout_constraintTop_toBottomOf="@id/linkContent" />
-
-        <ImageView
-            android:id="@+id/linkImg"
-            android:layout_width="121dp"
-            android:layout_height="81dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
-            app:layout_constraintStart_toEndOf="@id/linkContent"
-            app:layout_constraintTop_toTopOf="@id/cl_linkArea"
-            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
