@@ -2,28 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppBottomSheetDialogTheme"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/darkBlue"
+    android:layout_height="447dp"
     android:orientation="vertical"
-    app:behavior_peekHeight = "200dp"
-    >
+    app:behavior_peekHeight="200dp">
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageButton
         android:id="@+id/category_add"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_cate_add"
+        android:layout_marginEnd="22dp"
+        android:layout_marginTop="22dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end">
-    </androidx.appcompat.widget.AppCompatButton>
+    </ImageButton>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/docList"
-        tools:listitem="@layout/home_cate_item"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_cate_list"
         android:layout_weight="1"
-        app:layoutManager="LinearLayoutManager"/>
+        android:background="@color/darkBlue"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/docList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="104dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/cl_cate_list"
+            app:layout_constraintStart_toStartOf="@id/cl_cate_list"
+            app:layout_constraintTop_toTopOf="@id/cl_cate_list"
+            tools:listitem="@layout/home_cate_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
