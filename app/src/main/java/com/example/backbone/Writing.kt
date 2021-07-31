@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.View
 
@@ -11,9 +12,8 @@ class Writing {
     var Date: String=""
     var Category:String=""
     var Question:Int = 0
+    var Image: Bitmap? = null
 
-    //이미지
-    var Image: ByteArray? = null
     //링크
     var Link: String = ""
 
