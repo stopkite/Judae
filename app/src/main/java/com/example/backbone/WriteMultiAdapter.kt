@@ -1,10 +1,8 @@
 package com.example.backbone
 
-import android.media.CamcorderProfile.get
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
@@ -16,6 +14,8 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding3:ActivityWritingBinding
 
     private val items = mutableListOf<WriteItem>()
+    private var wData: ArrayList<String>? = null
+    private var qData: ArrayList<String>? = null
 
     companion object {
         private const val TYPE_Question = 0
@@ -46,6 +46,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         }
     }
 
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when (holder) {
@@ -56,6 +57,10 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             is MyContentHolder -> {
 
                 holder.setContentList(items[position] as WriteContentData)
+
+                holder.itemView.setOnClickListener{
+                    itemClickListner.onClick(it,position)
+                }
             }
         }
     }
@@ -116,6 +121,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                 return MyQHolder(binding)
             }
         }
+
     }
 
     // 본문 Hodler
@@ -193,6 +199,22 @@ uri = linkUri
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    interface ItemClickListener{
+        fun onClick(view: View,position: Int)
+    }
+
+    //를릭 리스너
+    private lateinit var itemClickListner: ItemClickListener
+    fun setItemClickListener(itemClickListener: ItemClickListener) {
+        this.itemClickListner = itemClickListener
+    }
+
+    // answer 이미지, 링크 추가 시 사용
+    fun modifyItems(position: Int, item: WriteItem) {
+        this.items.set(position, item)
         this.notifyDataSetChanged()
     }
 }

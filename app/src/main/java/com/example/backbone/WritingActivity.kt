@@ -1,23 +1,16 @@
 package com.example.backbone
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
 class WritingActivity : AppCompatActivity() {
@@ -92,7 +85,7 @@ class WritingActivity : AppCompatActivity() {
         //시작할 때 title과 content만 뜨도록 하기
         binding.contentImg.visibility = View.GONE
 
-
+        //초기 화면 설정
         binding.linkContent.visibility = View.GONE
         binding.linkUri.visibility = View.GONE
         binding.linkInsertTxt.visibility = View.GONE
@@ -100,9 +93,7 @@ class WritingActivity : AppCompatActivity() {
         binding.linkImg.visibility = View.GONE
         binding.linkIcon.visibility = View.GONE
         binding.linkTitle.visibility = View.GONE
-
         binding.clLinkArea.visibility = View.GONE
-
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
@@ -120,7 +111,7 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
-            // 본문에 링크 생성
+
             writingAdapter.addItems(WriteContentData(null,clinkInsertTxt, clinkInsertBtn, null,null,null,
                 null,null,null, null))
 
@@ -131,6 +122,11 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '사진' 버튼 클릭 리스너
         binding.addImgBtn.setOnClickListener {
             // 본문에 이미지 생성
+
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            startActivity(intent)
+
             writingAdapter.addItems(WriteContentData(contentImg,null,null,null,null,null,
                 null,null,null, null))
 
@@ -149,4 +145,5 @@ class WritingActivity : AppCompatActivity() {
 
         }
     }
+
 }
