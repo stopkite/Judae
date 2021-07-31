@@ -50,7 +50,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when (holder) {
-
             is MyQHolder -> {
                 holder.setQList(items[position] as WriteQuestionData)
             }
@@ -167,6 +166,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         }
 
+
         companion object Factory {
             fun create(parent: ViewGroup): MyContentHolder {
                 val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -196,6 +196,11 @@ uri = linkUri
  */
 
     override fun getItemCount() = items.size
+
+    fun updateItems(item:WriteItem, position: Int)
+    {
+        this.items[position].apply {item}
+    }
 
     fun addItems(item: WriteItem) {
         this.items.add(item)

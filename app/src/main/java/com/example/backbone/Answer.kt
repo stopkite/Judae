@@ -1,10 +1,17 @@
 package com.example.backbone
 
+import android.graphics.Bitmap
+
 //대답 클래스
 class Answer {
     var Question: String = ""
     var AnswerID: Int = -1
     var Content: String = ""
+
+    //이미지
+    var Image: Bitmap? = null
+    //링크
+    var Link: String = ""
 
     //기본 생성자
     constructor()
