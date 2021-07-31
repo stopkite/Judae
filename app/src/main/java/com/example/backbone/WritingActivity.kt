@@ -6,6 +6,7 @@ import android.os.*
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -183,100 +184,109 @@ class WritingActivity : AppCompatActivity() {
 
     private fun loadLink(linkUri: String) {
         //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-        
+        title = ""
+        bm1 = null
+        url1 = null
+        content = ""
         Thread(Runnable {
             while(isrun)
             {//네이버의 경우에만 해당되는 것 같아.
-                if (linkUri.contains("naver")) {
-                    //linkIcon에 파비콘 추출해서 삽입하기
-                    Log.d("태그그", "${linkUri}")
-                    val doc = Jsoup.connect("${linkUri}").get()
+                try{
+                    if (linkUri.contains("naver")) {
+                        //linkIcon에 파비콘 추출해서 삽입하기
+                        Log.d("태그그", "${linkUri}")
+                        val doc = Jsoup.connect("${linkUri}").get()
 
-                    //제목 들고 오기
-                    val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                    if(linkUri.contains("blog"))
-                    {
-                        val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
-                        title = doc2.title()
-                        content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                    }else if(linkUri == "https://www.naver.com/"){
-                        title = doc.title()
-                        content = doc.select("meta[name=\"og:description\"]").attr("content")
-                    }else{
-                        title = doc.title()
-                        content = doc.select("meta[property=\"og:description\"]").attr("content")
-                    }
-
-                    url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
-                    var conn: URLConnection = url1!!.openConnection()
-                    conn.connect()
-                    var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
-                    bm1 = BitmapFactory.decodeStream(bis)
-
-                    bis.close()
-                    isrun=false
-                } else {
-                    val doc = Jsoup.connect("${linkUri}").get()
-                    var favicon:String
-                    var link:String
-                    if(linkUri.contains("google"))
-                    {
-                        favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                        link = "https://www.google.com"+favicon
-                        url1 = URL("${link}")
-                    }else{
-                        //파비콘 이미지 들고 오기
-                        favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                        if(favicon=="")
+                        //제목 들고 오기
+                        val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
+                        if(linkUri.contains("blog"))
                         {
-                            favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
-                        }
-                        if (!favicon.contains("https:")) {
-                            link = "https://"+favicon
-                            url1 = URL("${link}")
+                            val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
+                            title = doc2.title()
+                            content = doc2.select("meta[property=\"og:description\"]").attr("content")
+                        }else if(linkUri == "https://www.naver.com/"){
+                            title = doc.title()
+                            content = doc.select("meta[name=\"og:description\"]").attr("content")
                         }else{
-                            url1 = URL("${favicon}")
+                            title = doc.title()
+                            content = doc.select("meta[property=\"og:description\"]").attr("content")
                         }
-                    }
 
-                    try{
+                        url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
                         var conn: URLConnection = url1!!.openConnection()
                         conn.connect()
                         var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                         bm1 = BitmapFactory.decodeStream(bis)
 
                         bis.close()
-                    }catch (e:Exception)
-                    {
+                        isrun=false
+                    } else {
+                        val doc = Jsoup.connect("${linkUri}").get()
+                        var favicon:String
+                        var link:String
+                        if(linkUri.contains("google"))
+                        {
+                            favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
+                            link = "https://www.google.com"+favicon
+                            url1 = URL("${link}")
+                        }else{
+                            //파비콘 이미지 들고 오기
+                            favicon = doc.select("link[rel=\"icon\"]").attr("href")
+                            if(favicon=="")
+                            {
+                                favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
+                            }
+                            if (!favicon.contains("https:")) {
+                                link = "https://"+favicon
+                                url1 = URL("${link}")
+                            }else{
+                                url1 = URL("${favicon}")
+                            }
+                        }
 
+                        try{
+                            var conn: URLConnection = url1!!.openConnection()
+                            conn.connect()
+                            var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                            bm1 = BitmapFactory.decodeStream(bis)
+                            bis.close()
+                        }catch (e:Exception)
+                        {
+
+                        }
+                        title = doc.title()
+
+
+                        content = doc.select("meta[name=\"description\"]").attr("content")
+                        if(content == "")
+                        {
+                            content = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                        }
+                        if(title == "")
+                        {
+                            title = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                        }
+                        Log.d("태그", "${bm1}")
+                        if(bm1==null)
+                        {
+                            binding.linkIcon.visibility= View.GONE
+                        }
+                        isrun=false
                     }
-                    title = doc.title()
+                    this@WritingActivity.runOnUiThread(java.lang.Runnable {
+                        //어답터 연결하기
+                        binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                        var adapter = WriteMultiAdapter()
+                        binding.docList.adapter = adapter
+                        binding.linkUri.text = linkUri
+                        binding.linkTitle.text = title
+                        binding.linkContent.text = content
+                        binding.linkIcon.setImageBitmap(bm1)
+                    })
+                }catch(e:Exception){
+                    //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
-
-                    content = doc.select("meta[name=\"description\"]").attr("content")
-                    if(content == "")
-                    {
-                        content = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                    }
-                    if(title == "")
-                    {
-                        title = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                    }
-
-                    isrun=false
                 }
-
-
-                this@WritingActivity.runOnUiThread(java.lang.Runnable {
-                    //어답터 연결하기
-                    binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                    var adapter = WriteMultiAdapter()
-                    binding.docList.adapter = adapter
-                    binding.linkUri.text = linkUri
-                    binding.linkTitle.text = title
-                    binding.linkContent.text = content
-                    binding.linkIcon.setImageBitmap(bm1)
-                })
             }
         }).start()
     }
