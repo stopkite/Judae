@@ -11,11 +11,14 @@
         android:id="@+id/lock_info_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="78dp"
+        android:layout_marginEnd="121dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="비밀번호를 입력해주세요"
         android:textAllCaps="false"
-        android:textSize="25sp"
-        android:textColor="#ECECEC"
+        android:textColor="@color/ivory"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/ll_appPW"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,8 +29,9 @@
         android:id="@+id/ll_appPW"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="45dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,36 +42,38 @@
         <ImageView
             android:id="@+id/PW_1"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icon_help" />
+            app:srcCompat="@drawable/ic_pw_null" />
 
         <ImageView
             android:id="@+id/PW_2"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icon_help" />
+            app:srcCompat="@drawable/ic_pw_null" />
 
         <ImageView
             android:id="@+id/PW_3"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icon_help" />
+            app:srcCompat="@drawable/ic_pw_null" />
 
         <ImageView
             android:id="@+id/PW_4"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icon_help" />
+            app:srcCompat="@drawable/ic_pw_null" />
     </LinearLayout>
 
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ll_appPW"
         app:layout_constraintHorizontal_bias="0.0"
@@ -80,29 +86,35 @@
             android:layout_height="wrap_content">
 
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_1"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="1"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_2"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="2"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_3"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="3"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
         </TableRow>
 
         <TableRow
@@ -110,29 +122,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_4"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="4"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_5"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="5"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_6"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="6"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
         </TableRow>
 
         <TableRow
@@ -140,29 +158,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_7"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="7"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_8"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="8"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_9"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="9"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
         </TableRow>
 
         <TableRow
@@ -170,29 +194,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_reset"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="초기화"
+                android:textColor="@color/ivory"
+                android:textSize="18sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_0"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="0"
+                android:textColor="@color/ivory"
+                android:textSize="32sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/key_del"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:background="@android:color/transparent"
+                android:text="삭제"
+                android:textColor="@color/ivory"
+                android:textSize="18sp" />
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

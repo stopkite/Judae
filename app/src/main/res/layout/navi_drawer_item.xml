@@ -9,10 +9,11 @@
         android:id="@+id/navi_text_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="나의 질문 리스트"
         android:textColor="@color/ivory"
-        android:textSize="18sp" />
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="19sp" />
 
 </LinearLayout>

@@ -42,7 +42,6 @@ class Holder(val binding: HomeWriteItemBinding): RecyclerView.ViewHolder(binding
     // 화면에 데이터를 세팅하는 setDocList()메서드 구현
     fun setDocList(myDocList: HomeDocListData){
         binding.questionIcon.setImageDrawable(myDocList.icon)
-        binding.writeIdColor.setColorFilter(myDocList.color)
         binding.writeIdTitle.text = myDocList.title
         binding.writeIdCatName.text = myDocList.catName
         binding.writeIdDate.text = myDocList.date

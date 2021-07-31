@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.annotation.Nullable
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.FragmentBottomListBinding
@@ -43,7 +45,7 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(), onClick_i
         var view:View = inflater.inflate(R.layout.fragment_bottom_list, container, false)
 
         // 카테고리 추가 버튼 클릭 리스너 선언
-        view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.category_add).setOnClickListener { view ->
+        view.findViewById<ImageButton>(R.id.category_add).setOnClickListener { view ->
             hoemActivity?.onButtonClicked()
             //해당 프래그먼트 창 지우기
             val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
@@ -78,6 +80,13 @@ class BottomFragmentList(db: DBHelper)  : BottomSheetDialogFragment(), onClick_i
         }
         // 어댑터 변수 초기화
         homeCateListAdapter = HomeCateListAdapter(myDocList, this, this)
+
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration = DividerItemDecoration(this.context,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        view.findViewById<RecyclerView>(R.id.docList).addItemDecoration(dividerItemDecoration)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)
