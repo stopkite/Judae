@@ -56,7 +56,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //HomeActivity
     //cateName인자의 값에 따라 검색하는 sql 내용이 달라짐
     //글 객체에 제목, 카테고리 이름, DATE, 해당 글에 저장된 Question갯수 출력
-    fun getWriting(cateName: String): Array<Writing>
+    fun getCateWriting(cateName: String): Array<Writing>
     {
         //db읽어올 준비
         var db = this.readableDatabase
@@ -82,10 +82,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var writing:Writing = Writing()
 
             writing.WriteID = cursor.getInt(0)
-            writing.content = cursor.getString(1)
-            writing.Title =  cursor.getString(2)
-            writing.Date =  cursor.getString(3)
-            writing.Category =  cursor.getString(4)
+            writing.Title = cursor.getString(1)
+            writing. Date=  cursor.getString(2)
+            writing. Category =  cursor.getString(3)
 
             cursor2 =db.rawQuery("SELECT COUNT(*) FROM Question WHERE WritingID = '${writing.WriteID}';", null)
             while(cursor2.moveToNext())
@@ -360,10 +359,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 var writing:Writing = Writing()
 
                 writing.WriteID = cursor3.getInt(0)
-                writing.content = cursor3.getString(1)
-                writing.Title =  cursor3.getString(2)
-                writing.Date =  cursor3.getString(3)
-                writing.Category =  cursor3.getString(4)
+                writing.Title = cursor3.getString(1)
+                writing.Date =  cursor3.getString(2)
+                writing.Category =  cursor3.getString(3)
 
                 wList.add(writing)
             }
@@ -373,5 +371,61 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         db.close()
 
+    }
+
+    //ReadingActivity
+    //글읽기 화면
+    //글의 ID를 받아와 해당하는 글의 Writing 정보와 질문 내용을 받아오기.
+    fun getWriting(writeID: String): Array<Content>
+    {
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        var cursor: Cursor
+        var cursor2: Cursor
+
+        var anyArray = arrayOf<Content>()
+
+
+        //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
+        cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
+
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            //빈 객체 생성
+            var content:Content = Content()
+
+            content.WriteID = cursor.getString(0)
+            content.ContentID = cursor.getInt(1)
+            content.content=  cursor.getString(2)
+            content.Image =  cursor.getBlob(3)
+            if(cursor.getString(4) == null)
+            {
+                content.link = ""
+            }
+
+            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${writeID};", null)
+            while(cursor2.moveToNext())
+            {
+                content.WritingTitle = cursor2.getString(1)
+            }
+
+            //해당 content에 해당되는 질문 값을 받아오기.
+            var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+content.ContentID+"';", null)
+            //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+            while (cursor3.moveToNext()) {
+                //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+                content.Question = cursor3.getString(3)
+            }
+            anyArray+=content
+        }
+
+        Log.d("태그", "${anyArray[0].link}")
+
+        return anyArray
+
+        // 디비 닫기
+        db.close()
     }
 }

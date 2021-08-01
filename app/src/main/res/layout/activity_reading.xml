@@ -89,14 +89,15 @@
                 android:id="@+id/docContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autoLink="web"
                 android:background="@null"
                 android:gravity="top"
-                android:autoLink="web"
                 android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
                 android:textColor="@color/ivory"
                 android:textColorHint="@color/darkGray"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="@id/contentImg"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/contentImg"
                 app:layout_constraintTop_toBottomOf="@id/contentImg" />
 

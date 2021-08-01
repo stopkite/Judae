@@ -58,14 +58,11 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         fun setQList(item: ReadQuestionData) {
 
-            // 질문 아이콘
-            binding.qIcon.setImageDrawable(item.qIcon)
-
             // 질문 제목
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.text = item.qTitle?.text
+                binding.qTitle.text = item.qTitle
             }
 
             // 삽입 이미지
@@ -83,9 +80,6 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding.linkUri.text = item.linkUri
             binding.linkIcon.setImageDrawable(item.linkIcon)
             binding.linkImg.setImageDrawable(item.linkImg)
-
-            // 대답 아이콘
-            binding.aIcon.setImageDrawable(item.aIcon)
 
             // 대답
             binding.aTxt.text = item.aTxt?.text
@@ -121,7 +115,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding2.linkImg.setImageDrawable(item.linkImg)
 
             //본문내용(텍스트)
-            binding2.docContent.text = item.docContent?.text
+            binding2.docContent.text = item.docContent
 
         }
 
