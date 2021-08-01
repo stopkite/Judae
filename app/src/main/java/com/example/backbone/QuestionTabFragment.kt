@@ -40,7 +40,7 @@ class QuestionTabFragment() : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        // HomeCateListData 클래스를 담는 배열 생성
+        // MyQListData 클래스를 담는 배열 생성
         var myDocList = ArrayList<MyQListData>()
         qAdapter = QuestionTabAdapter(myDocList, this)
 

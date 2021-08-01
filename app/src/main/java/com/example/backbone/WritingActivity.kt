@@ -2,17 +2,31 @@ package com.example.backbone
 
 import android.graphics.drawable.Drawable
 import android.os.*
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
+import org.jsoup.Jsoup
+import org.w3c.dom.Text
+import java.io.BufferedInputStream
+import java.io.IOException
+import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
+import java.lang.Exception
+import java.net.URL
+import java.net.URLConnection
 import java.sql.Blob
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -41,9 +55,7 @@ class WritingActivity : AppCompatActivity() {
 
     var Gallery = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityWritingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -138,7 +150,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter()
+        writingAdapter = WriteMultiAdapter(this)
         binding.docList.adapter = writingAdapter
 
 
@@ -179,7 +191,6 @@ class WritingActivity : AppCompatActivity() {
                     clinkUri.text.toString(), clinkIcon.drawable, null
                 )
             )
-
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
@@ -246,8 +257,6 @@ class WritingActivity : AppCompatActivity() {
             Log.d("객체", "${ContentArray}")
             Log.d("객체", "${QuestionArray}")
         }
-
-
     }
 
 }

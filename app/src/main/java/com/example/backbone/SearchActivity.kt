@@ -105,27 +105,6 @@ class SearchActivity : AppCompatActivity() {
                         break
                     }
                 }
-                /*
-                //val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                val tag = fragment.tag
-                lateinit var frag: Fragment
-                //현재 진행중인 프래그먼트의 tag를 받아옴
-                supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                when(tag) {
-                    "Q" -> {
-                        frag = QuestionTabFragment()
-                    }
-                    "W" -> {
-                        frag = TitleTabFragment()
-                    }
-                }
-                //fragment = QuestionTabFragment()
-                val fm = supportFragmentManager
-                val ft = fm.beginTransaction()
-                ft.replace(R.id.frameLayout, frag)
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                ft.commit()
-                 */
 
                 return false
             }
@@ -137,14 +116,7 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(newText)
                     wList = db.searchWriting(newText)
                 }
-                /*
-                                fragment = QuestionTabFragment()
-                val fm = supportFragmentManager
-                val ft = fm.beginTransaction()
-                ft.replace(R.id.frameLayout, fragment)
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                ft.commit()
-                 */
+
                 for(fragment: Fragment in supportFragmentManager.fragments) {
                     if (fragment.isVisible) {
                         val tag = fragment.tag
@@ -166,26 +138,6 @@ class SearchActivity : AppCompatActivity() {
                         break
                     }
                 }
-                /*
-                                val tag = fragment.tag
-                lateinit var frag: Fragment
-                //현재 진행중인 프래그먼트의 tag를 받아옴
-                supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                when(tag) {
-                    "Q" -> {
-                        frag = QuestionTabFragment()
-                    }
-                    "W" -> {
-                        frag = TitleTabFragment()
-                    }
-                }
-                //fragment = QuestionTabFragment()
-                val fm = supportFragmentManager
-                val ft = fm.beginTransaction()
-                ft.replace(R.id.frameLayout, frag)
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                ft.commit()
-                 */
 
                 return false
             }

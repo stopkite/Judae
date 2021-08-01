@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
             binding.cateName.setText(categoryName)
         }
 
-        Array = db.getWriting(categoryName)
+        Array = db.getCateWriting(categoryName)
 
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(Array.size - 1)) {
@@ -180,7 +180,7 @@ class HomeActivity : AppCompatActivity() {
          var Array: Array<Writing>
          //인자로 받아온 선택 되어진 카테고리 이름을 db클래스 함수의 인자로 넘겨줌
          //해당 인자 카테고리와 동일한 카테고리를 가진 글 배열을 받아옴
-         Array = db.getWriting(cate)
+         Array = db.getCateWriting(cate)
 
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
@@ -220,7 +220,7 @@ class HomeActivity : AppCompatActivity() {
 
          //DB에 글 객체를 배열로 받아오기
          var Array: Array<Writing>
-         Array = db.getWriting(binding.cateName.getText().toString())
+         Array = db.getCateWriting(binding.cateName.getText().toString())
 
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
