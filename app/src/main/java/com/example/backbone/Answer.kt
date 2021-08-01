@@ -7,6 +7,7 @@ class Answer {
     var QuestionID: String = ""
     var AnswerID: Int = -1
     var Content: String = ""
+    var Date:String = ""
 
     //이미지
     var Image: ByteArray? = null

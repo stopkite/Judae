@@ -409,9 +409,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             while(cursor2.moveToNext())
             {
                 content.WritingTitle = cursor2.getString(1)
-            }
+                //해당 content에 해당되는 질문 값을 받아오기.
 
-            //해당 content에 해당되는 질문 값을 받아오기.
+            }
             var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+content.ContentID+"';", null)
             //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
             while (cursor3.moveToNext()) {
@@ -419,10 +419,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 content.Question = cursor3.getString(3)
                 content.QuestionID = cursor3.getInt(2)
             }
+
             anyArray+=content
         }
 
-        Log.d("태그", "${anyArray[0].link}")
+
 
         return anyArray
 
@@ -444,7 +445,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
 
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
-        cursor = db.rawQuery("select * from Answer WHERE WriteID = '"+QuestionID+"';", null)
+        cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
 
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
@@ -452,8 +453,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var answer:Answer = Answer()
 
             answer.QuestionID = cursor.getString(0)
-            answer.AnswerID = cursor.getInt(1)
-            answer.Content=  cursor.getString(2)
+            answer.Content = cursor.getString(1)
+            answer.Date=  cursor.getString(2)
             answer.Image =  cursor.getBlob(3)
             if(cursor.getString(4) == null)
             {
@@ -461,7 +462,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             }else{
                 answer.Link =  cursor.getString(4)
             }
-
             anyArray+=answer
         }
 

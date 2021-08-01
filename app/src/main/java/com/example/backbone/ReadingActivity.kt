@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -88,31 +89,35 @@ class ReadingActivity : AppCompatActivity() {
 
         var WritingSize = WritingArray.size
 
-        for(i in 1..WritingSize)
+        //Question에 해당하는 대답 객체 리스트 받아오기
+        var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[0].QuestionID.toString())
+
+        //질문 추가
+        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,null,null,null,null,
+                   null,AnswerArray[0].Content))
+
+
+        for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(contentImg,c_linkLayout,"서울여대","소중대 사이트","www.swu.ac.kr",
-                    resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background),WritingArray[1].content))
+            readingAdapter.addItems(ReadContentData(null,null,null,null,null,
+                    null,null,WritingArray[i].content))
 
             var num:String = WritingArray[i].QuestionID.toString()
             //Question에 해당하는 대답 객체 리스트 받아오기
             var AnswerArray: Array<Answer> = db.getAnswer(num)
+            var AnswerSize = AnswerArray.size
+            if(AnswerSize>0)
+            {
+                for(j in 0..AnswerSize-1)
+                {
+                    //질문 추가
+                    readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,null,null,null,null,
+                            null,AnswerArray[j].Content))
 
-            //질문 추가
-            readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,aImg.drawable,q_linkLayout,"유튜브","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),
-                    resources.getDrawable(R.drawable.ic_launcher_background),aTxt))
-
-
+                }
+            }
         }
-
-
-        //질문 추가
-        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,aImg.drawable,q_linkLayout,"유튜브","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),
-        resources.getDrawable(R.drawable.ic_launcher_background),aTxt))
-
-        // 본문 추가
-        readingAdapter.addItems(ReadContentData(contentImg,c_linkLayout,"서울여대","소중대 사이트","www.swu.ac.kr",
-        resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background),WritingArray[1].content))
 
         binding.docList.adapter = readingAdapter
 

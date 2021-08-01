@@ -81,7 +81,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding.linkIcon.setImageDrawable(item.linkIcon)
 
             // 대답
-            binding.aTxt.text = item.aTxt?.text
+            binding.aTxt.text = item.aTxt
 
         }
 
@@ -98,7 +98,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         fun setContentList(item: ReadContentData) {
             // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
+            binding2.contentImg.setImageDrawable(item.contentImg)
 
             // 링크영역
             if(item.linkLayout == null){
