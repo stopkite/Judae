@@ -17,6 +17,7 @@ import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
 import java.net.URLConnection
+import java.nio.file.Files.size
 
 class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
@@ -146,7 +147,7 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         fun setContentList(item: WriteContentData) {
 
             // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
+            binding2.contentImg.setImageDrawable(item.contentImg)
 
             binding2.clLinkArea.visibility = View.GONE
 
@@ -195,6 +196,8 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             }
 
         }
+
+
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {

@@ -15,7 +15,7 @@ data class WriteQuestionData(var qTitle: EditText?, var aImg: Drawable?,
                              var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
                              var aTxt: EditText?, var addAnswer: ImageButton?): WriteItem
 
-data class WriteContentData(var contentImg: ImageView?,
+data class WriteContentData(var contentImg: Drawable?,
                                 var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
                                 var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
                                 var docContent:EditText?): WriteItem
