@@ -8,9 +8,9 @@ interface ReadItem
 
 data class ReadQuestionData(var qTitle: String, var aImg: Drawable?,
                              var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
-                            var aTxt: TextView?): ReadItem
+                            var aTxt: String): ReadItem
 
-data class ReadContentData(var contentImg: ImageView?,
+data class ReadContentData(var contentImg: Drawable?,
                             var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
                             var docContent: String): ReadItem
 
