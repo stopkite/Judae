@@ -90,9 +90,19 @@ class ReadingActivity : AppCompatActivity() {
 
         for(i in 1..WritingSize)
         {
-            var num:Int = WritingArray[i].QuestionID
+            // 본문 추가
+            readingAdapter.addItems(ReadContentData(contentImg,c_linkLayout,"서울여대","소중대 사이트","www.swu.ac.kr",
+                    resources.getDrawable(R.drawable.ic_launcher_background),resources.getDrawable(R.drawable.ic_launcher_background),WritingArray[1].content))
+
+            var num:String = WritingArray[i].QuestionID.toString()
             //Question에 해당하는 대답 객체 리스트 받아오기
-            var AnswerArray: Array<Answer> = db.getAnswer("1", num)
+            var AnswerArray: Array<Answer> = db.getAnswer(num)
+
+            //질문 추가
+            readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,aImg.drawable,q_linkLayout,"유튜브","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),
+                    resources.getDrawable(R.drawable.ic_launcher_background),aTxt))
+
+
         }
 
 

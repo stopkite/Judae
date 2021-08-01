@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 
 //대답 클래스
 class Answer {
-    var Question: String = ""
+    var QuestionID: String = ""
     var AnswerID: Int = -1
     var Content: String = ""
 
     //이미지
-    var Image: Bitmap? = null
+    var Image: ByteArray? = null
     //링크
     var Link: String = ""
 
@@ -18,10 +18,9 @@ class Answer {
     {
 
     }
-
     constructor(Question:String, AnswerID:Int, Content:String)
     {
-        this.Question = Question
+        this.QuestionID = Question
         this.AnswerID = AnswerID
         this.Content = Content
     }
