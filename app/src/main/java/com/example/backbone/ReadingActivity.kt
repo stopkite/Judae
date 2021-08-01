@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -66,12 +65,10 @@ class ReadingActivity : AppCompatActivity() {
         //여기서는 임의로 하드코드를 박음.
         var WritingArray: Array<Content> = db.getWriting("1")
 
-        //Question에 해당하는 대답 객체 받아오기 -
-
 
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
-        Log.d("태그", "${WritingArray[0].link}")
+
         if(WritingArray[0].link != "")
         {
             //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
@@ -79,7 +76,7 @@ class ReadingActivity : AppCompatActivity() {
             //쓰레드 실행(한번만 실행함.)
             loadLink(WritingArray[0].link)
         }else{
-            //binding.clLinkArea.visibility = View.GONE
+            binding.clLinkArea.visibility = View.GONE
         }
         //사진 띄우기 **** - 나중에 하기.
         if(WritingArray[0].Image != null)
@@ -89,7 +86,15 @@ class ReadingActivity : AppCompatActivity() {
             binding.contentImg.visibility = View.GONE
         }
 
-        Log.d("태그", "${WritingArray[0].link}")
+        var WritingSize = WritingArray.size
+
+        for(i in 1..WritingSize)
+        {
+            var num:Int = WritingArray[i].QuestionID
+            //Question에 해당하는 대답 객체 리스트 받아오기
+            var AnswerArray: Array<Answer> = db.getAnswer("1", num)
+        }
+
 
         //질문 추가
         readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,aImg.drawable,q_linkLayout,"유튜브","www.youtube.com",resources.getDrawable(R.drawable.ic_launcher_background),

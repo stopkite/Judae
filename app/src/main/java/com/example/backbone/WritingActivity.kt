@@ -273,7 +273,7 @@ class WritingActivity : AppCompatActivity() {
                         }
                         isrun=false
                     }
-                    this@WritingActivity.runOnUiThread(java.lang.Runnable {
+                   runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
                         var adapter = WriteMultiAdapter()

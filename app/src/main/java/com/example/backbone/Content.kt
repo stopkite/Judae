@@ -15,6 +15,7 @@ class Content {
     var WritingTitle:String = ""
 
     var Question: String = ""
+    var QuestionID: Int = -1
 
     //기본 생성자
     constructor()
