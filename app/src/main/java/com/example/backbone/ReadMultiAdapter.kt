@@ -82,7 +82,6 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding.linkTitle.text = item.linkTitle
             binding.linkUri.text = item.linkUri
             binding.linkIcon.setImageDrawable(item.linkIcon)
-            binding.linkImg.setImageDrawable(item.linkImg)
 
             // 대답 아이콘
             binding.aIcon.setImageDrawable(item.aIcon)
@@ -118,7 +117,6 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             binding2.linkTitle.text = item.linkTitle
             binding2.linkUri.text = item.linkUri
             binding2.linkIcon.setImageDrawable(item.linkIcon)
-            binding2.linkImg.setImageDrawable(item.linkImg)
 
             //본문내용(텍스트)
             binding2.docContent.text = item.docContent?.text

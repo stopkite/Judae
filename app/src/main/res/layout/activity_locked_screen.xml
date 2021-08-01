@@ -86,12 +86,12 @@
             android:layout_height="wrap_content">
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_1"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/effect_pw_btn"
                 android:text="1"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
@@ -119,8 +119,8 @@
 
         <TableRow
             android:id="@+id/Row_2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/key_4"
@@ -155,8 +155,8 @@
 
         <TableRow
             android:id="@+id/Row_3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/key_7"
@@ -191,8 +191,8 @@
 
         <TableRow
             android:id="@+id/Row_4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/key_reset"
