@@ -138,7 +138,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter()
+        writingAdapter = WriteMultiAdapter(this)
         binding.docList.adapter = writingAdapter
 
 

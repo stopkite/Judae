@@ -202,7 +202,7 @@ class ReadingActivity : AppCompatActivity() {
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                        var adapter = WriteMultiAdapter()
+                        var adapter = ReadMultiAdapter()
                         binding.docList.adapter = adapter
                         binding.linkUri.text = linkUri
                         binding.linkTitle.text = title

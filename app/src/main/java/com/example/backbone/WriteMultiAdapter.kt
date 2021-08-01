@@ -18,7 +18,8 @@ import java.io.BufferedInputStream
 import java.net.URL
 import java.net.URLConnection
 
-class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+private var isrun:Boolean = false
+class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
@@ -140,7 +141,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         var bm1: Bitmap? = null
         var url1: URL? = null
         var content:String = ""
-        private var isrun:Boolean = false
 
 
         fun setContentList(item: WriteContentData) {
@@ -224,7 +224,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                     try{
                         if (linkUri.contains("naver")) {
                             //linkIcon에 파비콘 추출해서 삽입하기
-                            Log.d("태그그", "${linkUri}")
                             val doc = Jsoup.connect("${linkUri}").get()
 
                             //제목 들고 오기
@@ -241,7 +240,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                                 title = doc.title()
                                 content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
-                            Log.d("태그", "중간")
                             url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
                             var conn: URLConnection = url1!!.openConnection()
                             conn.connect()
@@ -250,7 +248,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
-                            Log.d("태그", "")
                             isrun=false
                         } else {
                             val doc = Jsoup.connect("${linkUri}").get()
@@ -296,7 +293,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            Log.d("태그", "${bm1}")
                             if(bm1==null)
                             {
                                 binding2.linkIcon.visibility= View.GONE
@@ -304,19 +300,6 @@ class WriteMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             setLink(linkUri, title, content, bm1!!)
                             isrun=false
                         }
-                        /*
-                                                this.runOnUiThread(java.lang.Runnable {
-                        //어답터 연결하기
-                        //binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                        //var adapter = WriteMultiAdapter()
-                        //binding.docList.adapter = adapter
-                        binding2.linkUri.text = linkUri
-                        binding2.linkTitle.text = title
-                        binding2.linkContent.text = content
-                        binding2.linkIcon.setImageBitmap(bm1)
-                        })
-                         */
-
                     }catch(e:Exception){
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
