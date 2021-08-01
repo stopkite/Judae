@@ -3,6 +3,8 @@ package com.example.backbone
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +16,7 @@ import com.example.backbone.databinding.ReadContentItemBinding
 import com.example.backbone.databinding.ReadQuestionItemBinding
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 import java.net.URL
 import java.net.URLConnection
@@ -84,7 +87,7 @@ class ReadingActivity : AppCompatActivity() {
         {
             //binding.contentImg.setImageBitmap()
         }else{
-            binding.contentImg.visibility = View.GONE
+            //binding.contentImg.visibility = View.GONE
         }
 
         var WritingSize = WritingArray.size
@@ -100,7 +103,7 @@ class ReadingActivity : AppCompatActivity() {
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(null,null,null,null,null,
+            readingAdapter.addItems(ReadContentData(null,null,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
             var num:String = WritingArray[i].QuestionID.toString()
@@ -112,7 +115,7 @@ class ReadingActivity : AppCompatActivity() {
                 for(j in 0..AnswerSize-1)
                 {
                     //질문 추가
-                    readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,null,null,null,null,
+                    readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,null,null,AnswerArray[j].Link,null,
                             null,AnswerArray[j].Content))
 
                 }
@@ -123,8 +126,26 @@ class ReadingActivity : AppCompatActivity() {
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
+        //var ba:ByteArray = db.showImage("","")
+        //init(ba)
 
+        //그림 저장하는 코드
+        //val drawable = getDrawable(R.mipmap.ic_launcher)
+        //val bitmap = bitmapDrawable.bitmap
+        //var byteArray: ByteArray = drawableToByteArray(drawable!!)
+        //val image = Image(byteArray)
+        //db.drawImage("","", image)
+        //그림 읽어오는 코드
+        //val memo = db.showImage("","")
+        //val bitmap = init(memo.image)
+        //binding.contentImg.setImageDrawable(drawable)
     }
+
+    private fun init(ba:ByteArray): Bitmap? {
+        val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba.size)
+        return bitmap
+    }
+
     private fun loadLink(linkUri: String) {
         //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
         linktitle = ""
@@ -220,5 +241,16 @@ class ReadingActivity : AppCompatActivity() {
                 }
             }
         }).start()
+    }
+
+    //이미지를 ByteArray로 만드는 함수
+    private fun drawableToByteArray(drawable: Drawable): ByteArray {
+        val bitmapDrawable = drawable as BitmapDrawable?
+        val bitmap = bitmapDrawable?.bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray = stream.toByteArray()
+
+        return byteArray
     }
 }
