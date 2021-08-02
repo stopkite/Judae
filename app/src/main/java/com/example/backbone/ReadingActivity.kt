@@ -96,14 +96,14 @@ class ReadingActivity : AppCompatActivity() {
         var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[0].QuestionID.toString())
 
         //질문 추가
-        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,null,null,null,null,
+        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,q_linkLayout,null,AnswerArray[0].Link,null,
                    null,AnswerArray[0].Content))
 
 
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(null,null,null,null,WritingArray[i].link,
+            readingAdapter.addItems(ReadContentData(null,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
             var num:String = WritingArray[i].QuestionID.toString()

@@ -399,12 +399,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             content.ContentID = cursor.getInt(1)
             content.content=  cursor.getString(2)
             content.Image =  cursor.getBlob(3)
-            Log.d("태그", "${cursor.getString(4)}")
             if(cursor.getString(4) == null)
             {
                 content.link = ""
             }else{
-                Log.d("태그", "${cursor.getString(4)}")
                 content.link = cursor.getString(4)
             }
 

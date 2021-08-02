@@ -73,15 +73,17 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                 binding.qTitle.text = item.qTitle
             }
 
-            binding.clLinkArea.visibility = View.GONE
             // 삽입 이미지
             binding.aImg.setImageDrawable(item.aImg)
 
-            // 링크영역
-            if(item.linkUri != null)
-            {
-                loadLink(item.linkUri!!)
-                binding.clLinkArea.visibility = item.linkLayout?.visibility!!
+            // 링크
+            if(item.linkUri == ""){
+                //링크 내용이 없으면?
+                binding.clLinkArea.visibility = View.GONE
+            }else{
+                //링크 내용이 있으면?
+                //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
+                    loadLink(item.linkUri.toString())
             }
 
             // 대답
@@ -89,7 +91,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         }
 
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        private fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap?)
         {
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
@@ -99,11 +101,11 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         private fun loadLink(linkUri: String){
             // 링크 삽입 관련 메소드
-            var linkUri: String = ""
             var title: String = ""
             var bm1: Bitmap? = null
             var url1: URL? = null
             var content:String = ""
+            isrun = true
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
@@ -132,10 +134,11 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
                             bis.close()
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri.toString(), title.toString(), content.toString(), bm1)
 
                             isrun=false
                         } else {
+
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon:String
                             var link:String
@@ -183,7 +186,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             {
                                 binding.linkIcon.visibility= View.GONE
                             }
-                            //setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun=false
                         }
                     }catch(e:Exception){
@@ -209,16 +212,13 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         fun setContentList(item: ReadContentData) {
             // 본문 삽입 이미지
             binding2.contentImg.setImageDrawable(item.contentImg)
-            binding2.clLinkArea.visibility = View.GONE
-            Log.d("태그", "링크: ${item.linkUri}")
-            // 링크영역
-            if(item.linkUri != null)
-            {
-                loadLink(item.linkUri!!)
+
+            if(item.linkUri != "") {
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
+                loadLink(item.linkUri.toString())
+            }else{
+                binding2.clLinkArea.visibility = View.GONE
             }
-
-
 
             //본문내용(텍스트)
             binding2.docContent.text = item.docContent
@@ -226,7 +226,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         }
 
 
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap?)
         {
             binding2.linkUri.text = linkUri
             binding2.linkTitle.text = title
@@ -236,11 +236,11 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         private fun loadLink(linkUri: String){
             // 링크 삽입 관련 메소드
-            var linkUri: String = ""
             var title: String = ""
             var bm1: Bitmap? = null
             var url1: URL? = null
             var content:String = ""
+            isrun = true
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
@@ -269,7 +269,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
                             bis.close()
-                            //setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
 
                             isrun=false
                         } else {
@@ -320,7 +320,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                             {
                                 binding2.linkIcon.visibility= View.GONE
                             }
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun=false
                         }
                     }catch(e:Exception){
