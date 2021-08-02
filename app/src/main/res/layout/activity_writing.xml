@@ -20,11 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <ImageButton
                 android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="28dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_cate_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,8 +37,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto_regular"
                 android:text="저장"
+                android:textColor="@color/ivory"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,24 +72,30 @@
                 android:id="@+id/docTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:autoLink="web"
                 android:background="@null"
+                android:fontFamily="@font/songmyung_regular"
                 android:gravity="top"
                 android:hint="Enter Your title here"
                 android:textColor="@color/ivory"
                 android:textColorHint="@color/darkGray"
-                android:textSize="45sp"
+                android:textSize="30sp"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
-                app:layout_constraintStart_toStartOf="@id/cl_inScroll"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cl_inScroll" />
 
             <ImageView
                 android:id="@+id/contentImg"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="fitXY"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_launcher_background"
+                android:adjustViewBounds="true"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
@@ -90,23 +105,28 @@
                 android:id="@+id/docContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
                 android:autoLink="web"
                 android:background="@null"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="top"
                 android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
                 android:textColor="@color/ivory"
                 android:textColorHint="@color/darkGray"
-                android:textSize="25sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/docTitle"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/contentImg" />
 
             <EditText
                 android:id="@+id/linkInsertTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="링크를 입력하세요."
+                android:layout_marginStart="20dp"
                 android:autoLink="web"
+                android:hint="링크를 입력하세요."
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
@@ -122,11 +142,10 @@
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_linkArea"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="81dp"
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="@id/docTitle"
                 app:layout_constraintStart_toStartOf="@id/docTitle"
@@ -134,13 +153,17 @@
 
                 <TextView
                     android:id="@+id/linkTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="서울여자대학교"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:singleLine="true"
+                    android:text="서울여자대학교서울여자대학교서울여자대학교서울여자대학교서울여자대학교서울여자대학교"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/cl_linkArea"
                     app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
 
@@ -148,19 +171,26 @@
                     android:id="@+id/linkContent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="2"
+                    android:text="서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행서울여자대학교 구성원의 빅데이터 및 AI활용 역량 강화를 지원히기 위한 PPP사업 진행"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toStartOf="@id/linkImg"
+                    android:textSize="9sp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/linkTitle"
                     app:layout_constraintTop_toBottomOf="@id/linkTitle" />
 
 
                 <ImageView
                     android:id="@+id/linkIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_launcher_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/linkUri"
                     app:layout_constraintStart_toStartOf="@id/linkContent"
                     app:layout_constraintTop_toBottomOf="@id/linkContent" />
 
@@ -168,24 +198,20 @@
                     android:id="@+id/linkUri"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqw"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toStartOf="@id/linkImg"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:singleLine="true"
+                    android:text="http://wwww.youtube.com/watch?v=MDeuDrlBKqwhttp://wwww.youtube.com/watch?v=MDeuDrlBKqw"
+                    android:textSize="9sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/linkIcon"
                     app:layout_constraintTop_toBottomOf="@id/linkContent" />
 
-                <ImageView
-                    android:id="@+id/linkImg"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_constraintEnd_toEndOf="@id/cl_linkArea"
-                    app:layout_constraintStart_toEndOf="@id/linkContent"
-                    app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/docList"

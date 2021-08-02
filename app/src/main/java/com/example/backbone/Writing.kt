@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.View
 
@@ -11,6 +12,10 @@ class Writing {
     var Date: String=""
     var Category:String=""
     var Question:Int = 0
+    var Image: Bitmap? = null
+
+    //링크
+    var Link: String = ""
 
     //기본 생성자 - 단일한 데이터만 필요할 때 사용할 예정
     constructor()

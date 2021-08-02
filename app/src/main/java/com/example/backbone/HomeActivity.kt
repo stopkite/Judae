@@ -6,7 +6,9 @@ import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityHomeBinding
 
  //홈 화면 액티비티
@@ -53,13 +55,13 @@ class HomeActivity : AppCompatActivity() {
             binding.cateName.setText(categoryName)
         }
 
-        Array = db.getWriting(categoryName)
+        Array = db.getCateWriting(categoryName)
 
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(Array.size - 1)) {
             myDocList.add(
-                    HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                            "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                    HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                            "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
             )
         }
 
@@ -69,12 +71,19 @@ class HomeActivity : AppCompatActivity() {
         // 만든 어댑터 recyclerview에 연결
         docList.adapter = homeDocListAdapter
 
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        binding.root.findViewById<RecyclerView>(R.id.docList).addItemDecoration(dividerItemDecoration)
+
         // 리사이클러 뷰 타입 설정
         docList.layoutManager = LinearLayoutManager(this)
 
 
         // 카테고리 설정 창 뜨게 하는 버튼 리스너
-        binding.cateName.setOnClickListener {
+        binding.clDropCate.setOnClickListener {
             //changeFragment(BottomFragmentList())
             loadCategory(db)
         }
@@ -102,6 +111,14 @@ class HomeActivity : AppCompatActivity() {
 
         // 어댑터 연결
         binding.navigationRv.adapter = naviAdapter
+
+        // 아이템 구분선 색상 설정
+        val dividerItemDecoration2 = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
+        dividerItemDecoration2.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
+
+        // 아이템 구분선 삽입
+        binding.root.findViewById<RecyclerView>(R.id.navigation_rv).addItemDecoration(dividerItemDecoration)
+
         binding.navigationRv.layoutManager = LinearLayoutManager(this)
         binding.navigationRv.setHasFixedSize(true)
 
@@ -131,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         //글쓰기 화면으로 이동하는 버튼 리스너
-        binding.writeBtn.setOnClickListener {
+        binding.clHomeWriteBtn.setOnClickListener {
             // 글쓰기 화면으로 이동
             val writeIntent = Intent(this@HomeActivity, WritingActivity::class.java)
             startActivity(writeIntent)
@@ -163,13 +180,13 @@ class HomeActivity : AppCompatActivity() {
          var Array: Array<Writing>
          //인자로 받아온 선택 되어진 카테고리 이름을 db클래스 함수의 인자로 넘겨줌
          //해당 인자 카테고리와 동일한 카테고리를 가진 글 배열을 받아옴
-         Array = db.getWriting(cate)
+         Array = db.getCateWriting(cate)
 
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
 
@@ -203,13 +220,13 @@ class HomeActivity : AppCompatActivity() {
 
          //DB에 글 객체를 배열로 받아오기
          var Array: Array<Writing>
-         Array = db.getWriting(binding.cateName.getText().toString())
+         Array = db.getCateWriting(binding.cateName.getText().toString())
 
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData(resources.getColor(R.color.purple_200, null), "${Array[i].Title}", "${Array[i].Category}",
-                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_launcher_background, null), "${Array[i].Question}")
+                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
 

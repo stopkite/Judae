@@ -1,12 +1,20 @@
 package com.example.backbone
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
+import org.jsoup.Jsoup
+import java.io.BufferedInputStream
+import java.net.URL
+import java.net.URLConnection
 
+private var isrun:Boolean = false
 class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding: ReadQuestionItemBinding
     private lateinit var binding2: ReadContentItemBinding
@@ -58,38 +66,133 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         fun setQList(item: ReadQuestionData) {
 
-            // 질문 아이콘
-            binding.qIcon.setImageDrawable(item.qIcon)
-
             // 질문 제목
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.text = item.qTitle?.text
+                binding.qTitle.text = item.qTitle
             }
 
+            binding.clLinkArea.visibility = View.GONE
             // 삽입 이미지
             binding.aImg.setImageDrawable(item.aImg)
 
-            // 링크
-            if(item.linkLayout == null){
-                binding.clLinkArea.visibility = View.GONE
-            }else{
+            // 링크영역
+            if(item.linkUri != null)
+            {
+                loadLink(item.linkUri!!)
                 binding.clLinkArea.visibility = item.linkLayout?.visibility!!
             }
 
-            // 링크된 요소들
-            binding.linkTitle.text = item.linkTitle
-            binding.linkUri.text = item.linkUri
-            binding.linkIcon.setImageDrawable(item.linkIcon)
-            binding.linkImg.setImageDrawable(item.linkImg)
-
-            // 대답 아이콘
-            binding.aIcon.setImageDrawable(item.aIcon)
-
             // 대답
-            binding.aTxt.text = item.aTxt?.text
+            binding.aTxt.text = item.aTxt
 
+        }
+
+        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        {
+            binding.linkUri.text = linkUri
+            binding.linkTitle.text = title
+            binding.linkContent.text = content
+            binding.linkIcon.setImageBitmap(bm1)
+        }
+
+        private fun loadLink(linkUri: String){
+            // 링크 삽입 관련 메소드
+            var linkUri: String = ""
+            var title: String = ""
+            var bm1: Bitmap? = null
+            var url1: URL? = null
+            var content:String = ""
+            Thread(Runnable {
+                while(isrun)
+                {//네이버의 경우에만 해당되는 것 같아.
+                    try{
+                        if (linkUri.contains("naver")) {
+                            //linkIcon에 파비콘 추출해서 삽입하기
+                            val doc = Jsoup.connect("${linkUri}").get()
+
+                            //제목 들고 오기
+                            val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
+                            if(linkUri.contains("blog"))
+                            {
+                                val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
+                                title = doc2.title()
+                                content = doc2.select("meta[property=\"og:description\"]").attr("content")
+                            }else if(linkUri == "https://www.naver.com/"){
+                                title = doc.title()
+                                content = doc.select("meta[name=\"og:description\"]").attr("content")
+                            }else{
+                                title = doc.title()
+                                content = doc.select("meta[property=\"og:description\"]").attr("content")
+                            }
+                            url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
+                            var conn: URLConnection = url1!!.openConnection()
+                            conn.connect()
+                            var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                            bm1 = BitmapFactory.decodeStream(bis)
+                            bis.close()
+                            setLink(linkUri, title, content, bm1!!)
+
+                            isrun=false
+                        } else {
+                            val doc = Jsoup.connect("${linkUri}").get()
+                            var favicon:String
+                            var link:String
+                            if(linkUri.contains("google"))
+                            {
+                                favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
+                                link = "https://www.google.com"+favicon
+                                url1 = URL("${link}")
+                            }else{
+                                //파비콘 이미지 들고 오기
+                                favicon = doc.select("link[rel=\"icon\"]").attr("href")
+                                if(favicon=="")
+                                {
+                                    favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
+                                }
+                                if (!favicon.contains("https:")) {
+                                    link = "https://"+favicon
+                                    url1 = URL("${link}")
+                                }else{
+                                    url1 = URL("${favicon}")
+                                }
+                            }
+
+                            try{
+                                var conn: URLConnection = url1!!.openConnection()
+                                conn.connect()
+                                var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                                bm1 = BitmapFactory.decodeStream(bis)
+                                bis.close()
+                            }catch (e:Exception)
+                            {
+                            }
+                            title = doc.title()
+
+                            content = doc.select("meta[name=\"description\"]").attr("content")
+                            if(content == "")
+                            {
+                                content = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if(title == "")
+                            {
+                                title = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if(bm1==null)
+                            {
+                                binding.linkIcon.visibility= View.GONE
+                            }
+                            //setLink(linkUri, title, content, bm1!!)
+                            isrun=false
+                        }
+                    }catch(e:Exception){
+                        //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
+
+                    }
+                }
+
+            }).start()
         }
 
         companion object Factory {
@@ -105,24 +208,128 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
         fun setContentList(item: ReadContentData) {
             // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
-
+            binding2.contentImg.setImageDrawable(item.contentImg)
+            binding2.clLinkArea.visibility = View.GONE
+            Log.d("태그", "링크: ${item.linkUri}")
             // 링크영역
-            if(item.linkLayout == null){
-                binding2.clLinkArea.visibility = View.GONE
-            }else{
+            if(item.linkUri != null)
+            {
+                loadLink(item.linkUri!!)
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
             }
 
-            // 링크된 요소들
-            binding2.linkTitle.text = item.linkTitle
-            binding2.linkUri.text = item.linkUri
-            binding2.linkIcon.setImageDrawable(item.linkIcon)
-            binding2.linkImg.setImageDrawable(item.linkImg)
+
 
             //본문내용(텍스트)
-            binding2.docContent.text = item.docContent?.text
+            binding2.docContent.text = item.docContent
 
+        }
+
+
+        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        {
+            binding2.linkUri.text = linkUri
+            binding2.linkTitle.text = title
+            binding2.linkContent.text = content
+            binding2.linkIcon.setImageBitmap(bm1)
+        }
+
+        private fun loadLink(linkUri: String){
+            // 링크 삽입 관련 메소드
+            var linkUri: String = ""
+            var title: String = ""
+            var bm1: Bitmap? = null
+            var url1: URL? = null
+            var content:String = ""
+            Thread(Runnable {
+                while(isrun)
+                {//네이버의 경우에만 해당되는 것 같아.
+                    try{
+                        if (linkUri.contains("naver")) {
+                            //linkIcon에 파비콘 추출해서 삽입하기
+                            val doc = Jsoup.connect("${linkUri}").get()
+
+                            //제목 들고 오기
+                            val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
+                            if(linkUri.contains("blog"))
+                            {
+                                val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
+                                title = doc2.title()
+                                content = doc2.select("meta[property=\"og:description\"]").attr("content")
+                            }else if(linkUri == "https://www.naver.com/"){
+                                title = doc.title()
+                                content = doc.select("meta[name=\"og:description\"]").attr("content")
+                            }else{
+                                title = doc.title()
+                                content = doc.select("meta[property=\"og:description\"]").attr("content")
+                            }
+                            url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
+                            var conn: URLConnection = url1!!.openConnection()
+                            conn.connect()
+                            var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                            bm1 = BitmapFactory.decodeStream(bis)
+                            bis.close()
+                            //setLink(linkUri, title, content, bm1!!)
+
+                            isrun=false
+                        } else {
+                            val doc = Jsoup.connect("${linkUri}").get()
+                            var favicon:String
+                            var link:String
+                            if(linkUri.contains("google"))
+                            {
+                                favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
+                                link = "https://www.google.com"+favicon
+                                url1 = URL("${link}")
+                            }else{
+                                //파비콘 이미지 들고 오기
+                                favicon = doc.select("link[rel=\"icon\"]").attr("href")
+                                if(favicon=="")
+                                {
+                                    favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
+                                }
+                                if (!favicon.contains("https:")) {
+                                    link = "https://"+favicon
+                                    url1 = URL("${link}")
+                                }else{
+                                    url1 = URL("${favicon}")
+                                }
+                            }
+
+                            try{
+                                var conn: URLConnection = url1!!.openConnection()
+                                conn.connect()
+                                var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                                bm1 = BitmapFactory.decodeStream(bis)
+                                bis.close()
+                            }catch (e:Exception)
+                            {
+                            }
+                            title = doc.title()
+
+                            content = doc.select("meta[name=\"description\"]").attr("content")
+                            if(content == "")
+                            {
+                                content = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if(title == "")
+                            {
+                                title = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if(bm1==null)
+                            {
+                                binding2.linkIcon.visibility= View.GONE
+                            }
+                            setLink(linkUri, title, content, bm1!!)
+                            isrun=false
+                        }
+                    }catch(e:Exception){
+                        //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
+
+                    }
+                }
+
+            }).start()
         }
 
         companion object Factory {

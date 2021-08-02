@@ -7,12 +7,14 @@
     android:background="@color/darkBlue"
     tools:context=".MyQuestionActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/myQ_backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,10 +22,11 @@
         android:id="@+id/myQ_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/songmyung_regular"
         android:text="My Qusetions"
         android:textColor="@color/ivory"
-        android:textSize="35sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@id/myQ_backBtn"
         app:layout_constraintTop_toBottomOf="@id/myQ_backBtn" />
 

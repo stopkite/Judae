@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
@@ -30,7 +31,15 @@ class NavigationAdapter(private var myNaviList: ArrayList<NavigationItemModel>) 
     override fun onBindViewHolder(holder: NavigationItemViewHolder, position: Int) {
        val naviListData = myNaviList.get(position)
         holder.setMenuList(naviListData)
+
+        // 아이템 간 간격 설정
+        val layoutParams = holder.itemView.layoutParams
+        layoutParams.height = 55.toPx()
+        holder.itemView.requestLayout()
     }
+
+    // px을 dp 단위로 바꿔주는 코드 (layoutParamas가 px로만 값을 받기 때문에 바꿔줘야 한다.)
+    fun Int.toPx():Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 }
 

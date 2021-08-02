@@ -2,32 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppBottomSheetDialogTheme"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/darkBlue"
+    android:layout_height="447dp"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_addCate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/ic_bg_cate_popup"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/cate_backBtn"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="22dp"
             android:layout_weight="1"
-            android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_cate_cancel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/cate_AddBtn"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="22dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_cate_ok"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -35,18 +42,22 @@
 
         <EditText
             android:id="@+id/edit_txt"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="311dp"
+            android:layout_marginTop="22dp"
+            android:background="@null"
             android:ems="10"
             android:gravity="start"
-            android:textSize="30sp"
-            android:textColor="@color/white"
             android:hint="카테고리 이름"
             android:inputType="textPersonName"
             android:textAlignment="textStart"
-            android:textColorHint="#B1A5A5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cate_AddBtn"/>
+            android:textColor="@color/white"
+            android:textColorHint="#99ECECEC"
+            android:textSize="36sp"
+            android:fontFamily="@font/roboto_regular"
+            app:layout_constraintEnd_toEndOf="@+id/cate_AddBtn"
+            app:layout_constraintStart_toStartOf="@+id/cate_backBtn"
+            app:layout_constraintTop_toBottomOf="@+id/cate_backBtn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

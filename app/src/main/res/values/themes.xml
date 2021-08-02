@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Backbone" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/greenMain</item>
+        <item name="colorPrimaryVariant">#E6212121</item>
+        <item name="colorOnPrimary">@color/greenMain</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -18,6 +18,7 @@
         <!-- 탭 레이아웃 custim -->
         <item name="tabStyle">@style/Widget.App.TabLayout</item>
         <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="Theme.MyDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -28,6 +29,16 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!-- 카테고리 팝업 bottom sheet 커스튬 -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_cate_popup</item>
     </style>
 
     <!-- 다이얼로그 배경 커스튬 -->
