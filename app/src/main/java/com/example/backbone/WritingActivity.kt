@@ -213,7 +213,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         // 저장 버튼 클릭 리스너
-        binding.editBtn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
 
         }

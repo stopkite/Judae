@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
+import android.media.Image
 import android.util.Log
 
 //sql문으로 DB 연결시켜주는 클래스
@@ -480,33 +481,33 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //이미지를 올리는 DB
     //table: 어떤 테이블에 저자할 것인지? content, answer 중?
     //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
-    fun drawImage(table: String, id: String, image:Image)
-    {
-        val values = ContentValues()
-        values.put("image", image.image)
-        //실험 중
-        var db = this.writableDatabase
-        db.insert("Image", null, values)
-        //var p: SQLiteStatement = db.compileStatement("INSERT INTO Image VALUES (?);")
-        //p.bindBlob(1, image)
-        db.close()
-    }
-
-    //ReadingActivity
-    //이미지를 받아오는 DB
-    fun showImage(table: String, id: String):Image
-    {
-        //실험 중
-        var db = this.readableDatabase
-        var cursor = db.rawQuery("select*from Image;", null)
-
-        cursor.moveToFirst()
-        var image:ByteArray = cursor.getBlob(0)
-
-
-        var Memo = Image(image)
-        db.close()
-        return Memo
-    }
+//    fun drawImage(table: String, id: String, image: Image)
+//    {
+//        val values = ContentValues()
+//        //values.put("image", image.image)
+//        //실험 중
+//        var db = this.writableDatabase
+//        db.insert("Image", null, values)
+//        //var p: SQLiteStatement = db.compileStatement("INSERT INTO Image VALUES (?);")
+//        //p.bindBlob(1, image)
+//        db.close()
+//    }
+//
+//    //ReadingActivity
+//    //이미지를 받아오는 DB
+//    fun showImage(table: String, id: String):Image
+//    {
+//        //실험 중
+//        var db = this.readableDatabase
+//        var cursor = db.rawQuery("select*from Image;", null)
+//
+//        cursor.moveToFirst()
+//        var image:ByteArray = cursor.getBlob(0)
+//
+//
+//        var Memo = Image(image)
+//        db.close()
+//        return Memo
+//    }
 
 }
