@@ -47,7 +47,7 @@ class TitleTabFragment : Fragment() {
 
         // HomeCateListData 클래스를 담는 배열 생성
         var myDocList = ArrayList<SearchDocListData>()
-        wAdapter = TitleTabAdapter(myDocList, this)
+        wAdapter = TitleTabAdapter(myDocList, this, getActivity() as SearchActivity)
     }
 
     override fun onCreateView(
@@ -85,7 +85,7 @@ class TitleTabFragment : Fragment() {
             )
         }
         // 어댑터 변수 초기화
-        wAdapter = TitleTabAdapter(myDocList, this)
+        wAdapter = TitleTabAdapter(myDocList, this,  getActivity() as SearchActivity)
 
         // 리사이클러 뷰 타입 설정
         recyclerView.layoutManager = LinearLayoutManager(context)

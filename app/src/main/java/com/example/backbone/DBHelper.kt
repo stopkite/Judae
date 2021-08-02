@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.database.sqlite.SQLiteStatement
 import android.util.Log
 
 //sql문으로 DB 연결시켜주는 클래스
@@ -414,13 +413,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 //해당 content에 해당되는 질문 값을 받아오기.
 
             }
-            var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+content.ContentID+"';", null)
-            //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
-            while (cursor3.moveToNext()) {
-                //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
-                content.Question = cursor3.getString(3)
-                content.QuestionID = cursor3.getInt(2)
-            }
 
             anyArray+=content
         }
@@ -436,8 +428,14 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //ReadingActivity
     //글읽기 화면
     //Content에 속한 QuestionID를 각각 받아와서 해당하는 Answer를 찾아 객체를 만들어 보내기.
-    fun getAnswer(QuestionID: String): Array<Answer>
+    fun getAnswer(writeID: String, contentID: String): Array<Answer>
     {
+        var Question:String
+        var QuestionID: String
+        var Content: String = ""
+        var Date: String
+        var Image: ByteArray
+        var Link: String
         //db읽어올 준비
         var db = this.readableDatabase
 
@@ -445,29 +443,33 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var anyArray = arrayOf<Answer>()
 
-
-        //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
-        cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
-
+        var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+contentID+"';", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
-        while (cursor.moveToNext()) {
-            //빈 객체 생성
-            var answer:Answer = Answer()
+        while (cursor3.moveToNext()) {
+            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+            Question =  cursor3.getString(3).toString()
+            QuestionID = cursor3.getInt(2).toString()
+            Log.d("태그", "Question: ${Question}")
+            //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
+            cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
 
-            answer.QuestionID = cursor.getString(0)
-            answer.Content = cursor.getString(1)
-            answer.Date=  cursor.getString(2)
-            answer.Image =  cursor.getBlob(3)
-            if(cursor.getString(4) == null)
-            {
-                answer.Link = ""
-            }else{
-                answer.Link =  cursor.getString(4)
+            //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+            while (cursor.moveToNext()) {
+                Content = cursor.getString(1)
+                Date=  cursor.getString(2)
+                //Image =  cursor.getBlob(3)
+                Link = ""
+                if(cursor.getString(4) != null)
+                {
+                    Link =  cursor.getString(4)
+                }
+                anyArray+=Answer(Question, QuestionID, Content, Date, Link)
             }
-            anyArray+=answer
+            if(Content == "")
+            {
+                anyArray+=Answer(Question, Question, "", "", "")
+            }
         }
-
-
         return anyArray
 
         // 디비 닫기

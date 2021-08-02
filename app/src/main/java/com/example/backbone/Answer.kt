@@ -1,9 +1,8 @@
 package com.example.backbone
 
-import android.graphics.Bitmap
-
 //대답 클래스
 class Answer {
+    var Question:String = ""
     var QuestionID: String = ""
     var AnswerID: Int = -1
     var Content: String = ""
@@ -18,6 +17,16 @@ class Answer {
     constructor()
     {
 
+    }
+    constructor(Question:String, QuestionID:String, Content:String, Date: String, Link: String)
+    {
+        this.Question = Question
+        this.QuestionID = QuestionID
+        this.AnswerID = AnswerID
+        this.Date = Date
+        this.Image = Image
+        this.Link = Link
+        this.Content = Content
     }
     constructor(Question:String, AnswerID:Int, Content:String)
     {

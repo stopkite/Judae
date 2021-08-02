@@ -1,5 +1,7 @@
 package com.example.backbone
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.backbone.databinding.SearchWriteItemBinding
 
-class TitleTabAdapter(var myDocList:ArrayList<SearchDocListData>, val fragment_s: Fragment): RecyclerView.Adapter<DocHolder>()
+class TitleTabAdapter(var myDocList:ArrayList<SearchDocListData>, val fragment_s: Fragment, var context: Context): RecyclerView.Adapter<DocHolder>()
 {
-
+    var contxt:Context = context
     lateinit var fragment: Fragment
     lateinit var binding: SearchWriteItemBinding
 
@@ -34,15 +36,12 @@ class TitleTabAdapter(var myDocList:ArrayList<SearchDocListData>, val fragment_s
         layoutParams.height = 47.toPx()
         holder.itemView.requestLayout()
 
-        /*
-                //카테고리 내용을 누르면 홈 액티비티에서 해당 카테고리를 가지고 있는 글 목록 불러오기
-        holder.binding.homeCateName.setOnClickListener{
-            //onClick_interface 통해서 BottomFragmentList.kt에서 바로 함수 정의할 수 있도록 선언
-            //해당 함수에 대한 설명은 BottomFragmentList.kt에서 LoadWriting 함수에 있음
-            onClick_interface.LoadWriting(cateList.cateName)
+        holder.itemView.setOnClickListener {
+            Intent(contxt, ReadingActivity::class.java).apply {
+                putExtra("data", myDocList[position].WriteID.toString())
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }.run { context.startActivity(this) }
         }
-         */
-
     }
 
     // 목록에 보여줄 아이템의 개수

@@ -65,9 +65,8 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     class MyQHolder(val binding: ReadQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun setQList(item: ReadQuestionData) {
-
             // 질문 제목
-            if(item.qTitle == null||item.qTitle == ""){
+            if(item.qTitle == ""){
                 binding.qTitle.visibility = View.GONE
             }else{
                 binding.qTitle.text = item.qTitle
@@ -220,7 +219,6 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             //본문내용(텍스트)
             binding2.docContent.text = item.docContent
 
-            Log.d("태그", "${item.contentImg}")
             //사진 띄우기 **** - 나중에 하기.
             if(item.contentImg != null)
             {
