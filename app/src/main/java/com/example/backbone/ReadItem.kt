@@ -8,7 +8,7 @@ interface ReadItem
 data class ReadQuestionData(
         var qTitle: String?, var aImg: ByteArray?,
         var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
-        var aTxt: String?): ReadItem
+        var aTxt: String?, var Date:String?): ReadItem
 
 data class ReadContentData(var contentImg: ByteArray?,
                             var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,

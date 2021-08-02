@@ -98,14 +98,40 @@ class ReadingActivity : AppCompatActivity() {
             //Question에 해당하는 대답 객체 리스트 받아오기
             var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
             var AnswerSize = AnswerArray.size
-
-            if(AnswerSize>0)
+            var LastSize = AnswerSize-1
+            if(AnswerSize==1)
             {
                 Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
-                //답변수가 1개 이상이면?
-                //답변의 갯수 만큼 반복문 - 첫번째
+                //답변이 한 개일 경우.
                 readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                        null,AnswerArray[0].Content, AnswerArray[0].Date))
+            } else if(AnswerSize>1)
+            {
+                //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
+                Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
+                //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
+                //답변의 갯수 만큼 반복문 - 첫번째
+                //
+                for(j in 0..AnswerSize-2)
+                {
+                    if(j==0)
+                    {
+                        readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                null,AnswerArray[j].Content, AnswerArray[j].Date))
+
+                    }else{
+                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                null,AnswerArray[j].Content, AnswerArray[j].Date))
+                    }
+                }
+                //마지막 내용!
+                readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                        null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date))
+
+                /*
+                                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
                         null,AnswerArray[0].Content))
+
                 for(j in 1..AnswerSize-1)
                 {
 
@@ -113,6 +139,8 @@ class ReadingActivity : AppCompatActivity() {
                     readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
                             null,AnswerArray[j].Content))
                 }
+                 */
+
             }
         }
 
@@ -138,11 +166,11 @@ class ReadingActivity : AppCompatActivity() {
                     //답변수가 1개 이상이면?
                     //답변의 갯수 만큼 반복문 - 첫번째
                     readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                            null,AnswerArray[0].Content))
+                            null,AnswerArray[0].Content, AnswerArray[0].Date))
                     for(j in 1..AnswerSize-1)
                     {
                         readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content))
+                                null,AnswerArray[j].Content, AnswerArray[j].Date))
                     }
                 }
             }
