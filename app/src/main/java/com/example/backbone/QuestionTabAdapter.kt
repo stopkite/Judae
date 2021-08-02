@@ -23,7 +23,7 @@ class QuestionTabAdapter(var myQList:ArrayList<MyQListData>, val fragment_s: Fra
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QHolder {
         val binding = MyQuestionItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         this.fragment = fragment_s
-        return QHolder(binding)
+        return QHolder(binding, context)
     }
 
     override fun onBindViewHolder(holder: QHolder, position: Int) {

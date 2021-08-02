@@ -59,14 +59,13 @@ class ReadingActivity : AppCompatActivity() {
         var c_linkLayout = binding3.clLinkArea
         var docContent = binding3.docContent
 
-        readingAdapter = ReadMultiAdapter()
+        readingAdapter = ReadMultiAdapter(this)
 
         //인텐트 값으로 해당 글의 WriteID를 받아오기
         var WriteID:String  = intent.getStringExtra("data").toString()
 
         //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
         var WritingArray: Array<Content> = db.getWriting("${WriteID}")
-
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
 
@@ -300,7 +299,7 @@ class ReadingActivity : AppCompatActivity() {
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                        var adapter = ReadMultiAdapter()
+                        var adapter = ReadMultiAdapter(this)
                         binding.docList.adapter = adapter
                         binding.linkUri.text = linkUri
                         binding.linkTitle.text = title

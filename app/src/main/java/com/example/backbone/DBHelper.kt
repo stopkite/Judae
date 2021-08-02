@@ -381,10 +381,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var db = this.readableDatabase
 
         var cursor: Cursor
-        var cursor2: Cursor
-
         var anyArray = arrayOf<Content>()
-
 
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
         cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
@@ -413,12 +410,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 //해당 content에 해당되는 질문 값을 받아오기.
 
             }
-
             anyArray+=content
         }
-
-
-
         return anyArray
 
         // 디비 닫기
@@ -528,6 +521,4 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         return Memo
     }
      */
-
-
 }

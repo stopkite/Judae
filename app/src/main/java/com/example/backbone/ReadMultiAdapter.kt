@@ -1,7 +1,10 @@
 package com.example.backbone
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.*
 import android.icu.lang.UCharacter.IndicPositionalCategory.RIGHT
+import android.net.Uri
 import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
@@ -22,10 +26,10 @@ import java.net.URLConnection
 
 
 private var isrun:Boolean = false
-class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding: ReadQuestionItemBinding
     private lateinit var binding2: ReadContentItemBinding
-
+    var context = context
     private val items = mutableListOf<ReadItem>()
 
     companion object {
@@ -60,7 +64,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MyQHolder -> {
-                holder.setQList(items[position] as ReadQuestionData)
+                holder.setQList(items[position] as ReadQuestionData, context)
             }
             is MyContentHolder -> {
                 holder.setContentList(items[position] as ReadContentData)
@@ -71,7 +75,7 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     // 질문 Holder
     class MyQHolder(val binding: ReadQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setQList(item: ReadQuestionData) {
+        fun setQList(item: ReadQuestionData, context: Context) {
             Log.d("태그", "들어왔냐. ${item.qTitle}")
 
             // 질문 제목
@@ -102,26 +106,40 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                     loadLink(item.linkUri.toString())
             }
 
-            // 대답
-            if(item.ColorChanged == true)
+            Log.d("태그", "답변 내용: ${item.aTxt}")
+            // 대답 내용 삽입
+            if(item.aTxt != ""&&item.aTxt!=null)
             {
-                binding.aTxt.setTextColor(Color.GRAY)
+                // 대답 상태에 따라 색 바꿔줌.
+                if(item.ColorChanged == true)
+                {
+                    var date: String? = item.Date
+                    var text:String = item.aTxt + "\n${date}"
+                    var start = text.indexOf(date!!)
+                    var end = start + date!!.length
+                    val spannableString = SpannableString(text)
+                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY),0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.aTxt.setText(spannableString)
+                }else{
+                    var date: String? = item.Date
+                    var text:String = item.aTxt + "\n${date}"
+                    var start = text.indexOf(date!!)
+                    var end = start + date!!.length
+                    val spannableString = SpannableString(text)
+                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY),start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.aTxt.setText(spannableString)
+                }
             }
+            binding.clLinkArea.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
 
-            if(item.aTxt != ""||item.aTxt != null)
-            {
-                var date: String? = item.Date
-                var text:String = item.aTxt + "\n${date}"
-                Log.d("태그", "${text}")
-                var start = text.indexOf(date!!)
-                var end = start + date!!.length
-                val spannableString = SpannableString(text)
-                spannableString.setSpan(ForegroundColorSpan(Color.LTGRAY),start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
-                binding.aTxt.setText(spannableString)
+                binding.root.context.startActivity(intent)
+
             }
-
         }
 
         private fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
