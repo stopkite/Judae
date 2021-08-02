@@ -22,11 +22,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="20dp"
             android:text="편집 화면에서 나가시겠습니까?"
             android:textColor="@color/ivory"
-            android:textSize="20sp"
+            android:textSize="18sp"
+            android:fontFamily="@font/roboto_regular"
             app:layout_constraintEnd_toEndOf="@id/cl_writing"
             app:layout_constraintStart_toStartOf="@id/cl_writing"
             app:layout_constraintTop_toTopOf="@id/cl_writing" />
@@ -36,43 +37,46 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:text="변경화면은 사라집니다."
-            android:textColor="#ECECEC"
-            android:textSize="15sp"
+            android:textColor="#CCECECEC"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
             app:layout_constraintBottom_toTopOf="@id/cancelBtn"
             app:layout_constraintEnd_toEndOf="@id/cl_writing"
             app:layout_constraintStart_toStartOf="@id/cl_writing"
             app:layout_constraintTop_toBottomOf="@id/cancelTitle" />
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="10dp"
             android:text="취소"
+            android:textSize="15sp"
+            android:background="@drawable/ic_bg_pop_cancel"
             android:textColor="@color/greenMain"
             app:layout_constraintEnd_toStartOf="@id/confirmBtn"
             app:layout_constraintStart_toStartOf="@+id/cancelContent"
             app:layout_constraintTop_toBottomOf="@id/cancelContent" />
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/confirmBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
             android:text="확인"
+            android:textSize="15sp"
+            android:textColor="@color/ivory"
+            android:background="@drawable/ic_bg_pop_ok"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cancelTitle"
             app:layout_constraintStart_toEndOf="@id/cancelBtn"
             app:layout_constraintTop_toBottomOf="@id/cancelContent" />
-
-
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
