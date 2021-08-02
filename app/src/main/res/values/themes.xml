@@ -59,6 +59,7 @@
     <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.TabLayout</item>
         <item name="tabTextAppearance">@style/TextAppearance.App.Button</item>
+        <item name="android:textSize">15sp</item>
     </style>
     <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">@font/roboto_regular</item>

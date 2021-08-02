@@ -26,7 +26,7 @@
         android:fontFamily="@font/songmyung_regular"
         android:text="SEARCH"
         android:textColor="@color/ivory"
-        android:textSize="36sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@id/backBtn"
         app:layout_constraintTop_toBottomOf="@id/backBtn" />
 

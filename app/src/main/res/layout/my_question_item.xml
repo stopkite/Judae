@@ -44,6 +44,7 @@
             android:fontFamily="@font/roboto_regular"
             android:text="질문이 적힌 글의 제목을 표시합니다."
             android:textColor="#99ECECEC"
+            android:layout_marginBottom="12dp"
             android:textSize="12sp" />
 
     </LinearLayout>
