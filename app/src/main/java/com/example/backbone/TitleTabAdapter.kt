@@ -33,6 +33,16 @@ class TitleTabAdapter(var myDocList:ArrayList<SearchDocListData>, val fragment_s
         val layoutParams = holder.itemView.layoutParams
         layoutParams.height = 47.toPx()
         holder.itemView.requestLayout()
+
+        /*
+                //카테고리 내용을 누르면 홈 액티비티에서 해당 카테고리를 가지고 있는 글 목록 불러오기
+        holder.binding.homeCateName.setOnClickListener{
+            //onClick_interface 통해서 BottomFragmentList.kt에서 바로 함수 정의할 수 있도록 선언
+            //해당 함수에 대한 설명은 BottomFragmentList.kt에서 LoadWriting 함수에 있음
+            onClick_interface.LoadWriting(cateList.cateName)
+        }
+         */
+
     }
 
     // 목록에 보여줄 아이템의 개수

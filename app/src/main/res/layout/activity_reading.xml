@@ -40,7 +40,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="저장"
+                android:text="수정"
                 android:textColor="@color/ivory"
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"

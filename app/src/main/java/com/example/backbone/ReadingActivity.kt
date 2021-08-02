@@ -1,6 +1,5 @@
 package com.example.backbone
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -63,12 +62,10 @@ class ReadingActivity : AppCompatActivity() {
         readingAdapter = ReadMultiAdapter()
 
         //인텐트 값으로 해당 글의 WriteID를 받아오기
-        var intent: Intent
+        var WriteID:String  = intent.getStringExtra("data").toString()
 
         //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
-        //여기서는 임의로 하드코드를 박음.
-        var WritingArray: Array<Content> = db.getWriting("1")
-
+        var WritingArray: Array<Content> = db.getWriting("${WriteID}")
 
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
@@ -87,17 +84,33 @@ class ReadingActivity : AppCompatActivity() {
         {
             //binding.contentImg.setImageBitmap()
         }else{
-            //binding.contentImg.visibility = View.GONE
+            binding.contentImg.visibility = View.GONE
         }
 
         var WritingSize = WritingArray.size
 
         //Question에 해당하는 대답 객체 리스트 받아오기
         var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[0].QuestionID.toString())
+        var AnswerSize = AnswerArray.size
+        if(AnswerSize==0)
+        {
+            //답변이 없다면
+            //질문만 추가
+            readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,q_linkLayout,null,null,null,
+                    null,""))
 
-        //질문 추가
-        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,q_linkLayout,null,AnswerArray[0].Link,null,
-                   null,AnswerArray[0].Content))
+        }else if(AnswerSize>0)
+        {
+            //답변수가 1개 이상이면?
+            //답변의 갯수 만큼 반복문 - 첫번째
+            readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                    null,AnswerArray[0].Content))
+            for(i in 1..AnswerSize-1)
+            {
+                readingAdapter.addItems(ReadQuestionData(null,AnswerArray[i].Image,q_linkLayout,null,AnswerArray[i].Link,null,
+                        null,AnswerArray[i].Content))
+            }
+        }
 
 
         for(i in 1..WritingSize-1)
@@ -110,15 +123,23 @@ class ReadingActivity : AppCompatActivity() {
             //Question에 해당하는 대답 객체 리스트 받아오기
             var AnswerArray: Array<Answer> = db.getAnswer(num)
             var AnswerSize = AnswerArray.size
+
             if(AnswerSize>0)
             {
-                for(j in 0..AnswerSize-1)
-                {
-                    //질문 추가
-                    readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,null,null,AnswerArray[j].Link,null,
-                            null,AnswerArray[j].Content))
 
+                //답변수가 1개 이상이면?
+                //답변의 갯수 만큼 반복문 - 첫번째
+                readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                        null,AnswerArray[0].Content))
+                for(j in 1..AnswerSize-1)
+                {
+                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            null,AnswerArray[j].Content))
                 }
+            }else{
+                //대답에 들어간 데이터가 아무것도 없을 때.
+                readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,q_linkLayout,null,null,null,
+                        null,null))
             }
         }
 
@@ -139,6 +160,10 @@ class ReadingActivity : AppCompatActivity() {
         //val memo = db.showImage("","")
         //val bitmap = init(memo.image)
         //binding.contentImg.setImageDrawable(drawable)
+
+        binding.cancelButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun init(ba:ByteArray): Bitmap? {

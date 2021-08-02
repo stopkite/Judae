@@ -67,17 +67,24 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         fun setQList(item: ReadQuestionData) {
 
             // 질문 제목
-            if(item.qTitle == null){
+            if(item.qTitle == null||item.qTitle == ""){
                 binding.qTitle.visibility = View.GONE
             }else{
                 binding.qTitle.text = item.qTitle
             }
 
-            // 삽입 이미지
-            binding.aImg.setImageDrawable(item.aImg)
+            if(item.aImg != null)
+            {
+                //*****나중에 구현
+                // 삽입 이미지
+                //binding.aImg.setImageDrawable(item.aImg)
+            }else{
+                binding.aImg.visibility = View.GONE
+            }
+
 
             // 링크
-            if(item.linkUri == ""){
+            if(item.linkUri == ""||item.linkUri == null){
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             }else{
@@ -210,19 +217,26 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     class MyContentHolder(val binding2:ReadContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
 
         fun setContentList(item: ReadContentData) {
-            // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg)
+            //본문내용(텍스트)
+            binding2.docContent.text = item.docContent
 
-            if(item.linkUri != "") {
+            Log.d("태그", "${item.contentImg}")
+            //사진 띄우기 **** - 나중에 하기.
+            if(item.contentImg != null)
+            {
+                //binding.contentImg.setImageBitmap()
+            }else{
+                binding2.contentImg.visibility = View.VISIBLE
+            }
+
+
+
+            if(item.linkUri != ""){
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
                 loadLink(item.linkUri.toString())
             }else{
                 binding2.clLinkArea.visibility = View.GONE
             }
-
-            //본문내용(텍스트)
-            binding2.docContent.text = item.docContent
-
         }
 
 
