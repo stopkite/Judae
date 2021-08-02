@@ -33,7 +33,7 @@ class TitleTabAdapter(var myDocList:ArrayList<SearchDocListData>, val fragment_s
 
         // 아이템 간 간격 설정
         val layoutParams = holder.itemView.layoutParams
-        layoutParams.height = 47.toPx()
+        layoutParams.height = 59.toPx()
         holder.itemView.requestLayout()
 
         holder.itemView.setOnClickListener {
