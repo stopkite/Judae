@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:text="글의 제목을 표시합니다."
-        android:textSize="17sp"
         android:fontFamily="@font/roboto_regular"
+        android:text="글의 제목을 표시합니다."
         android:textColor="@color/ivory"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,11 +23,12 @@
         android:id="@+id/write_id_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="카테고리 이름"
         android:textColor="#99ECECEC"
-        android:textSize="14sp"
-        android:fontFamily="@font/roboto_regular"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/write_id_title"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />
@@ -37,11 +38,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="| 2021.07.14."
         android:textColor="#99ECECEC"
-        android:textSize="14sp"
-        android:fontFamily="@font/roboto_regular"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/write_id_cat_name"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />
@@ -50,39 +52,42 @@
         android:id="@+id/ll_question"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/write_id_date"
-        app:layout_constraintTop_toBottomOf="@id/write_id_title"
-        android:layout_marginStart="5dp">
+        app:layout_constraintTop_toBottomOf="@id/write_id_title">
 
         <TextView
             android:id="@+id/question_divide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#99ECECEC"
-            android:textSize="14sp"
             android:fontFamily="@font/roboto_regular"
-            android:text="| " />
+            android:text="| "
+            android:textColor="#99ECECEC"
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/question_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
-            android:scaleType="fitXY"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_qcount" />
 
         <TextView
             android:id="@+id/write_id_qCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="3"
-            android:textSize="14sp"
+            android:layout_marginStart="3dp"
             android:fontFamily="@font/roboto_regular"
-            android:textColor="#99ECECEC"
+            android:text="3"
             android:textAlignment="viewStart"
-            android:layout_marginStart="3dp"/>
+            android:textColor="#99ECECEC"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
