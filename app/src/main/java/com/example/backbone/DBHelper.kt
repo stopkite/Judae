@@ -476,7 +476,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
     }
 
-    //WritingActivity
+    /*
+     //WritingActivity
     //이미지를 올리는 DB
     //table: 어떤 테이블에 저자할 것인지? content, answer 중?
     //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
@@ -508,5 +509,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
         return Memo
     }
+     */
+
 
 }

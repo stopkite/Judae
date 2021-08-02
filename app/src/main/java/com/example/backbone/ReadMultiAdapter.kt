@@ -224,10 +224,8 @@ class ReadMultiAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             {
                 //binding.contentImg.setImageBitmap()
             }else{
-                binding2.contentImg.visibility = View.VISIBLE
+                binding2.contentImg.visibility = View.GONE
             }
-
-
 
             if(item.linkUri != ""){
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
