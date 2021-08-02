@@ -92,7 +92,7 @@ class ReadingActivity : AppCompatActivity() {
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
         var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
         var QuestionIDSize = QuestionIDArray.size
-
+        Log.d("태그", "짠짠짠 ${QuestionIDSize}")
         for(i in 0..QuestionIDSize-1)
         {
             //Question에 해당하는 대답 객체 리스트 받아오기
@@ -104,11 +104,10 @@ class ReadingActivity : AppCompatActivity() {
                 Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
                 //답변이 한 개일 경우.
                 readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                        null,AnswerArray[0].Content, AnswerArray[0].Date))
+                        null,AnswerArray[0].Content, AnswerArray[0].Date, false))
             } else if(AnswerSize>1)
             {
                 //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
-                Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
                 //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
                 //답변의 갯수 만큼 반복문 - 첫번째
                 //
@@ -117,29 +116,21 @@ class ReadingActivity : AppCompatActivity() {
                     if(j==0)
                     {
                         readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content, AnswerArray[j].Date))
-
+                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }else{
                         readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content, AnswerArray[j].Date))
+                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }
                 }
                 //마지막 내용!
                 readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
-                        null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date))
-
-                /*
-                                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                        null,AnswerArray[0].Content))
-
-                for(j in 1..AnswerSize-1)
-                {
-
-                    Log.d("태그", "짠짠짠")
-                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                            null,AnswerArray[j].Content))
-                }
-                 */
+                        null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+            }else{
+                //질문만 있고, 대답 없는 경우.
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                        null,null, null, false))
 
             }
         }
@@ -161,17 +152,39 @@ class ReadingActivity : AppCompatActivity() {
                 //Question에 해당하는 대답 객체 리스트 받아오기
                 var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
                 var AnswerSize = AnswerArray.size
-                if(AnswerSize>0)
+                var LastSize = AnswerSize-1
+                if(AnswerSize==1)
                 {
-                    //답변수가 1개 이상이면?
-                    //답변의 갯수 만큼 반복문 - 첫번째
+                    //답변이 한 개일 경우.
                     readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                            null,AnswerArray[0].Content, AnswerArray[0].Date))
-                    for(j in 1..AnswerSize-1)
+                            null,AnswerArray[0].Content, AnswerArray[0].Date, false))
+                } else if(AnswerSize>1)
+                {
+                    //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
+                    //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
+                    //답변의 갯수 만큼 반복문 - 첫번째
+                    //
+                    for(j in 0..AnswerSize-2)
                     {
-                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content, AnswerArray[j].Date))
+                        if(j==0)
+                        {
+                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                        }else{
+                            readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                        }
                     }
+                    //마지막 내용!
+                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                            null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                }else{
+                    //질문만 있고, 대답 없는 경우.
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                            null,null, null, false))
+
                 }
             }
 
