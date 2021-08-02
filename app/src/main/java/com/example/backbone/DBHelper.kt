@@ -223,7 +223,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var ContentID:String = cursor.getString(1)
             var QuestionID: Int = cursor.getInt(2)
             var Content:String = cursor.getString(3)
-            var q:Question = Question(WritingID, ContentID, QuestionID, Content)
+            var q:Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
 
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
             while(cursor2.moveToNext())
@@ -300,7 +300,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var ContentID: String = cursor.getString(1)
             var QuestionID: Int = cursor.getInt(2)
             var Content: String = cursor.getString(3)
-            var q: Question = Question(WritingID, ContentID, QuestionID, Content)
+            var q: Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
             
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
@@ -424,14 +424,42 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
+    
+    //ReadingActivity
+    //글읽기 화면
+    //Content에 속한 QuestionID를 각각 받아오기
+    fun getQuestionID(writeID: String, contentID: String):Array<Question>
+    {
+        var Question:String
+        var QuestionID: String
+        //db읽어올 준비
+        var db = this.readableDatabase
+
+        var cursor: Cursor
+
+        var anyArray = arrayOf<Question>()
+
+        var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+contentID+"';", null)
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor3.moveToNext()) {
+            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+            Question =  cursor3.getString(3).toString()
+            QuestionID = cursor3.getInt(2).toString()
+
+            anyArray += Question(QuestionID, Question)
+        }
+        return anyArray
+
+        // 디비 닫기
+        db.close()
+    }
 
     //ReadingActivity
     //글읽기 화면
     //Content에 속한 QuestionID를 각각 받아와서 해당하는 Answer를 찾아 객체를 만들어 보내기.
-    fun getAnswer(writeID: String, contentID: String): Array<Answer>
+    fun getAnswer(QuestionID: String): Array<Answer>
     {
         var Question:String
-        var QuestionID: String
         var Content: String = ""
         var Date: String
         var Image: ByteArray
@@ -443,14 +471,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var anyArray = arrayOf<Answer>()
 
-        var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+contentID+"';", null)
-        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
-        while (cursor3.moveToNext()) {
-            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
-            Question =  cursor3.getString(3).toString()
-            QuestionID = cursor3.getInt(2).toString()
-            Log.d("태그", "Question: ${Question}")
-            //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
+
+        //해당 질문 ID를 가진 답변들 들고 오기!
             cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
 
             //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
@@ -463,13 +485,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 {
                     Link =  cursor.getString(4)
                 }
-                anyArray+=Answer(Question, QuestionID, Content, Date, Link)
+                anyArray+=Answer(QuestionID, Content, Date, Link)
             }
-            if(Content == "")
-            {
-                anyArray+=Answer(Question, Question, "", "", "")
-            }
-        }
+
         return anyArray
 
         // 디비 닫기

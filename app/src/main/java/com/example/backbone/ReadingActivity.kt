@@ -89,56 +89,63 @@ class ReadingActivity : AppCompatActivity() {
 
         var WritingSize = WritingArray.size
 
-        //Question에 해당하는 대답 객체 리스트 받아오기
-        var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
-        var AnswerSize = AnswerArray.size
-        Log.d("태그", "${AnswerSize}")
+        //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
+        var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
+        var QuestionIDSize = QuestionIDArray.size
 
-
-
-        if(AnswerSize>0)
+        for(i in 0..QuestionIDSize-1)
         {
-            //답변수가 1개 이상이면?
-            //답변의 갯수 만큼 반복문 - 첫번째
-            readingAdapter.addItems(ReadQuestionData(AnswerArray[0].Question,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                    null,AnswerArray[0].Content))
-            for(i in 1..AnswerSize-1)
+            //Question에 해당하는 대답 객체 리스트 받아오기
+            var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+            var AnswerSize = AnswerArray.size
+
+            if(AnswerSize>0)
             {
-                Log.d("태그", "대답 내용: ${AnswerArray[i].Content}")
-                readingAdapter.addItems(ReadQuestionData(AnswerArray[i].Question,AnswerArray[i].Image,q_linkLayout,null,AnswerArray[i].Link,null,
-                        null,AnswerArray[i].Content))
+                Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
+                //답변수가 1개 이상이면?
+                //답변의 갯수 만큼 반복문 - 첫번째
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                        null,AnswerArray[0].Content))
+                for(j in 1..AnswerSize-1)
+                {
+
+                    Log.d("태그", "짠짠짠")
+                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            null,AnswerArray[j].Content))
+                }
             }
         }
+
 
         //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(null,c_linkLayout,null,null,WritingArray[i].link,
+            readingAdapter.addItems(ReadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
-            //Question에 해당하는 대답 객체 리스트 받아오기
-            var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
-            var AnswerSize = AnswerArray.size
-            Log.d("태그", "${AnswerSize}")
-            if(AnswerSize>0)
-            {
-                //질문수가 1개 이상이면?
-                //답변의 갯수 만큼 반복문 - 첫번째 기본 내용 다 띄우기.
-                readingAdapter.addItems(ReadQuestionData(AnswerArray[0].Question,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                        null,AnswerArray[0].Content))
+            //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
+            var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
+            var QuestionIDSize = QuestionIDArray.size
 
-                for(j in 1..AnswerSize-1)
+            for(i in 0..QuestionIDSize-1)
+            {
+                //Question에 해당하는 대답 객체 리스트 받아오기
+                var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+                var AnswerSize = AnswerArray.size
+                if(AnswerSize>0)
                 {
-                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                            null,AnswerArray[j].Content))
+                    //답변수가 1개 이상이면?
+                    //답변의 갯수 만큼 반복문 - 첫번째
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                            null,AnswerArray[0].Content))
+                    for(j in 1..AnswerSize-1)
+                    {
+                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                null,AnswerArray[j].Content))
+                    }
                 }
             }
-            /*
-            else{ readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,q_linkLayout,null,null,null,
-                        null,null))
-            }
-             */
 
         }
 

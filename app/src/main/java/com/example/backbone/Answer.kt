@@ -18,9 +18,8 @@ class Answer {
     {
 
     }
-    constructor(Question:String, QuestionID:String, Content:String, Date: String, Link: String)
+    constructor(QuestionID:String, Content:String, Date: String, Link: String)
     {
-        this.Question = Question
         this.QuestionID = QuestionID
         this.AnswerID = AnswerID
         this.Date = Date
