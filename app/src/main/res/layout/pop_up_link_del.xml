@@ -3,66 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     tools:context=".SavingActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_writing"
-        android:layout_width="300dp"
+    <TextView
+        android:id="@+id/delTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/darkBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="정말 링크를 삭제하시겠습니까?"
+        android:textColor="@color/ivory"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/delLinkTxt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="정말 이 링크를 \n삭제하시겠습니까?"
-            android:textColor="@color/ivory"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/cl_writing"
-            app:layout_constraintStart_toStartOf="@id/cl_writing"
-            app:layout_constraintTop_toTopOf="@id/cl_writing" />
+    <TextView
+        android:id="@+id/delContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="삭제 시 같은 위치에 \n다시 링크를 삽입할 수 없습니다."
+        android:textColor="#CCECECEC"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/delTitle"
+        app:layout_constraintStart_toStartOf="@+id/delTitle"
+        app:layout_constraintTop_toBottomOf="@+id/delTitle" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancelBtn"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ic_bg_pop_cancel"
+        android:text="취소"
+        android:textColor="@color/greenMain"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+        app:layout_constraintStart_toStartOf="@+id/delContent"
+        app:layout_constraintTop_toBottomOf="@+id/delContent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancelBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_bg_pop_cancel"
-            android:text="취소"
-            android:textColor="@color/greenMain"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toStartOf="@id/delBtn"
-            app:layout_constraintStart_toStartOf="@+id/delLinkTxt"
-            app:layout_constraintTop_toBottomOf="@id/delLinkTxt" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmBtn"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ic_bg_pop_ok"
+        android:text="삭제"
+        android:textColor="@color/ivory"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/delContent"
+        app:layout_constraintStart_toEndOf="@+id/cancelBtn"
+        app:layout_constraintTop_toBottomOf="@+id/delContent" />
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/delBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/ic_bg_pop_ok"
-            android:text="삭제"
-            android:textColor="@color/ivory"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/delLinkTxt"
-            app:layout_constraintStart_toEndOf="@id/cancelBtn"
-            app:layout_constraintTop_toBottomOf="@id/delLinkTxt" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

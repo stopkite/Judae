@@ -21,10 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.backbone.databinding.ActivityWritingBinding
-import com.example.backbone.databinding.CancelWritingBinding
-import com.example.backbone.databinding.WriteContentItemBinding
-import com.example.backbone.databinding.WriteQuestionItemBinding
+import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
 import org.w3c.dom.Text
 import java.io.BufferedInputStream
@@ -70,11 +67,13 @@ class WritingActivity : AppCompatActivity() {
         binding = ActivityWritingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        // 본문과 질문(대답) reyclerview 요소가 담긴 layout
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         binding3 = WriteContentItemBinding.inflate(layoutInflater)
 
+        // 글쓰기 취소 팝업창 레이아웃
         binding4 = CancelWritingBinding.inflate(layoutInflater)
+
 
         var WriteID: String = ""
         if(intent.hasExtra("data"))
@@ -240,28 +239,30 @@ class WritingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
-
-
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
+
+            // Long 클릭 팝업 띄울 때 이 코드 가져다가 활용해서 쓰면 됨
+            // 선택 목록
             val selectList = arrayOf("변경", "삭제")
-            // 다이얼로그 생성
             var selectDialog =
-                AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
-            selectDialog.setTitle("")
+                AlertDialog.Builder(this, R.style.LongClickPopUp)
+
+            selectDialog
                 .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
-                    var t1 = Toast.makeText(this, selectList[which], Toast.LENGTH_SHORT)
-                    t1.show()
+
+                    // 변경 버튼을 클릭했을 때
+                    if(which == 0){
+                        var t1 = Toast.makeText(this, "변경 버튼 클릭", Toast.LENGTH_SHORT)
+                        t1.show()
+                    }
+                    // 삭제 버튼을 클릭했을 때
+                    else if(which == 1){
+                        var t1 = Toast.makeText(this, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
+                        t1.show()
+                    }
                 }
-                )
-                .show()
-
-
+                ).show()
         }
-
-        // 롱클릭 이벤트를 위한 다이얼로그 창 생성
-        // 선택 목록
-
-
 
     }
 

@@ -1,5 +1,7 @@
 package com.example.backbone
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -15,10 +17,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.example.backbone.databinding.ActivityWritingBinding
-import com.example.backbone.databinding.WriteContentItemBinding
-import com.example.backbone.databinding.WriteQuestionItemBinding
+import com.example.backbone.databinding.*
 import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
@@ -288,7 +289,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 }
             }).start()
         }
-
     }
 
     // 본문 Hodler
