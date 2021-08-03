@@ -93,11 +93,13 @@ class WritingActivity : AppCompatActivity() {
 
         // write_qustion_item.xml에서 view들 가져오기
         val qIcon = binding2.qIcon
-        val aIcon = binding2.aIcon
+        val aDivider = binding2.aDivider
         val qTitle = binding2.qTitle
         val aTxt = binding2.aTxt
         val addBtn = binding2.addAnswer
         val qlinkLayout = binding2.clLinkArea
+        val qImgAddBtn = binding2.qImgAddBtn
+        val qLinkAddBtn = binding2.qLinkAddBtn
 
         //write_content_item.xml에서 view들 가져오기
         val docContent = binding3.docContent
@@ -203,7 +205,7 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.addItems(
                 WriteQuestionData(
                     qTitle, null, null, null, null, null,
-                    null, null, aTxt, null
+                    null, null, aTxt, addBtn, qImgAddBtn, qLinkAddBtn
                 )
             )
 

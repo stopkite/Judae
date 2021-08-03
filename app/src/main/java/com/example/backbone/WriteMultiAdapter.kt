@@ -121,6 +121,19 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }else {
                 binding.addAnswer.setImageDrawable(item.addAnswer?.drawable)
             }
+
+            //이미지 추가 버튼
+            if(item.qImgAddBtn == null){
+                binding.qImgAddBtn.visibility = View.GONE
+            }else {
+                binding.qImgAddBtn.setImageDrawable(item.qImgAddBtn?.drawable)
+            }
+            //링크
+            if(item.qLinkAddBtn == null){
+                binding.qLinkAddBtn.visibility = View.GONE
+            }else {
+                binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
+            }
         }
 
         companion object Factory {

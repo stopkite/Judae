@@ -13,7 +13,7 @@ interface WriteItem
 data class WriteQuestionData(var qTitle: EditText?, var aImg: Drawable?,
                              var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
                              var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
-                             var aTxt: EditText?, var addAnswer: ImageButton?): WriteItem
+                             var aTxt: EditText?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class WriteContentData(var contentImg: ImageView?,
                                 var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
