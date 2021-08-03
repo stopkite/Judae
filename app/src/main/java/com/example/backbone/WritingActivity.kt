@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 //import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.*
@@ -23,6 +25,7 @@ import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
+import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -52,6 +55,30 @@ class WritingActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     var today = formatter.format(localDateTime)
 
+    // 뒤로 가기 버튼 눌렀을 때
+    override fun onBackPressed() {
+        val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
+
+        // view의 중복 사용을 방지하기 위한 코드
+        if (binding4.root.parent != null)
+            (binding4.root.parent as ViewGroup).removeView(binding4.root)
+
+        val mAlertDialog = mBuilder.show()
+
+        // 확인 버튼 다이얼로그
+        binding4.confirmBtn.setOnClickListener {
+            // 홈 화면으로 이동
+            //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
+            //startActivity(backIntent)
+            finish()
+        }
+
+        //취소 버튼 다이얼로그
+        binding4.cancelBtn.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //DBHelper와 이어주도록 클래스 선언
@@ -73,8 +100,8 @@ class WritingActivity : AppCompatActivity() {
         val saveQuestionList = ArrayList<saveQuestionData>()
         val saveContentList = ArrayList<saveContentData>()
 
-        class qSave(qTitle: String, aImg: Drawable?,
-                    linkLayout: View?, linkTitle:String, linkUri:String, linkIcon: Drawable?,
+        class qSave(qTitle: String, aImg: ByteArray?,
+                    linkLayout: View?, linkTitle:String, linkUri:String, linkIcon: ByteArray?,
                     aTxt: String) {
             var qTitle = qTitle
             var aImg = aImg
@@ -87,8 +114,8 @@ class WritingActivity : AppCompatActivity() {
         }
         var questionsave = ArrayList<qSave>()
 
-        class cSave(contentImg: Drawable?,
-                    linkLayout: View?, linkTitle:String, linkContent:String, linkUri:String, linkIcon: Drawable?,
+        class cSave(contentImg: ByteArray?,
+                    linkLayout: View?, linkTitle:String, linkContent:String, linkUri:String, linkIcon: ByteArray?,
                     docContent: String) {
             var contentImg = contentImg
             var linkLayout = linkLayout
@@ -103,7 +130,7 @@ class WritingActivity : AppCompatActivity() {
 
         //저장하기 위한 객체 생성
         //answer 객체
-        class sAnswer(content: String, date: String, image: Drawable?, link: String){
+        class sAnswer(content: String, date: String, image: ByteArray?, link: String){
             var content = content
             var date = date
             var image = image
@@ -112,7 +139,7 @@ class WritingActivity : AppCompatActivity() {
         var AnswerArray: Array<sAnswer>? = null
 
         //content 객체
-        class sContent (content: String, image: Drawable?, link: String) {
+        class sContent (content: String, image: ByteArray?, link: String) {
             var content = content
             var image = image
             var link = link
@@ -167,6 +194,16 @@ class WritingActivity : AppCompatActivity() {
         val clinkInsertTxt = binding3.linkInsertTxt
         val clinkInsertBtn = binding3.linkInsertBtn
 
+        fun drawableToByteArray(drawable: Drawable?): ByteArray? {
+            val bitmapDrawable = drawable as BitmapDrawable?
+            val bitmap = bitmapDrawable?.bitmap
+            val stream = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val byteArray = stream.toByteArray()
+
+            return byteArray
+        }
+
 
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
@@ -195,7 +232,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter(this, saveQuestionList, saveContentList)
+        writingAdapter = WriteMultiAdapter(this)
         binding.docList.adapter = writingAdapter
 
 
@@ -216,34 +253,44 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
 
-            var count = 0
+            /*var count = 0
             if (writeContentList.size > 0){
-                contentsave.add(count, cSave(contentImg.drawable,
-                clinkLayout, clinkTitle.toString(), clinkContent.toString(), clinkUri.toString(), clinkIcon.drawable,
+                contentsave.add(count, cSave(drawableToByteArray(contentImg.drawable),
+                clinkLayout, clinkTitle.toString(), clinkContent.toString(), clinkUri.toString(), drawableToByteArray(clinkIcon.drawable),
                 docContent.toString()))
                 count++
-            }
+            }*/
             //본문 박스 생성
+            var id = 0
+            saveContentList.add(id, saveContentData(id, null, null, null, null, null, null, null, null, docContent.text.toString()))
+            binding3.docContent.setText("${saveContentList[id].docContent}")
             writingAdapter.addItems(
                 WriteContentData(
-                    null, null, null, null, null, null,
+                    id, null,null, null, null, null, null,
                     null, null, docContent
                 )
             )
+            //Log.d("돼라","${writeContentList}")
 
-            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            //writingAdapter.notifyDataSetChanged()
+
+            writeContentList.add(WriteContentData(id, null, null, null, null, null, null, null, null, docContent
+            ))
+
+            id++
+
         }
 
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
             // 본문에 링크 생성
+            var id = 0
             writingAdapter.addItems(
                 WriteContentData(
-                    null, clinkInsertTxt, clinkInsertBtn, clinkLayout, clinkTitle.text.toString(), clinkContent.text.toString(),
+                    id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, clinkTitle.text.toString(), clinkContent.text.toString(),
                     clinkUri.text.toString(), clinkIcon.drawable, null
                 )
             )
+            id++
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             writingAdapter.notifyDataSetChanged()
@@ -287,11 +334,13 @@ class WritingActivity : AppCompatActivity() {
                 try{
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,currentImageUrl)
                     binding3.contentImg.setImageBitmap(bitmap)
+                    var id = 0
                     writingAdapter.addItems(
-                        WriteContentData(contentImg.drawable, null, null, null, null, null,
+                        WriteContentData(id, contentImg.drawable, null, null, null, null, null,
                             null, null, null
                         )
                     )
+                    id++
 
                 } catch(e:Exception) {
                     e.printStackTrace()
@@ -309,24 +358,30 @@ class WritingActivity : AppCompatActivity() {
             var count = 0
             if (writeQuestionList.size > 0){
                 questionsave.add(count, qSave(qTitleText, null, qlinkLayout, qlinkTitle.toString(), qlinkUri.toString(),
-                            qlinkIcon.drawable, aTxt.toString()))
+                            drawableToByteArray(qlinkIcon.drawable), aTxt.toString()))
                 Log.d("되나?","${questionsave[count].qTitle}")
                 count++
 
 
             }
 
+            var id = 0
+            writeQuestionList.add(WriteQuestionData(id, qTitle, null, null, null, null, null, null, null,aTxt,
+                null
+            ))
+
+
             // 질문 추가
             writingAdapter.addItems(
                 WriteQuestionData(
-                    qTitle, null, null, null, null, null,
+                    id, qTitle, null, null, null, null, null,
                     null, null, aTxt, null
                 )
             )
 
-            writeQuestionList.add(WriteQuestionData(qTitle, null, null, null, null, null, null, null,aTxt,
-                null
-            ))
+            id++
+
+
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             //writingAdapter.notifyDataSetChanged()
@@ -334,11 +389,10 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //저장 활성화
-        binding.editBtn.setEnabled(true)
+        binding.saveBtn.setEnabled(true)
 
         // 저장 버튼 클릭 리스너
-        //binding.saveBtn.setOnClickListener {
-        binding.editBtn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
 
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
             // 제목 객체 저장
@@ -364,6 +418,7 @@ class WritingActivity : AppCompatActivity() {
             Log.d("객체", "${ContentArray}")
             Log.d("객체", "${QuestionArray}")
         }
+
 
     }
 

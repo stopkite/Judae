@@ -1,21 +1,15 @@
 package com.example.backbone
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
-import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
@@ -23,7 +17,7 @@ import java.net.URLConnection
 import java.nio.file.Files.size
 
 private var isrun:Boolean = false
-class WriteMultiAdapter(context: WritingActivity, var saveQuestionList:ArrayList<saveQuestionData>, var saveContentList:ArrayList<saveContentData>): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
@@ -39,7 +33,13 @@ class WriteMultiAdapter(context: WritingActivity, var saveQuestionList:ArrayList
         is WriteQuestionData -> {
             TYPE_Question
         }
+        is saveQuestionData -> {
+            TYPE_Question
+        }
         is WriteContentData -> {
+            TYPE_Content
+        }
+        is saveContentData -> {
             TYPE_Content
         }
         else -> {
@@ -457,12 +457,8 @@ uri = linkUri
 
     fun addItems(item: WriteItem){
         this.items.add(item)
+        //this.updateItems(item, item.id as Int)
         this.notifyDataSetChanged()
-    }
-    fun addContent(content: saveContentData) {
-        this.saveContentList.add(content)
-        this.notifyDataSetChanged()
-
     }
 
     interface ItemClickListener{
@@ -479,6 +475,38 @@ uri = linkUri
     fun modifyItems(position: Int, item: WriteItem) {
         this.items.set(position, item)
         this.notifyDataSetChanged()
+    }
+
+    class ContentDiffUtil(private val oldList: List<WriteItem>, private val currentList: List<WriteItem>) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = currentList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == currentList[newItemPosition].id
+
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldList = oldList[oldItemPosition]
+            val currentList = currentList[newItemPosition]
+
+            return oldList == currentList
+        }
+
+    }
+
+    fun updateList(items: List<WriteItem>?) {
+        items?.let {
+            val diffCallback = ContentDiffUtil(this.items, items)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+            this.items.run {
+                clear()
+                addAll(items)
+                diffResult.dispatchUpdatesTo(this@WriteMultiAdapter)
+            }
+        }
     }
 
 }

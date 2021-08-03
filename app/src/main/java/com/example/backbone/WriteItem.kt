@@ -8,27 +8,31 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 
-interface WriteItem
+interface WriteItem {
+    abstract val id: Any
+}
 
-data class WriteQuestionData(var qTitle: EditText?, var aImg: Drawable?,
-                             var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
-                             var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
-                             var aTxt: EditText?, var addAnswer: ImageButton?): WriteItem
+data class WriteQuestionData(
+    override var id: Int, var qTitle: EditText?, var aImg: Drawable?,
+    var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
+    var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
+    var aTxt: EditText?, var addAnswer: ImageButton?): WriteItem
 
-data class WriteContentData(var contentImg: Drawable?,
-                                var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
-                                var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
-                                var docContent:EditText?): WriteItem
+data class WriteContentData(
+    override var id: Int, var contentImg: Drawable?,
+    var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
+    var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
+    var docContent:EditText?): WriteItem
 
-data class saveQuestionData(var qTitle: String?, var aImg: Drawable?,
+data class saveQuestionData(override var id: Int, var qTitle: String?, var aImg: Drawable?,
                              var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
                              var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
                              var aTxt: String?, var addAnswer: ImageButton?): WriteItem
 
-data class saveContentData(var contentImg: Drawable?,
-                            var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
+data class saveContentData(override var id: Int, var contentImg: Drawable?,
+                            var linkInsertTxt:String?, var linkInsertBtn:Button?,
                             var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
-                            var docContent:EditText?): WriteItem
+                            var docContent:String?): WriteItem
 
 
 
