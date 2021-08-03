@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.content.ClipData
 import android.graphics.drawable.Drawable
+import android.text.Editable
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -20,7 +21,13 @@ data class WriteContentData(var contentImg: ImageView?,
                                 var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
                                 var docContent:EditText?): WriteItem
 
-
+data class loadQuestionData(
+        var qTitle: String?, var aImg: ByteArray?,
+        var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
+        var aTxt: String?, var Date:String?, var ColorChanged:Boolean?):WriteItem
+data class loadContentData(var contentImg: ByteArray?,
+                           var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
+                           var docContent: String?):WriteItem
 /*
 <<WriteQuestionData>>
 qIcon: 질문 아이콘

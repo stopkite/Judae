@@ -76,7 +76,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
     class MyQHolder(val binding: ReadQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun setQList(item: ReadQuestionData, context: Context) {
-            Log.d("태그", "들어왔냐. ${item.qTitle}")
 
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
@@ -106,7 +105,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                     loadLink(item.linkUri.toString())
             }
 
-            Log.d("태그", "답변 내용: ${item.aTxt}")
             // 대답 내용 삽입
             if(item.aTxt != ""&&item.aTxt!=null)
             {
