@@ -126,6 +126,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
 
 
+            Log.d("태그", "${item.linkUri}")
             // 링크
             if(item.linkUri == ""){
                 //링크 내용이 없으면?
@@ -136,7 +137,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 loadLink(item.linkUri.toString())
             }
 
-            Log.d("태그", "답변 내용: ${item.aTxt}")
             // 대답 내용 삽입
             if(item.aTxt != ""&&item.aTxt!=null)
             {
@@ -181,6 +181,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {
+            Log.d("태그", "setLink 들어왔나?")
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
             binding.linkContent.text = content
