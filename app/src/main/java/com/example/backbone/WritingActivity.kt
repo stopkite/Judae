@@ -125,14 +125,6 @@ class WritingActivity : AppCompatActivity() {
         binding4 = CancelWritingBinding.inflate(layoutInflater)
 
 
-        var WriteID: String = ""
-        if(intent.hasExtra("data"))
-        {
-            Log.d("태그", "${WriteID}")
-            WriteID = intent.getStringExtra("data").toString()
-            loadWriting(WriteID)
-        }
-
 
         val writeQuestionList = ArrayList<WriteQuestionData>()
         val writeContentList = ArrayList<WriteContentData>()
@@ -288,6 +280,15 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
         binding.clLinkArea.visibility = View.GONE
 
+
+
+        var WriteID: String = ""
+        if(intent.hasExtra("data"))
+        {
+            Log.d("태그", "${WriteID}")
+            WriteID = intent.getStringExtra("data").toString()
+            loadWriting(WriteID, writingAdapter)
+        }
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
@@ -486,7 +487,7 @@ class WritingActivity : AppCompatActivity() {
 
     }
 
-    private fun loadWriting(WriteID: String)
+    private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
     {
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         val q_linkLayout = binding2.clLinkArea
