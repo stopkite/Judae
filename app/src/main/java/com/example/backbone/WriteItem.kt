@@ -17,32 +17,32 @@ data class WriteQuestionData(
     override var id: Int, var qTitle: EditText?, var aImg: Drawable?,
     var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
     var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
-    var aTxt: EditText?, var addAnswer: ImageButton?): WriteItem
+    var aTxt: EditText?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class WriteContentData(
     override var id: Int, var contentImg: Drawable?,
     var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
     var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
-    var docContent:EditText?): WriteItem
+    var docContent:EditText?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class saveQuestionData(override var id: Int, var qTitle: String?, var aImg: Drawable?,
                              var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
                              var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
-                             var aTxt: String?, var addAnswer: ImageButton?): WriteItem
+                             var aTxt: String?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class saveContentData(override var id: Int, var contentImg: Drawable?,
                             var linkInsertTxt:String?, var linkInsertBtn:Button?,
                             var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
-                            var docContent:String?): WriteItem
+                            var docContent:String?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 
 
 
 data class loadQuestionData(
-        var qTitle: String?, var aImg: ByteArray?,
+    override var id: Int, var qTitle: String?, var aImg: ByteArray?,
         var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
         var aTxt: String?, var Date:String?, var ColorChanged:Boolean?):WriteItem
-data class loadContentData(var contentImg: ByteArray?,
+data class loadContentData(override var id: Int, var contentImg: ByteArray?,
                            var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
                            var docContent: String?):WriteItem
 /*

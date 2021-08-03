@@ -646,7 +646,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         fun setContentList(item: WriteContentData) {
 
             // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
+            binding2.contentImg.setImageDrawable(item.contentImg)
 
             binding2.clLinkArea.visibility = View.GONE
 

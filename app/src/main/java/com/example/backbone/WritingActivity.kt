@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -203,7 +204,7 @@ class WritingActivity : AppCompatActivity() {
 
         // write_qustion_item.xml에서 view들 가져오기
         val qIcon = binding2.qIcon
-        val aIcon = binding2.aIcon
+        //val aIcon = binding2.aIcon
         var qTitle = binding2.qTitle
         //qTitle = findViewById(R.id.qTitle);
         val qTitleText: String = qTitle.getText().toString()
@@ -218,6 +219,8 @@ class WritingActivity : AppCompatActivity() {
         val qlinkTitle = binding2.linkTitle
         val qlinkContent = binding2.linkContent
         val qlinkUri = binding2.linkUri
+        val qAddImgBtn = binding2.qImgAddBtn
+        val qAddLinkBtn = binding2.qLinkAddBtn
 
         //write_content_item.xml에서 view들 가져오기
         var docContent = binding3.docContent
@@ -301,18 +304,20 @@ class WritingActivity : AppCompatActivity() {
             }*/
             //본문 박스 생성
             var id = 0
-            saveContentList.add(id, saveContentData(id, null, null, null, null, null, null, null, null, docContent.text.toString()))
+            saveContentList.add(id, saveContentData(id, null, null, null, null, null,
+                null, null, null, docContent.text.toString(), null, null))
             binding3.docContent.setText("${saveContentList[id].docContent}")
             writingAdapter.addItems(
                 WriteContentData(
                     id, null,null, null, null, null, null,
-                    null, null, docContent
+                    null, null, docContent,null,null
                 )
             )
             //Log.d("돼라","${writeContentList}")
 
 
-            writeContentList.add(WriteContentData(id, null, null, null, null, null, null, null, null, docContent
+            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+                        null, null, null, docContent, null, null
             ))
 
             id++
@@ -326,7 +331,7 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.addItems(
                 WriteContentData(
                     id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, clinkTitle.text.toString(), clinkContent.text.toString(),
-                    clinkUri.text.toString(), clinkIcon.drawable, null
+                    clinkUri.text.toString(), clinkIcon.drawable, null, null, null
                 )
             )
             id++
@@ -376,7 +381,7 @@ class WritingActivity : AppCompatActivity() {
                     var id = 0
                     writingAdapter.addItems(
                         WriteContentData(id, contentImg.drawable, null, null, null, null, null,
-                            null, null, null
+                            null, null, null, null, null
                         )
                     )
                     id++
@@ -406,7 +411,7 @@ class WritingActivity : AppCompatActivity() {
 
             var id = 0
             writeQuestionList.add(WriteQuestionData(id, qTitle, null, null, null, null, null, null, null,aTxt,
-                null
+                null, null, null
             ))
 
 
@@ -414,7 +419,7 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.addItems(
                 WriteQuestionData(
                     id, qTitle, null, null, null, null, null,
-                    null, null, aTxt, null
+                    null, null, aTxt, null, qAddImgBtn, qAddLinkBtn
                 )
             )
 
@@ -523,7 +528,7 @@ class WritingActivity : AppCompatActivity() {
             if(AnswerSize==1)
             {
                 //답변이 한 개일 경우.
-                writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
                         null,AnswerArray[0].Content, AnswerArray[0].Date, false))
             } else if(AnswerSize>1)
             {
@@ -534,22 +539,22 @@ class WritingActivity : AppCompatActivity() {
                 {
                     if(j==0)
                     {
-                        writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                        writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }else{
-                        writingAdapter.addItems(loadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                        writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }
                 }
                 //마지막 내용!
-                writingAdapter.addItems(loadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                         null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
             }else{
                 Log.d("태그", "${QuestionIDArray[i].Content}")
                 //질문만 있고, 대답 없는 경우.
-                writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                         null,null, null, false))
 
             }
@@ -561,7 +566,7 @@ class WritingActivity : AppCompatActivity() {
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            writingAdapter.addItems(loadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
+            writingAdapter.addItems(loadContentData(0, WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
@@ -577,7 +582,7 @@ class WritingActivity : AppCompatActivity() {
                 if(AnswerSize==1)
                 {
                     //답변이 한 개일 경우.
-                    writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                    writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
                             null,AnswerArray[0].Content, AnswerArray[0].Date, false))
                 } else if(AnswerSize>1)
                 {
@@ -589,21 +594,21 @@ class WritingActivity : AppCompatActivity() {
                     {
                         if(j==0)
                         {
-                            writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }else{
-                            writingAdapter.addItems(loadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }
                     }
                     //마지막 내용!
-                    writingAdapter.addItems(loadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                    writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                             null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
                 }else{
                     //질문만 있고, 대답 없는 경우.
-                    writingAdapter.addItems(loadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                    writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                             null,null, null, false))
 
                 }
