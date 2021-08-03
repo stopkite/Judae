@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -65,7 +66,7 @@ class ReadingActivity : AppCompatActivity() {
         var WriteID:String  = intent.getStringExtra("data").toString()
 
         //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
-        var WritingArray: Array<Content> = db.getWriting("${WriteID}")
+        var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
 
@@ -89,18 +90,16 @@ class ReadingActivity : AppCompatActivity() {
         var WritingSize = WritingArray.size
 
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
-        var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
+        var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
         var QuestionIDSize = QuestionIDArray.size
-        Log.d("태그", "짠짠짠 ${QuestionIDSize}")
         for(i in 0..QuestionIDSize-1)
         {
             //Question에 해당하는 대답 객체 리스트 받아오기
-            var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+            var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
             var AnswerSize = AnswerArray.size
             var LastSize = AnswerSize-1
             if(AnswerSize==1)
             {
-                Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
                 //답변이 한 개일 경우.
                 readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
                         null,AnswerArray[0].Content, AnswerArray[0].Date, false))
@@ -143,13 +142,13 @@ class ReadingActivity : AppCompatActivity() {
                     null,null,WritingArray[i].content))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
-            var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
+            var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
             var QuestionIDSize = QuestionIDArray.size
 
             for(i in 0..QuestionIDSize-1)
             {
                 //Question에 해당하는 대답 객체 리스트 받아오기
-                var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+                var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
                 var AnswerSize = AnswerArray.size
                 var LastSize = AnswerSize-1
                 if(AnswerSize==1)
@@ -209,6 +208,13 @@ class ReadingActivity : AppCompatActivity() {
 
         binding.cancelButton.setOnClickListener {
             finish()
+        }
+
+        binding.editBtn.setOnClickListener {
+            // 글쓰기 화면으로 이동
+            val writeIntent = Intent(this, WritingActivity::class.java)
+            writeIntent.putExtra("data", "${WriteID}")
+            startActivity(writeIntent)
         }
     }
 

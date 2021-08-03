@@ -375,13 +375,13 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //ReadingActivity
     //글읽기 화면
     //글의 ID를 받아와 해당하는 글의 Writing 정보와 질문 내용을 받아오기.
-    fun getWriting(writeID: String): Array<Content>
+    fun getWriting(writeID: String): ArrayList<Content>
     {
         //db읽어올 준비
         var db = this.readableDatabase
 
         var cursor: Cursor
-        var anyArray = arrayOf<Content>()
+        var anyArray = ArrayList<Content>()
 
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
         cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
@@ -410,7 +410,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 //해당 content에 해당되는 질문 값을 받아오기.
 
             }
-            anyArray+=content
+            anyArray.add(content)
         }
         return anyArray
 
@@ -421,7 +421,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //ReadingActivity
     //글읽기 화면
     //Content에 속한 QuestionID를 각각 받아오기
-    fun getQuestionID(writeID: String, contentID: String):Array<Question>
+    fun getQuestionID(writeID: String, contentID: String):ArrayList<Question>
     {
         var Question:String
         var QuestionID: String
@@ -430,7 +430,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var cursor: Cursor
 
-        var anyArray = arrayOf<Question>()
+        var anyArray = ArrayList<Question>()
 
         var cursor3: Cursor = db.rawQuery( "SELECT*FROM Question WHERE WritingID = '"+writeID+"' AND ContentID = '"+contentID+"';", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
@@ -439,7 +439,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             Question =  cursor3.getString(3).toString()
             QuestionID = cursor3.getInt(2).toString()
 
-            anyArray += Question(QuestionID, Question)
+            anyArray.add(Question(QuestionID, Question))
         }
         return anyArray
 
@@ -450,7 +450,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //ReadingActivity
     //글읽기 화면
     //Content에 속한 QuestionID를 각각 받아와서 해당하는 Answer를 찾아 객체를 만들어 보내기.
-    fun getAnswer(QuestionID: String): Array<Answer>
+    fun getAnswer(QuestionID: String): ArrayList<Answer>
     {
         var Question:String
         var Content: String = ""
@@ -462,7 +462,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var cursor: Cursor
 
-        var anyArray = arrayOf<Answer>()
+        var anyArray = ArrayList<Answer>()
 
 
         //해당 질문 ID를 가진 답변들 들고 오기!
@@ -478,7 +478,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 {
                     Link =  cursor.getString(4)
                 }
-                anyArray+=Answer(QuestionID, Content, Date, Link)
+                anyArray.add(Answer(QuestionID, Content, Date, Link))
             }
 
         return anyArray

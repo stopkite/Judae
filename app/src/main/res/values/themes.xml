@@ -19,6 +19,7 @@
         <item name="tabStyle">@style/Widget.App.TabLayout</item>
         <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/LongClickPopUp</item>
     </style>
 
     <style name="Theme.MyDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -41,9 +42,20 @@
         <item name="android:background">@drawable/bg_cate_popup</item>
     </style>
 
+    <!-- longClick 팝업 다이얼로그 커스튬 -->
+    <style name="LongClickPopUp" parent="Theme.AppCompat.Dialog">
+        <item name="background">@drawable/bg_select_pop_up</item>
+        <item name="android:textColor">@color/ivory</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:windowBackground">@drawable/bg_select_pop_up</item>
+    </style>
+
     <!-- 다이얼로그 배경 커스튬 -->
     <style name="MyDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="android:background">@color/darkBlue</item>
+        <item name="android:background">@drawable/bg_pop_up</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!-- 라디오 버튼 커스튬 -->
