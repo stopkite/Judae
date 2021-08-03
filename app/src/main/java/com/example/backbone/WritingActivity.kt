@@ -133,6 +133,7 @@ class WritingActivity : AppCompatActivity() {
         binding4 = CancelWritingBinding.inflate(layoutInflater)
 
 
+<<<<<<< HEAD
         // 카테고리 저장 요소가 담긴 레이아웃
         binding5 = ActivitySavingBinding.inflate(layoutInflater)
         // xml에서 리스트뷰(cateList)를 가져와서 변수로 선언
@@ -159,6 +160,8 @@ class WritingActivity : AppCompatActivity() {
             WriteID = intent.getStringExtra("data").toString()
             loadWriting(WriteID)
         }
+=======
+>>>>>>> b4b0f47b4458b2389a4082287957d82d4d23a2f1
 
         val writeQuestionList = ArrayList<WriteQuestionData>()
         val writeContentList = ArrayList<WriteContentData>()
@@ -314,6 +317,15 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
         binding.clLinkArea.visibility = View.GONE
 
+
+
+        var WriteID: String = ""
+        if(intent.hasExtra("data"))
+        {
+            Log.d("태그", "${WriteID}")
+            WriteID = intent.getStringExtra("data").toString()
+            loadWriting(WriteID, writingAdapter)
+        }
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
@@ -529,7 +541,7 @@ class WritingActivity : AppCompatActivity() {
 
     }
 
-    private fun loadWriting(WriteID: String)
+    private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
     {
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         val q_linkLayout = binding2.clLinkArea

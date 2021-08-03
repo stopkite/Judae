@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -78,7 +79,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             MyContentHolder.create(parent)
         }
         TYPE_RCQuestion -> {
-            Log.d("태그", "TYPE_RCQuestion: ${viewType}")
             LoadQHolder.create(parent)
         }
         TYPE_RContent -> {
@@ -138,15 +138,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.aImg.visibility = View.GONE
             }
 
-
-            Log.d("태그", "${item.linkUri}")
             // 링크
             if(item.linkUri == ""){
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             }else{
                 //링크 내용이 있으면?
-                //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
+                binding.clLinkArea.visibility = item.linkLayout?.visibility!!
                 loadLink(item.linkUri.toString())
             }
 
@@ -194,7 +192,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {
-            Log.d("태그", "setLink 들어왔나?")
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
             binding.linkContent.text = content
@@ -541,6 +538,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
+
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
@@ -643,7 +642,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var url1: URL? = null
         var content:String = ""
 
-
         fun setContentList(item: WriteContentData) {
 
             // 본문 삽입 이미지
@@ -677,10 +675,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 //입력 받은 링크를 String으로 넣어 준 후
                 linkUri = binding2.linkInsertTxt.getText().toString()
                 //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
-                isrun = true
                 //쓰레드 실행(한번만 실행함.)
-                loadLink(linkUri)
-                binding2.clLinkArea.visibility = View.VISIBLE
+                    loadLink(linkUri)
+                    binding2.clLinkArea.visibility = View.VISIBLE
             }
             // 링크된 요소들
             /*binding2.linkTitle.text = item.linkTitle
@@ -718,6 +715,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
+
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
