@@ -50,12 +50,14 @@
 
     <LinearLayout
         android:id="@+id/ll_question"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/write_id_date"
         app:layout_constraintTop_toBottomOf="@id/write_id_title">
 
@@ -70,19 +72,18 @@
 
         <ImageView
             android:id="@+id/question_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4dp"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
             android:src="@drawable/ic_qcount" />
 
         <TextView
             android:id="@+id/write_id_qCount"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="3dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/roboto_regular"
             android:text="3"
             android:textAlignment="viewStart"
