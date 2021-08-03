@@ -138,13 +138,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.aImg.visibility = View.GONE
             }
 
+            binding.linkInsertTxt.visibility = View.GONE
+            binding.linkInsertBtn.visibility = View.GONE
+
             // 링크
-            if(item.linkUri == ""){
-                //링크 내용이 없으면?
-                binding.clLinkArea.visibility = View.GONE
-            }else{
+            if(item.linkUri != "")
+            {
                 //링크 내용이 있으면?
-                binding.clLinkArea.visibility = item.linkLayout?.visibility!!
                 loadLink(item.linkUri.toString())
             }
 
@@ -210,6 +210,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
@@ -327,13 +328,17 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }else{
                 binding2.docContent.setText(item.docContent)
             }
+            binding2.linkInsertTxt.visibility = View.GONE
+            binding2.linkInsertBtn.visibility = View.GONE
+            binding2.clLinkArea.visibility = View.GONE
 
-            if(item.linkUri != ""){
-                binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
+            // 링크
+            if(item.linkUri != "")
+            {
+                //링크 내용이 있으면?
                 loadLink(item.linkUri.toString())
-            }else{
-                binding2.clLinkArea.visibility = View.GONE
             }
+
         }
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
@@ -353,15 +358,20 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         private fun loadLink(linkUri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+            var linkUri = linkUri
             title = ""
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
             Thread(Runnable {
                 while(isrun)
                 {//네이버의 경우에만 해당되는 것 같아.
                     try{
                         if (linkUri.contains("naver")) {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
@@ -389,6 +399,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             setLink(linkUri, title, content, bm1!!)
                             isrun=false
                         } else {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon:String
                             var link:String
@@ -534,6 +547,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         private fun loadLink(linkUri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+            var linkUri = linkUri
             title = ""
             bm1 = null
             url1 = null
@@ -545,6 +559,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 {//네이버의 경우에만 해당되는 것 같아.
                     try{
                         if (linkUri.contains("naver")) {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
@@ -572,6 +589,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             setLink(linkUri, title, content, bm1!!)
                             isrun=false
                         } else {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon:String
                             var link:String
@@ -643,9 +663,16 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
+            Log.d("태그", "들어왔냐!")
+            Log.d("태그", "${item.contentImg}")
+            if(item.contentImg == null)
+            {
+                binding2.contentImg.visibility = View.GONE
+            }else{
+                // 본문 삽입 이미지
+                binding2.contentImg.setImageURI(item.contentImg)
+            }
 
-            // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg)
 
             binding2.clLinkArea.visibility = View.GONE
 
@@ -668,6 +695,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding2.linkInsertBtn.visibility = View.GONE
             }else{
                 binding2.linkInsertBtn.visibility = item.linkInsertTxt?.visibility!!
+            }
+
+            if(item.linkUri == null){
+                binding2.linkUri.visibility = View.GONE
             }
 
             //링크 입력 후 확인을 누르면 실행되는 리스너
@@ -711,6 +742,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         private fun loadLink(linkUri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+            var linkUri = linkUri
             title = ""
             bm1 = null
             url1 = null
@@ -722,6 +754,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 {//네이버의 경우에만 해당되는 것 같아.
                     try{
                         if (linkUri.contains("naver")) {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
@@ -749,6 +784,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             setLink(linkUri, title, content, bm1!!)
                             isrun=false
                         } else {
+                            if(!linkUri.contains("https://")){
+                                linkUri = "https://${linkUri}"
+                            }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon:String
                             var link:String
