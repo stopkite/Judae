@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -239,9 +240,29 @@ class WritingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
+
+
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
+            val selectList = arrayOf("변경", "삭제")
+            // 다이얼로그 생성
+            var selectDialog =
+                AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
+            selectDialog.setTitle("")
+                .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                    var t1 = Toast.makeText(this, selectList[which], Toast.LENGTH_SHORT)
+                    t1.show()
+                }
+                )
+                .show()
+
 
         }
+
+        // 롱클릭 이벤트를 위한 다이얼로그 창 생성
+        // 선택 목록
+
+
+
     }
 
     private fun loadWriting(WriteID: String)
@@ -476,3 +497,4 @@ class WritingActivity : AppCompatActivity() {
         }).start()
     }
 }
+
