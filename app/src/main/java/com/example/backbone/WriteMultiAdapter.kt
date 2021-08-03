@@ -1,5 +1,7 @@
 package com.example.backbone
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -15,15 +17,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.backbone.databinding.*
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
-import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
 import java.net.URLConnection
+import java.nio.file.Files.size
 
 private var isrun:Boolean = false
 class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
@@ -44,7 +50,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         is WriteQuestionData -> {
             TYPE_Question
         }
+        is saveQuestionData -> {
+            TYPE_Question
+        }
         is WriteContentData -> {
+            TYPE_Content
+        }
+        is saveContentData -> {
             TYPE_Content
         }
         is loadContentData -> {
@@ -79,12 +91,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+            //실행될 때: 버튼 누를때마다. 본문/질문 이런 거.
         when (holder) {
             is MyQHolder -> {
                 holder.setQList(items[position] as WriteQuestionData)
             }
             is MyContentHolder -> {
+
                 holder.setContentList(items[position] as WriteContentData)
 
                 holder.itemView.setOnClickListener{
@@ -289,7 +302,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 }
             }).start()
         }
-
     }
 
     // 본문 Hodler
@@ -635,7 +647,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         fun setContentList(item: WriteContentData) {
 
             // 본문 삽입 이미지
-            binding2.contentImg.setImageDrawable(item.contentImg?.drawable)
+            binding2.contentImg.setImageDrawable(item.contentImg)
 
             binding2.clLinkArea.visibility = View.GONE
 
@@ -843,6 +855,38 @@ uri = linkUri
     fun modifyItems(position: Int, item: WriteItem) {
         this.items.set(position, item)
         this.notifyDataSetChanged()
+    }
+
+    class ContentDiffUtil(private val oldList: List<WriteItem>, private val currentList: List<WriteItem>) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = currentList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == currentList[newItemPosition].id
+
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldList = oldList[oldItemPosition]
+            val currentList = currentList[newItemPosition]
+
+            return oldList == currentList
+        }
+
+    }
+
+    fun updateList(items: List<WriteItem>?) {
+        items?.let {
+            val diffCallback = ContentDiffUtil(this.items, items)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+            this.items.run {
+                clear()
+                addAll(items)
+                diffResult.dispatchUpdatesTo(this@WriteMultiAdapter)
+            }
+        }
     }
 
 }
