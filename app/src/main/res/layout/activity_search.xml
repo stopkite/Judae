@@ -39,7 +39,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_search_area"
         android:clickable="true"
-        android:layoutDirection="rtl"
+
         android:queryHint="검색어"
         android:searchHintIcon="@null"
         android:searchIcon="@drawable/ic_search"
