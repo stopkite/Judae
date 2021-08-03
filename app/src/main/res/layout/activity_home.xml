@@ -141,10 +141,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="58dp"
+            android:fontFamily="@font/songmyung_regular"
             android:text="Menu"
             android:textColor="@color/ivory"
-            android:textSize="36sp"
-            android:fontFamily="@font/songmyung_regular"
+            android:textSize="30sp"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView

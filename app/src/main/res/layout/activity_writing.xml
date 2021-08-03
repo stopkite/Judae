@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/editBtn"
+                android:id="@+id/saveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -43,7 +43,7 @@
                 android:text="저장"
                 android:enabled="false"
                 android:textColor="@color/ivory"
-                android:textSize="22sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -125,21 +125,29 @@
                 android:id="@+id/linkInsertTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
                 android:autoLink="web"
+                android:backgroundTint="@color/greenMain"
                 android:hint="링크를 입력하세요."
-                android:textColor="@color/white"
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
             <Button
                 android:id="@+id/linkInsertBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="13dp"
                 android:text="확인"
-                app:layout_constraintEnd_toEndOf="@id/docTitle"
+                android:textColor="@color/ivory"
+                android:textSize="11sp"
                 app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
+                app:layout_constraintEnd_toEndOf="@id/docTitle"
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
 
@@ -147,6 +155,7 @@
                 android:id="@+id/cl_linkArea"
                 android:layout_width="0dp"
                 android:layout_height="81dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="@id/docTitle"
                 app:layout_constraintStart_toStartOf="@id/docTitle"
@@ -154,8 +163,8 @@
 
                 <TextView
                     android:id="@+id/linkTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="367dp"
+                    android:layout_height="12dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="12dp"
                     android:ellipsize="end"
@@ -219,8 +228,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintEnd_toEndOf="@id/docTitle"
-                app:layout_constraintStart_toStartOf="@id/docTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_linkArea"
                 tools:listitem="@layout/write_question_item" />
 
@@ -230,10 +239,11 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/eventList"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:background="@drawable/ic_bg_write_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/ll_eventList"
@@ -241,32 +251,40 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
+            <ImageButton
                 android:id="@+id/addContentBTN"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_content"
                 android:text="본문" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/addLinkBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_link"
                 android:text="링크" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/addImgBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_img"
                 android:text="사진" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/addQBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_q"
                 android:text="질문" />
         </LinearLayout>
     </com.google.android.material.bottomnavigation.BottomNavigationView>

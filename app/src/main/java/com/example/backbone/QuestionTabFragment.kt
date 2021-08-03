@@ -42,7 +42,7 @@ class QuestionTabFragment() : Fragment() {
         }
         // MyQListData 클래스를 담는 배열 생성
         var myDocList = ArrayList<MyQListData>()
-        qAdapter = QuestionTabAdapter(myDocList, this)
+        qAdapter = QuestionTabAdapter(myDocList, this, getActivity() as SearchActivity)
 
     }
 
@@ -51,7 +51,6 @@ class QuestionTabFragment() : Fragment() {
             savedInstanceState: Bundle?,
     ): View? {
         var view:View = inflater.inflate(R.layout.fragment_question_tab, container, false)
-        // Inflate the layout for this fragment
 
         return view
     }
@@ -78,11 +77,11 @@ class QuestionTabFragment() : Fragment() {
         {
 
             myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_q_list_question),
-                    "${qList[i].Content}", "${qList[i].WritingTitle}"))
+                    "${qList[i].Content}", "${qList[i].WritingTitle}", "${qList[i].WritingID}"))
 
         }
         // 어댑터 변수 초기화
-        qAdapter = QuestionTabAdapter(myDocList, this)
+        qAdapter = QuestionTabAdapter(myDocList, this, getActivity() as SearchActivity)
 
         // 아이템 구분선 색상 설정
         val dividerItemDecoration = DividerItemDecoration(this.context,LinearLayoutManager.VERTICAL)

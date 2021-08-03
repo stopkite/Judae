@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,10 +10,11 @@
         android:id="@+id/write_id_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto_regular"
         android:text="글의 제목을 표시합니다."
         android:textColor="@color/ivory"
-        android:textSize="17sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,11 +22,12 @@
         android:id="@+id/write_id_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="12dp"
         android:fontFamily="@font/roboto_regular"
         android:text="카테고리 이름"
         android:textColor="#99ECECEC"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/write_id_title"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />
@@ -34,11 +37,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="12dp"
         android:fontFamily="@font/roboto_regular"
         android:text="| 2021.07.14."
         android:textColor="#99ECECEC"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/write_id_cat_name"
         app:layout_constraintTop_toBottomOf="@id/write_id_title" />

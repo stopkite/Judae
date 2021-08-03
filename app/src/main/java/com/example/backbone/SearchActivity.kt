@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
@@ -150,6 +151,9 @@ class SearchActivity : AppCompatActivity() {
             startActivity(backIntent)
             finish()
         }
+
+        binding.searchView.onActionViewExpanded()
+        Handler().postDelayed({ binding.searchView.clearFocus() }, 300)
 
         binding.searchView.setOnClickListener(View.OnClickListener
         { binding.searchView.setIconified(false)})

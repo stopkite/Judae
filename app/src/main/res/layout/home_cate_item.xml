@@ -17,7 +17,7 @@
         android:fontFamily="@font/roboto_regular"
         android:text="카테고리 이름"
         android:textColor="@color/ivory"
-        android:textSize="17sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editCateName"
         app:layout_constraintStart_toStartOf="parent"

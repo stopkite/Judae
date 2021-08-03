@@ -1,6 +1,5 @@
 package com.example.backbone
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -60,16 +59,13 @@ class ReadingActivity : AppCompatActivity() {
         var c_linkLayout = binding3.clLinkArea
         var docContent = binding3.docContent
 
-        readingAdapter = ReadMultiAdapter()
+        readingAdapter = ReadMultiAdapter(this)
 
         //인텐트 값으로 해당 글의 WriteID를 받아오기
-        var intent: Intent
+        var WriteID:String  = intent.getStringExtra("data").toString()
 
         //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
-        //여기서는 임의로 하드코드를 박음.
-        var WritingArray: Array<Content> = db.getWriting("1")
-
-
+        var WritingArray: Array<Content> = db.getWriting("${WriteID}")
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
 
@@ -87,39 +83,110 @@ class ReadingActivity : AppCompatActivity() {
         {
             //binding.contentImg.setImageBitmap()
         }else{
-            //binding.contentImg.visibility = View.GONE
+            binding.contentImg.visibility = View.GONE
         }
 
         var WritingSize = WritingArray.size
 
-        //Question에 해당하는 대답 객체 리스트 받아오기
-        var AnswerArray: Array<Answer> = db.getAnswer(WritingArray[0].QuestionID.toString())
+        //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
+        var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
+        var QuestionIDSize = QuestionIDArray.size
+        Log.d("태그", "짠짠짠 ${QuestionIDSize}")
+        for(i in 0..QuestionIDSize-1)
+        {
+            //Question에 해당하는 대답 객체 리스트 받아오기
+            var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+            var AnswerSize = AnswerArray.size
+            var LastSize = AnswerSize-1
+            if(AnswerSize==1)
+            {
+                Log.d("태그", "짠짠짠 ${QuestionIDArray[i].Content}")
+                //답변이 한 개일 경우.
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                        null,AnswerArray[0].Content, AnswerArray[0].Date, false))
+            } else if(AnswerSize>1)
+            {
+                //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
+                //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
+                //답변의 갯수 만큼 반복문 - 첫번째
+                //
+                for(j in 0..AnswerSize-2)
+                {
+                    if(j==0)
+                    {
+                        readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                    }else{
+                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                    }
+                }
+                //마지막 내용!
+                readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                        null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+            }else{
+                //질문만 있고, 대답 없는 경우.
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                        null,null, null, false))
 
-        //질문 추가
-        readingAdapter.addItems(ReadQuestionData(WritingArray[0].Question,null,null,null,null,null,
-                   null,AnswerArray[0].Content))
+            }
+        }
 
 
+        //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(null,null,null,null,WritingArray[i].link,
+            readingAdapter.addItems(ReadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
-            var num:String = WritingArray[i].QuestionID.toString()
-            //Question에 해당하는 대답 객체 리스트 받아오기
-            var AnswerArray: Array<Answer> = db.getAnswer(num)
-            var AnswerSize = AnswerArray.size
-            if(AnswerSize>0)
+            //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
+            var QuestionIDArray: Array<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
+            var QuestionIDSize = QuestionIDArray.size
+
+            for(i in 0..QuestionIDSize-1)
             {
-                for(j in 0..AnswerSize-1)
+                //Question에 해당하는 대답 객체 리스트 받아오기
+                var AnswerArray: Array<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
+                var AnswerSize = AnswerArray.size
+                var LastSize = AnswerSize-1
+                if(AnswerSize==1)
                 {
-                    //질문 추가
-                    readingAdapter.addItems(ReadQuestionData(WritingArray[i].Question,null,null,null,AnswerArray[j].Link,null,
-                            null,AnswerArray[j].Content))
+                    //답변이 한 개일 경우.
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                            null,AnswerArray[0].Content, AnswerArray[0].Date, false))
+                } else if(AnswerSize>1)
+                {
+                    //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
+                    //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
+                    //답변의 갯수 만큼 반복문 - 첫번째
+                    //
+                    for(j in 0..AnswerSize-2)
+                    {
+                        if(j==0)
+                        {
+                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                        }else{
+                            readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
+                        }
+                    }
+                    //마지막 내용!
+                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                            null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                }else{
+                    //질문만 있고, 대답 없는 경우.
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                            null,null, null, false))
 
                 }
             }
+
         }
 
         binding.docList.adapter = readingAdapter
@@ -139,6 +206,10 @@ class ReadingActivity : AppCompatActivity() {
         //val memo = db.showImage("","")
         //val bitmap = init(memo.image)
         //binding.contentImg.setImageDrawable(drawable)
+
+        binding.cancelButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun init(ba:ByteArray): Bitmap? {
@@ -228,7 +299,7 @@ class ReadingActivity : AppCompatActivity() {
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                        var adapter = ReadMultiAdapter()
+                        var adapter = ReadMultiAdapter(this)
                         binding.docList.adapter = adapter
                         binding.linkUri.text = linkUri
                         binding.linkTitle.text = title

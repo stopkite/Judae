@@ -60,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
         //배열로 받아온 글 객체를 순서대로 출력하기.
         for (i in 0..(Array.size - 1)) {
             myDocList.add(
-                    HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                    HomeDocListData("${Array[i].WriteID}","${Array[i].Title}", "${Array[i].Category}",
                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
             )
         }
@@ -185,7 +185,7 @@ class HomeActivity : AppCompatActivity() {
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                     HomeDocListData("${Array[i].WriteID}","${Array[i].Title}", "${Array[i].Category}",
                              "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
@@ -225,7 +225,7 @@ class HomeActivity : AppCompatActivity() {
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData("${Array[i].Title}", "${Array[i].Category}",
+                     HomeDocListData("${Array[i].WriteID}","${Array[i].Title}", "${Array[i].Category}",
                              "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }

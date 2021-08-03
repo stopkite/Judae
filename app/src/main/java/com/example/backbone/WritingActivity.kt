@@ -3,7 +3,9 @@ package com.example.backbone
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+//import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
@@ -228,6 +230,7 @@ class WritingActivity : AppCompatActivity() {
                     null, null, docContent
                 )
             )
+
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
             //writingAdapter.notifyDataSetChanged()
         }
@@ -296,8 +299,9 @@ class WritingActivity : AppCompatActivity() {
             }
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            //writingAdapter.notifyDataSetChanged()
+            writingAdapter.notifyDataSetChanged()
         }
+
 
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
@@ -333,6 +337,7 @@ class WritingActivity : AppCompatActivity() {
         binding.editBtn.setEnabled(true)
 
         // 저장 버튼 클릭 리스너
+        //binding.saveBtn.setOnClickListener {
         binding.editBtn.setOnClickListener {
 
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장

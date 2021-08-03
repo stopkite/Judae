@@ -39,11 +39,11 @@ class MyQuestionActivity : AppCompatActivity() {
 
         // 질문 리스트 데이터 넣기
         for (i in 0..(Array.size - 1)) {
-            qList.add(MyQListData(resources.getDrawable(R.drawable.ic_q_list_question), "${Array[i].Content}", "${Array[i].WritingTitle}"))
+            qList.add(MyQListData(resources.getDrawable(R.drawable.ic_q_list_question), "${Array[i].Content}", "${Array[i].WritingTitle}","${Array[i].WritingID}"))
         }
 
         // 어댑터 변수 초기화
-        qAdapter = MyQListAdapter(qList)
+        qAdapter = MyQListAdapter(this, qList)
 
         // 만든 어댑터 리사이클러뷰에 연결
         myQList.adapter = qAdapter

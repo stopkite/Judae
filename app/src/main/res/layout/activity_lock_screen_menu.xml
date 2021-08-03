@@ -23,10 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/songmyung_regular"
         android:text="앱 암호 설정"
         android:textColor="@color/ivory"
-        android:textSize="36sp"
-        android:fontFamily="@font/songmyung_regular"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@id/backBtn"
         app:layout_constraintTop_toBottomOf="@id/backBtn" />
 
