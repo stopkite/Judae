@@ -22,16 +22,6 @@
         <item name="android:alertDialogTheme">@style/LongClickPopUp</item>
     </style>
 
-    <style name="Theme.MyDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
     <!-- 카테고리 팝업 bottom sheet 커스튬 -->
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
@@ -54,6 +44,13 @@
     <!-- 다이얼로그 배경 커스튬 -->
     <style name="MyDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:background">@drawable/bg_pop_up</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- 카테고리 저장 다이얼로그 배경 커스튬-->
+    <style name="CateSaveDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:background">@drawable/bg_cate_save</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

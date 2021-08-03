@@ -54,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
         android:autoLink="web"
         android:background="@null"
         android:fontFamily="@font/roboto_regular"
@@ -99,10 +100,12 @@
         android:id="@+id/cl_linkArea"
         android:layout_width="0dp"
         android:layout_height="81dp"
+        android:layout_marginStart="92dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="@id/linkInsertBtn"
-        app:layout_constraintStart_toStartOf="@id/linkInsertTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linkInsertTxt">
 
         <TextView

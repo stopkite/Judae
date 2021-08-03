@@ -46,12 +46,20 @@ import java.sql.Blob
 
 
 class WritingActivity : AppCompatActivity() {
+    // 본문 화면
     private lateinit var binding:ActivityWritingBinding
 
+    // 질문 및 대답 추가 화면
     private lateinit var binding2:WriteQuestionItemBinding
     private lateinit var binding3:WriteContentItemBinding
 
+    // 글쓰기 취소 화면
     private lateinit var binding4:CancelWritingBinding
+
+    // 카테고리 저장 화면
+    private lateinit var binding5:ActivitySavingBinding
+    // 리스트뷰에 붙일 adapter 변수 생성
+    private lateinit var saveCateAdapter: SaveCateAdapter
 
     // 링크 삽입 관련 메소드
     var linkUri: String = ""
@@ -121,8 +129,27 @@ class WritingActivity : AppCompatActivity() {
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         binding3 = WriteContentItemBinding.inflate(layoutInflater)
 
-        // 글쓰기 취소 팝업창 레이아웃
+        // 글쓰기 취소 팝업창 요소가 담긴 레이아웃
         binding4 = CancelWritingBinding.inflate(layoutInflater)
+
+
+        // 카테고리 저장 요소가 담긴 레이아웃
+        binding5 = ActivitySavingBinding.inflate(layoutInflater)
+        // xml에서 리스트뷰(cateList)를 가져와서 변수로 선언
+        val cateList = binding5.cateList
+        // CategoryList 클래스를 담는 배열 생성
+        val categoryList = ArrayList<SaveCateListData>()
+        // 카테고리에 들어갈 목록들 삽입(임의로 넣은 데이터)
+        categoryList.add(SaveCateListData("우정"))
+        categoryList.add(SaveCateListData("사랑"))
+        categoryList.add(SaveCateListData("진로"))
+        categoryList.add(SaveCateListData("가족"))
+        categoryList.add(SaveCateListData("감정"))
+        // adapter 초기화
+        saveCateAdapter = SaveCateAdapter(this,categoryList)
+        // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
+        cateList.adapter = saveCateAdapter
+
 
 
         var WriteID: String = ""
@@ -132,7 +159,6 @@ class WritingActivity : AppCompatActivity() {
             WriteID = intent.getStringExtra("data").toString()
             loadWriting(WriteID)
         }
-
 
         val writeQuestionList = ArrayList<WriteQuestionData>()
         val writeContentList = ArrayList<WriteContentData>()
@@ -461,27 +487,44 @@ class WritingActivity : AppCompatActivity() {
 
             Log.d("객체", "${ContentArray}")
             Log.d("객체", "${QuestionArray}")
-            // Long 클릭 팝업 띄울 때 이 코드 가져다가 활용해서 쓰면 됨
-            // 선택 목록
-            val selectList = arrayOf("변경", "삭제")
-            var selectDialog =
-                AlertDialog.Builder(this, R.style.LongClickPopUp)
 
-            selectDialog
-                .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+            // 카테고리 저장 팝업업
+            val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
-                    // 변경 버튼을 클릭했을 때
-                    if(which == 0){
-                        var t1 = Toast.makeText(this, "변경 버튼 클릭", Toast.LENGTH_SHORT)
-                        t1.show()
-                    }
-                    // 삭제 버튼을 클릭했을 때
-                    else if(which == 1){
-                        var t1 = Toast.makeText(this, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
-                        t1.show()
-                    }
-                }
-                ).show()
+            // view의 중복 사용을 방지하기 위한 코드
+            if (binding5.root.parent != null)
+                (binding5.root.parent as ViewGroup).removeView(binding5.root)
+
+            val mAlertDialog = mBuilder.show()
+
+            // 확인 버튼 다이얼로그
+            binding5.cateSaveBtn.setOnClickListener {
+                var t1 = Toast.makeText(this, "여기다가 카테고리 저장 받아오삼유", Toast.LENGTH_SHORT)
+                t1.show()
+            }
+
+
+//           // Long 클릭 팝업 띄울 때 이 코드 가져다가 활용해서 쓰면 됨
+//            // 선택 목록
+//            val selectList = arrayOf("변경", "삭제")
+//            var selectDialog =
+//                AlertDialog.Builder(this, R.style.LongClickPopUp)
+//
+//            selectDialog
+//                .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+//
+//                    // 변경 버튼을 클릭했을 때
+//                    if(which == 0){
+//                        var t1 = Toast.makeText(this, "변경 버튼 클릭", Toast.LENGTH_SHORT)
+//                        t1.show()
+//                    }
+//                    // 삭제 버튼을 클릭했을 때
+//                    else if(which == 1){
+//                        var t1 = Toast.makeText(this, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
+//                        t1.show()
+//                    }
+//                }
+//                ).show()
         }
 
     }

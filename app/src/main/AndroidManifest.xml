@@ -28,11 +28,7 @@
         <activity android:name=".MyQuestionActivity" />
         <activity android:name=".LockedScreenActivity" />
         <activity android:name=".HomeActivity">
-
         </activity>
-        <activity
-            android:name=".SavingActivity"
-            android:theme="@style/Theme.MyDialog" />
         <activity android:name=".LockedScreenSetActivity" />
         <activity android:name=".LockedScreenOnceActivity" />
     </application>

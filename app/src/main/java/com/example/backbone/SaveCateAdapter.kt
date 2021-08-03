@@ -9,7 +9,6 @@ import com.example.backbone.databinding.SaveCategoryItemBinding
 
 class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<SaveCateListData>):BaseAdapter() {
 
-    // 이건 그냥 화면 연결을 위한 코드... 깊이 이해할 필요 없는 코드!! ! (나도 이해 못함 ㅋㅋ)
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // category_select_item.xml 화면 불러오기
