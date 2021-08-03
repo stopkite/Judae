@@ -152,9 +152,10 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+
         // searchView 클릭 전에도 텍스트 띄우기
         binding.searchView.onActionViewExpanded()
-        Handler().postDelayed({ binding.searchView.clearFocus() }, 300)
+        Handler().postDelayed({ binding.searchView.clearFocus() }, 100)
 
         binding.searchView.setOnClickListener(View.OnClickListener
         { binding.searchView.setIconified(false)})
