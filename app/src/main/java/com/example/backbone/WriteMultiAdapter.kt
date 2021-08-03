@@ -3,10 +3,13 @@ package com.example.backbone
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityWritingBinding
@@ -20,7 +23,7 @@ import java.net.URLConnection
 import java.nio.file.Files.size
 
 private var isrun:Boolean = false
-class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(context: WritingActivity, var saveQuestionList:ArrayList<saveQuestionData>, var saveContentList:ArrayList<saveContentData>): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
@@ -58,12 +61,18 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+            //실행될 때: 버튼 누를때마다. 본문/질문 이런 거.
         when (holder) {
+            //질문뷰를 띄울 때
             is MyQHolder -> {
+                //리스트를 크기만큼 position이 돌아준다.
+                //position별로 setQList(맨 처음 초기에 띄워주는 함수)
+
                 holder.setQList(items[position] as WriteQuestionData)
+                //LoadList -> 빈 걸 만들고 거기에 내용을 집어넣기.
             }
             is MyContentHolder -> {
+            //내용뷰를 띄울 때
 
                 holder.setContentList(items[position] as WriteContentData)
 
@@ -72,6 +81,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 }
             }
         }
+
+
     }
 
     // 질문 Holder
@@ -82,7 +93,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.text = item.qTitle?.text
+                binding.qTitle.text = item.qTitle!!.text
             }
 
             binding.aImg.setImageDrawable(item.aImg)
@@ -253,20 +264,18 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var url1: URL? = null
         var content:String = ""
 
-
         fun setContentList(item: WriteContentData) {
 
             // 본문 삽입 이미지
             binding2.contentImg.setImageDrawable(item.contentImg)
-
             binding2.clLinkArea.visibility = View.GONE
 
             // 링크영역
-            /*if(item.linkLayout == null){
+            if(item.linkLayout == null){
                 binding2.clLinkArea.visibility = View.GONE
             }else{
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
-            }*/
+            }
 
             // 링크 삽입이 이뤄지는 곳(editText영역)
             if(item.linkInsertTxt == null){
@@ -293,9 +302,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding2.clLinkArea.visibility = View.VISIBLE
             }
             // 링크된 요소들
-            /*binding2.linkTitle.text = item.linkTitle
+            binding2.linkTitle.text = item.linkTitle
             binding2.linkUri.text = item.linkUri
-            binding2.linkIcon.setImageDrawable(item.linkIcon)*/
+            binding2.linkIcon.setImageDrawable(item.linkIcon)
 
 
             // 본문내용(텍스트)
@@ -306,8 +315,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
 
         }
-
-
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {
@@ -448,9 +455,14 @@ uri = linkUri
         this.items[position].apply {item}
     }
 
-    fun addItems(item: WriteItem) {
+    fun addItems(item: WriteItem){
         this.items.add(item)
         this.notifyDataSetChanged()
+    }
+    fun addContent(content: saveContentData) {
+        this.saveContentList.add(content)
+        this.notifyDataSetChanged()
+
     }
 
     interface ItemClickListener{

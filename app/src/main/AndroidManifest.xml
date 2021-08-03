@@ -13,11 +13,7 @@
         android:theme="@style/Theme.Backbone"
         android:usesCleartextTraffic="true">
         <activity android:name=".WritingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ReadingActivity">
 
@@ -28,7 +24,11 @@
         <activity android:name=".MyQuestionActivity" />
         <activity android:name=".LockedScreenActivity" />
         <activity android:name=".HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".SavingActivity"

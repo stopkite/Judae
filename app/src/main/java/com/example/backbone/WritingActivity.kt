@@ -1,6 +1,10 @@
 package com.example.backbone
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import android.util.Log
@@ -12,22 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.viewpager.widget.ViewPager
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
 import com.example.backbone.databinding.WriteQuestionItemBinding
-import org.jsoup.Jsoup
-import org.w3c.dom.Text
-import java.io.BufferedInputStream
-import java.io.IOException
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
-import java.lang.Exception
-import java.net.URL
-import java.net.URLConnection
-import java.sql.Blob
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -44,6 +37,10 @@ class WritingActivity : AppCompatActivity() {
    // private lateinit var writingAdapter: WritingAdapter
     private lateinit var writingAdapter:WriteMultiAdapter
 
+    private val REQUEST_READ_EXTERNAL_STORAGE = 1000
+    private val OPEN_GALLERY = 1
+    lateinit var viewPager : ViewPager
+
     @RequiresApi(Build.VERSION_CODES.O)
     var now = LocalDate.now()
     @RequiresApi(Build.VERSION_CODES.O)
@@ -53,9 +50,11 @@ class WritingActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     var today = formatter.format(localDateTime)
 
-    var Gallery = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //DBHelper와 이어주도록 클래스 선언
+        var db: DBHelper = DBHelper(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityWritingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -66,8 +65,39 @@ class WritingActivity : AppCompatActivity() {
         binding4 = CancelWritingBinding.inflate(layoutInflater)
 
 
-        val questionList = ArrayList<WriteQuestionData>()
-        val contentList = ArrayList<WriteContentData>()
+        val writeQuestionList = ArrayList<WriteQuestionData>()
+        val writeContentList = ArrayList<WriteContentData>()
+
+        val saveQuestionList = ArrayList<saveQuestionData>()
+        val saveContentList = ArrayList<saveContentData>()
+
+        class qSave(qTitle: String, aImg: Drawable?,
+                    linkLayout: View?, linkTitle:String, linkUri:String, linkIcon: Drawable?,
+                    aTxt: String) {
+            var qTitle = qTitle
+            var aImg = aImg
+            var linkLayout = linkLayout
+            var linkTitle = linkTitle
+            var linkUri = linkUri
+            var linkIcon = linkIcon
+            var aTxt = aTxt
+
+        }
+        var questionsave = ArrayList<qSave>()
+
+        class cSave(contentImg: Drawable?,
+                    linkLayout: View?, linkTitle:String, linkContent:String, linkUri:String, linkIcon: Drawable?,
+                    docContent: String) {
+            var contentImg = contentImg
+            var linkLayout = linkLayout
+            var linkTitle = linkTitle
+            var linkContent = linkContent
+            var linkUri = linkUri
+            var linkIcon = linkIcon
+            var docContent = docContent
+
+        }
+        var contentsave = ArrayList<cSave>()
 
         //저장하기 위한 객체 생성
         //answer 객체
@@ -106,13 +136,26 @@ class WritingActivity : AppCompatActivity() {
         // write_qustion_item.xml에서 view들 가져오기
         val qIcon = binding2.qIcon
         val aIcon = binding2.aIcon
-        val qTitle = binding2.qTitle
-        val aTxt = binding2.aTxt
+        var qTitle = binding2.qTitle
+        //qTitle = findViewById(R.id.qTitle);
+        val qTitleText: String = qTitle.getText().toString()
+
+        var aTxt = binding2.aTxt
+        //aTxt = findViewById(R.id.aTxt);
+        val aTxtText: String = aTxt.getText().toString()
+
         val addBtn = binding2.addAnswer
         val qlinkLayout = binding2.clLinkArea
+        val qlinkIcon = binding2.linkIcon
+        val qlinkTitle = binding2.linkTitle
+        val qlinkContent = binding2.linkContent
+        val qlinkUri = binding2.linkUri
 
         //write_content_item.xml에서 view들 가져오기
-        val docContent = binding3.docContent
+        var docContent = binding3.docContent
+        //docContent = findViewById(R.id.docContent);
+        val docContentText: String = docContent.getText().toString()
+
         val contentImg = binding3.contentImg
         val clinkLayout = binding3.clLinkArea
         val clinkIcon = binding3.linkIcon
@@ -150,7 +193,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter(this)
+        writingAdapter = WriteMultiAdapter(this, saveQuestionList, saveContentList)
         binding.docList.adapter = writingAdapter
 
 
@@ -170,6 +213,14 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
+
+            var count = 0
+            if (writeContentList.size > 0){
+                contentsave.add(count, cSave(contentImg.drawable,
+                clinkLayout, clinkTitle.toString(), clinkContent.toString(), clinkUri.toString(), clinkIcon.drawable,
+                docContent.toString()))
+                count++
+            }
             //본문 박스 생성
             writingAdapter.addItems(
                 WriteContentData(
@@ -177,9 +228,8 @@ class WritingActivity : AppCompatActivity() {
                     null, null, docContent
                 )
             )
-
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
+            //writingAdapter.notifyDataSetChanged()
         }
 
         //하단의 '링크' 버튼 클릭 리스너
@@ -198,19 +248,70 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '사진' 버튼 클릭 리스너
         binding.addImgBtn.setOnClickListener {
-            writingAdapter.addItems(
-                WriteContentData(contentImg.drawable, null, null, null, null, null,
-                    null, null, null
-                )
-            )
+            setContentView(R.layout.activity_writing)
+
+            //viewPager = findViewById(R.id.viewPager)
+
+            //권한이 허용되어있는지 self로 체크(확인)
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=
+                PackageManager.PERMISSION_GRANTED) {
+                //허용되지 않았을 때 - 권한이 필요한 알림창을 올림
+                //이전에 거부한 적이 있는지 확인
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    var dlg = AlertDialog.Builder(this)
+                    dlg.setTitle("권한이 필요한 이유")
+                    dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                    //OK버튼
+                    dlg.setPositiveButton("확인") { dialog, which ->
+                        ActivityCompat.requestPermissions(this@WritingActivity,
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                    }
+                    dlg.setNegativeButton("취소", null)
+                    dlg.show()
+                } else {
+                    //권한 요청
+                    ActivityCompat.requestPermissions(this,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                }
+            }else{
+                //권한이 이미 제대로 허용돰
+                val intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.setType("image/*")
+                startActivityForResult(intent, OPEN_GALLERY)
+
+                var currentImageUrl : Uri? = intent?.data
+
+                try{
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,currentImageUrl)
+                    binding3.contentImg.setImageBitmap(bitmap)
+                    writingAdapter.addItems(
+                        WriteContentData(contentImg.drawable, null, null, null, null, null,
+                            null, null, null
+                        )
+                    )
+
+                } catch(e:Exception) {
+                    e.printStackTrace()
+                }
+            }
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
+            //writingAdapter.notifyDataSetChanged()
         }
-
 
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
+
+            var count = 0
+            if (writeQuestionList.size > 0){
+                questionsave.add(count, qSave(qTitleText, null, qlinkLayout, qlinkTitle.toString(), qlinkUri.toString(),
+                            qlinkIcon.drawable, aTxt.toString()))
+                Log.d("되나?","${questionsave[count].qTitle}")
+                count++
+
+
+            }
+
             // 질문 추가
             writingAdapter.addItems(
                 WriteQuestionData(
@@ -218,13 +319,13 @@ class WritingActivity : AppCompatActivity() {
                     null, null, aTxt, null
                 )
             )
-            questionList.add(WriteQuestionData(qTitle, null, null, null, null, null,
-                null, null, aTxt, null
+
+            writeQuestionList.add(WriteQuestionData(qTitle, null, null, null, null, null, null, null,aTxt,
+                null
             ))
 
-
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
+            //writingAdapter.notifyDataSetChanged()
 
         }
 
@@ -238,25 +339,27 @@ class WritingActivity : AppCompatActivity() {
             // 제목 객체 저장
             sWriting (docTitle.toString(), today, "기본")
 
+
             // 질문 - 답변 관련 데이터 리스트에 저장
-            for (i in 0..(questionList.size - 1)) {
-                if (QuestionArray != null) {
-                    QuestionArray.set(i, sQuestion(questionList[i].qTitle.toString()))
+            for (i in 0..(writeQuestionList.size - 1)) {
+                if (writeQuestionList != null) {
+                    QuestionArray?.set(i, sQuestion(questionsave[i].qTitle))
                 }
                 if (AnswerArray != null) {
-                    AnswerArray.set(i, sAnswer(questionList[i].aTxt.toString(), today, questionList[i].aImg, questionList[i].linkUri.toString()))
+                    AnswerArray.set(i, sAnswer(questionsave[i].aTxt, today, questionsave[i].aImg, questionsave[i].linkUri))
                 }
             }
 
-            for (i in 0..(contentList.size - 1)) {
+            for (i in 0..(writeContentList.size - 1)) {
                 if (ContentArray != null) {
-                    ContentArray.set(i, sContent(contentList[i].docContent.toString(), contentList[i].contentImg, contentList[i].linkUri.toString()))
+                    ContentArray.set(i, sContent(contentsave[i].docContent, contentsave[i].contentImg, contentsave[i].linkUri))
                 }
             }
 
             Log.d("객체", "${ContentArray}")
             Log.d("객체", "${QuestionArray}")
         }
+
     }
 
 }

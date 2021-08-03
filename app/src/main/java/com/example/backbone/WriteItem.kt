@@ -20,6 +20,18 @@ data class WriteContentData(var contentImg: Drawable?,
                                 var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
                                 var docContent:EditText?): WriteItem
 
+data class saveQuestionData(var qTitle: String?, var aImg: Drawable?,
+                             var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
+                             var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
+                             var aTxt: String?, var addAnswer: ImageButton?): WriteItem
+
+data class saveContentData(var contentImg: Drawable?,
+                            var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
+                            var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
+                            var docContent:EditText?): WriteItem
+
+
+
 
 /*
 <<WriteQuestionData>>
