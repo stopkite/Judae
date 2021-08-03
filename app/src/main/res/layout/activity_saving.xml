@@ -44,6 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cancelTitle"
-        tools:listitem="@layout/save_category_item"></ListView>
+        tools:listitem="@layout/save_category_item">
+
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,8 @@
     </style>
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">@drawable/bg_cate_popup</item>
     </style>
 

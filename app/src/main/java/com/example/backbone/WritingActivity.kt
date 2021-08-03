@@ -15,6 +15,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView.CHOICE_MODE_SINGLE
+import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -57,6 +59,7 @@ class WritingActivity : AppCompatActivity() {
     private lateinit var binding5:ActivitySavingBinding
     // 리스트뷰에 붙일 adapter 변수 생성
     private lateinit var saveCateAdapter: SaveCateAdapter
+    private lateinit var binding6:SaveCategoryItemBinding
 
     // 링크 삽입 관련 메소드
     var linkUri: String = ""
@@ -132,21 +135,21 @@ class WritingActivity : AppCompatActivity() {
 
         // 카테고리 저장 요소가 담긴 레이아웃
         binding5 = ActivitySavingBinding.inflate(layoutInflater)
+        binding6 = SaveCategoryItemBinding.inflate(layoutInflater)
+
+        // 카테고리 안에 있는 라디오 버튼 변수 가져오기
+        var radioBtn = binding6.popupCategoryRbtn
         // xml에서 리스트뷰(cateList)를 가져와서 변수로 선언
         val cateList = binding5.cateList
         // CategoryList 클래스를 담는 배열 생성
         val categoryList = ArrayList<SaveCateListData>()
         // 카테고리에 들어갈 목록들 삽입(임의로 넣은 데이터)
-        categoryList.add(SaveCateListData("우정"))
-        categoryList.add(SaveCateListData("사랑"))
-        categoryList.add(SaveCateListData("진로"))
-        categoryList.add(SaveCateListData("가족"))
-        categoryList.add(SaveCateListData("감정"))
+        categoryList.add(SaveCateListData(radioBtn))
+        categoryList.add(SaveCateListData(radioBtn))
         // adapter 초기화
-        saveCateAdapter = SaveCateAdapter(this,categoryList)
+        saveCateAdapter = SaveCateAdapter(this,categoryList,binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
-
 
         val writeQuestionList = ArrayList<WriteQuestionData>()
         val writeContentList = ArrayList<WriteContentData>()
