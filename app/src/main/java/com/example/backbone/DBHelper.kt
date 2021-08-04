@@ -130,6 +130,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
     //카테고리 화면
     //BottomFragmentList.kt
+    //WritingActivity.kt
     //카테고리 내용 받아오기
     fun getCategory(): ArrayList<String>
     {

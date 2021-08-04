@@ -133,10 +133,21 @@ class WritingActivity : AppCompatActivity() {
         // xml에서 리스트뷰(cateList)를 가져와서 변수로 선언
         val cateList = binding5.cateList
         // CategoryList 클래스를 담는 배열 생성
-        val categoryList = ArrayList<SaveCateListData>()
-        // 카테고리에 들어갈 목록들 삽입(임의로 넣은 데이터)
-        categoryList.add(SaveCateListData(radioBtn))
-        categoryList.add(SaveCateListData(radioBtn))
+        var categoryList = ArrayList<String>()
+        //카테고리 정보를 DB에서 받아와 배열에 담기.
+        categoryList = db.getCategory()
+
+        //배열의 크기만큼 카테고리 아이템 설정하기.
+        //배열로 받아온 글 객체를 순서대로 출력하기.
+        /*
+                for(i in 0..(categoryList.size-1))
+        {
+            categoryList.add(
+                    SaveCateListData("${categoryList[i]}")
+            )
+        }
+         */
+
         // adapter 초기화
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
