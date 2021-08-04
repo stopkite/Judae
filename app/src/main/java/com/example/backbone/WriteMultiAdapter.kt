@@ -663,14 +663,12 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
-            Log.d("태그", "들어왔냐!")
-            Log.d("태그", "${item.contentImg}")
             if(item.contentImg == null)
             {
                 binding2.contentImg.visibility = View.GONE
             }else{
                 // 본문 삽입 이미지
-                binding2.contentImg.setImageURI(item.contentImg)
+                binding2.contentImg.setImageBitmap(item.contentImg)
             }
 
 

@@ -1,14 +1,11 @@
 package com.example.backbone
 
-import android.content.ClipData
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.text.Editable
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 
 interface WriteItem {
     abstract val id: Any
@@ -21,7 +18,7 @@ data class WriteQuestionData(
     var aTxt: EditText?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class WriteContentData(
-        override var id: Int, var contentImg: Uri?,
+        override var id: Int, var contentImg: Bitmap?,
         var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
         var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
         var docContent:EditText?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
