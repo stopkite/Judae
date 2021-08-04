@@ -51,13 +51,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         is WriteQuestionData -> {
             TYPE_Question
         }
-        is saveQuestionData -> {
-            TYPE_Question
-        }
         is WriteContentData -> {
-            TYPE_Content
-        }
-        is saveContentData -> {
             TYPE_Content
         }
         is loadContentData -> {
@@ -114,6 +108,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 holder.itemView.setOnClickListener{
                     itemClickListner.onClick(it,position)
                 }
+
             }
         }
     }
@@ -313,6 +308,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var content:String = ""
 
         fun setContentList(item: loadContentData) {
+
             //사진 띄우기 **** - 나중에 하기.
             if(item.contentImg != null)
             {
@@ -340,6 +336,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
 
         }
+
 
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {
@@ -707,6 +704,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 //쓰레드 실행(한번만 실행함.)
                     loadLink(linkUri)
                     binding2.clLinkArea.visibility = View.VISIBLE
+                    //로딩되는 시간동안 그냥 멈춰두기
+                    Thread.sleep(350L)
+                    binding2.linkInsertTxt.visibility = View.GONE
+                    binding2.linkInsertBtn.visibility = View.GONE
             }
             // 링크된 요소들
             /*binding2.linkTitle.text = item.linkTitle
