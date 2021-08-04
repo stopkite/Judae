@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -96,7 +97,6 @@ class HomeActivity : AppCompatActivity() {
         // 환경 설정 탭
         // 버튼을 누르면 환경설정 창이 뜨게 만들기
         binding.settingBtn.setOnClickListener {
-
             binding.root.openDrawer(Gravity.LEFT)
         }
 
@@ -238,5 +238,18 @@ class HomeActivity : AppCompatActivity() {
 
      override fun onRestart() {
          super.onRestart()
+     }
+
+     override fun onBackPressed() {
+
+        // 메뉴가 열린 채로 뒤로가기 버튼을 눌렀을 때
+         // 메뉴창을 닫히게 하는 코드
+        drawerLayout = binding.drawerLayout
+
+         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+             drawerLayout.closeDrawer(GravityCompat.START);
+         } else {
+             super.onBackPressed();
+         }
      }
 }
