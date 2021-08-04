@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -33,17 +34,13 @@ import com.example.backbone.databinding.WriteQuestionItemBinding
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
 import org.w3c.dom.Text
 import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.net.URLConnection
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class WritingActivity : AppCompatActivity() {
@@ -253,11 +250,6 @@ class WritingActivity : AppCompatActivity() {
         val clinkUri = binding3.linkUri
         val clinkInsertTxt = binding3.linkInsertTxt
         val clinkInsertBtn = binding3.linkInsertBtn
-
-        //docContent = findViewById(R.id.docContent);
-        val docContentText: String = docContent.getText().toString()
-
-
 
         fun drawableToByteArray(drawable: Drawable?): ByteArray? {
             val bitmapDrawable = drawable as BitmapDrawable?
