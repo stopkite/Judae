@@ -1,22 +1,17 @@
 package com.example.backbone
 
 import android.Manifest
-import android.content.DialogInterface
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-//import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.*
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView.CHOICE_MODE_SINGLE
-import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -33,12 +28,9 @@ import com.example.backbone.databinding.WriteQuestionItemBinding
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import com.bumptech.glide.Glide
 import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
-import org.w3c.dom.Text
 import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
