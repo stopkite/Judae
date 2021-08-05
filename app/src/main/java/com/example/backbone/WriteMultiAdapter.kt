@@ -1,36 +1,28 @@
 package com.example.backbone
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.net.wifi.WifiConfiguration.AuthAlgorithm.strings
 import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import android.widget.EditText
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
-import com.google.android.material.internal.ContextUtils.getActivity
-import com.example.backbone.databinding.ActivityWritingBinding
-import com.example.backbone.databinding.WriteContentItemBinding
-import com.example.backbone.databinding.WriteQuestionItemBinding
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
 import java.net.URLConnection
-import java.nio.file.Files.size
 
 private var isrun:Boolean = false
 class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
@@ -527,7 +519,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 return MyQHolder(binding)
             }
         }
-
+        
         fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
         {
             binding.linkUri.text = linkUri
@@ -535,6 +527,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             binding.linkContent.text = content
             binding.linkIcon.setImageBitmap(bm1)
         }
+
+
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
         var title: String = ""
@@ -872,10 +866,10 @@ uri = linkUri
         this.items[position].apply {item}
     }
 
-    fun addItems(item: WriteItem) {
+    /*fun addItems(String s) {
         this.items.add(item)
-        this.notifyDataSetChanged()
-    }
+        //this.notifyDataSetChanged()
+    }*/
 
     interface ItemClickListener{
         fun onClick(view: View,position: Int)

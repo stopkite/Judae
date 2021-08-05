@@ -12,7 +12,7 @@ interface WriteItem {
 }
 
 data class WriteQuestionData(
-    override var id: Int, var qTitle: EditText?, var aImg: Drawable?,
+    override var id: Int, var qTitle: EditText?, var aImg: Bitmap?,
     var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
     var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
     var aTxt: EditText?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
