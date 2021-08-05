@@ -107,7 +107,7 @@ class WritingActivity : AppCompatActivity() {
     }
 
     var writeID: String = ""
-    var id = 0
+    var count = 1
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
     val writeContentList = ArrayList<WriteContentData>()
@@ -298,7 +298,7 @@ class WritingActivity : AppCompatActivity() {
 
 
             //writeContentList에 해당 내용 넣기
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+            writeContentList.add(WriteContentData(count, null, null, null, null, null,
                         null, null, null, docContent, null, null
             ))
 
@@ -310,6 +310,7 @@ class WritingActivity : AppCompatActivity() {
             Log.d("과연", "${docContent.text.toString()}")
 
             id++
+            count++
 
         }
 
@@ -319,7 +320,7 @@ class WritingActivity : AppCompatActivity() {
             // 본문에 링크 생성
 
             //writeContentList에 해당 내용 넣기
-            writeContentList.add(WriteContentData(id2, null, clinkInsertTxt, clinkInsertBtn, null, null,
+            writeContentList.add(WriteContentData(count, null, clinkInsertTxt, clinkInsertBtn, null, null,
                 null, null, null, null, null, null
             ))
 
@@ -330,6 +331,7 @@ class WritingActivity : AppCompatActivity() {
             ContentArray.add(id2, sContent(docContent.text.toString(), null, null))
 
             id2++
+            count++
         }
 
         //하단의 '사진' 버튼 클릭 리스너
@@ -403,7 +405,7 @@ class WritingActivity : AppCompatActivity() {
 
             ContentArray.add(writeContentList.size-1, sContent(writeContentList[(writeContentList.size-1)].docContent?.text.toString(), writeContentList[(writeContentList.size-1)].contentImg, writeContentList[(writeContentList.size-1)].linkUri))
             QuestionArray.add(writeQuestionList.size-1, sQuestion(writeQuestionList[(writeQuestionList.size-1)].qTitle?.text.toString()))
-            AnswerArray.add(writeQuestionList.size-1, sAnswer(writeQuestionList[(writeContentList.size-1)].aTxt?.text.toString(), today, writeQuestionList[(writeContentList.size-1)].aImg, writeQuestionList[(writeContentList.size-1)].qTitle?.text.toString()))
+            AnswerArray.add(writeQuestionList.size-1, sAnswer(writeQuestionList[(writeContentList.size-1)].aTxt?.text.toString(), today, writeQuestionList[(writeContentList.size-1)].aImg, writeQuestionList[(writeContentList.size-1)].linkUri))
 
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
@@ -725,7 +727,7 @@ class WritingActivity : AppCompatActivity() {
                         }
 
 
-                        writeContentList.add(WriteContentData(id4, img, null, null, null, null,
+                        writeContentList.add(WriteContentData(count, img, null, null, null, null,
                             null, null, null, null, null, null
                         ))
 
@@ -737,6 +739,7 @@ class WritingActivity : AppCompatActivity() {
 
 
                         id4++
+                        count++
                     }
 
                 }
