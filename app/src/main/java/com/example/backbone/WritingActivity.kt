@@ -175,9 +175,10 @@ class WritingActivity : AppCompatActivity() {
         }
         var questionsave = ArrayList<qSave>()
 
-        class cSave(contentImg: ByteArray?,
-                    linkLayout: View?, linkTitle:String, linkContent:String, linkUri:String, linkIcon: ByteArray?,
-                    docContent: String) {
+        class cSave(
+                contentImg: ByteArray?,
+                linkLayout: View?, linkTitle: String?, linkContent: String?, linkUri:String?, linkIcon: Bitmap?,
+                docContent: String) {
             var contentImg = contentImg
             var linkLayout = linkLayout
             var linkTitle = linkTitle
@@ -327,33 +328,30 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
+            var id = writeContentList.size
 
-            /*var count = 0
-            if (writeContentList.size > 0){
-                contentsave.add(count, cSave(drawableToByteArray(contentImg.drawable),
-                clinkLayout, clinkTitle.toString(), clinkContent.toString(), clinkUri.toString(), drawableToByteArray(clinkIcon.drawable),
+            for (i in 0..writeContentList.size-1){
+                contentsave.add(i, cSave(null,
+                clinkLayout, null, null, "", null,
                 docContent.toString()))
-                count++
-            }*/
+            }
+
             //본문 박스 생성
-            var id = 0
             saveContentList.add(id, saveContentData(id, null, null, null, null, null,
-                null, null, null, docContent.text.toString(), null, null))
-            binding3.docContent.setText("${saveContentList[id].docContent}")
+                null, null, null,null, null, null))
+
+
             writingAdapter.addItems(
                 WriteContentData(
                     id, null,null, null, null, null, null,
-                    null, null, docContent,null,null
+                    null, null, "",null,null
                 )
             )
-            //Log.d("돼라","${writeContentList}")
 
 
             writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                        null, null, null, docContent, null, null
+                        null, null, null, null, null, null
             ))
-
-            id++
 
         }
 
@@ -363,8 +361,8 @@ class WritingActivity : AppCompatActivity() {
             var id = 0
             writingAdapter.addItems(
                 WriteContentData(
-                    id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, clinkTitle.text.toString(), clinkContent.text.toString(),
-                    clinkUri.text.toString(), clinkIcon.drawable, null, null, null
+                    id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
+                    null, null, null, null, null
                 )
             )
             id++
@@ -409,18 +407,15 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
 
-            var count = 0
-            if (writeQuestionList.size > 0){
-                questionsave.add(count, qSave(qTitleText, null, qlinkLayout, qlinkTitle.toString(), qlinkUri.toString(),
-                            drawableToByteArray(qlinkIcon.drawable), aTxt.toString()))
-                Log.d("되나?","${questionsave[count].qTitle}")
-                count++
-
-
+            Log.d("되나?","${writeQuestionList.size}")
+            for (i in 0..writeQuestionList.size-1){
+                questionsave.add(i, qSave(qTitleText, null, qlinkLayout, qlinkTitle.toString(), qlinkUri.toString(),
+                            null, aTxt.toString()))
+                Log.d("되나?","${questionsave[i].qTitle}")
+                Log.d("되나?","${i}")
             }
 
-            var id = 0
-            writeQuestionList.add(WriteQuestionData(id, qTitle, null, null, null, null, null, null, null,aTxt,
+            writeQuestionList.add(WriteQuestionData(writeQuestionList.size, null, null, null, null, null, null, null, null,null,
                 null, null, null
             ))
 
@@ -428,17 +423,14 @@ class WritingActivity : AppCompatActivity() {
             // 질문 추가
             writingAdapter.addItems(
                     WriteQuestionData(
-                            id, qTitle, null, null, null, null, null,
-                            null, null, aTxt, null, qAddImgBtn, qAddLinkBtn
+                            writeQuestionList.size, null, null, null, null, null, null,
+                            null, null, null, null, qAddImgBtn, qAddLinkBtn
                     )
             )
 
-            id++
-
-
 
             //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            //writingAdapter.notifyDataSetChanged()
+            writingAdapter.notifyDataSetChanged()
 
         }
 
@@ -466,7 +458,7 @@ class WritingActivity : AppCompatActivity() {
 
             for (i in 0..(writeContentList.size - 1)) {
                 if (ContentArray != null) {
-                    ContentArray.set(i, sContent(contentsave[i].docContent, contentsave[i].contentImg, contentsave[i].linkUri))
+                    ContentArray.set(i, sContent(contentsave[i].docContent, contentsave[i].contentImg, contentsave[i].linkUri!!))
                 }
             }
 
