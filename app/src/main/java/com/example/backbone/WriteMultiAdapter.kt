@@ -461,7 +461,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.qTitle.text = item.qTitle?.text
             }
 
-            binding.aImg.setImageDrawable(item.aImg)
+            if(item.aImg == null)
+            {
+                binding.aImg.visibility = View.GONE
+            }else{
+                // 본문 삽입 이미지
+                binding.aImg.setImageBitmap(item.aImg)
+            }
 
             // 링크
             if(item.linkLayout == null){
