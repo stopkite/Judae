@@ -14,6 +14,7 @@ import com.example.backbone.databinding.SaveCategoryItemBinding
 
 class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<String>,saveBtn: Button):BaseAdapter() {
 
+    var selectedPosition: Int = -1
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // category_select_item.xml 화면 불러오기
@@ -23,9 +24,13 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
     var saveBtn = saveBtn
 
     // single 선택과 버튼 (비)활성화를 위한 변수
-    companion object {
+    /*
+        companion object {
         var selectedPosition = -1
+        var selected = false
     }
+     */
+
 
     // 리스트에 아이템이 몇 개가 들어있는 지 갯수 반환
     override fun getCount(): Int = categoryArrayCat.size
@@ -47,6 +52,7 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
         //다중선택 방지 코드
         binding.popupCategoryRbtn.isChecked = selectedPosition == position
         binding.popupCategoryRbtn.setOnClickListener {
+            //selected = !selected
             selectedPosition = position
             notifyDataSetChanged()
         }
@@ -60,6 +66,4 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
 
         return binding.root
     }
-
-
 }

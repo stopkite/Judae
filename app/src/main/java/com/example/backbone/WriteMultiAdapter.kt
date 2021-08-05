@@ -85,10 +85,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             is MyContentHolder -> {
 
                 holder.setContentList(items[position] as WriteContentData)
-
-                holder.itemView.setOnClickListener{
-                    itemClickListner.onClick(it,position)
-                }
             }
             is LoadQHolder -> {
                 holder.setQList(items[position] as loadQuestionData)
@@ -96,11 +92,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             is LoadContentHolder -> {
 
                 holder.setContentList(items[position] as loadContentData)
-
-                holder.itemView.setOnClickListener{
-                    itemClickListner.onClick(it,position)
-                }
-
             }
         }
     }

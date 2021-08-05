@@ -14,7 +14,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     override fun onCreate(db: SQLiteDatabase?) {
     //추후 수정 예정
         /*
-                Log.d("태그", "실행되냐")
      //대답 테이블
         db!!.execSQL("CREATE TABLE Answer (QustionID TEXT NOT NULL,AnswerID INTEGER NOT NULL,Content TEXT,PRIMARY KEY(AnswerID));")
 

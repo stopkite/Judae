@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-//import android.graphics.drawable.Drawable
 import android.os.*
 import android.util.Log
 import android.view.View
@@ -20,13 +19,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-//import com.example.backbone.databinding.ActivityWritingBinding
-//import com.example.backbone.databinding.CancelWritingBinding
-//import com.example.backbone.databinding.WriteContentItemBinding
-//import com.example.backbone.databinding.WriteQuestionItemBinding
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -64,6 +60,8 @@ class WritingActivity : AppCompatActivity() {
 
     //DBHelper와 이어주도록 클래스 선언
     var db: DBHelper = DBHelper(this)
+
+    var Wid = 1
 
     // 리사이클러뷰에 붙일 어댑터 선언
    // private lateinit var writingAdapter: WritingAdapter
@@ -107,17 +105,16 @@ class WritingActivity : AppCompatActivity() {
     }
 
     var writeID: String = ""
-    var id = 0
+    //var id = 0
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
     val writeContentList = ArrayList<WriteContentData>()
     val loadQuestionList = ArrayList<loadQuestionData>()
     val loadContentList = ArrayList<loadContentData>()
 
-
     //저장하기 위한 객체 생성
     //answer 객체
-    class sAnswer(content: String, date: String, image: Bitmap?, link: String?){
+    class sAnswer(Qid: Int, content: String, date: String, image: Bitmap?, link: String?){
         var content = content
         var date = date
         var image = image
@@ -126,7 +123,8 @@ class WritingActivity : AppCompatActivity() {
     var AnswerArray = ArrayList<sAnswer>()
 
     //content 객체
-    class sContent(content: String?, image: Bitmap?, link: String?) {
+    class sContent(Cid: Int, content: String?, image: Bitmap?, link: String?) {
+        var Cid = Int
         var content = content
         var image = image
         var link = link
@@ -134,7 +132,9 @@ class WritingActivity : AppCompatActivity() {
     var ContentArray = ArrayList<sContent>()
 
     //question 객체
-    class sQuestion (content: String) {
+    class sQuestion (Cid: Int, Qid: Int, content: String) {
+        var Cid = Cid
+        var Qid = Qid
         var content = content
     }
     var QuestionArray = ArrayList<sQuestion>()
@@ -178,17 +178,6 @@ class WritingActivity : AppCompatActivity() {
         var categoryList = ArrayList<String>()
         //카테고리 정보를 DB에서 받아와 배열에 담기.
         categoryList = db.getCategory()
-
-        //배열의 크기만큼 카테고리 아이템 설정하기.
-        //배열로 받아온 글 객체를 순서대로 출력하기.
-        /*
-                for(i in 0..(categoryList.size-1))
-        {
-            categoryList.add(
-                    SaveCateListData("${categoryList[i]}")
-            )
-        }
-         */
 
         // adapter 초기화
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
@@ -245,8 +234,6 @@ class WritingActivity : AppCompatActivity() {
             // 확인 버튼 다이얼로그
             binding4.confirmBtn.setOnClickListener {
                 // 홈 화면으로 이동
-                //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
-                //startActivity(backIntent)
                 finish()
             }
 
@@ -277,13 +264,12 @@ class WritingActivity : AppCompatActivity() {
             null, null, null, docContent, null, null
         ))
         writingAdapter.updateList(writeContentList)
-        ContentArray.add(0, sContent(docContent.text.toString(), null, null))
+        ContentArray.add(0, sContent(0,docContent.text.toString(), null, null))
 
 
         var WriteID: String = ""
         if(intent.hasExtra("data"))
         {
-            Log.d("태그", "${WriteID}")
             WriteID = intent.getStringExtra("data").toString()
             loadWriting(WriteID, writingAdapter)
         }
@@ -291,14 +277,12 @@ class WritingActivity : AppCompatActivity() {
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
 
-        var id = 1
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
 
 
-
             //writeContentList에 해당 내용 넣기
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+            writeContentList.add(WriteContentData(Wid, null, null, null, null, null,
                         null, null, null, docContent, null, null
             ))
 
@@ -306,20 +290,21 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.updateList(writeContentList)
 
             //객체에 저장
-            ContentArray.add(id, sContent(docContent.text.toString(), null, null))
-            Log.d("과연", "${docContent.text.toString()}")
+            ContentArray.add(Wid, sContent(Wid, docContent.text.toString(), null, null))
 
-            id++
+            Wid++
 
         }
 
-        var id2 = 0
+
+        var Linkid = 0
         //하단의 '링크' 버튼 클릭 리스너
+        //본문
         binding.addLinkBtn.setOnClickListener {
             // 본문에 링크 생성
 
             //writeContentList에 해당 내용 넣기
-            writeContentList.add(WriteContentData(id2, null, clinkInsertTxt, clinkInsertBtn, null, null,
+            writeContentList.add(WriteContentData(Wid, null, clinkInsertTxt, clinkInsertBtn, null, null,
                 null, null, null, null, null, null
             ))
 
@@ -327,11 +312,12 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.updateList(writeContentList)
 
             //객체에 저장
-            ContentArray.add(id2, sContent(docContent.text.toString(), null, null))
+            ContentArray.add(Wid, sContent(Wid, docContent.text.toString(), null, null))
 
-            id2++
+            //id2++
         }
 
+        //본문에 사진 추가
         //하단의 '사진' 버튼 클릭 리스너
         binding.addImgBtn.setOnClickListener {
             //setContentView(R.layout.activity_writing)
@@ -365,14 +351,11 @@ class WritingActivity : AppCompatActivity() {
         }
 
 
-        var id3 = 0
+        var Qid = 0
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
-
-
-
             //writeContentList에 해당 내용 넣기
-            writeQuestionList.add(WriteQuestionData(id3, qTitle, null, null, null, null, null, null, null,aTxt,
+            writeQuestionList.add(WriteQuestionData(Qid, qTitle, null, null, null, null, null, null, null,aTxt,
                 null, null, null
             ))
 
@@ -380,68 +363,64 @@ class WritingActivity : AppCompatActivity() {
             writingAdapter.updateList(writeQuestionList)
 
             //객체에 저장
-            QuestionArray.add(id3, sQuestion(qTitle.text.toString()))
-            AnswerArray.add(id3, sAnswer(aTxt.text.toString(), today, null, null))
+            QuestionArray.add(Qid, sQuestion(Wid, Qid, qTitle.text.toString()))
+            AnswerArray.add(Qid, sAnswer(Qid, aTxt.text.toString(), today, null, null))
 
-            id3++
-
+            Qid++
         }
 
-        //저장 활성화
-       binding.saveBtn.setEnabled(true)
+        // (+)저장 활성화 -> 조건 필요
+        binding.saveBtn.setEnabled(true)
+
+
+
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
-
-
-            // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
-            // 제목 객체 저장
-            writingAdapter.updateList(writeQuestionList)
-            writingAdapter.updateList(writeContentList)
-
-            sWriting(docTitle.text.toString(), today, "기본")
-
-            ContentArray.add(writeContentList.size-1, sContent(writeContentList[(writeContentList.size-1)].docContent?.text.toString(), writeContentList[(writeContentList.size-1)].contentImg, writeContentList[(writeContentList.size-1)].linkUri))
-            QuestionArray.add(writeQuestionList.size-1, sQuestion(writeQuestionList[(writeQuestionList.size-1)].qTitle?.text.toString()))
-            AnswerArray.add(writeQuestionList.size-1, sAnswer(writeQuestionList[(writeContentList.size-1)].aTxt?.text.toString(), today, writeQuestionList[(writeContentList.size-1)].aImg, writeQuestionList[(writeContentList.size-1)].qTitle?.text.toString()))
-
-            // 카테고리 저장 팝업업
-            val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
-
-            // view의 중복 사용을 방지하기 위한 코드
-            if (binding5.root.parent != null)
-                (binding5.root.parent as ViewGroup).removeView(binding5.root)
-
-            val mAlertDialog = mBuilder.show()
-
-            // 확인 버튼 다이얼로그
-            binding5.cateSaveBtn.setOnClickListener {
-                var t1 = Toast.makeText(this, "여기다가 카테고리 저장 받아오삼유", Toast.LENGTH_SHORT)
-                t1.show()
+            for(i in 0..ContentArray.size-1)
+            {
+                Log.d("태그", "${ContentArray[i].content}")
+                //for(j in 0..QuestionArray)
             }
+            if(writeContentList.size>0 && writeQuestionList.size>0)
+            {
+                // 화면에 띄울 때 내용 업데이트.
+                // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
+                // 제목 객체 저장
+                writingAdapter.updateList(writeQuestionList)
+                writingAdapter.updateList(writeContentList)
 
+                //맨 마지막 객체도 ContentArray에 저장해주기.
+                /*
+                                ContentArray.add(writeContentList.size-1, sContent(writeContentList[(writeContentList.size-1)].docContent?.text.toString(), writeContentList[(writeContentList.size-1)].contentImg, writeContentList[(writeContentList.size-1)].linkUri))
+                QuestionArray.add(writeQuestionList.size-1, sQuestion(writeQuestionList[(writeQuestionList.size-1)].qTitle?.text.toString()))
+                AnswerArray.add(writeQuestionList.size-1, sAnswer(writeQuestionList[(writeContentList.size-1)].aTxt?.text.toString(), today, writeQuestionList[(writeContentList.size-1)].aImg, writeQuestionList[(writeContentList.size-1)].qTitle?.text.toString()))
 
-//           // Long 클릭 팝업 띄울 때 이 코드 가져다가 활용해서 쓰면 됨
-//            // 선택 목록
-//            val selectList = arrayOf("변경", "삭제")
-//            var selectDialog =
-//                AlertDialog.Builder(this, R.style.LongClickPopUp)
-//
-//            selectDialog
-//                .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
-//
-//                    // 변경 버튼을 클릭했을 때
-//                    if(which == 0){
-//                        var t1 = Toast.makeText(this, "변경 버튼 클릭", Toast.LENGTH_SHORT)
-//                        t1.show()
-//                    }
-//                    // 삭제 버튼을 클릭했을 때
-//                    else if(which == 1){
-//                        var t1 = Toast.makeText(this, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
-//                        t1.show()
-//                    }
-//                }
-//                ).show()
+                 */
+
+                // 카테고리 저장 팝업
+                val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
+
+                // view의 중복 사용을 방지하기 위한 코드
+                if (binding5.root.parent != null)
+                    (binding5.root.parent as ViewGroup).removeView(binding5.root)
+
+                val mAlertDialog = mBuilder.show()
+
+                // 확인 버튼 다이얼로그
+                binding5.cateSaveBtn.setOnClickListener {
+                    var selectedCate = categoryList[saveCateAdapter.selectedPosition]
+                    //글 객체를 만듦.
+                    sWriting(docTitle.text.toString(), today, "${selectedCate}")
+                    for(i in 0..ContentArray.size-1)
+                    {
+                        Log.d("태그", "${ContentArray[i].content}")
+                        //for(j in 0..QuestionArray)
+                    }
+                }
+            }else{
+                Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
@@ -452,7 +431,7 @@ class WritingActivity : AppCompatActivity() {
         val q_linkLayout = binding2.clLinkArea
         val c_linkLayout = binding3.clLinkArea
         var isrun:Boolean = false
-//맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
+        //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
         var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
@@ -567,7 +546,6 @@ class WritingActivity : AppCompatActivity() {
                     //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
                     //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
                     //답변의 갯수 만큼 반복문 - 첫번째
-                    //
                     for(j in 0..AnswerSize-2)
                     {
                         if(j==0)
@@ -602,8 +580,8 @@ class WritingActivity : AppCompatActivity() {
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
-
     }
+
     private fun loadLink(linkUri: String) {
         //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
         linktitle = ""
@@ -733,10 +711,9 @@ class WritingActivity : AppCompatActivity() {
                         writingAdapter.updateList(writeContentList)
 
                         //객체에 저장
-                        ContentArray.add(id4, sContent(null, img, null))
+                        ContentArray.add(id4, sContent(Wid, null, img, null))
 
-
-                        id4++
+                        //id4++
                     }
 
                 }
