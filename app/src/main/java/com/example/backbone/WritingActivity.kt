@@ -107,6 +107,14 @@ class WritingActivity : AppCompatActivity() {
     var writeID: String = ""
     var Gallery = 0
 
+    val writeQuestionList = ArrayList<WriteQuestionData>()
+    val writeContentList = ArrayList<WriteContentData>()
+    var id = writeContentList.size
+
+    val saveQuestionList = ArrayList<saveQuestionData>()
+    val saveContentList = ArrayList<saveContentData>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //DBHelper와 이어주도록 클래스 선언
@@ -152,12 +160,6 @@ class WritingActivity : AppCompatActivity() {
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
-
-        val writeQuestionList = ArrayList<WriteQuestionData>()
-        val writeContentList = ArrayList<WriteContentData>()
-
-        val saveQuestionList = ArrayList<saveQuestionData>()
-        val saveContentList = ArrayList<saveContentData>()
 
         class qSave(
                 qTitle: String, aImg: ByteArray?,
@@ -328,7 +330,6 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
-            var id = writeContentList.size
 
             for (i in 0..writeContentList.size-1){
                 contentsave.add(i, cSave(null,
@@ -341,6 +342,10 @@ class WritingActivity : AppCompatActivity() {
                 null, null, null,null, null, null))
 
 
+            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+                null, null, null, null, null, null
+            ))
+
             writingAdapter.addItems(
                 WriteContentData(
                     id, null,null, null, null, null, null,
@@ -348,27 +353,32 @@ class WritingActivity : AppCompatActivity() {
                 )
             )
 
-
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                        null, null, null, null, null, null
-            ))
-
         }
 
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
-            // 본문에 링크 생성
-            var id = 0
+
+            for (i in 0..writeContentList.size-1){
+                contentsave.add(i, cSave(null,
+                    clinkLayout, null, null, "", null,
+                    docContent.toString()))
+            }
+
+            //본문 박스 생성
+            saveContentList.add(id, saveContentData(id, null, "", clinkInsertBtn, clinkLayout, null,
+                null, null, null,null, null, null))
+
+            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+                null, null, null, null, null, null
+            ))
+
             writingAdapter.addItems(
                 WriteContentData(
                     id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
                     null, null, null, null, null
                 )
             )
-            id++
 
-            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
         }
 
         //하단의 '사진' 버튼 클릭 리스너
@@ -415,22 +425,22 @@ class WritingActivity : AppCompatActivity() {
                 Log.d("되나?","${i}")
             }
 
-            writeQuestionList.add(WriteQuestionData(writeQuestionList.size, null, null, null, null, null, null, null, null,null,
+            saveQuestionList.add(writeQuestionList.size, saveQuestionData(writeQuestionList.size, qTitleText, null, null, null, null, null, null, null,null,
+                null, null, null)
+            )
+
+            writeQuestionList.add(WriteQuestionData(writeQuestionList.size, qTitleText, null, null, null, null, null, null, null,null,
                 null, null, null
             ))
-
 
             // 질문 추가
             writingAdapter.addItems(
                     WriteQuestionData(
-                            writeQuestionList.size, null, null, null, null, null, null,
+                            writeQuestionList.size, qTitleText, null, null, null, null, null,
                             null, null, null, null, qAddImgBtn, qAddLinkBtn
                     )
             )
 
-
-            //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-            writingAdapter.notifyDataSetChanged()
 
         }
 
@@ -758,15 +768,12 @@ class WritingActivity : AppCompatActivity() {
                         if (photo != null) {
                             photo.close()
                         }
-                        var id = 0
                         writingAdapter.addItems(
                                 WriteContentData(id, img, null, null, null, null, null,
                                         null, null, null, null, null
                                 )
                         )
-                        id++
-                        //어댑터에 notifyDataSetChanged()를 선언해 변경된 내용을 갱신해 줌
-                        //writingAdapter.notifyDataSetChanged()
+
                     }
 
                 }
