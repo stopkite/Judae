@@ -5,17 +5,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.net.wifi.WifiConfiguration.AuthAlgorithm.strings
-import android.text.Layout
-import android.text.Spannable
-import android.text.SpannableString
+import android.text.*
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
@@ -23,6 +20,7 @@ import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
 import java.net.URLConnection
+
 
 private var isrun:Boolean = false
 class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
@@ -43,7 +41,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         is WriteQuestionData -> {
             TYPE_Question
         }
+        is saveQuestionData -> {
+            TYPE_Question
+        }
         is WriteContentData -> {
+            TYPE_Content
+        }
+        is saveContentData -> {
             TYPE_Content
         }
         is loadContentData -> {
@@ -81,14 +85,12 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         when (holder) {
             is MyQHolder -> {
                 holder.setQList(items[position] as WriteQuestionData)
+
+
             }
             is MyContentHolder -> {
 
                 holder.setContentList(items[position] as WriteContentData)
-
-                holder.itemView.setOnClickListener{
-                    itemClickListner.onClick(it,position)
-                }
             }
             is LoadQHolder -> {
                 holder.setQList(items[position] as loadQuestionData)
@@ -96,11 +98,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             is LoadContentHolder -> {
 
                 holder.setContentList(items[position] as loadContentData)
-
-                holder.itemView.setOnClickListener{
-                    itemClickListner.onClick(it,position)
-                }
-
             }
         }
     }
@@ -146,7 +143,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     var start = text.indexOf(date!!)
                     var end = start + date!!.length
                     val spannableString = SpannableString(text)
-                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY),0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
@@ -156,7 +153,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     var start = text.indexOf(date!!)
                     var end = start + date!!.length
                     val spannableString = SpannableString(text)
-                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY),start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
@@ -172,12 +169,12 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         companion object Factory {
             fun create(parent: ViewGroup): LoadQHolder {
-                val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+                val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return LoadQHolder(binding)
             }
         }
 
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
@@ -199,24 +196,22 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             content = ""
             isrun = true
             Thread(Runnable {
-                while(isrun)
-                {//네이버의 경우에만 해당되는 것 같아.
-                    try{
+                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                    try {
                         if (linkUri.contains("naver")) {
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
                             //제목 들고 오기
                             val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                            if(linkUri.contains("blog"))
-                            {
+                            if (linkUri.contains("blog")) {
                                 val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
                                 title = doc2.title()
                                 content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                            }else if(linkUri == "https://www.naver.com/"){
+                            } else if (linkUri == "https://www.naver.com/") {
                                 title = doc.title()
                                 content = doc.select("meta[name=\"og:description\"]").attr("content")
-                            }else{
+                            } else {
                                 title = doc.title()
                                 content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
@@ -228,59 +223,53 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         } else {
                             val doc = Jsoup.connect("${linkUri}").get()
-                            var favicon:String
-                            var link:String
-                            if(linkUri.contains("google"))
-                            {
+                            var favicon: String
+                            var link: String
+                            if (linkUri.contains("google")) {
                                 favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                link = "https://www.google.com"+favicon
+                                link = "https://www.google.com" + favicon
                                 url1 = URL("${link}")
-                            }else{
+                            } else {
                                 //파비콘 이미지 들고 오기
                                 favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                if(favicon=="")
-                                {
+                                if (favicon == "") {
                                     favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
                                 }
                                 if (!favicon.contains("https:")) {
-                                    link = "https://"+favicon
+                                    link = "https://" + favicon
                                     url1 = URL("${link}")
-                                }else{
+                                } else {
                                     url1 = URL("${favicon}")
                                 }
                             }
 
-                            try{
+                            try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
                                 var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
-                            }catch (e:Exception)
-                            {
+                            } catch (e: Exception) {
                             }
                             title = doc.title()
 
                             content = doc.select("meta[name=\"description\"]").attr("content")
-                            if(content == "")
-                            {
+                            if (content == "") {
                                 content = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(title == "")
-                            {
+                            if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(bm1==null)
-                            {
-                                binding.linkIcon.visibility= View.GONE
+                            if (bm1 == null) {
+                                binding.linkIcon.visibility = View.GONE
                             }
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         }
-                    }catch(e:Exception){
+                    } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
                     }
@@ -290,7 +279,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     }
 
     // 본문 Hodler
-    class LoadContentHolder(val binding2:WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
+    class LoadContentHolder(val binding2: WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
 
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
@@ -300,7 +289,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var content:String = ""
 
         fun setContentList(item: loadContentData) {
-
             //사진 띄우기 **** - 나중에 하기.
             if(item.contentImg != null)
             {
@@ -329,8 +317,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         }
 
-
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
             binding2.linkUri.text = linkUri
             binding2.linkTitle.text = title
@@ -340,7 +327,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         companion object Factory {
             fun create(parent: ViewGroup): LoadContentHolder {
-                val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+                val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return LoadContentHolder(binding2)
             }
         }
@@ -354,11 +341,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             content = ""
             isrun = true
             Thread(Runnable {
-                while(isrun)
-                {//네이버의 경우에만 해당되는 것 같아.
-                    try{
+                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                    try {
                         if (linkUri.contains("naver")) {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             //linkIcon에 파비콘 추출해서 삽입하기
@@ -366,15 +352,14 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             //제목 들고 오기
                             val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                            if(linkUri.contains("blog"))
-                            {
+                            if (linkUri.contains("blog")) {
                                 val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
                                 title = doc2.title()
                                 content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                            }else if(linkUri == "https://www.naver.com/"){
+                            } else if (linkUri == "https://www.naver.com/") {
                                 title = doc.title()
                                 content = doc.select("meta[name=\"og:description\"]").attr("content")
-                            }else{
+                            } else {
                                 title = doc.title()
                                 content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
@@ -386,62 +371,56 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         } else {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
-                            var favicon:String
-                            var link:String
-                            if(linkUri.contains("google"))
-                            {
+                            var favicon: String
+                            var link: String
+                            if (linkUri.contains("google")) {
                                 favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                link = "https://www.google.com"+favicon
+                                link = "https://www.google.com" + favicon
                                 url1 = URL("${link}")
-                            }else{
+                            } else {
                                 //파비콘 이미지 들고 오기
                                 favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                if(favicon=="")
-                                {
+                                if (favicon == "") {
                                     favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
                                 }
                                 if (!favicon.contains("https:")) {
-                                    link = "https://"+favicon
+                                    link = "https://" + favicon
                                     url1 = URL("${link}")
-                                }else{
+                                } else {
                                     url1 = URL("${favicon}")
                                 }
                             }
 
-                            try{
+                            try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
                                 var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
-                            }catch (e:Exception)
-                            {
+                            } catch (e: Exception) {
                             }
                             title = doc.title()
 
                             content = doc.select("meta[name=\"description\"]").attr("content")
-                            if(content == "")
-                            {
+                            if (content == "") {
                                 content = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(title == "")
-                            {
+                            if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(bm1==null)
-                            {
-                                binding2.linkIcon.visibility= View.GONE
+                            if (bm1 == null) {
+                                binding2.linkIcon.visibility = View.GONE
                             }
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         }
-                    }catch(e:Exception){
+                    } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
                     }
@@ -452,51 +431,38 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun setQList(item: WriteQuestionData) {
 
             if(item.qTitle == null){
                 binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.text = item.qTitle?.text
+                binding.qTitle.setText(item.qTitle)
             }
 
-            if(item.aImg == null)
-            {
-                binding.aImg.visibility = View.GONE
-            }else{
-                // 본문 삽입 이미지
-                binding.aImg.setImageBitmap(item.aImg)
-            }
+            binding.aImg.setImageDrawable(item.aImg)
 
             // 링크
             if(item.linkLayout == null){
                 binding.clLinkArea.visibility = View.GONE
-            }else{
-                binding.clLinkArea.visibility = item.linkLayout?.visibility!!
             }
 
             // 링크 삽입이 이뤄지는 곳(editText영역)
             if(item.linkInsertTxt == null){
                 binding.linkInsertTxt.visibility = View.GONE
-            }else{
-                binding.linkInsertTxt.visibility = item.linkInsertTxt?.visibility!!
             }
 
             // 링크 삽입이 이뤄지는 곳(버튼 영역)
             if(item.linkInsertTxt == null){
                 binding.linkInsertBtn.visibility = View.GONE
-            }else{
-                binding.linkInsertBtn.visibility = item.linkInsertTxt?.visibility!!
             }
 
             // 링크된 요소들
-            binding.linkTitle.text = item.linkTitle
-            binding.linkUri.text = item.linkUri
+            binding.linkTitle.setText(item.linkTitle)
+            binding.linkUri.setText(item.linkUri)
             binding.linkIcon.setImageDrawable(item.linkIcon)
 
             // 대답
-            binding.aTxt.text = item.aTxt?.text
+            binding.aTxt.setText(item.aTxt)
 
             // 대답 추가 버튼
             if(item.addAnswer == null){
@@ -517,24 +483,60 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }else {
                 binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
             }
+
+            binding.aTxt.addTextChangedListener(object : TextWatcher {
+                var preTxt: String? = null
+                var afterTxt: String? = null
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    preTxt = s.toString()
+                }
+
+                //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                //before: 삭제된 기존 문자열의 개수
+                //count: 새로 추가된 문자열의 개수
+                override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                    if (binding.aTxt.isFocusable() && !s.toString().equals(preTxt)) {
+                        Log.d("태그", "아이템 아이디: ${item.id}")
+                        Log.d("태그", "${preTxt}")
+                        Log.d("태그", "질문 수정중")
+                        try {
+                            afterTxt = binding.aTxt.getText().toString()
+                            //items[position].
+                            binding.aTxt.setText(afterTxt)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        //binding.aTxt.setText(afterTxt)
+                    }
+                }
+
+                //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                override fun afterTextChanged(s: Editable) {
+                    //bindingAdapter
+                    //val item: WriteQuestionData = itemId as WriteQuestionData
+                    //item.aTxt(afterTxt)
+                    //val item = items[position] as WriteQuestionData
+                    item.aTxt = afterTxt
+                    Log.d("태그", "질문 수정중")
+                }
+            })
         }
 
         companion object Factory {
             fun create(parent: ViewGroup): MyQHolder {
-                val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+                val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyQHolder(binding)
             }
         }
-        
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
             binding.linkContent.text = content
             binding.linkIcon.setImageBitmap(bm1)
         }
-
-
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
         var title: String = ""
@@ -552,11 +554,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             isrun = true
 
             Thread(Runnable {
-                while(isrun)
-                {//네이버의 경우에만 해당되는 것 같아.
-                    try{
+                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                    try {
                         if (linkUri.contains("naver")) {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             //linkIcon에 파비콘 추출해서 삽입하기
@@ -564,15 +565,14 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             //제목 들고 오기
                             val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                            if(linkUri.contains("blog"))
-                            {
+                            if (linkUri.contains("blog")) {
                                 val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
                                 title = doc2.title()
                                 content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                            }else if(linkUri == "https://www.naver.com/"){
+                            } else if (linkUri == "https://www.naver.com/") {
                                 title = doc.title()
                                 content = doc.select("meta[name=\"og:description\"]").attr("content")
-                            }else{
+                            } else {
                                 title = doc.title()
                                 content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
@@ -584,62 +584,56 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         } else {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
-                            var favicon:String
-                            var link:String
-                            if(linkUri.contains("google"))
-                            {
+                            var favicon: String
+                            var link: String
+                            if (linkUri.contains("google")) {
                                 favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                link = "https://www.google.com"+favicon
+                                link = "https://www.google.com" + favicon
                                 url1 = URL("${link}")
-                            }else{
+                            } else {
                                 //파비콘 이미지 들고 오기
                                 favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                if(favicon=="")
-                                {
+                                if (favicon == "") {
                                     favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
                                 }
                                 if (!favicon.contains("https:")) {
-                                    link = "https://"+favicon
+                                    link = "https://" + favicon
                                     url1 = URL("${link}")
-                                }else{
+                                } else {
                                     url1 = URL("${favicon}")
                                 }
                             }
 
-                            try{
+                            try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
                                 var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
-                            }catch (e:Exception)
-                            {
+                            } catch (e: Exception) {
                             }
                             title = doc.title()
 
                             content = doc.select("meta[name=\"description\"]").attr("content")
-                            if(content == "")
-                            {
+                            if (content == "") {
                                 content = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(title == "")
-                            {
+                            if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(bm1==null)
-                            {
-                                binding.linkIcon.visibility= View.GONE
+                            if (bm1 == null) {
+                                binding.linkIcon.visibility = View.GONE
                             }
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         }
-                    }catch(e:Exception){
+                    } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
                     }
@@ -650,7 +644,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     }
 
     // 본문 Hodler
-    class MyContentHolder(val binding2:WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
+    class MyContentHolder(val binding2: WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
 
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
@@ -681,15 +675,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             // 링크 삽입이 이뤄지는 곳(editText영역)
             if(item.linkInsertTxt == null){
                 binding2.linkInsertTxt.visibility = View.GONE
-            }else{
-                binding2.linkInsertTxt.visibility = item.linkInsertTxt?.visibility!!
             }
 
             // 링크 삽입이 이뤄지는 곳(버튼 영역)
             if(item.linkInsertTxt == null){
                 binding2.linkInsertBtn.visibility = View.GONE
-            }else{
-                binding2.linkInsertBtn.visibility = item.linkInsertTxt?.visibility!!
             }
 
             if(item.linkUri == null){
@@ -704,10 +694,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 //쓰레드 실행(한번만 실행함.)
                     loadLink(linkUri)
                     binding2.clLinkArea.visibility = View.VISIBLE
-                    //로딩되는 시간동안 그냥 멈춰두기
-                    Thread.sleep(350L)
-                    binding2.linkInsertTxt.visibility = View.GONE
-                    binding2.linkInsertBtn.visibility = View.GONE
             }
             // 링크된 요소들
             /*binding2.linkTitle.text = item.linkTitle
@@ -719,12 +705,43 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             if(item.docContent == null){
                 binding2.docContent.visibility = View.GONE
             }else{
-                binding2.docContent.text = item.docContent?.text
+                binding2.docContent.setText(item.docContent)
             }
 
+            binding2.docContent.addTextChangedListener(object : TextWatcher {
+                var preTxt: String? = null
+                var afterTxt: String? = null
+                var id = item.id
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    preTxt = s.toString()
+                }
+
+                //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                //before: 삭제된 기존 문자열의 개수
+                //count: 새로 추가된 문자열의 개수
+                override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                    Log.d("태그", "아이템 아이디: ${id}")
+                    Log.d("태그", "${preTxt}")
+                    if (binding2.docContent.isFocusable() && !s.toString().equals(preTxt)) {
+                        Log.d("태그", "본문 수정중")
+                        try {
+                            afterTxt = binding2.docContent.getText().toString()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        //binding2.docContent.setText(afterTxt)
+                    }
+                }
+
+                //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                override fun afterTextChanged(s: Editable) {
+                    item.docContent = afterTxt
+                }
+            })
         }
 
-        fun setLink(linkUri: String, title: String, content:String, bm1:Bitmap)
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
             binding2.linkUri.text = linkUri
             binding2.linkTitle.text = title
@@ -734,7 +751,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         companion object Factory {
             fun create(parent: ViewGroup): MyContentHolder {
-                val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+                val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyContentHolder(binding2)
             }
         }
@@ -749,11 +766,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             isrun = true
 
             Thread(Runnable {
-                while(isrun)
-                {//네이버의 경우에만 해당되는 것 같아.
-                    try{
+                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                    try {
                         if (linkUri.contains("naver")) {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             //linkIcon에 파비콘 추출해서 삽입하기
@@ -761,15 +777,14 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             //제목 들고 오기
                             val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                            if(linkUri.contains("blog"))
-                            {
+                            if (linkUri.contains("blog")) {
                                 val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
                                 title = doc2.title()
                                 content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                            }else if(linkUri == "https://www.naver.com/"){
+                            } else if (linkUri == "https://www.naver.com/") {
                                 title = doc.title()
                                 content = doc.select("meta[name=\"og:description\"]").attr("content")
-                            }else{
+                            } else {
                                 title = doc.title()
                                 content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
@@ -781,62 +796,56 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         } else {
-                            if(!linkUri.contains("https://")){
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
-                            var favicon:String
-                            var link:String
-                            if(linkUri.contains("google"))
-                            {
+                            var favicon: String
+                            var link: String
+                            if (linkUri.contains("google")) {
                                 favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                link = "https://www.google.com"+favicon
+                                link = "https://www.google.com" + favicon
                                 url1 = URL("${link}")
-                            }else{
+                            } else {
                                 //파비콘 이미지 들고 오기
                                 favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                if(favicon=="")
-                                {
+                                if (favicon == "") {
                                     favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
                                 }
                                 if (!favicon.contains("https:")) {
-                                    link = "https://"+favicon
+                                    link = "https://" + favicon
                                     url1 = URL("${link}")
-                                }else{
+                                } else {
                                     url1 = URL("${favicon}")
                                 }
                             }
 
-                            try{
+                            try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
                                 var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
-                            }catch (e:Exception)
-                            {
+                            } catch (e: Exception) {
                             }
                             title = doc.title()
 
                             content = doc.select("meta[name=\"description\"]").attr("content")
-                            if(content == "")
-                            {
+                            if (content == "") {
                                 content = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(title == "")
-                            {
+                            if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if(bm1==null)
-                            {
-                                binding2.linkIcon.visibility= View.GONE
+                            if (bm1 == null) {
+                                binding2.linkIcon.visibility = View.GONE
                             }
                             setLink(linkUri, title, content, bm1!!)
-                            isrun=false
+                            isrun = false
                         }
-                    }catch(e:Exception){
+                    } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
 
                     }
@@ -867,18 +876,18 @@ uri = linkUri
 
     override fun getItemCount() = items.size
 
-    fun updateItems(item:WriteItem, position: Int)
+    fun updateItems(item: WriteItem, position: Int)
     {
         this.items[position].apply {item}
     }
 
-    /*fun addItems(String s) {
+    fun addItems(item: WriteItem) {
         this.items.add(item)
-        //this.notifyDataSetChanged()
-    }*/
+        this.notifyDataSetChanged()
+    }
 
     interface ItemClickListener{
-        fun onClick(view: View,position: Int)
+        fun onClick(view: View, position: Int)
     }
 
     //를릭 리스너
