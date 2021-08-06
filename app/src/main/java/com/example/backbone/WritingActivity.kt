@@ -339,6 +339,7 @@ class WritingActivity : AppCompatActivity() {
                 }
             }
 
+            //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
             if(!checknull)
             {
 

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.opengl.Visibility
 import android.text.*
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
@@ -122,6 +123,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 var QuestionList = items[position] as WriteQuestionData
                 //holder.setQList(items[position] as WriteQuestionData)
 
+                //답변 추가될 때 리스너
                 holder.binding.aTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
@@ -156,6 +158,81 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                         Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
+
+                //질문 입력됐을 때 리스너
+                holder.binding.qTitle.addTextChangedListener(object : TextWatcher {
+                    var preTxt: String? = null
+                    var afterTxt: String? = null
+                    //val thisitem= item
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        preTxt = s.toString()
+                    }
+
+                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                    //before: 삭제된 기존 문자열의 개수
+                    //count: 새로 추가된 문자열의 개수
+                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                        if (binding.qTitle.isFocusable() && !s.toString().equals(preTxt)) {
+                            try {
+                                afterTxt = binding.qTitle.getText().toString()
+                                //items[position].
+                                QuestionList.qTitle = s.toString()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                    override fun afterTextChanged(s: Editable) {
+                        //updateItems(QuestionList, position)
+                    }
+                })
+
+                //답변 링크 입력 버튼 눌렀을 때!
+                holder.binding.qLinkAddBtn.setOnClickListener {
+                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                }
+
+                //답변 링크 입력 버튼 눌렀을 때!
+                holder.binding.linkInsertBtn.setOnClickListener {
+                    Log.d("태그", "입력된 링크: ${QuestionList.linkUri.toString()}")
+                    if(QuestionList.linkUri != null)
+                    {
+                        holder.loadLink(QuestionList.linkUri.toString())
+                    }
+                }
+
+                //답변 링크 입력됐을 때 리스너
+                holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
+                    var preTxt: String? = null
+                    var afterTxt: String? = null
+                    //val thisitem= item
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        preTxt = s.toString()
+                    }
+
+                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                    //before: 삭제된 기존 문자열의 개수
+                    //count: 새로 추가된 문자열의 개수
+                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                        if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
+                            try {
+                                afterTxt = binding.linkInsertTxt.getText().toString()
+                                QuestionList.linkUri = s.toString()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                    override fun afterTextChanged(s: Editable) {
+                        //updateItems(QuestionList, position)
+                    }
+                })
+
 
             }
             is MyContentHolder -> {
@@ -659,7 +736,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var url1: URL? = null
         var content:String = ""
 
-        private fun loadLink(linkUri: String) {
+        fun loadLink(linkUri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
             var linkUri = linkUri
             title = ""
