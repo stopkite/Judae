@@ -330,29 +330,31 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
-
+            var checknull = true
             for (i in 0..writeContentList.size-1){
-                contentsave.add(i, cSave(null,
-                clinkLayout, null, null, "", null,
-                docContent.toString()))
+                Log.d("태그", "${writingAdapter.getItemId(i)}")
+                if(writeContentList[i].docContent == null)
+                {
+                    checknull =  false
+                }
             }
 
-            //본문 박스 생성
-            saveContentList.add(id, saveContentData(id, null, null, null, null, null,
-                null, null, null,null, null, null))
+            if(!checknull)
+            {
 
+            }else{
+                var id = writeContentList.size
+                writeContentList.add(WriteContentData(id, null, null, null, null, null,
+                        null, null, null, null, null, null
+                ))
 
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                null, null, null, null, null, null
-            ))
-
-            writingAdapter.addItems(
-                WriteContentData(
-                    id, null,null, null, null, null, null,
-                    null, null, "",null,null
+                writingAdapter.addItems(
+                        WriteContentData(
+                                id, null,null, null, null, null, null,
+                                null, null, "",null,null
+                        )
                 )
-            )
-
+            }
         }
 
         //하단의 '링크' 버튼 클릭 리스너

@@ -1,5 +1,6 @@
 package com.example.backbone
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
@@ -27,6 +29,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
+
+    var activity = context
 
     private val items = mutableListOf<WriteItem>()
 
@@ -61,9 +65,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+    /*
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         TYPE_Question -> {
-            MyQHolder.create(parent)
+            val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return MyQHolder(binding)
         }
         TYPE_Content -> {
             MyContentHolder.create(parent)
@@ -78,19 +84,125 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             throw IllegalStateException("Not Found ViewHolder Type $viewType")
         }
     }
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
+        val view: View?
+        return when (viewType) {
+            TYPE_Question -> {
+                binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return MyQHolder(binding)
+            }
+            TYPE_Content -> {
+                //MyContentHolder.create(parent)
+                binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return MyContentHolder(binding2)
+            }
+            TYPE_RCQuestion -> {
+                LoadQHolder.create(parent)
+            }
+            TYPE_RContent -> {
+                LoadContentHolder.create(parent)
+            }
+            else -> {
+                throw IllegalStateException("Not Found ViewHolder Type $viewType")
+            }
+        }
+    }
+
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             //실행될 때: 버튼 누를때마다. 본문/질문 이런 거.
         when (holder) {
             is MyQHolder -> {
-                holder.setQList(items[position] as WriteQuestionData)
+                (holder as MyQHolder).setQList(items[position] as WriteQuestionData)
+                holder.setIsRecyclable(false)
 
+                //선택된 아이템에 대한 정보 빼내오기
+                var QuestionList = items[position] as WriteQuestionData
+                //holder.setQList(items[position] as WriteQuestionData)
+
+                holder.binding.aTxt.addTextChangedListener(object : TextWatcher {
+                    var preTxt: String? = null
+                    var afterTxt: String? = null
+                    //val thisitem= item
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        preTxt = s.toString()
+                    }
+
+                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                    //before: 삭제된 기존 문자열의 개수
+                    //count: 새로 추가된 문자열의 개수
+                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                        if (binding.aTxt.isFocusable() && !s.toString().equals(preTxt)) {
+                            Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
+                            Log.d("태그", "아이템 아이디: ${QuestionList.id}")
+                            Log.d("태그", "${s.toString()}")
+                            Log.d("태그", "질문 수정중")
+                            try {
+                                afterTxt = binding.aTxt.getText().toString()
+                                //items[position].
+                                QuestionList.aTxt = s.toString()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+
+                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                    override fun afterTextChanged(s: Editable) {
+                        //updateItems(QuestionList, position)
+                        Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
+                    }
+                })
 
             }
             is MyContentHolder -> {
+                //holder.setContentList(items[position] as WriteContentData)
 
-                holder.setContentList(items[position] as WriteContentData)
+                (holder as MyContentHolder).setContentList(items[position] as WriteContentData)
+                holder.setIsRecyclable(false)
+
+                //선택된 아이템에 대한 정보 빼내오기
+                var WriteList = items[position] as WriteContentData
+                //holder.setQList(items[position] as WriteQuestionData)
+
+                holder.binding2.docContent.addTextChangedListener(object : TextWatcher {
+                    var preTxt: String? = null
+                    var afterTxt: String? = null
+                    //val thisitem= item
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        preTxt = s.toString()
+                    }
+
+                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                    //before: 삭제된 기존 문자열의 개수
+                    //count: 새로 추가된 문자열의 개수
+                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                        if (binding2.docContent.isFocusable() && !s.toString().equals(preTxt)) {
+                            Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
+                            Log.d("태그", "아이템 아이디: ${WriteList.id}")
+                            Log.d("태그", "${s.toString()}")
+                            Log.d("태그", "질문 수정중")
+                            try {
+                                //afterTxt = binding.aTxt.getText().toString()
+                                //items[position].
+                                WriteList.docContent = s.toString()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+
+                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                    override fun afterTextChanged(s: Editable) {
+                        updateItems(WriteList, position)
+                        Log.d("태그", "afterTextChanged ${WriteList.id}: ${WriteList.docContent}")
+
+                    }
+                })
             }
             is LoadQHolder -> {
                 holder.setQList(items[position] as loadQuestionData)
@@ -432,9 +544,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
-
+            Log.d("태그", "setQList ${item.id}: ${item.aTxt}")
             if(item.qTitle == null){
-                binding.qTitle.visibility = View.GONE
+                //binding.qTitle.visibility = View.GONE
             }else{
                 binding.qTitle.setText(item.qTitle)
             }
@@ -484,9 +596,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
             }
 
-            binding.aTxt.addTextChangedListener(object : TextWatcher {
+            /*
+            itemView.findViewById<EditText>(R.id.aTxt).addTextChangedListener(object : TextWatcher {
                 var preTxt: String? = null
                 var afterTxt: String? = null
+                //val thisitem= item
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                     preTxt = s.toString()
                 }
@@ -503,7 +617,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                         try {
                             afterTxt = binding.aTxt.getText().toString()
                             //items[position].
-                            binding.aTxt.setText(afterTxt)
+                            item.aTxt = afterTxt
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -513,22 +627,23 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                 //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                 override fun afterTextChanged(s: Editable) {
-                    //bindingAdapter
-                    //val item: WriteQuestionData = itemId as WriteQuestionData
                     //item.aTxt(afterTxt)
-                    //val item = items[position] as WriteQuestionData
-                    item.aTxt = afterTxt
+                    //val item = item as WriteQuestionData
+                    //bindingAdapteroPsition
+                    //item.aTxt = afterTxt
                     Log.d("태그", "질문 수정중")
                 }
             })
-        }
+             */
 
+        }
+/*
         companion object Factory {
             fun create(parent: ViewGroup): MyQHolder {
-                val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return MyQHolder(binding)
             }
         }
+ */
+
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
@@ -749,12 +864,15 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             binding2.linkIcon.setImageBitmap(bm1)
         }
 
-        companion object Factory {
+        /*
+                companion object Factory {
             fun create(parent: ViewGroup): MyContentHolder {
                 val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyContentHolder(binding2)
             }
         }
+         */
+
 
         private fun loadLink(linkUri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
@@ -878,7 +996,11 @@ uri = linkUri
 
     fun updateItems(item: WriteItem, position: Int)
     {
-        this.items[position].apply {item}
+        //var activity:WritingActivity = WritingActivity()
+        var WriteList = item as WriteContentData
+        Log.d("태그", "position ${position}")
+        Log.d("태그", "액티비티 리스트 사이즈: ${activity.writeContentList.size}")
+        activity.writeContentList[WriteList.id].docContent = WriteList.docContent
     }
 
     fun addItems(item: WriteItem) {
