@@ -332,9 +332,12 @@ class WritingActivity : AppCompatActivity() {
         binding.addContentBTN.setOnClickListener {
             var checknull = true
             for (i in 0..writeContentList.size-1){
-                Log.d("태그", "${writingAdapter.getItemId(i)}")
-                if(writeContentList[i].docContent == null)
+                Log.d("태그", "${i}: ${writeContentList[i].docContent}")
+                Log.d("태그", "${i}: ${writeContentList[i].contentImg}")
+                Log.d("태그", "${i}: ${writeContentList[i].linkUri}")
+                if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
                 {
+                    Log.d("태그", "${i}")
                     checknull =  false
                 }
             }
@@ -361,25 +364,16 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
 
-            for (i in 0..writeContentList.size-1){
-                contentsave.add(i, cSave(null,
-                    clinkLayout, null, null, "", null,
-                    docContent.toString()))
-            }
-
-            //본문 박스 생성
-            saveContentList.add(id, saveContentData(id, null, "", clinkInsertBtn, clinkLayout, null,
-                null, null, null,null, null, null))
-
+            var id = writeContentList.size
             writeContentList.add(WriteContentData(id, null, null, null, null, null,
                 null, null, null, null, null, null
             ))
 
             writingAdapter.addItems(
-                WriteContentData(
-                    id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
-                    null, null, null, null, null
-                )
+                    WriteContentData(
+                            id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
+                            null, null, null, null, null
+                    )
             )
 
         }
@@ -771,6 +765,11 @@ class WritingActivity : AppCompatActivity() {
                         if (photo != null) {
                             photo.close()
                         }
+                        var id = writeContentList.size
+                        writeContentList.add(WriteContentData(id, img, null, null, null, null,
+                                null, null, null, null, null, null
+                        ))
+                        Log.d("태그", "writeContentList 인덱스: ${id}")
                         writingAdapter.addItems(
                                 WriteContentData(id, img, null, null, null, null, null,
                                         null, null, null, null, null
