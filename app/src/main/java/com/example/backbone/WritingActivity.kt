@@ -194,27 +194,27 @@ class WritingActivity : AppCompatActivity() {
 
         //저장하기 위한 객체 생성
         //answer 객체
-        class sAnswer(content: String, date: String, image: ByteArray?, link: String){
+        class sAnswer(content: String?, date: String, image: Bitmap?, link: String?){
             var content = content
             var date = date
             var image = image
             var link = link
         }
-        var AnswerArray: Array<sAnswer>? = null
+        var AnswerArray = ArrayList<sAnswer>()
 
         //content 객체
-        class sContent (content: String, image: ByteArray?, link: String) {
+        class sContent(content: String?, image: Bitmap?, link: String?) {
             var content = content
             var image = image
             var link = link
         }
-        var ContentArray: Array<sContent>? = null
+        var ContentArray = ArrayList<sContent>()
 
         //question 객체
-        class sQuestion (content: String) {
+        class sQuestion (content: String?) {
             var content = content
         }
-        var QuestionArray: Array<sQuestion>? = null
+        var QuestionArray = ArrayList<sQuestion>()
 
         //writing 객체
         class sWriting (title: String, date: String, category: String) {
@@ -225,6 +225,7 @@ class WritingActivity : AppCompatActivity() {
 
 
         val docTitle = binding.docTitle
+        val docTitleText: String = docTitle.getText().toString()
 
         // write_qustion_item.xml에서 view들 가져오기
         val qIcon = binding2.qIcon
@@ -422,55 +423,99 @@ class WritingActivity : AppCompatActivity() {
                 Log.d("되나?","${i}")
             }
 
-            saveQuestionList.add(writeQuestionList.size, saveQuestionData(writeQuestionList.size, qTitleText, null, null, null, null, null, null, null,null,
+            saveQuestionList.add(writeQuestionList.size, saveQuestionData(writeQuestionList.size, null, null, null, null, null, null, null, null,null,
                 null, null, null)
             )
 
             writeQuestionList.add(WriteQuestionData(writeQuestionList.size, qTitleText, null, null, null, null, null, null, null,null,
-                null, null, null
+                aTxtText, null, null, null
             ))
 
             // 질문 추가
             writingAdapter.addItems(
                     WriteQuestionData(
-                            writeQuestionList.size, qTitleText, null, null, null, null, null,
-                            null, null, null, null, qAddImgBtn, qAddLinkBtn
+                            writeQuestionList.size, "", null, null, null, null, null,
+                            null, "",null,"", null, qAddImgBtn, qAddLinkBtn
                     )
             )
 
 
         }
 
-        //저장 활성화
-        binding.saveBtn.setEnabled(true)
+        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        /*if (docTitleText != "" && docContentText != "" && qTitleText != "") {
+            //저장 활성화
+            binding.saveBtn.setEnabled(true)
+        }*/
+
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
 
 
+            //Log로 확인하라고 일부러 주석 안지웠어요 ~
             // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
-            // 제목 객체 저장
-            sWriting(docTitle.toString(), today, "기본")
+            // 제목 객체 저장 <sWriting>
+            sWriting(docTitle.getText().toString(), today, "기본")
+            //Log.d("출력","${docTitle.getText().toString()}")
+            //Log.d("출력","${today}")
 
-
-            // 질문 - 답변 관련 데이터 리스트에 저장
-            for (i in 0..(writeQuestionList.size - 1)) {
-                if (writeQuestionList != null) {
-                    QuestionArray?.set(i, sQuestion(questionsave[i].qTitle))
-                }
-                if (AnswerArray != null) {
-                    AnswerArray.set(i, sAnswer(questionsave[i].aTxt, today, questionsave[i].aImg, questionsave[i].linkUri))
-                }
-            }
-
+            //본문 객체 저장 <sContent>
             for (i in 0..(writeContentList.size - 1)) {
-                if (ContentArray != null) {
-                    ContentArray.set(i, sContent(contentsave[i].docContent, contentsave[i].contentImg, contentsave[i].linkUri!!))
+                if (writeContentList[i].docContent != null) {
+                    ContentArray.add(i, sContent(writeContentList[i].docContent, null, null))
+                    //Log.d("출력","${writeContentList[i].docContent}")
+                } else if (writeContentList[i].contentImg != null) {
+                    ContentArray.add(i, sContent(null, writeContentList[i].contentImg, null))
+                    //Log.d("출력","${writeContentList[i].contentImg}")
+                } else {
+                    ContentArray.add(i, sContent(null, null, writeContentList[i].linkUri))
+                    //Log.d("출력","${writeContentList[i].linkUri}")
                 }
             }
 
-            Log.d("객체", "${ContentArray}")
-            Log.d("객체", "${QuestionArray}")
+            //질문 객체 저장 <sQuestion>
+            for (i in 0..(writeQuestionList.size - 1)) {
+                if (writeQuestionList[i].qTitle != null ) {
+                    QuestionArray.add(i, sQuestion(writeQuestionList[i].qTitle))
+                    Log.d("출력","${writeQuestionList[i].qTitle}")
+                }
+            }
+
+            //답변 객체 저장 <sAnswer> - 아직 사진이랑 링크 추가 구현이 안되어서 null로 나옴
+            for (i in 0..(writeQuestionList.size - 1)) {
+                //글, 사진, 링크 모두 있을 때
+                if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri != null) {
+                    AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, writeQuestionList[i].aImg, writeQuestionList[i].linkUri))
+
+                    //글, 사진만 있을 때
+                } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri == null) {
+                    AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, writeQuestionList[i].aImg, null))
+
+                    //글, 링크만 있을 때
+                } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg == null && writeQuestionList[i].linkUri != null) {
+                    AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, null, writeQuestionList[i].linkUri))
+
+                    //사진, 링크만 있을 때
+                } else if (writeQuestionList[i].aTxt == null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri != null) {
+                    AnswerArray.add(i, sAnswer(null, today, writeQuestionList[i].aImg, writeQuestionList[i].linkUri))
+
+                    //글만 있을 때
+                } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg == null && writeQuestionList[i].linkUri == null) {
+                    AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, null, null))
+                    Log.d("출력","${writeQuestionList[i].aTxt}")
+
+                    //사진만 있을 때
+                } else if (writeQuestionList[i].aTxt == null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri == null) {
+                    AnswerArray.add(i, sAnswer(null, today, writeQuestionList[i].aImg, null))
+
+                    //링크만 있을 때
+                } else {
+                    AnswerArray.add(i, sAnswer(null, today, null, writeQuestionList[i].linkUri))
+                }
+
+            }
+
 
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)

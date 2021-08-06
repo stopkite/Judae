@@ -158,7 +158,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         //updateQuestions에 저장해주기.
-                        //updateItems(QuestionList, position)
+                        //updateQuestionItems(QuestionList, position)
                         //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
@@ -189,14 +189,59 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateItems(QuestionList, position)
+                        //updateQuestionItems(QuestionList, position)
                     }
                 })
 
+                /*holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
+                    var preTxt: String? = null
+                    var afterTxt: String? = null
+                    //val thisitem= item
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                        preTxt = s.toString()
+                    }
+
+                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+                    //before: 삭제된 기존 문자열의 개수
+                    //count: 새로 추가된 문자열의 개수
+                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                        if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
+                            try {
+                                afterTxt = binding.linkInsertTxt.getText().toString()
+                                QuestionList.linkUri = s.toString()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+                    override fun afterTextChanged(s: Editable) {
+                        QuestionList.linkUri = s.toString()
+                        updateQuestionItems(QuestionList, position)
+                    }
+                })
+                //링크 입력 후 확인을 누르면 실행되는 리스너
+                holder.binding.linkInsertBtn.setOnClickListener {
+                    //입력 받은 링크를 String으로 넣어 준 후
+                    var linkUri = QuestionList.linkUri.toString()
+                    //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
+                    //쓰레드 실행(한번만 실행함.)
+                    holder.loadLink(linkUri, QuestionList)
+                    QuestionList.linkContent = binding.linkContent.toString()
+                    QuestionList.linkTitle = binding.linkTitle.toString()
+                    QuestionList.linkUri = binding.linkUri.toString()
+                    QuestionList.linkIcon = binding.linkIcon.drawable
+                }*/
                 //답변 링크 입력 버튼 눌렀을 때!
                 holder.binding.qLinkAddBtn.setOnClickListener {
                     holder.binding.linkInsertTxt.visibility = View.VISIBLE
                     holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                }
+
+                //답변 사진 입력 버튼 눌렀을 때!
+                holder.binding.qImgAddBtn.setOnClickListener {
+                    holder.binding.aImg.visibility = View.VISIBLE
                 }
 
 
@@ -225,9 +270,14 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateItems(QuestionList, position)
+                        //updateQuestionItems(QuestionList, position)
                     }
+
                 })
+
+                /*if (binding.qTitle.getText() != null && binding3.docTitle.getText() != null && binding2.docContent.getText() != null) {
+                    binding3.saveBtn.setEnabled(true)
+                }*/
 
 
             }
@@ -667,7 +717,13 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.qTitle.setText(item.qTitle)
             }
 
-            binding.aImg.setImageDrawable(item.aImg)
+            if(item.aImg == null)
+            {
+                binding.aImg.visibility = View.GONE
+            }else{
+                // 대답 삽입 이미지
+                binding.aImg.setImageBitmap(item.aImg)
+            }
 
             // 링크
             if(item.linkLayout == null){
@@ -1061,6 +1117,16 @@ uri = linkUri
         activity.writeContentList[WriteList.id].docContent = WriteList.docContent
         activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
     }
+
+    /*fun updateQuestionItems(item: WriteItem, position: Int)
+    {
+        //var activity:WritingActivity = WritingActivity()
+        var QList = item as WriteQuestionData
+        activity.writeQuestionList[QList.id].qTitle = QList.qTitle
+        activity.writeQuestionList[QList.id].linkUri = QList.linkUri
+        activity.writeQuestionList[QList.id].aImg = QList.aImg
+        activity.writeQuestionList[QList.id].aTxt = QList.aTxt
+    }*/
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
