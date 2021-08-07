@@ -297,15 +297,16 @@ class ReadingActivity : AppCompatActivity() {
                         if (title == "") {
                             title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                         }
-                        if (bm1 == null) {
-                            binding.linkIcon.visibility = View.GONE
-                        }
+
                         isrun = false
                     }
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
                         var adapter = ReadMultiAdapter(this)
+                        if (bm1 == null) {
+                            binding.linkIcon.visibility = View.GONE
+                        }
                         binding.docList.adapter = adapter
                         binding.linkUri.text = linkUri
                         binding.linkTitle.text = title

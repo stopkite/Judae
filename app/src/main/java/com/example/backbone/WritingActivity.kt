@@ -60,6 +60,10 @@ class WritingActivity : AppCompatActivity() {
     var content:String = ""
     private var isrun:Boolean = false
 
+
+
+    var WriteID: String = ""
+
     //DBHelper와 이어주도록 클래스 선언
     var db: DBHelper = DBHelper(this)
 
@@ -104,7 +108,6 @@ class WritingActivity : AppCompatActivity() {
         }
     }
 
-    var writeID: String = ""
     var Gallery = 0
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
@@ -316,9 +319,6 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
         binding.clLinkArea.visibility = View.GONE
 
-
-
-        var WriteID: String = ""
         if(intent.hasExtra("data"))
         {
             Log.d("태그", "${WriteID}")
@@ -361,18 +361,19 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
 
-            var id = writeContentList.size
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                null, null, null, null, null, null
-            ))
 
-            writingAdapter.addItems(
-                    WriteContentData(
-                            id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
-                            null, null, null, null, null
-                    )
-            )
+                //작성 버전
+                var id = writeContentList.size
+                writeContentList.add(WriteContentData(id, null, null, null, null, null,
+                        null, null, null, null, null, null
+                ))
 
+                writingAdapter.addItems(
+                        WriteContentData(
+                                id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
+                                null, null, null, null, null
+                        )
+                )
         }
 
         //하단의 '사진' 버튼 클릭 리스너
@@ -410,20 +411,28 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
+            //수정 버전
+            if(WriteID != "")
+            {
+                //답변이 한 개일 경우.
+                writingAdapter.addItems(loadQuestionData("본문에서 추가로 넣는 거", null,null,clinkLayout,null,null,null,
+                        null,null,null, today, false, true))
+            }else{
+                var id = writeQuestionList.size
 
-            var id = writeQuestionList.size
+                writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,
+                        aTxtText, null, null, null
+                ))
 
-            writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,
-                aTxtText, null, null, null
-            ))
+                // 질문 추가
+                writingAdapter.addItems(
+                        WriteQuestionData(
+                                id, "", null, null, null, null, null,
+                                null, "",null,"", null, qAddImgBtn, qAddLinkBtn
+                        )
+                )
+            }
 
-            // 질문 추가
-            writingAdapter.addItems(
-                    WriteQuestionData(
-                            id, "", null, null, null, null, null,
-                            null, "",null,"", null, qAddImgBtn, qAddLinkBtn
-                    )
-            )
         }
 
         //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
@@ -544,6 +553,7 @@ class WritingActivity : AppCompatActivity() {
 
     private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
     {
+        Log.d("태그", "${WriteID}")
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         val q_linkLayout = binding2.clLinkArea
         val c_linkLayout = binding3.clLinkArea
@@ -584,8 +594,8 @@ class WritingActivity : AppCompatActivity() {
             if(AnswerSize==1)
             {
                 //답변이 한 개일 경우.
-                writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                        null,AnswerArray[0].Content, AnswerArray[0].Date, false))
+                writingAdapter.addItems(loadQuestionData(i.toString()+"-0", QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,null,AnswerArray[0].Link,
+                        null, null, AnswerArray[0].Content, AnswerArray[0].Date, false, false))
             } else if(AnswerSize>1)
             {
                 //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
@@ -595,23 +605,23 @@ class WritingActivity : AppCompatActivity() {
                 {
                     if(j==0)
                     {
-                        writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                                null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }else{
-                        writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                        writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", null,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                                null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }
                 }
                 //마지막 내용!
-                writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
-                        null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                writingAdapter.addItems(loadQuestionData(i.toString()+"-last", null,AnswerArray[LastSize].Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
+                        null,null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false, false))
             }else{
                 Log.d("태그", "${QuestionIDArray[i].Content}")
                 //질문만 있고, 대답 없는 경우.
-                writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                        null,null, null, false))
+                writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                        null,null,null, null, false, false))
 
             }
         }
@@ -638,8 +648,8 @@ class WritingActivity : AppCompatActivity() {
                 if(AnswerSize==1)
                 {
                     //답변이 한 개일 경우.
-                    writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
-                            null,AnswerArray[0].Content, AnswerArray[0].Date, false))
+                    writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,null,AnswerArray[0].Link,
+                            null,null,AnswerArray[0].Content, AnswerArray[0].Date, false, false))
                 } else if(AnswerSize>1)
                 {
                     //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
@@ -650,22 +660,22 @@ class WritingActivity : AppCompatActivity() {
                     {
                         if(j==0)
                         {
-                            writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                                    null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }else{
-                            writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
-                                    null,AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", null,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                                    null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }
                     }
                     //마지막 내용!
-                    writingAdapter.addItems(loadQuestionData(0, null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
-                            null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                    writingAdapter.addItems(loadQuestionData(i.toString()+"-last", null,AnswerArray[LastSize].Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
+                            null,null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false, false))
                 }else{
                     //질문만 있고, 대답 없는 경우.
-                    writingAdapter.addItems(loadQuestionData(0, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                            null,null, null, false))
+                    writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                            null,null,null, null, false, false))
 
                 }
             }

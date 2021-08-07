@@ -36,12 +36,13 @@ data class saveContentData(override var id: Int, var contentImg: Bitmap?,
 
 
 
+//onActivityCalled: 수정의 경우 대답 밑 버튼을 눌러서 추가된 것이면 false, 액티비티에 리스너가 있는 밑에 바에서 질문을 추가 버튼을 눌러서 추가된 것이면 true
 data class loadQuestionData(
-    override var id: Int, var qTitle: String?, var aImg: ByteArray?,
-        var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
-        var aTxt: String?, var Date:String?, var ColorChanged:Boolean?):WriteItem
+        override var id: String, var qTitle: String?, var aImg: ByteArray?,
+        var linkLayout: View?, var linkTitle:String?, var linkContent: String?, var linkUri:String?, var linkIcon: Bitmap?, var linkImg: Drawable?,
+        var aTxt: String?, var Date:String?, var ColorChanged:Boolean?, var onActivityCalled:Boolean?):WriteItem
 data class loadContentData(override var id: Int, var contentImg: ByteArray?,
-                           var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
+                           var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?, var linkImg: Drawable?,
                            var docContent: String?):WriteItem
 /*
 <<WriteQuestionData>>
