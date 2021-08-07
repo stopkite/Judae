@@ -333,12 +333,8 @@ class WritingActivity : AppCompatActivity() {
         binding.addContentBTN.setOnClickListener {
             var checknull = true
             for (i in 0..writeContentList.size-1){
-                Log.d("태그", "${i}: ${writeContentList[i].docContent}")
-                Log.d("태그", "${i}: ${writeContentList[i].contentImg}")
-                Log.d("태그", "${i}: ${writeContentList[i].linkUri}")
                 if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
                 {
-                    Log.d("태그", "${i}")
                     checknull =  false
                 }
             }
@@ -415,31 +411,19 @@ class WritingActivity : AppCompatActivity() {
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
 
-            Log.d("되나?","${writeQuestionList.size}")
-            for (i in 0..writeQuestionList.size-1){
-                questionsave.add(i, qSave(qTitleText, null, qlinkLayout, qlinkTitle.toString(), qlinkUri.toString(),
-                            null, aTxt.toString()))
-                Log.d("되나?","${questionsave[i].qTitle}")
-                Log.d("되나?","${i}")
-            }
+            var id = writeQuestionList.size
 
-            saveQuestionList.add(writeQuestionList.size, saveQuestionData(writeQuestionList.size, null, null, null, null, null, null, null, null,null,
-                null, null, null)
-            )
-
-            writeQuestionList.add(WriteQuestionData(writeQuestionList.size, qTitleText, null, null, null, null, null, null, null,null,
+            writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,
                 aTxtText, null, null, null
             ))
 
             // 질문 추가
             writingAdapter.addItems(
                     WriteQuestionData(
-                            writeQuestionList.size, "", null, null, null, null, null,
+                            id, "", null, null, null, null, null,
                             null, "",null,"", null, qAddImgBtn, qAddLinkBtn
                     )
             )
-
-
         }
 
         //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
@@ -814,7 +798,6 @@ class WritingActivity : AppCompatActivity() {
                         writeContentList.add(WriteContentData(id, img, null, null, null, null,
                                 null, null, null, null, null, null
                         ))
-                        Log.d("태그", "writeContentList 인덱스: ${id}")
                         writingAdapter.addItems(
                                 WriteContentData(id, img, null, null, null, null, null,
                                         null, null, null, null, null

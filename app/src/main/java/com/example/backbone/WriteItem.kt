@@ -14,23 +14,23 @@ interface WriteItem {
 data class WriteQuestionData(
     override var id: Int, var qTitle: String?, var aImg: Bitmap?,
     var linkInsertTxt: String?, var linkInsertBtn: Button?,
-    var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
+    var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
     var aTxt: String?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 data class WriteContentData(
         override var id: Int, var contentImg: Bitmap?,
         var linkInsertTxt: EditText?, var linkInsertBtn:Button?,
-        var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
+        var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
         var docContent:String?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
-data class saveQuestionData(override var id: Int, var qTitle: String?, var aImg: Drawable?,
+data class saveQuestionData(override var id: Int, var qTitle: String?, var aImg: Bitmap?,
                              var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
-                             var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
+                             var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Bitmap?,
                              var aTxt: String?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
-data class saveContentData(override var id: Int, var contentImg: Drawable?,
+data class saveContentData(override var id: Int, var contentImg: Bitmap?,
                             var linkInsertTxt:String?, var linkInsertBtn:Button?,
-                            var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
+                            var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
                             var docContent:String?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
 

@@ -138,13 +138,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //count: 새로 추가된 문자열의 개수
                     override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
                         if (binding.aTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            /*
-                                                        Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
-                            Log.d("태그", "아이템 아이디: ${QuestionList.id}")
-                            Log.d("태그", "${s.toString()}")
-                            Log.d("태그", "질문 수정중")
-                             */
-
                             try {
                                 afterTxt = binding.aTxt.getText().toString()
                                 //items[position].
@@ -189,38 +182,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateQuestionItems(QuestionList, position)
+                        updateQuestionItems(QuestionList)
                     }
                 })
 
-                /*holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
-                    var preTxt: String? = null
-                    var afterTxt: String? = null
-                    //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                        preTxt = s.toString()
-                    }
 
-                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
-                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
-                    //before: 삭제된 기존 문자열의 개수
-                    //count: 새로 추가된 문자열의 개수
-                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
-                        if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            try {
-                                afterTxt = binding.linkInsertTxt.getText().toString()
-                                QuestionList.linkUri = s.toString()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
-                    override fun afterTextChanged(s: Editable) {
-                        QuestionList.linkUri = s.toString()
-                        updateQuestionItems(QuestionList, position)
-                    }
-                })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding.linkInsertBtn.setOnClickListener {
                     //입력 받은 링크를 String으로 넣어 준 후
@@ -228,11 +194,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList)
-                    QuestionList.linkContent = binding.linkContent.toString()
-                    QuestionList.linkTitle = binding.linkTitle.toString()
-                    QuestionList.linkUri = binding.linkUri.toString()
-                    QuestionList.linkIcon = binding.linkIcon.drawable
-                }*/
+                }
                 //답변 링크 입력 버튼 눌렀을 때!
                 holder.binding.qLinkAddBtn.setOnClickListener {
                     holder.binding.linkInsertTxt.visibility = View.VISIBLE
@@ -270,16 +232,25 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateQuestionItems(QuestionList, position)
+                        QuestionList.linkUri = s.toString()
+                        updateQuestionItems(QuestionList)
                     }
 
                 })
+                //링크 입력 후 확인을 누르면 실행되는 리스너
+                holder.binding.linkInsertBtn.setOnClickListener {
+                    //입력 받은 링크를 String으로 넣어 준 후
+                    var linkUri = QuestionList.linkUri.toString()
+                    //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
+                    //쓰레드 실행(한번만 실행함.)
+                    holder.loadLink(linkUri, QuestionList)
+                    QuestionList.linkContent = QuestionList.linkContent
+                    QuestionList.linkTitle =  QuestionList.linkTitle
+                    QuestionList.linkUri = QuestionList.linkUri
+                    QuestionList.linkIcon =  QuestionList.linkIcon
 
-                /*if (binding.qTitle.getText() != null && binding3.docTitle.getText() != null && binding2.docContent.getText() != null) {
-                    binding3.saveBtn.setEnabled(true)
-                }*/
-
-
+                    updateQuestionItems(QuestionList)
+                }
             }
             is MyContentHolder -> {
                 //holder.setContentList(items[position] as WriteContentData)
@@ -324,10 +295,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        updateItems(WriteList, position)
+                        updateItems(WriteList)
 
                     }
                 })
+
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
@@ -353,7 +325,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         WriteList.linkUri = s.toString()
-                        updateItems(WriteList, position)
+                        updateItems(WriteList)
                     }
                 })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
@@ -363,10 +335,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, WriteList)
-                    WriteList.linkContent = binding2.linkContent.toString()
-                    WriteList.linkTitle = binding2.linkTitle.toString()
-                    WriteList.linkUri = binding2.linkUri.toString()
-                    WriteList.linkIcon = binding2.linkIcon.drawable
                 }
             }
             is LoadQHolder -> {
@@ -711,6 +679,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
+            Log.d("태그", "item id: ${item.id}, item link: ${item.linkUri}")
+            Log.d("태그", "item id: ${item.id}, item link: ${item.linkIcon}")
+            Log.d("태그", "item id: ${item.id}, item link: ${item.linkTitle}")
             if(item.qTitle == null){
                 //binding.qTitle.visibility = View.GONE
             }else{
@@ -725,25 +696,31 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.aImg.setImageBitmap(item.aImg)
             }
 
+            binding.clLinkArea.visibility = View.GONE
+            binding.linkInsertBtn.visibility = View.GONE
+            binding.linkInsertTxt.visibility = View.GONE
+
+            if(item.linkUri != null&& item.linkUri != "") {
+                loadLink(item.linkUri.toString(), item)
+                binding.clLinkArea.visibility = View.VISIBLE
+            }else{
+                // 아이템에 링크 uri가 존재하지 않는다면?
+                // 링크 삽입이 이뤄지는 곳(editText영역, 버튼 영역)
+                if(item.linkInsertTxt != null){
+                    binding.linkInsertBtn.visibility = View.VISIBLE
+                    binding.linkInsertTxt.visibility = View.VISIBLE
+                }
+            }
+
             // 링크
             if(item.linkLayout == null){
                 binding.clLinkArea.visibility = View.GONE
             }
 
-            // 링크 삽입이 이뤄지는 곳(editText영역)
-            if(item.linkInsertTxt == null){
-                binding.linkInsertTxt.visibility = View.GONE
-            }
-
-            // 링크 삽입이 이뤄지는 곳(버튼 영역)
-            if(item.linkInsertTxt == null){
-                binding.linkInsertBtn.visibility = View.GONE
-            }
-
             // 링크된 요소들
-            binding.linkTitle.setText(item.linkTitle)
-            binding.linkUri.setText(item.linkUri)
-            binding.linkIcon.setImageDrawable(item.linkIcon)
+            //binding.linkTitle.setText(item.linkTitle)
+            //binding.linkUri.setText(item.linkUri)
+            //binding.linkIcon.setImageDrawable(item.linkIcon)
 
             // 대답
             binding.aTxt.setText(item.aTxt)
@@ -761,15 +738,15 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }else {
                 binding.qImgAddBtn.setImageDrawable(item.qImgAddBtn?.drawable)
             }
-            //링크
+            //사진
             if(item.qLinkAddBtn == null){
                 binding.qLinkAddBtn.visibility = View.GONE
             }else {
                 binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
             }
 
-
-            //링크 입력 후 확인을 누르면 실행되는 리스너
+            /*
+                        //링크 입력 후 확인을 누르면 실행되는 리스너
             binding.linkInsertBtn.setOnClickListener {
                 //입력 받은 링크를 String으로 넣어 준 후
                 linkUri = binding.linkInsertTxt.getText().toString()
@@ -777,6 +754,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 //쓰레드 실행(한번만 실행함.)
                 loadLink(linkUri, item)
             }
+             */
+
         }
 /*
         companion object Factory {
@@ -796,6 +775,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             binding.linkTitle.text = title
             binding.linkContent.text = content
             binding.linkIcon.setImageBitmap(bm1)
+
         }
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
@@ -804,9 +784,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var url1: URL? = null
         var content:String = ""
 
-        fun loadLink(linkUri: String, item: WriteQuestionData) {
+        fun loadLink(url: String, item: WriteQuestionData) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-            var linkUri = linkUri
+            var linkUri = url
             title = ""
             bm1 = null
             url1 = null
@@ -845,7 +825,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
                             item.linkUri = linkUri
-
                             isrun = false
                         } else {
                             if (!linkUri.contains("https://")) {
@@ -893,7 +872,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                                 binding.linkIcon.visibility = View.GONE
                             }
                             item.linkUri = linkUri
-                            Log.d("태그", "item: ${item.id}, ${item.linkUri}")
                             setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         }
@@ -1025,7 +1003,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
                             item.linkUri = linkUri
-                            Log.d("태그", "item: ${item.id}, ${item.linkUri}")
                             isrun = false
                         } else {
                             if (!linkUri.contains("https://")) {
@@ -1075,7 +1052,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                             //선택된 아이템에 대한 정보 빼내오기
                             item.linkUri = linkUri
-                            Log.d("태그", "item: ${item.id}, ${item.linkUri}")
                             setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         }
@@ -1110,7 +1086,7 @@ uri = linkUri
 
     override fun getItemCount() = items.size
 
-    fun updateItems(item: WriteItem, position: Int)
+    fun updateItems(item: WriteItem)
     {
         //var activity:WritingActivity = WritingActivity()
         var WriteList = item as WriteContentData
@@ -1118,15 +1094,14 @@ uri = linkUri
         activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
     }
 
-    /*fun updateQuestionItems(item: WriteItem, position: Int)
+    fun updateQuestionItems(item: WriteItem)
     {
-        //var activity:WritingActivity = WritingActivity()
         var QList = item as WriteQuestionData
         activity.writeQuestionList[QList.id].qTitle = QList.qTitle
         activity.writeQuestionList[QList.id].linkUri = QList.linkUri
         activity.writeQuestionList[QList.id].aImg = QList.aImg
         activity.writeQuestionList[QList.id].aTxt = QList.aTxt
-    }*/
+    }
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
