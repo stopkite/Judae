@@ -548,7 +548,20 @@ class WritingActivity : AppCompatActivity() {
                         db.InsertAnswer(answer)
                     }else{
                         //본문 부분이라면?
+                        var data = writingAdapter.items[i] as WriteContentData
+                        if(data.docContent != null && data.docContent != "")
+                        {
 
+                        }
+
+                        var content = Content(
+                            writing.WriteID.toString(),
+                            data.docContent,
+                            image,
+                            data.linkUri)
+                        db.InsertContent(content)
+
+                        contentID = db.getCurrentContentID()
                     }
                 }
 

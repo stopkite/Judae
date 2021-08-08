@@ -53,11 +53,15 @@ class Content {
         this.Image = Image
         this.link = link
     }
-    constructor(WriteID:String, content:String, Image: ByteArray?, link:String)
+    constructor(WriteID:String, content:String?, Image: ByteArray?, link:String?)
     {
         this.WriteID = WriteID
-        this.content = content
+        if (content != null) {
+            this.content = content
+        }
         this.Image = Image
-        this.link = link
+        if (link != null) {
+            this.link = link
+        }
     }
 }
