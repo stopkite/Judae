@@ -792,7 +792,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         }
  */
 
-
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
         {
             binding.clLinkArea.visibility = View.VISIBLE
