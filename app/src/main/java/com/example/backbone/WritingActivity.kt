@@ -70,8 +70,6 @@ class WritingActivity : AppCompatActivity() {
     private lateinit var writingAdapter:WriteMultiAdapter
 
     private val REQUEST_READ_EXTERNAL_STORAGE = 1000
-    private val OPEN_GALLERY = 1
-    lateinit var viewPager : ViewPager
 
     @RequiresApi(Build.VERSION_CODES.O)
     var now = LocalDate.now()
