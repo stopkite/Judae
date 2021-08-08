@@ -60,8 +60,6 @@ class WritingActivity : AppCompatActivity() {
     var content:String = ""
     private var isrun:Boolean = false
 
-
-
     var WriteID: String = ""
 
     //DBHelper와 이어주도록 클래스 선언
@@ -108,7 +106,7 @@ class WritingActivity : AppCompatActivity() {
         }
     }
 
-    var writeID: String = ""
+    //var writeID: String = ""
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
     val writeContentList = ArrayList<WriteContentData>()
