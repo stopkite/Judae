@@ -422,14 +422,14 @@ class WritingActivity : AppCompatActivity() {
                 var id = writeQuestionList.size
 
                 writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,
-                        aTxtText, null, null, null
+                        aTxtText, null, null, null, null
                 ))
 
                 // 질문 추가
                 writingAdapter.addItems(
                         WriteQuestionData(
                                 id, "", null, null, null, null, null,
-                                null, "",null,"", null, qAddImgBtn, qAddLinkBtn
+                                null, "",null,"", null, qAddImgBtn, qAddLinkBtn, null
                         )
                 )
             }

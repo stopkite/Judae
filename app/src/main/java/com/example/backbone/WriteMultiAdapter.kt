@@ -148,13 +148,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //count: 새로 추가된 문자열의 개수
                     override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
                         if (binding.aTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            /*
-                                                        Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
-                            Log.d("태그", "아이템 아이디: ${QuestionList.id}")
-                            Log.d("태그", "${s.toString()}")
-                            Log.d("태그", "질문 수정중")
-                             */
-
                             try {
                                 afterTxt = binding.aTxt.getText().toString()
                                 //items[position].
@@ -167,8 +160,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
+                        Log.d("태그", "afterTextChanged")
+                        QuestionList.Date = activity.today
                         //updateQuestions에 저장해주기.
-                        //updateQuestionItems(QuestionList, position)
+                        updateQuestionItems(QuestionList, position)
                         //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
@@ -766,6 +761,18 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
             }
 
+            if(item.Date != null)
+            {
+                var date: String? = item.Date
+                var text:String = item.aTxt + "\n${date}"
+                var start = text.indexOf(date!!)
+                var end = start + date!!.length
+                val spannableString = SpannableString(text)
+                spannableString.setSpan(ForegroundColorSpan(Color.GRAY), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                binding.aTxt.setText(spannableString)
+            }
 
             //링크 입력 후 확인을 누르면 실행되는 리스너
             binding.linkInsertBtn.setOnClickListener {
@@ -1119,15 +1126,16 @@ uri = linkUri
         activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
     }
 
-    /*fun updateQuestionItems(item: WriteItem, position: Int)
+    fun updateQuestionItems(item: WriteItem, position: Int)
     {
         //var activity:WritingActivity = WritingActivity()
         var QList = item as WriteQuestionData
         activity.writeQuestionList[QList.id].qTitle = QList.qTitle
         activity.writeQuestionList[QList.id].linkUri = QList.linkUri
+        activity.writeQuestionList[QList.id].Date = QList.Date
         activity.writeQuestionList[QList.id].aImg = QList.aImg
         activity.writeQuestionList[QList.id].aTxt = QList.aTxt
-    }*/
+    }
 
     fun addItems(item: WriteItem) {
         this.items.add(item)
