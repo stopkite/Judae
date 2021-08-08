@@ -43,7 +43,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     private val REQUEST_READ_EXTERNAL_STORAGE = 1000
 
     var activity = context
-    private val items = mutableListOf<WriteItem>()
+    val items = mutableListOf<WriteItem>()
 
     companion object {
         private const val TYPE_Question = 0

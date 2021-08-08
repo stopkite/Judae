@@ -5,7 +5,9 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteStatement
 import android.util.Log
+import java.sql.Types.NULL
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -488,7 +490,106 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
     }
 
-    /*
+    //WritingActivity
+    //글 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertWriting(writing: Writing)
+    {
+        var db = this.writableDatabase
+        db.execSQL("INSERT INTO Writing (Title, Date, Category) values ('" + writing.Title + "', '"+writing.Date+"', '"+writing.Category+"');")
+
+        db.close()
+    }
+
+    fun getCurrentWriteID():Int
+    {
+        var db = this.readableDatabase
+
+
+        var cursor: Cursor = db.rawQuery("select * from Writing;", null)
+        cursor.moveToLast()
+        var WriteID = cursor.getInt(0)
+
+        return WriteID
+    }
+
+    //WritingActivity
+    //내용 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertContent(content: Content)
+    {
+        var db = this.writableDatabase
+        if(content.Image != null)
+        {
+            var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', ?, '"+content.link+"');")
+            p.bindBlob(1, content.Image)
+        }else{
+            db.execSQL("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', NULL, '"+content.link+"');")
+        }
+
+
+        db.close()
+    }
+
+    fun getCurrentContentID():Int
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("select * from Content;", null)
+        cursor.moveToLast()
+        var ContentID = cursor.getInt(1)
+
+        db.close()
+        return ContentID
+    }
+
+    //WritingActivity
+    //내용 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertQuestion(question: Question)
+    {
+        var db = this.writableDatabase
+        db.execSQL("INSERT INTO Question (WritingID, ContentID, Content) values ('" + question.WritingID + "', '"+question.ContentID+"', '"+question.Content+"');")
+
+        db.close()
+    }
+
+    fun getCurrentQuestionID():Int
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("select * from Question;", null)
+        cursor.moveToLast()
+        var QuestionID = cursor.getInt(2)
+
+        return QuestionID
+    }
+
+    fun InsertAnswer(answer: Answer)
+    {
+        var db = this.writableDatabase
+        if(answer.Image != null) {
+            Log.d("태그:", "InsertAnswer if구문 사진 저장하는 경우.")
+            Log.d("태그:", "InsertAnswer ${answer.Content}")
+            Log.d("태그:", "InsertAnswer ${answer.QuestionID}")
+            Log.d("태그:", "InsertAnswer ${answer.Image}")
+            if(answer.Link == null)
+            {
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "', ?, NULL);")
+                p.bindBlob(1, answer.Image)
+            }else{
+                Log.d("태그:", "InsertAnswer ${answer.Link}")
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "', ?, '" + answer.Link + "');")
+                p.bindBlob(1, answer.Image)
+            }
+        }
+        else{
+            Log.d("태그:", "InsertAnswer else구문")
+            db.execSQL("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "',NULL, '" + answer.Link + "');")
+        }
+
+        db.close()
+    }
+
+
+
      //WritingActivity
     //이미지를 올리는 DB
     //table: 어떤 테이블에 저자할 것인지? content, answer 중?
@@ -521,5 +622,5 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
         return Memo
     }
-     */
+
 }

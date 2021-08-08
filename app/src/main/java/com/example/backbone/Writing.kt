@@ -32,5 +32,12 @@ class Writing {
         this.Date = Date
         this.Category = Category
     }
+    //생성자
+    constructor(Title: String, Date:String, Category: String)
+    {
+        this.Title = Title
+        this.Date = Date
+        this.Category = Category
+    }
     
 }

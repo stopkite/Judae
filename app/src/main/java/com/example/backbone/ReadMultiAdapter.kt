@@ -97,13 +97,13 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             }
 
             // 링크
-            if(item.linkUri == ""||item.linkUri == null){
+            if(item.linkUri != ""&&item.linkUri != null && item.linkUri != "null"){
                 //링크 내용이 없으면?
-                binding.clLinkArea.visibility = View.GONE
+                loadLink(item.linkUri.toString())
             }else{
                 //링크 내용이 있으면?
                 //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
-                    loadLink(item.linkUri.toString())
+                binding.clLinkArea.visibility = View.GONE
             }
 
             // 대답 내용 삽입
@@ -276,6 +276,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
         fun setContentList(item: ReadContentData) {
             //사진 띄우기 **** - 나중에 하기.
+            Log.d("태그", "${item.docContent}")
             if(item.contentImg != null)
             {
                 //binding.contentImg.setImageBitmap()
@@ -294,7 +295,12 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
             if(item.linkUri != ""){
                 binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
-                loadLink(item.linkUri.toString())
+                try{
+                    loadLink(item.linkUri.toString())
+                }catch (e:Exception)
+                {
+                    binding2.clLinkArea.visibility = View.GONE
+                }
             }else{
                 binding2.clLinkArea.visibility = View.GONE
             }
@@ -410,7 +416,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                         }
                     } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-
+                        binding2.clLinkArea.visibility = View.GONE
                     }
                 }
             }).start()

@@ -69,8 +69,7 @@ class ReadingActivity : AppCompatActivity() {
         var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
-
-        if(WritingArray[0].link != "")
+        if(WritingArray[0].link != "" && WritingArray[0].link != "http://wwww.youtube.com/watch?v=MDeuDrlBKqwhttp://wwww.youtube.com/watch?v=MDeuDrlBKqw")
         {
             //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
             isrun = true
@@ -89,6 +88,7 @@ class ReadingActivity : AppCompatActivity() {
 
         var WritingSize = WritingArray.size
 
+        Log.d("태그", "${WritingSize}")
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
         var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
         var QuestionIDSize = QuestionIDArray.size
@@ -297,12 +297,17 @@ class ReadingActivity : AppCompatActivity() {
                         if (title == "") {
                             title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                         }
-
                         isrun = false
                     }
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                        Log.d("태그", "${title}, ${content}")
+                        if(title == null)
+                        {
+                            binding.clLinkArea.visibility = View.GONE
+                        }
+
                         var adapter = ReadMultiAdapter(this)
                         if (bm1 == null) {
                             binding.linkIcon.visibility = View.GONE
@@ -315,7 +320,6 @@ class ReadingActivity : AppCompatActivity() {
                     })
                 } catch (e: Exception) {
                     //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-
                 }
             }
         }).start()
