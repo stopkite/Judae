@@ -11,7 +11,7 @@ class Answer {
     //이미지
     var Image: ByteArray? = null
     //링크
-    var Link: String = ""
+    var Link: String? = null
 
     //기본 생성자
     constructor()
@@ -26,6 +26,21 @@ class Answer {
         this.Image = Image
         this.Link = Link
         this.Content = Content
+    }
+    constructor(QuestionID:String, Content: String?, Date: String?, Image:ByteArray?, Link: String?)
+    {
+        this.QuestionID = QuestionID
+        this.AnswerID = AnswerID
+        if (Date != null) {
+            this.Date = Date
+        }
+        this.Image = Image
+        if (Link != null) {
+            this.Link = Link
+        }
+        if (Content != null) {
+            this.Content = Content
+        }
     }
     constructor(Question:String, AnswerID:Int, Content:String)
     {

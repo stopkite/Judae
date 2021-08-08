@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.*
 import android.util.Log
 import android.view.View
@@ -20,7 +19,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import com.example.backbone.databinding.ActivityWritingBinding
 import com.example.backbone.databinding.CancelWritingBinding
 import com.example.backbone.databinding.WriteContentItemBinding
@@ -263,9 +261,9 @@ class WritingActivity : AppCompatActivity() {
 
 
 
-        fun drawableToByteArray(drawable: Drawable?): ByteArray {
-            val bitmapDrawable = drawable as BitmapDrawable?
-            val bitmap = bitmapDrawable?.bitmap
+        fun drawableToByteArray(drawable: Bitmap?): ByteArray {
+            //val bitmapDrawable = drawable
+            val bitmap = drawable
             val stream = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val byteArray = stream.toByteArray()
@@ -471,27 +469,94 @@ class WritingActivity : AppCompatActivity() {
                 db.InsertWriting(writing)
                 // 저장한 글 객체의 ID를 불러옴.
                 writing.WriteID = db.getCurrentWriteID()
-                //Log.d("출력","${docTitle.getText().toString()}")
-                //Log.d("출력","${today}")
+                WriteID = writing.WriteID.toString()
 
+                var image: ByteArray? = null
                 var contentID: Int = -1
                 //2. 0번째 (고정 content)부분 데이터를 입력해주기. - 내용만 입력하면 됨! 내용 입력 후, getContentID 받아와서 contentID에 누적해주기.
-                var image: ByteArray = drawableToByteArray(binding.contentImg.drawable)
+                if(binding.contentImg.drawable != null)
+                {
+                    try{
+                        image = drawableToByteArray(binding.contentImg.drawable)
+                    }catch (e: Exception){
+                        image = null
+                    }
+
+                }
                 var content = Content(
                     writing.WriteID.toString(),
                     binding.docContent.text.toString(),
                     image,
-                    binding.linkUri.text.toString()
-                )
-                db.InsertContent(content)
+                    binding.linkUri.text.toString())
+                 db.InsertContent(content)
 
+                contentID = db.getCurrentContentID()
+
+                /*
+                getItemViewType 참고하기.
+                private const val TYPE_Question = 0
+                private const val TYPE_Content = 1
+                private const val TYPE_RContent = 2
+                private const val TYPE_RCQuestion = 3
+                 */
+                Log.d("태그", "${writingAdapter.getItemViewType(0)}")
+                Log.d("태그", "${writingAdapter.itemCount}")
+                var question:Question = Question()
+                var questionID = -1
+                var answer:Answer = Answer()
                 //3. 그 뒤에 어댑터 item의 position과 data 유형에 따라 저장하는 순서 변경해주기.
-                // 맨 첫번째로 나오는 데이터 position 0이 질문/대답이면 0번째 content의 ID로
+                // 맨 첫번째로 나오는 데이터 position 0이 질문/대답이면 0번째 content의 ID로 데이터 insert
                 // 맨 첫번째로 나오는 데이터 position 0이 content이면 해당 content 데이터 그냥 insert
-                //
-                //Log.d("태그", "")
+                for(i in 0..writingAdapter.itemCount-1)
+                {
+                    Log.d("태그", "for구문 들어옴")
+                    //질문/응답 하는 부분이라면?
+                    if(writingAdapter.getItemViewType(i) == 0){
+                        Log.d("태그", "if구문 들어옴")
+                        //질문 저장 - 질문 ID를 받아와 대답에도 넣어주기.
+                        var data = writingAdapter.items[i] as WriteQuestionData
+                        Log.d("태그", "${data.linkInsertTxt}")
+                        Log.d("태그", "${data.aTxt}")
+                        Log.d("태그", "${data.aImg}")
+                        Log.d("태그", "${data.qTitle}")
+                        if(data.qTitle != null && data.qTitle != "")
+                        {
+                            question = Question(WriteID, contentID.toString(), data.qTitle!!)
+                        }else{
+                            question = Question(WriteID, contentID.toString())
+                        }
+                        db.InsertQuestion(question)
+                        questionID = db.getCurrentQuestionID()
+
+
+                        if(data.aImg != null)
+                        {
+                            image = drawableToByteArray(data.aImg)
+                        }else{
+                            image = null
+                        }
+                        Log.d("태그", "image: ${image}")
+                        //대답 저장
+                        if(data.aTxt != null && data.aTxt != "")
+                        {
+                            answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkInsertTxt)
+                            Log.d("태그", "얘로 저장이 됐나?")
+                        }else{
+                            answer = Answer(questionID.toString(), null, data.Date!!, image!!, data.linkInsertTxt)
+                        }
+                        Log.d("태그", "answer: ${answer.Content}")
+                        db.InsertAnswer(answer)
+                    }else{
+                        //본문 부분이라면?
+
+                    }
+                }
+
+
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
 
                 /*
                 //본문 객체 저장 <sContent>
