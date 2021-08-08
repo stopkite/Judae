@@ -76,6 +76,8 @@
         android:layout_marginEnd="18dp"
         android:backgroundTint="@color/greenMain"
         android:hint="링크를 입력하세요."
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:textColor="@color/white"
         android:textColorHint="#9A9090"
         android:textSize="12sp"

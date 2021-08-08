@@ -96,7 +96,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                 binding.aImg.visibility = View.GONE
             }
 
-
             // 링크
             if(item.linkUri == ""||item.linkUri == null){
                 //링크 내용이 없으면?
@@ -142,25 +141,38 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             }
         }
 
-        private fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
+
+
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
         {
+
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
             binding.linkContent.text = content
             binding.linkIcon.setImageBitmap(bm1)
         }
+        // 링크 삽입 관련 메소드
+        var linkUri: String = ""
+        var title: String = ""
+        var bm1: Bitmap? = null
+        var url1: URL? = null
+        var content:String = ""
 
-        private fun loadLink(linkUri: String){
-            // 링크 삽입 관련 메소드
-            var title: String = ""
-            var bm1: Bitmap? = null
-            var url1: URL? = null
-            var content:String = ""
-            isrun = true
+        private fun loadLink(uri: String) {
+            //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+            linkUri = uri
+            title = ""
+            bm1 = null
+            url1 = null
+            content = ""
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
                     try {
                         if (linkUri.contains("naver")) {
+                            Log.d("태그", "네이버")
+                            if (!linkUri.contains("https://")) {
+                                linkUri = "https://${linkUri}"
+                            }
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
@@ -182,12 +194,19 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             conn.connect()
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
+                            if(bm1 == null)
+                            {
+                                binding.linkIcon.visibility = View.GONE
+                            }
                             bis.close()
-                            setLink(linkUri.toString(), title.toString(), content.toString(), bm1)
-
+                            setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         } else {
-
+                            Log.d("태그", "그외 사이트")
+                            if (!linkUri.contains("http")) {
+                                linkUri = "https://${linkUri}"
+                                Log.d("태그", "링크 고침: ${linkUri}")
+                            }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon: String
                             var link: String
@@ -209,6 +228,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 }
                             }
 
+                            Log.d("태그", "파비콘 연결할 url1 들고옴 고침: ${url1}")
                             try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
@@ -216,6 +236,8 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
                             } catch (e: Exception) {
+
+                                Log.d("태그", "bm 불러오기 실패")
                             }
                             title = doc.title()
 
@@ -229,6 +251,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             if (bm1 == null) {
                                 binding.linkIcon.visibility = View.GONE
                             }
+
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         }
@@ -237,9 +260,10 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
                     }
                 }
-
             }).start()
         }
+
+
 
         companion object Factory {
             fun create(parent: ViewGroup): MyQHolder {
@@ -288,17 +312,28 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             binding2.linkIcon.setImageBitmap(bm1)
         }
 
-        private fun loadLink(linkUri: String){
-            // 링크 삽입 관련 메소드
-            var title: String = ""
-            var bm1: Bitmap? = null
-            var url1: URL? = null
-            var content:String = ""
+        // 링크 삽입 관련 메소드
+        var linkUri: String = ""
+        var title: String = ""
+        var bm1: Bitmap? = null
+        var url1: URL? = null
+        var content:String = ""
+
+        fun loadLink(url: String) {
+            //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+            var linkUri = url
+            title = ""
+            bm1 = null
+            url1 = null
+            content = ""
             isrun = true
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
                     try {
                         if (linkUri.contains("naver")) {
+                            if (!linkUri.contains("https://")) {
+                                linkUri = "https://${linkUri}"
+                            }
                             //linkIcon에 파비콘 추출해서 삽입하기
                             val doc = Jsoup.connect("${linkUri}").get()
 
@@ -320,11 +355,14 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             conn.connect()
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
-                            bis.close()
-                            setLink(linkUri, title, content, bm1)
 
+                            bis.close()
+                            setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         } else {
+                            if (!linkUri.contains("https://")) {
+                                linkUri = "https://${linkUri}"
+                            }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon: String
                             var link: String
@@ -366,7 +404,9 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             if (bm1 == null) {
                                 binding2.linkIcon.visibility = View.GONE
                             }
-                            setLink(linkUri, title, content, bm1)
+
+                            //선택된 아이템에 대한 정보 빼내오기
+                            setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         }
                     } catch (e: Exception) {
@@ -374,7 +414,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
                     }
                 }
-
             }).start()
         }
 

@@ -14,11 +14,6 @@
         android:theme="@style/Theme.Backbone"
         android:usesCleartextTraffic="true">
         <activity android:name=".SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".WritingActivity"></activity>
         <activity android:name=".ReadingActivity"></activity>
@@ -27,6 +22,11 @@
         <activity android:name=".MyQuestionActivity" />
         <activity android:name=".LockedScreenActivity" />
         <activity android:name=".HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".LockedScreenSetActivity" />
         <activity android:name=".LockedScreenOnceActivity" />
