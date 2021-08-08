@@ -797,6 +797,9 @@ class WritingActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode){
+            1->{
+                writingAdapter.onActivityResult(requestCode, resultCode, data)
+            }
             2 -> {
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_ALBUM) {
                     if (data != null) {
@@ -814,7 +817,6 @@ class WritingActivity : AppCompatActivity() {
                                         null, null, null, null, null
                                 )
                         )
-
                     }
 
                 }

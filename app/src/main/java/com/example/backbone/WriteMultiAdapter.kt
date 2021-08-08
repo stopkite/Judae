@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +29,7 @@ import com.example.backbone.databinding.*
 import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
+import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
 
@@ -38,6 +40,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
+    private val REQUEST_READ_EXTERNAL_STORAGE = 1000
 
     var activity = context
     private val items = mutableListOf<WriteItem>()
@@ -241,6 +244,34 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 }*/
 
 
+                //답변 사진 입력 버튼 눌렀을 때!
+                holder.binding.qImgAddBtn.setOnClickListener {
+                    //binding.aImg.visibility = View.VISIBLE
+                    //권한이 허용되어있는지 self로 체크(확인)
+                    if(ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                        //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
+                        //이전에 거부한 적이 있는지 확인
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(WritingActivity(),
+                                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            var dlg = AlertDialog.Builder(activity)
+                            dlg.setTitle("권한이 필요한 이유")
+                            dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                            //OK버튼
+                            dlg.setPositiveButton("확인") { dialog, which ->
+                                ActivityCompat.requestPermissions(activity,
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                            }
+                            dlg.setNegativeButton("취소", null)
+                            dlg.show()
+                        } else {
+                            //권한 요청
+                            ActivityCompat.requestPermissions(WritingActivity(),
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                        }
+                    }else{
+                        openGalleryForImage(QuestionList)
+                    }
+                }
             }
             is MyContentHolder -> {
                 //holder.setContentList(items[position] as WriteContentData)
@@ -746,46 +777,9 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
 
 
-            //답변 사진 입력 버튼 눌렀을 때!
-            binding.qImgAddBtn.setOnClickListener {
-                //binding.aImg.visibility = View.VISIBLE
-                //권한이 허용되어있는지 self로 체크(확인)
-                if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-                    //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
-                    //이전에 거부한 적이 있는지 확인
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(WritingActivity(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        var dlg = AlertDialog.Builder(context)
-                        dlg.setTitle("권한이 필요한 이유")
-                        dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
-                        //OK버튼
-                        dlg.setPositiveButton("확인") { dialog, which ->
-                            ActivityCompat.requestPermissions(WritingActivity(),
-                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
-                        }
-                        dlg.setNegativeButton("취소", null)
-                        dlg.show()
-                    } else {
-                        //권한 요청
-                        ActivityCompat.requestPermissions(WritingActivity(),
-                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
-                    }
-                }else{
-                    openGalleryForImage()
-                }
-            }
 
         }
-        private val REQUEST_TAKE_ALBUM = 2
-        var context = binding.aImg.context
 
-        @SuppressLint("RestrictedApi")
-        private fun openGalleryForImage() {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            getActivity(context)?.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
-
-        }
 /*
         companion object Factory {
             fun create(parent: ViewGroup): MyQHolder {
@@ -1184,6 +1178,36 @@ uri = linkUri
                 clear()
                 addAll(items)
                 diffResult.dispatchUpdatesTo(this@WriteMultiAdapter)
+            }
+        }
+    }
+
+    private val REQUEST_TAKE_ALBUM = 1
+    var itemInfo: WriteQuestionData? = null
+    private fun openGalleryForImage(item: WriteQuestionData) {
+        itemInfo = item
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
+    }
+
+    @Override
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode){
+            1 -> {
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_ALBUM) {
+                    if (data != null) {
+                        var photo: InputStream? = activity.contentResolver.openInputStream(data.getData()!!)
+                        val img = BitmapFactory.decodeStream(photo)
+                        if (photo != null) {
+                            photo.close()
+                        }
+                        this.itemInfo?.aImg = img
+                        this.binding.aImg.visibility = View.VISIBLE
+                        this.binding.aImg.setImageBitmap(img)
+
+                    }
+                }
             }
         }
     }
