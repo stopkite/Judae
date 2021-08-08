@@ -314,7 +314,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         updateItems(WriteList, position)
-
                     }
                 })
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {

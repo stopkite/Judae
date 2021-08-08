@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
+import android.media.Image
 import android.util.Log
 import java.sql.Types.NULL
 
@@ -14,7 +15,7 @@ import java.sql.Types.NULL
 //Backbone.db 파일을 찾도록 하고 없으면 새로 생성시켜주기.
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
-    //추후 수정 예정
+        //추후 수정 예정
         /*
                 Log.d("태그", "실행되냐")
      //대답 테이블
@@ -101,7 +102,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
-    
+
     // 잠금 화면
     // 사용자에게 비밀번호 관리하는 DB 있는지 Boolean으로 반환하는 함수
     //User 테이블이 존재하면 true반환 없으면 false 반환
@@ -114,7 +115,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
-    
+
     //잠금 화면
     //사용자 User 테이블에 저장되어있는 사용자 디바이스 비밀번호 정보 불러오기
     fun getUserPassWord(): String
@@ -304,7 +305,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var QuestionID: Int = cursor.getInt(2)
             var Content: String = cursor.getString(3)
             var q: Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
-            
+
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
             while(cursor2.moveToNext())
@@ -341,9 +342,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var cursor2: Cursor = db.rawQuery( "SELECT*FROM Writing WHERE Title like '%"+key+"%';", null)
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor2.moveToNext()) {
-                //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
-                var WriteID: String = cursor2.getString(0)
-                wIDList.add(WriteID)
+            //클래스 생성에 필요한 내용 받아오기 - 받아온 검색 값을 객체로 받아오기
+            var WriteID: String = cursor2.getString(0)
+            wIDList.add(WriteID)
         }
 
         wIDList.distinct()
@@ -420,7 +421,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
-    
+
     //ReadingActivity
     //글읽기 화면
     //Content에 속한 QuestionID를 각각 받아오기
@@ -469,20 +470,20 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
 
         //해당 질문 ID를 가진 답변들 들고 오기!
-            cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
+        cursor = db.rawQuery("select*from Answer WHERE QuestionID = '"+QuestionID+"';", null)
 
-            //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
-            while (cursor.moveToNext()) {
-                Content = cursor.getString(1)
-                Date=  cursor.getString(2)
-                //Image =  cursor.getBlob(3)
-                Link = ""
-                if(cursor.getString(4) != null)
-                {
-                    Link =  cursor.getString(4)
-                }
-                anyArray.add(Answer(QuestionID, Content, Date, Link))
+        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+        while (cursor.moveToNext()) {
+            Content = cursor.getString(1)
+            Date=  cursor.getString(2)
+            //Image =  cursor.getBlob(3)
+            Link = ""
+            if(cursor.getString(4) != null)
+            {
+                Link =  cursor.getString(4)
             }
+            anyArray.add(Answer(QuestionID, Content, Date, Link))
+        }
 
         return anyArray
 
@@ -590,11 +591,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
 
 
-     //WritingActivity
+    //WritingActivity
     //이미지를 올리는 DB
     //table: 어떤 테이블에 저자할 것인지? content, answer 중?
     //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
-    fun drawImage(table: String, id: String, image:Image)
+    /*fun drawImage(table: String, id: String, image:Image)
     {
         val values = ContentValues()
         values.put("image", image.image)
@@ -621,6 +622,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var Memo = Image(image)
         db.close()
         return Memo
-    }
+    }*/
 
 }
