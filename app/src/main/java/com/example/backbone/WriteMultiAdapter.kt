@@ -747,7 +747,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
             //답변 사진 입력 버튼 눌렀을 때!
             binding.qImgAddBtn.setOnClickListener {
-                binding.aImg.visibility = View.VISIBLE
+                //binding.aImg.visibility = View.VISIBLE
                 //권한이 허용되어있는지 self로 체크(확인)
                 if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
                     //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
