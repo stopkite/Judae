@@ -106,7 +106,6 @@ class WritingActivity : AppCompatActivity() {
         }
     }
 
-    //var writeID: String = ""
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
     val writeContentList = ArrayList<WriteContentData>()
@@ -117,6 +116,14 @@ class WritingActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        var Writeid = intent.getStringExtra("data").toString()
+        var WritingArray: ArrayList<Content> = db.getWriting("${Writeid}")
+        if (WritingArray == null) {
+
+        }
+
 
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
@@ -436,7 +443,6 @@ class WritingActivity : AppCompatActivity() {
 
         }
 
-        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
         /*if (docTitleText != "" && docContentText != "" && qTitleText != "") {
             //저장 활성화
             binding.saveBtn.setEnabled(true)
@@ -469,7 +475,7 @@ class WritingActivity : AppCompatActivity() {
             }
 
             //질문 객체 저장 <sQuestion>
-            for (i in 0..(writeQuestionList.size - 1)) {
+            /*for (i in 0..(writeQuestionList.size - 1)) {
                 if (writeQuestionList[i].qTitle != null ) {
                     QuestionArray.add(i, sQuestion(writeQuestionList[i].qTitle))
                     Log.d("출력","${writeQuestionList[i].qTitle}")
@@ -502,13 +508,14 @@ class WritingActivity : AppCompatActivity() {
                     //사진만 있을 때
                 } else if (writeQuestionList[i].aTxt == null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri == null) {
                     AnswerArray.add(i, sAnswer(null, today, writeQuestionList[i].aImg, null))
+                    Log.d("출력","${writeQuestionList[i].aImg}")
 
                     //링크만 있을 때
                 } else {
                     AnswerArray.add(i, sAnswer(null, today, null, writeQuestionList[i].linkUri))
                 }
 
-            }
+            }*/
 
 
             // 카테고리 저장 팝업업

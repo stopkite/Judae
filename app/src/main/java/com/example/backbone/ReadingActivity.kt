@@ -136,7 +136,7 @@ class ReadingActivity : AppCompatActivity() {
 
         //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
         for(i in 1..WritingSize-1)
-        {
+        { 
             // 본문 추가
             readingAdapter.addItems(ReadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
