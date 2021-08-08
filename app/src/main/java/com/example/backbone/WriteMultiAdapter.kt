@@ -496,8 +496,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             if(item.qTitle == ""|| item.qTitle == null){
                 binding.qIcon.visibility = View.GONE
                 binding.qTitle.visibility = View.GONE
+
             }else{
                 binding.qTitle.setText(item.qTitle)
+                binding.qTitle.setClickable(false);
+                binding.qTitle.setFocusable(false);
             }
 
             if(item.onActivityCalled == true)
@@ -569,6 +572,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
                     binding.addAnswer.visibility = View.GONE
+                    binding.aTxt.setClickable(false);
+                    binding.aTxt.setFocusable(false);
                 }else{
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date
@@ -580,6 +585,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
+                    binding.aTxt.setClickable(false);
+                    binding.aTxt.setFocusable(false);
                 }
             }
             // 임베드 누르면 인터넷 연결되어서 화면이 넘어가는 리스너

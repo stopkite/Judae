@@ -513,14 +513,11 @@ class WritingActivity : AppCompatActivity() {
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
-
-
             // view의 중복 사용을 방지하기 위한 코드
             if (binding5.root.parent != null)
                 (binding5.root.parent as ViewGroup).removeView(binding5.root)
 
             val mAlertDialog = mBuilder.show()
-
 
 
             // 확인 버튼 다이얼로그
