@@ -18,13 +18,13 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
 
     // category_select_item.xml 화면 불러오기
     lateinit var binding: SaveCategoryItemBinding
-
+    var selectedPosition = -1
     // WritingActivity 에서 가져온 저장하기 버튼
     var saveBtn = saveBtn
 
     // single 선택과 버튼 (비)활성화를 위한 변수
     companion object {
-        var selectedPosition = -1
+
     }
 
     // 리스트에 아이템이 몇 개가 들어있는 지 갯수 반환
@@ -60,6 +60,5 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
 
         return binding.root
     }
-
 
 }

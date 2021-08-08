@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteStatement
 import android.util.Log
 
 //sql문으로 DB 연결시켜주는 클래스
@@ -487,6 +488,52 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         // 디비 닫기
         db.close()
     }
+
+    //WritingActivity
+    //글 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertWriting(writing: Writing)
+    {
+        var db = this.writableDatabase
+        db.execSQL("INSERT INTO Writing (Title, Date, Category) values ('" + writing.Title + "', '"+writing.Date+"', '"+writing.Category+"');")
+
+        db.close()
+    }
+
+    fun getCurrentWriteID():Int
+    {
+        var db = this.readableDatabase
+
+
+        var cursor: Cursor = db.rawQuery("select * from Writing where ROWID = last_insert_rowid();", null)
+        cursor.moveToFirst()
+        var WriteID = cursor.getInt(0)
+
+        return WriteID
+    }
+
+    //WritingActivity
+    //내용 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertContent(content: Content)
+    {
+        var db = this.writableDatabase
+        var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', ?, '"+content.link+"');")
+        p.bindBlob(1, content.Image)
+
+        db.close()
+    }
+
+    fun getCurrentContentID():Int
+    {
+        var db = this.readableDatabase
+
+
+        var cursor: Cursor = db.rawQuery("select * from Content where ROWID = last_insert_rowid();", null)
+        cursor.moveToFirst()
+        var ContentID = cursor.getInt(0)
+
+        return ContentID
+    }
+
 
     /*
      //WritingActivity

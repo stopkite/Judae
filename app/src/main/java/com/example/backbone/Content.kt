@@ -37,6 +37,7 @@ class Content {
         this.content = content
         this.Image = Image
     }
+
     constructor(WriteID:String, ContentID:Int, content:String, link:String)
     {
         this.WriteID = WriteID
@@ -48,6 +49,13 @@ class Content {
     {
         this.WriteID = WriteID
         this.ContentID = ContentID
+        this.content = content
+        this.Image = Image
+        this.link = link
+    }
+    constructor(WriteID:String, content:String, Image: ByteArray?, link:String)
+    {
+        this.WriteID = WriteID
         this.content = content
         this.Image = Image
         this.link = link
