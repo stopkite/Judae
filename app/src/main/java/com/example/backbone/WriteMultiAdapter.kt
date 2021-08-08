@@ -519,11 +519,37 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             binding.linkInsertTxt.visibility = View.GONE
             binding.linkInsertBtn.visibility = View.GONE
 
+            Log.d("태그", "loadContentList ${item.linkContent}")
+            Log.d("태그", "loadContentList ${item.linkUri}")
+            Log.d("태그", "loadContentList ${item.aTxt}")
+
+
+
             // 링크
-            if(item.linkUri != "" && item.linkUri != null)
-            {
-                binding.clLinkArea.visibility = View.VISIBLE
-                loadLink(item.linkUri.toString(), item)
+            if(item.linkUri == ""||item.linkUri == null){
+                //링크 내용이 없으면?
+                binding.clLinkArea.visibility = View.GONE
+            }else{
+                // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
+                if(item.linkContent != null || item.linkTitle != null)
+                {
+                    binding.clLinkArea.visibility = View.VISIBLE
+                    binding.linkTitle.text = item.linkTitle.toString()
+                    binding.linkContent.text = item.linkContent.toString()
+                    binding.linkUri.text = item.linkUri.toString()
+                    if(item.linkIcon != null)
+                    {
+                        binding.linkIcon.setImageBitmap(item.linkIcon)
+                    }else{
+                        binding.linkIcon.visibility = View.GONE
+                    }
+                    //링크 내용이 있으면?
+                    //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
+                }else{
+                    // 링크 정보를 불러오는 것이 처음 일때!
+                    binding.clLinkArea.visibility = View.VISIBLE
+                    loadLink(item.linkUri.toString(), item)
+                }
             }
 
             // 대답 내용 삽입
@@ -563,22 +589,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
 
         }
-
-        /*
-                fun addAnswer(item: loadQuestionData) {
-            var QuestionItem = items[position] as loadQuestionData
-            this.items.add(item)
-            this.notifyDataSetChanged()
-        }
-         */
-
-
-        /*
-                companion object Factory {
-            fun create(parent: ViewGroup): LoadQHolder {
-            }
-        }
-         */
 
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
@@ -749,11 +759,16 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
                 if(item.linkContent != null || item.linkTitle != null)
                 {
-                    binding2.linkTitle.text = item.linkTitle
-                    binding2.linkContent.text = item.linkContent
-                    binding2.linkUri.text = item.linkUri
-                    binding2.linkIcon.setImageBitmap(item.linkIcon)
-                    //링크 내용이 있으면?
+                    binding2.clLinkArea.visibility = View.VISIBLE
+                    binding2.linkTitle.text = item.linkTitle.toString()
+                    binding2.linkContent.text = item.linkContent.toString()
+                    binding2.linkUri.text = item.linkUri.toString()
+                    if(item.linkIcon != null)
+                    {
+                        binding2.linkIcon.setImageBitmap(item.linkIcon)
+                    }else{
+                        binding2.linkIcon.visibility = View.GONE
+                    }                    //링크 내용이 있으면?
                     //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
                 }else{
                     // 링크 정보를 불러오는 것이 처음 일때!
@@ -761,7 +776,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     loadLink(item.linkUri.toString(), item)
                 }
             }
-
         }
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)

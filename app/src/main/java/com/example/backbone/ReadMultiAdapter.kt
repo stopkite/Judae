@@ -228,7 +228,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 }
                             }
 
-                            Log.d("태그", "파비콘 연결할 url1 들고옴 고침: ${url1}")
                             try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
@@ -236,8 +235,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
                             } catch (e: Exception) {
-
-                                Log.d("태그", "bm 불러오기 실패")
+                                binding.linkIcon.visibility = View.GONE
                             }
                             title = doc.title()
 
@@ -391,6 +389,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 bm1 = BitmapFactory.decodeStream(bis)
                                 bis.close()
                             } catch (e: Exception) {
+                                binding2.linkIcon.visibility = View.GONE
                             }
                             title = doc.title()
 
