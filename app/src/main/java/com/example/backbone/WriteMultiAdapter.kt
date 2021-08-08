@@ -1,12 +1,15 @@
 package com.example.backbone
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.text.*
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
@@ -15,10 +18,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
+import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.net.URL
@@ -26,13 +32,13 @@ import java.net.URLConnection
 
 
 private var isrun:Boolean = false
+
 class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
 
-    var activity = context
-
+     var activity = context
     private val items = mutableListOf<WriteItem>()
 
     companion object {
@@ -193,57 +199,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     }
                 })
 
-                /*holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
-                    var preTxt: String? = null
-                    var afterTxt: String? = null
-                    //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                        preTxt = s.toString()
-                    }
-
-                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
-                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
-                    //before: 삭제된 기존 문자열의 개수
-                    //count: 새로 추가된 문자열의 개수
-                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
-                        if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            try {
-                                afterTxt = binding.linkInsertTxt.getText().toString()
-                                QuestionList.linkUri = s.toString()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
-                    override fun afterTextChanged(s: Editable) {
-                        QuestionList.linkUri = s.toString()
-                        updateQuestionItems(QuestionList, position)
-                    }
-                })
-                //링크 입력 후 확인을 누르면 실행되는 리스너
-                holder.binding.linkInsertBtn.setOnClickListener {
-                    //입력 받은 링크를 String으로 넣어 준 후
-                    var linkUri = QuestionList.linkUri.toString()
-                    //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
-                    //쓰레드 실행(한번만 실행함.)
-                    holder.loadLink(linkUri, QuestionList)
-                    QuestionList.linkContent = binding.linkContent.toString()
-                    QuestionList.linkTitle = binding.linkTitle.toString()
-                    QuestionList.linkUri = binding.linkUri.toString()
-                    QuestionList.linkIcon = binding.linkIcon.drawable
-                }*/
                 //답변 링크 입력 버튼 눌렀을 때!
                 holder.binding.qLinkAddBtn.setOnClickListener {
                     holder.binding.linkInsertTxt.visibility = View.VISIBLE
                     holder.binding.linkInsertBtn.visibility = View.VISIBLE
                 }
-
-                //답변 사진 입력 버튼 눌렀을 때!
-                holder.binding.qImgAddBtn.setOnClickListener {
-                    holder.binding.aImg.visibility = View.VISIBLE
-                }
-
 
                 //답변 링크 입력됐을 때 리스너
                 holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
@@ -381,6 +341,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
     // 질문 Holder
     class LoadQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun setQList(item: loadQuestionData) {
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
@@ -442,6 +403,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 binding.root.context.startActivity(intent)
 
             }
+
         }
 
         companion object Factory {
@@ -711,6 +673,10 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
+
+            val REQUEST_READ_EXTERNAL_STORAGE = 1000
+            var context = binding.aImg.context
+
             if(item.qTitle == null){
                 //binding.qTitle.visibility = View.GONE
             }else{
@@ -777,6 +743,47 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 //쓰레드 실행(한번만 실행함.)
                 loadLink(linkUri, item)
             }
+
+
+            //답변 사진 입력 버튼 눌렀을 때!
+            binding.qImgAddBtn.setOnClickListener {
+                binding.aImg.visibility = View.VISIBLE
+                //권한이 허용되어있는지 self로 체크(확인)
+                if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                    //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
+                    //이전에 거부한 적이 있는지 확인
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(WritingActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        var dlg = AlertDialog.Builder(context)
+                        dlg.setTitle("권한이 필요한 이유")
+                        dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                        //OK버튼
+                        dlg.setPositiveButton("확인") { dialog, which ->
+                            ActivityCompat.requestPermissions(WritingActivity(),
+                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                        }
+                        dlg.setNegativeButton("취소", null)
+                        dlg.show()
+                    } else {
+                        //권한 요청
+                        ActivityCompat.requestPermissions(WritingActivity(),
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                    }
+                }else{
+                    openGalleryForImage()
+                }
+            }
+
+        }
+        private val REQUEST_TAKE_ALBUM = 2
+        var context = binding.aImg.context
+
+        @SuppressLint("RestrictedApi")
+        private fun openGalleryForImage() {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                getActivity(context)?.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
+
         }
 /*
         companion object Factory {

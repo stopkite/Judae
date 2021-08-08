@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -105,7 +106,6 @@ class WritingActivity : AppCompatActivity() {
     }
 
     var writeID: String = ""
-    var Gallery = 0
 
     val writeQuestionList = ArrayList<WriteQuestionData>()
     val writeContentList = ArrayList<WriteContentData>()
