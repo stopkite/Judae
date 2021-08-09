@@ -519,8 +519,13 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var db = this.writableDatabase
         if(content.Image != null)
         {
-            var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', ?, '"+content.link+"');")
-            p.bindBlob(1, content.Image)
+            var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES (?,?, ?,?);")
+
+            p.bindString(1, content.WriteID)
+            p.bindString(2, content.content)
+            p.bindBlob(3, content.Image)
+            p.bindString(4, content.link)
+            p.execute()
         }else{
             db.execSQL("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', NULL, '"+content.link+"');")
         }
@@ -572,12 +577,22 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             Log.d("태그:", "InsertAnswer ${answer.Image}")
             if(answer.Link == null)
             {
-                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "', ?, NULL);")
-                p.bindBlob(1, answer.Image)
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, NULL);")
+                p.bindString(1, answer.QuestionID)
+                p.bindString(2, answer.Content)
+                p.bindString(3, answer.Date)
+                p.bindBlob(4, answer.Image)
+                p.execute()
             }else{
                 Log.d("태그:", "InsertAnswer ${answer.Link}")
-                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "', ?, '" + answer.Link + "');")
-                p.bindBlob(1, answer.Image)
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, ?);")
+                p.bindString(1, answer.QuestionID)
+                p.bindString(2, answer.Content)
+                p.bindString(3, answer.Date)
+                p.bindBlob(4, answer.Image)
+                p.bindString(5, answer.Link)
+
+                p.execute()
             }
         }
         else{
@@ -594,7 +609,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //이미지를 올리는 DB
     //table: 어떤 테이블에 저자할 것인지? content, answer 중?
     //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
-    fun drawImage(table: String, id: String, image:Image)
+    /*
+        fun drawImage(table: String, id: String, image:Image)
     {
         val values = ContentValues()
         values.put("image", image.image)
@@ -605,6 +621,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         //p.bindBlob(1, image)
         db.close()
     }
+
 
     //ReadingActivity
     //이미지를 받아오는 DB
@@ -622,5 +639,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
         return Memo
     }
+     */
 
 }

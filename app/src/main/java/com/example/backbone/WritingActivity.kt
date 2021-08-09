@@ -542,7 +542,7 @@ class WritingActivity : AppCompatActivity() {
                             answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkInsertTxt)
                             Log.d("태그", "얘로 저장이 됐나?")
                         }else{
-                            answer = Answer(questionID.toString(), null, data.Date!!, image!!, data.linkInsertTxt)
+                            answer = Answer(questionID.toString(), null, data.Date, image, data.linkInsertTxt)
                         }
                         Log.d("태그", "answer: ${answer.Content}")
                         db.InsertAnswer(answer)
