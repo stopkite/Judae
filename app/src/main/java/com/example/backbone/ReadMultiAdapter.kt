@@ -66,7 +66,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MyQHolder -> {
-                holder.setQList(items[position] as ReadQuestionData, context)
+                holder.setQList(items[position] as ReadQuestionData)
             }
             is MyContentHolder -> {
                 holder.setContentList(items[position] as ReadContentData)
@@ -76,9 +76,9 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
     // 질문 Holder
     class MyQHolder(val binding: ReadQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun setQList(item: ReadQuestionData, context: Context) {
-
+        fun setQList(item: ReadQuestionData) {
+            Log.d("태그", "${item.aTxt}")
+            Log.d("태그", "${item.qTitle}")
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
                 binding.qIcon.visibility = View.GONE
@@ -98,6 +98,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
             // 링크
             if(item.linkUri != ""&&item.linkUri != null && item.linkUri != "null"){
+                Log.d("태그", "링크 있음! ${item.linkUri}")
                 //링크 내용이 없으면?
                 loadLink(item.linkUri.toString())
             }else{
@@ -145,7 +146,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
         {
-
+            Log.d("태그", "setLink")
             binding.linkUri.text = linkUri
             binding.linkTitle.text = title
             binding.linkContent.text = content
@@ -158,18 +159,18 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
         var url1: URL? = null
         var content:String = ""
 
-        private fun loadLink(uri: String) {
+        private fun loadLink(url: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-            linkUri = uri
+            var linkUri = url
             title = ""
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
                     try {
                         if (linkUri.contains("naver")) {
-                            Log.d("태그", "네이버")
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
@@ -194,18 +195,13 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             conn.connect()
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
-                            if(bm1 == null)
-                            {
-                                binding.linkIcon.visibility = View.GONE
-                            }
+
                             bis.close()
                             setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         } else {
-                            Log.d("태그", "그외 사이트")
-                            if (!linkUri.contains("http")) {
+                            if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
-                                Log.d("태그", "링크 고침: ${linkUri}")
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon: String
@@ -250,12 +246,13 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                                 binding.linkIcon.visibility = View.GONE
                             }
 
-                            setLink(linkUri, title, content, bm1)
+                            //선택된 아이템에 대한 정보 빼내오기
+                            setLink(linkUri, title, content, bm1!!)
                             isrun = false
                         }
                     } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-
+                        //binding2.clLinkArea.visibility = View.GONE
                     }
                 }
             }).start()
@@ -273,7 +270,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
     // 본문 Hodler
     class MyContentHolder(val binding2: ReadContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
-
         fun setContentList(item: ReadContentData) {
             //사진 띄우기 **** - 나중에 하기.
             Log.d("태그", "${item.docContent}")
@@ -292,15 +288,10 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                 binding2.docContent.text = item.docContent
             }
 
-
+            Log.d("태그", "${item.linkUri}")
             if(item.linkUri != ""){
-                binding2.clLinkArea.visibility = item.linkLayout?.visibility!!
-                try{
-                    loadLink(item.linkUri.toString())
-                }catch (e:Exception)
-                {
-                    binding2.clLinkArea.visibility = View.GONE
-                }
+                binding2.clLinkArea.visibility = View.VISIBLE
+                loadLink(item.linkUri.toString())
             }else{
                 binding2.clLinkArea.visibility = View.GONE
             }
@@ -416,7 +407,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                         }
                     } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-                        binding2.clLinkArea.visibility = View.GONE
+                        //binding2.clLinkArea.visibility = View.GONE
                     }
                 }
             }).start()

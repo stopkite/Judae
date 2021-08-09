@@ -357,8 +357,6 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '링크' 버튼 클릭 리스너
         binding.addLinkBtn.setOnClickListener {
-
-
             //작성 버전
             var id = writeContentList.size
             writeContentList.add(WriteContentData(id, null, null, null, null, null,
@@ -372,6 +370,8 @@ class WritingActivity : AppCompatActivity() {
                 )
             )
         }
+
+
 
         //하단의 '사진' 버튼 클릭 리스너
         binding.addImgBtn.setOnClickListener {
@@ -539,10 +539,10 @@ class WritingActivity : AppCompatActivity() {
                         //대답 저장
                         if(data.aTxt != null && data.aTxt != "")
                         {
-                            answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkInsertTxt)
+                            answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkUri)
                             Log.d("태그", "얘로 저장이 됐나?")
                         }else{
-                            answer = Answer(questionID.toString(), null, data.Date, image, data.linkInsertTxt)
+                            answer = Answer(questionID.toString(), null, data.Date, image, data.linkUri)
                         }
                         Log.d("태그", "answer: ${answer.Content}")
                         db.InsertAnswer(answer)
