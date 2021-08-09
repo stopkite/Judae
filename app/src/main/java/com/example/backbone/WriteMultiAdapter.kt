@@ -36,15 +36,15 @@ import java.net.URLConnection
 
 private var isrun:Boolean = false
 
-class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
     private val REQUEST_READ_EXTERNAL_STORAGE = 1000
 
-    var activity = context
+    var activity = writingActivity
     val items = mutableListOf<WriteItem>()
-
+    var context = context
     companion object {
         private const val TYPE_Question = 0
         private const val TYPE_Content = 1
@@ -250,12 +250,12 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                 holder.binding.qImgAddBtn.setOnClickListener {
                     //binding.aImg.visibility = View.VISIBLE
                     //권한이 허용되어있는지 self로 체크(확인)
-                    if(ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
                         //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
                         //이전에 거부한 적이 있는지 확인
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(WritingActivity(),
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            var dlg = AlertDialog.Builder(activity)
+                            var dlg = AlertDialog.Builder(context)
                             dlg.setTitle("권한이 필요한 이유")
                             dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
                             //OK버튼
@@ -267,12 +267,11 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             dlg.show()
                         } else {
                             //권한 요청
-                            ActivityCompat.requestPermissions(WritingActivity(),
+                            ActivityCompat.requestPermissions(activity,
                                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                         }
                     }else{
                         openGalleryForImage(QuestionList)
-
                     }
                 }
             }

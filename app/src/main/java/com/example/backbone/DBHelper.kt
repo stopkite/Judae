@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
+import android.graphics.Bitmap
 import android.util.Log
 import java.sql.Types.NULL
 
@@ -385,7 +386,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var cursor: Cursor
         var anyArray = ArrayList<Content>()
-
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
         cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
 
@@ -397,7 +397,13 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             content.WriteID = cursor.getString(0)
             content.ContentID = cursor.getInt(1)
             content.content=  cursor.getString(2)
-            content.Image =  cursor.getBlob(3)
+
+            if(cursor.getBlob(3) != null)
+            {
+                content.Image = cursor.getBlob(3)
+            }else{
+                content.Image = null
+            }
             if(cursor.getString(4) == null)
             {
                 content.link = ""
@@ -458,7 +464,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var Question:String
         var Content: String = ""
         var Date: String
-        var Image: ByteArray
+        var Image: ByteArray? = null
         var Link: String
         //db읽어올 준비
         var db = this.readableDatabase
@@ -475,13 +481,16 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             while (cursor.moveToNext()) {
                 Content = cursor.getString(1)
                 Date=  cursor.getString(2)
-                //Image =  cursor.getBlob(3)
+                if(cursor.getBlob(3) != null)
+                {
+                    Image = cursor.getBlob(3)
+                }
                 Link = ""
                 if(cursor.getString(4) != null)
                 {
                     Link =  cursor.getString(4)
                 }
-                anyArray.add(Answer(QuestionID, Content, Date, Link))
+                anyArray.add(Answer(QuestionID, Content, Date, Image, Link))
             }
 
         return anyArray
@@ -519,6 +528,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var db = this.writableDatabase
         if(content.Image != null)
         {
+            Log.d("태그", "사진 저장")
             var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES (?,?, ?,?);")
 
             p.bindString(1, content.WriteID)
@@ -538,12 +548,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.readableDatabase
 
-        var ContentID = -1
-        var cursor: Cursor = db.rawQuery("select * from Content order by rowid desc limit 1;", null)
-        while(cursor.moveToNext())
-        {
-            ContentID = cursor.getInt(1)
-        }
+        var cursor: Cursor = db.rawQuery("select * from Content;", null)
+        cursor.moveToLast()
+        var ContentID = cursor.getInt(1)
 
         db.close()
         return ContentID

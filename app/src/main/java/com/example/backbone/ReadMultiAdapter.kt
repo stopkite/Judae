@@ -91,7 +91,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             {
                 //*****나중에 구현
                 // 삽입 이미지
-                //binding.aImg.setImageDrawable(item.aImg)
+                binding.aImg.setImageBitmap(item.aImg)
             }else{
                 binding.aImg.visibility = View.GONE
             }
@@ -274,7 +274,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             Log.d("태그", "${item.docContent}")
             if(item.contentImg != null)
             {
-                //binding.contentImg.setImageBitmap()
+                binding2.contentImg.setImageBitmap(item.contentImg)
             }else{
                 binding2.contentImg.visibility = View.GONE
             }

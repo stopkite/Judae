@@ -100,8 +100,14 @@ class ReadingActivity : AppCompatActivity() {
             var LastSize = AnswerSize-1
             if(AnswerSize==1)
             {
+                var Image: Bitmap? = null
+                if(AnswerArray[0].Image != null)
+                {
+                    Image = init(AnswerArray[0].Image)
+                }
+
                 //답변이 한 개일 경우.
-                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[0].Link,null,
                         null,AnswerArray[0].Content, AnswerArray[0].Date, false))
             } else if(AnswerSize>1)
             {
@@ -111,19 +117,30 @@ class ReadingActivity : AppCompatActivity() {
                 //
                 for(j in 0..AnswerSize-2)
                 {
+                    var Image: Bitmap? = null
+                    if(AnswerArray[j].Image != null)
+                    {
+                        Image = init(AnswerArray[j].Image)
+                    }
+
                     if(j==0)
                     {
-                        readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                         readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }else{
-                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                        readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }
                 }
+                var Image: Bitmap? = null
+                if(AnswerArray[LastSize].Image != null)
+                {
+                    Image = init(AnswerArray[LastSize].Image)
+                }
                 //마지막 내용!
-                readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                         null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
             }else{
                 //질문만 있고, 대답 없는 경우.
@@ -136,9 +153,15 @@ class ReadingActivity : AppCompatActivity() {
 
         //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
         for(i in 1..WritingSize-1)
-        { 
+        {
+            var Image: Bitmap? = null
+            if(WritingArray[i].Image != null)
+            {
+                Image = init(WritingArray[i].Image)
+            }
+
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
+            readingAdapter.addItems(ReadContentData(Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
@@ -147,14 +170,22 @@ class ReadingActivity : AppCompatActivity() {
 
             for(i in 0..QuestionIDSize-1)
             {
+
                 //Question에 해당하는 대답 객체 리스트 받아오기
                 var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
                 var AnswerSize = AnswerArray.size
                 var LastSize = AnswerSize-1
+
                 if(AnswerSize==1)
                 {
+                    var Image: Bitmap? = null
+                    if(AnswerArray[0].Image != null)
+                    {
+                        Image = init(AnswerArray[0].Image)
+                    }
+
                     //답변이 한 개일 경우.
-                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[0].Link,null,
                             null,AnswerArray[0].Content, AnswerArray[0].Date, false))
                 } else if(AnswerSize>1)
                 {
@@ -164,19 +195,30 @@ class ReadingActivity : AppCompatActivity() {
                     //
                     for(j in 0..AnswerSize-2)
                     {
+                        var Image: Bitmap? = null
+                        if(AnswerArray[j].Image != null)
+                        {
+                            Image = init(AnswerArray[j].Image)
+                        }
+
                         if(j==0)
                         {
-                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         }else{
-                            readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         }
                     }
+                    var Image: Bitmap? = null
+                    if(AnswerArray[LastSize].Image != null)
+                    {
+                        Image = init(AnswerArray[LastSize].Image)
+                    }
                     //마지막 내용!
-                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                    readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                             null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
                 }else{
                     //질문만 있고, 대답 없는 경우.
@@ -218,8 +260,8 @@ class ReadingActivity : AppCompatActivity() {
         }
     }
 
-    private fun init(ba:ByteArray): Bitmap? {
-        val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba.size)
+    private fun init(ba:ByteArray?): Bitmap? {
+        val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba!!.size)
         return bitmap
     }
 

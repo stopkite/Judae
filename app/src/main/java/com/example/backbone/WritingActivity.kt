@@ -296,7 +296,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter(this)
+        writingAdapter = WriteMultiAdapter(this, this)
         binding.docList.adapter = writingAdapter
 
 
@@ -476,6 +476,7 @@ class WritingActivity : AppCompatActivity() {
                 }
         })
 
+        /*
         docContent.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -505,6 +506,8 @@ class WritingActivity : AppCompatActivity() {
                 }
             }
         })
+
+         */
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
