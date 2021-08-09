@@ -538,9 +538,12 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.readableDatabase
 
-        var cursor: Cursor = db.rawQuery("select * from Content;", null)
-        cursor.moveToLast()
-        var ContentID = cursor.getInt(1)
+        var ContentID = -1
+        var cursor: Cursor = db.rawQuery("select * from Content order by rowid desc limit 1;", null)
+        while(cursor.moveToNext())
+        {
+            ContentID = cursor.getInt(1)
+        }
 
         db.close()
         return ContentID
