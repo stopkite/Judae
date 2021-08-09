@@ -1,13 +1,15 @@
 package com.example.backbone
 
 import android.Manifest
+import android.R.attr.button
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.*
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -17,21 +19,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.backbone.databinding.ActivityWritingBinding
-import com.example.backbone.databinding.CancelWritingBinding
-import com.example.backbone.databinding.WriteContentItemBinding
-import com.example.backbone.databinding.WriteQuestionItemBinding
-import java.io.ByteArrayOutputStream
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class WritingActivity : AppCompatActivity() {
@@ -64,7 +63,7 @@ class WritingActivity : AppCompatActivity() {
     var db: DBHelper = DBHelper(this)
 
     // 리사이클러뷰에 붙일 어댑터 선언
-    // private lateinit var writingAdapter: WritingAdapter
+   // private lateinit var writingAdapter: WritingAdapter
     private lateinit var writingAdapter:WriteMultiAdapter
 
     private val REQUEST_READ_EXTERNAL_STORAGE = 1000
@@ -118,6 +117,7 @@ class WritingActivity : AppCompatActivity() {
         var db: DBHelper = DBHelper(this)
 
         super.onCreate(savedInstanceState)
+
         binding = ActivityWritingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -132,6 +132,7 @@ class WritingActivity : AppCompatActivity() {
         // 카테고리 저장 요소가 담긴 레이아웃
         binding5 = ActivitySavingBinding.inflate(layoutInflater)
         binding6 = SaveCategoryItemBinding.inflate(layoutInflater)
+
 
         // 카테고리 안에 있는 라디오 버튼 변수 가져오기
         var radioBtn = binding6.popupCategoryRbtn
@@ -259,8 +260,6 @@ class WritingActivity : AppCompatActivity() {
         val clinkInsertBtn = binding3.linkInsertBtn
 
 
-
-
         fun drawableToByteArray(drawable: Bitmap?): ByteArray {
             //val bitmapDrawable = drawable
             val bitmap = drawable
@@ -286,8 +285,6 @@ class WritingActivity : AppCompatActivity() {
             // 확인 버튼 다이얼로그
             binding4.confirmBtn.setOnClickListener {
                 // 홈 화면으로 이동
-                //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
-                //startActivity(backIntent)
                 finish()
             }
 
@@ -302,6 +299,33 @@ class WritingActivity : AppCompatActivity() {
         writingAdapter = WriteMultiAdapter(this)
         binding.docList.adapter = writingAdapter
 
+
+        //최초 실행 여부 판단하는 구문
+        //최초 실행 여부 판단하는 구문
+        val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
+        val first = pref.getBoolean("isFirst", false)
+        if (first == false) {
+            Log.d("Is first Time?", "first")
+            val editor = pref.edit()
+            editor.putBoolean("isFirst", true)
+            editor.commit()
+            //앱 최초 실행시 하고 싶은 작업
+            var id = writeQuestionList.size
+
+            writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,
+                aTxtText, null, null, null, null
+            ))
+
+            // 질문 추가
+            writingAdapter.addItems(
+                WriteQuestionData(
+                    id, "", null, null, null, null, null,
+                    null, "",null,"", null, qAddImgBtn, qAddLinkBtn, null
+                )
+            )
+        } else {
+            Log.d("Is first Time?", "not first")
+        }
 
         //시작할 때 title과 content만 뜨도록 하기
         binding.contentImg.visibility = View.GONE
@@ -432,12 +456,55 @@ class WritingActivity : AppCompatActivity() {
 
         }
 
-        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
-        /*if (docTitleText != "" && docContentText != "" && qTitleText != "") {
-            //저장 활성화
-            binding.saveBtn.setEnabled(true)
-        }*/
+        var countDT:Int = 0
+        var countDC:Int = 0
+        var countQT:Int = 0
 
+        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        docTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                    if (editable.length > 0) {
+                        countDT = 1
+                        Log.d("되길", "${countDT}")
+                        if (countDT == 1 && countDC == 1 && countQT == 1)
+                            binding.saveBtn.setEnabled(true)
+                    } else {
+                            binding.saveBtn.setEnabled(false)
+                    }
+                }
+        })
+
+        docContent.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.length > 0) {
+                    countDC = 1
+                    Log.d("되길", "${countDC}")
+                    if (countDT == 1 && countDC == 1 && countQT == 1)
+                        binding.saveBtn.setEnabled(true)
+                } else {
+                        binding.saveBtn.setEnabled(false)
+                }
+            }
+        })
+
+        qTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.length > 0) {
+                    countQT = 1
+                    Log.d("되길", "${countQT}")
+                    if (countDT == 1 && countDC == 1 && countQT == 1)
+                        binding.saveBtn.setEnabled(true)
+                } else {
+                        binding.saveBtn.setEnabled(false)
+                }
+            }
+        })
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
@@ -446,14 +513,11 @@ class WritingActivity : AppCompatActivity() {
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
-
-
             // view의 중복 사용을 방지하기 위한 코드
             if (binding5.root.parent != null)
                 (binding5.root.parent as ViewGroup).removeView(binding5.root)
 
             val mAlertDialog = mBuilder.show()
-
 
 
             // 확인 버튼 다이얼로그
@@ -477,7 +541,7 @@ class WritingActivity : AppCompatActivity() {
                 if(binding.contentImg.drawable != null)
                 {
                     try{
-                        image = drawableToByteArray(binding.contentImg.drawable)
+                        image = drawableToByteArray(binding.contentImg.drawToBitmap())
                     }catch (e: Exception){
                         image = null
                     }
@@ -586,13 +650,13 @@ class WritingActivity : AppCompatActivity() {
                     }
                 }
 
-                //질문 객체 저장 <sQuestion>
-                for (i in 0..(writeQuestionList.size - 1)) {
-                    if (writeQuestionList[i].qTitle != null ) {
-                        QuestionArray.add(i, sQuestion(writeQuestionList[i].qTitle))
-                        Log.d("출력","${writeQuestionList[i].qTitle}")
-                    }
+            //질문 객체 저장 <sQuestion>
+            /*for (i in 0..(writeQuestionList.size - 1)) {
+                if (writeQuestionList[i].qTitle != null ) {
+                    QuestionArray.add(i, sQuestion(writeQuestionList[i].qTitle))
+                    Log.d("출력","${writeQuestionList[i].qTitle}")
                 }
+            }
 
                 //답변 객체 저장 <sAnswer> - 아직 사진이랑 링크 추가 구현이 안되어서 null로 나옴
                 for (i in 0..(writeQuestionList.size - 1)) {
@@ -629,7 +693,17 @@ class WritingActivity : AppCompatActivity() {
                  */
             }
         }
+            }*/
 
+
+            // 카테고리 저장 팝업업
+            val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
+
+            // view의 중복 사용을 방지하기 위한 코드
+            if (binding5.root.parent != null)
+                (binding5.root.parent as ViewGroup).removeView(binding5.root)
+
+            val mAlertDialog = mBuilder.show()
 
     }
 
@@ -655,8 +729,9 @@ class WritingActivity : AppCompatActivity() {
 //                    }
 //                }
 //                ).show()
+        }
 
-
+    }
 
     private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
     {

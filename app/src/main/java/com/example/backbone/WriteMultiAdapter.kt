@@ -105,7 +105,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
             }
             TYPE_Content -> {
                 //MyContentHolder.create(parent)
-                binding3 =  ActivityWritingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyContentHolder(binding2)
             }
@@ -273,6 +272,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                         }
                     }else{
                         openGalleryForImage(QuestionList)
+
                     }
                 }
             }
@@ -349,7 +349,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     override fun afterTextChanged(s: Editable) {
                         WriteList.linkUri = s.toString()
                         updateItems(WriteList, position)
-                        Log.d("태그", "링크 입력 완료: ${WriteList.linkUri}")
                     }
                 })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
@@ -497,13 +496,15 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     // 질문 Holder
     class LoadQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: loadQuestionData) {
-            Log.d("태그", "${item.qTitle}")
+            Log.d("태그", "${item.aTxt}")
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
                 binding.qIcon.visibility = View.GONE
                 binding.qTitle.visibility = View.GONE
             }else{
                 binding.qTitle.setText(item.qTitle)
+                binding.qTitle.setClickable(false);
+                binding.qTitle.setFocusable(false);
             }
 
             if(item.onActivityCalled == true)
@@ -575,6 +576,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
                     binding.addAnswer.visibility = View.GONE
+                    binding.aTxt.setClickable(false);
+                    binding.aTxt.setFocusable(false);
                 }else{
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date
@@ -586,6 +589,8 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
+                    binding.aTxt.setClickable(false);
+                    binding.aTxt.setFocusable(false);
                 }
             }
             // 임베드 누르면 인터넷 연결되어서 화면이 넘어가는 리스너
@@ -785,7 +790,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
         {
-            Log.d("태그", "setLink 들어옴!")
             binding2.linkUri.text = linkUri
             binding2.linkTitle.text = title
             binding2.linkContent.text = content
@@ -915,8 +919,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
-
-            Log.d("태그", "${item.qTitle}")
 
             val REQUEST_READ_EXTERNAL_STORAGE = 1000
             var context = binding.aImg.context
@@ -1091,6 +1093,7 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                             }
 
                             bis.close()
+                            setLink(linkUri, title, content, bm1!!)
                             item.linkUri = linkUri
                             item.linkTitle = title
                             item.linkContent = content
@@ -1172,7 +1175,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
-            Log.d("태그", "${item.docContent}")
             if(item.contentImg == null)
             {
                 binding2.contentImg.visibility = View.GONE
@@ -1217,7 +1219,6 @@ class WriteMultiAdapter(context: WritingActivity): RecyclerView.Adapter<Recycler
                     loadLink(item.linkUri.toString(), item)
                 }
             }
-
 
             // 링크된 요소들
             /*binding2.linkTitle.text = item.linkTitle
