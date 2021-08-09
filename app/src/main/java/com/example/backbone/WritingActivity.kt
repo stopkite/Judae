@@ -545,7 +545,6 @@ class WritingActivity : AppCompatActivity() {
                     }catch (e: Exception){
                         image = null
                     }
-
                 }
                 var content = Content(
                     writing.WriteID.toString(),
@@ -616,6 +615,13 @@ class WritingActivity : AppCompatActivity() {
                         if(data.docContent != null && data.docContent != "")
                         {
 
+                        }
+
+                        if(data.contentImg != null)
+                        {
+                            image = drawableToByteArray(data.contentImg)
+                        }else{
+                            image = null
                         }
 
                         var content = Content(

@@ -143,7 +143,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
         }
 
 
-
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
         {
             Log.d("태그", "setLink")
@@ -197,7 +196,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             bm1 = BitmapFactory.decodeStream(bis)
 
                             bis.close()
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun = false
                         } else {
                             if (!linkUri.contains("https://")) {
@@ -245,9 +244,9 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             if (bm1 == null) {
                                 binding.linkIcon.visibility = View.GONE
                             }
-
+                            Log.d("태그", "링크 오류나??")
                             //선택된 아이템에 대한 정보 빼내오기
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun = false
                         }
                     } catch (e: Exception) {
@@ -352,7 +351,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             bm1 = BitmapFactory.decodeStream(bis)
 
                             bis.close()
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun = false
                         } else {
                             if (!linkUri.contains("https://")) {
@@ -402,7 +401,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             }
 
                             //선택된 아이템에 대한 정보 빼내오기
-                            setLink(linkUri, title, content, bm1!!)
+                            setLink(linkUri, title, content, bm1)
                             isrun = false
                         }
                     } catch (e: Exception) {
