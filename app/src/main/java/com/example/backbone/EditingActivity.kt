@@ -155,11 +155,6 @@ class EditingActivity : AppCompatActivity() {
         }
 
 
-
-        val writeQuestionList = ArrayList<EditloadQuestionData>()
-        val writeContentList = ArrayList<EditloadContentData>()
-        var id = writeContentList.size
-
         //어댑터 연결
         writingAdapter = EditMultiAdapter(this, this)
         binding.docList.adapter = writingAdapter
@@ -179,7 +174,7 @@ class EditingActivity : AppCompatActivity() {
         binding.addContentBTN.setOnClickListener {
             var checknull = true
             for (i in 0..writeContentList.size-1){
-                if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
+                if(writeContentList[i].docContent == null&&writeContentList[i].linkUri == null)
                 {
                     checknull =  false
                 }
@@ -194,6 +189,7 @@ class EditingActivity : AppCompatActivity() {
                 writeContentList.add(EditloadContentData(id, null, null, null, null, null,
                         null, null, null, "", null, null
                 ))
+                Log.d("태그", "추가되고 난 후 ${writeContentList.size}")
 
                 writingAdapter.addItems(
                         EditloadContentData(
@@ -452,8 +448,9 @@ class EditingActivity : AppCompatActivity() {
                 {
                     Image = init(WritingArray[i].Image)
                 }
-            writingAdapter.addItems(EditloadContentData(0, Image,clinkInsertTxt ,clinkInsertBtn,c_linkLayout,WritingArray[i].link,
-                    null,null,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn))
+
+            writingAdapter.addItems(EditloadContentData(id, Image,null ,null,null,null,
+                    null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
             var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())

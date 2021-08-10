@@ -156,20 +156,23 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
         var title: String = ""
         var bm1: Bitmap? = null
         var url1: URL? = null
-        var content:String = ""
+        var content: String = ""
 
-        private fun loadLink(url: String) {
+        fun loadLink(uri: String) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-            var linkUri = url
+            linkUri = uri
             title = ""
             bm1 = null
             url1 = null
             content = ""
             isrun = true
+
+
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
                     try {
                         if (linkUri.contains("naver")) {
+                            Log.d("태그", "네이버")
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
@@ -194,13 +197,18 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             conn.connect()
                             var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                             bm1 = BitmapFactory.decodeStream(bis)
+                            if (bm1 == null) {
+                                binding.linkIcon.visibility = View.GONE
+                            }
 
                             bis.close()
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         } else {
-                            if (!linkUri.contains("https://")) {
+                            Log.d("태그", "그외 사이트")
+                            if (!linkUri.contains("http")) {
                                 linkUri = "https://${linkUri}"
+                                Log.d("태그", "링크 고침: ${linkUri}")
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon: String
@@ -241,17 +249,12 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                             if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if (bm1 == null) {
-                                binding.linkIcon.visibility = View.GONE
-                            }
-                            Log.d("태그", "링크 오류나??")
-                            //선택된 아이템에 대한 정보 빼내오기
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         }
                     } catch (e: Exception) {
                         //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-                        //binding2.clLinkArea.visibility = View.GONE
+
                     }
                 }
             }).start()
@@ -259,7 +262,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
 
 
-        companion object Factory {
+    companion object Factory {
             fun create(parent: ViewGroup): MyQHolder {
                 val binding = ReadQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyQHolder(binding)

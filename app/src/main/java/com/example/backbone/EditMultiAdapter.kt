@@ -275,7 +275,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-
+                        updateItems(WriteList, position)
                     }
                 })
 
@@ -492,7 +492,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         } else {
-                            Log.d("태그", "그외 사이트")
                             if (!linkUri.contains("http")) {
                                 linkUri = "https://${linkUri}"
                                 Log.d("태그", "링크 고침: ${linkUri}")
@@ -578,32 +577,38 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 binding2.docContent.setText(item.docContent)
             }
 
-            if(item.linkInsertTxt != null && item.linkInsertBtn != null)
-            {
-                binding2.linkInsertTxt.visibility = View.VISIBLE
-                binding2.linkInsertBtn.visibility = View.VISIBLE
-            }
+            binding2.linkInsertBtn.visibility = View.GONE
+            binding2.linkInsertTxt.visibility = View.GONE
 
+            Log.d("태그", "${item.docContent}")
+            Log.d("태그", "${item.linkUri}")
             // 링크
-            if (item.linkUri == "" || item.linkUri == null) {
-                //링크 내용이 없으면?
-                binding2.clLinkArea.visibility = View.GONE
-                binding2.linkInsertTxt.visibility = View.GONE
-                binding2.linkInsertBtn.visibility = View.GONE
-            } else {
+            if(item.linkUri == ""||item.linkUri == null){
+                if(item.linkInsertTxt != null && item.linkInsertBtn != null)
+                {
+                    binding2.linkInsertBtn.visibility = View.VISIBLE
+                    binding2.linkInsertTxt.visibility = View.VISIBLE
+                    binding2.clLinkArea.visibility = View.GONE
+                }else{
+                    //링크 내용이 없으면?
+                    binding2.clLinkArea.visibility = View.GONE
+                }
+            }else{
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
-                if (item.linkContent != null || item.linkTitle != null) {
+                if(item.linkContent != null || item.linkTitle != null)
+                {
                     binding2.clLinkArea.visibility = View.VISIBLE
                     binding2.linkTitle.text = item.linkTitle.toString()
                     binding2.linkContent.text = item.linkContent.toString()
                     binding2.linkUri.text = item.linkUri.toString()
-                    if (item.linkIcon != null) {
+                    if(item.linkIcon != null)
+                    {
                         binding2.linkIcon.setImageBitmap(item.linkIcon)
-                    } else {
+                    }else{
                         binding2.linkIcon.visibility = View.GONE
-                    }                    //링크 내용이 있으면?
-                    //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
-                } else {
+                    }
+                }else{
+                    Log.d("태그", "if구문 들어옴 ${item.linkUri}")
                     // 링크 정보를 불러오는 것이 처음 일때!
                     binding2.clLinkArea.visibility = View.VISIBLE
                     loadLink(item.linkUri.toString(), item)
@@ -767,13 +772,11 @@ uri = linkUri
 
     fun updateItems(item: EditItem, position: Int)
     {
-        /*
-                var activity:EditingActivity = EditingActivity()
-        var EditList = item as EditloadContentData
-        activity.editContentList[EditList.id].docContent = EditList.docContent
-        activity.editContentList[EditList.id].linkUri = EditList.linkUri
-         */
-
+        var WriteList = item as EditloadContentData
+        Log.d("태그", "${WriteList.id}")
+        Log.d("태그", "본문 추가: ${activity.writeContentList.size}")
+        activity.writeContentList[WriteList.id].docContent = WriteList.docContent
+        activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
     }
 
     /*
