@@ -110,6 +110,10 @@ class WritingActivity : AppCompatActivity() {
     val saveQuestionList = ArrayList<saveQuestionData>()
     val saveContentList = ArrayList<saveContentData>()
 
+    var countDT:Int = 0
+    var countDC:Int = 0
+    var countQT:Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -154,7 +158,7 @@ class WritingActivity : AppCompatActivity() {
         }
          */
 
-        // adapter 초기화
+        // adapter 초기화f
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
@@ -296,7 +300,7 @@ class WritingActivity : AppCompatActivity() {
         }
 
         //어댑터 연결
-        writingAdapter = WriteMultiAdapter(this)
+        writingAdapter = WriteMultiAdapter(this, this)
         binding.docList.adapter = writingAdapter
 
 
@@ -456,10 +460,6 @@ class WritingActivity : AppCompatActivity() {
 
         }
 
-        var countDT:Int = 0
-        var countDC:Int = 0
-        var countQT:Int = 0
-
         //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
         docTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -467,41 +467,42 @@ class WritingActivity : AppCompatActivity() {
             override fun afterTextChanged(editable: Editable) {
                     if (editable.length > 0) {
                         countDT = 1
-                        Log.d("되길", "${countDT}")
-                        if (countDT == 1 && countDC == 1 && countQT == 1)
+                        Log.d("count","${countDC}")
+                        Log.d("count","${countQT}")
+                        if (countDT == 1 && countDC == 1 && countQT ==1) {
                             binding.saveBtn.setEnabled(true)
-                    } else {
+                        } else {
                             binding.saveBtn.setEnabled(false)
+                        }
+                    } else {
+                        countDT = 0
+                        if (countDT == 1 && countDC == 1 && countQT ==1) {
+                            binding.saveBtn.setEnabled(true)
+                        } else {
+                            binding.saveBtn.setEnabled(false)
+                        }
                     }
                 }
         })
 
-        docContent.addTextChangedListener(object : TextWatcher {
+        binding.docContent.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 if (editable.length > 0) {
                     countDC = 1
-                    Log.d("되길", "${countDC}")
-                    if (countDT == 1 && countDC == 1 && countQT == 1)
+                    if (countDT == 1 && countDC == 1 && countQT ==1) {
                         binding.saveBtn.setEnabled(true)
-                } else {
+                    } else {
                         binding.saveBtn.setEnabled(false)
-                }
-            }
-        })
-
-        qTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun afterTextChanged(editable: Editable) {
-                if (editable.length > 0) {
-                    countQT = 1
-                    Log.d("되길", "${countQT}")
-                    if (countDT == 1 && countDC == 1 && countQT == 1)
+                    }
+                } else {
+                    countDC = 0
+                    if (countDT == 1 && countDC == 1 && countQT ==1) {
                         binding.saveBtn.setEnabled(true)
-                } else {
+                    } else {
                         binding.saveBtn.setEnabled(false)
+                    }
                 }
             }
         })
@@ -1009,6 +1010,14 @@ class WritingActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun setEnabledTrue(){
+        binding.saveBtn.setEnabled(true)
+    }
+
+    fun setEnabledFalse(){
+        binding.saveBtn.setEnabled(false)
     }
 
 }
