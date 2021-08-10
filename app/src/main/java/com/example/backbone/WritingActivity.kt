@@ -460,7 +460,8 @@ class WritingActivity : AppCompatActivity() {
         var countDC:Int = 0
         var countQT:Int = 0
 
-        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        /*
+                //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
         docTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -475,6 +476,8 @@ class WritingActivity : AppCompatActivity() {
                     }
                 }
         })
+         */
+
 
         /*
         docContent.addTextChangedListener(object : TextWatcher {
@@ -633,8 +636,14 @@ class WritingActivity : AppCompatActivity() {
                             image,
                             data.linkUri)
                         db.InsertContent(content)
+                        try{
+                            contentID = db.getCurrentContentID()
+                        }catch(e:Exception)
+                        {
+                            //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
+                            contentID ++
+                        }
 
-                        contentID = db.getCurrentContentID()
                     }
                 }
 
