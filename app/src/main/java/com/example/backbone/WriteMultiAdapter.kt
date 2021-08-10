@@ -36,7 +36,7 @@ import java.net.URLConnection
 
 private var isrun:Boolean = false
 
-class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
@@ -166,7 +166,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): Rec
                         Log.d("태그", "afterTextChanged")
                         QuestionList.Date = activity.today
                         //updateQuestions에 저장해주기.
-                        updateQuestionItems(QuestionList, position)
+                        //updateQuestionItems(QuestionList, position)
                         //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
@@ -197,6 +197,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): Rec
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
+                        QuestionList.qTitle = s.toString()
                         //updateQuestionItems(QuestionList, position)
                         if (s.length > 0) {
                             activity.countQT = 1
@@ -288,10 +289,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): Rec
                         } else {
                             //권한 요청
                             ActivityCompat.requestPermissions(activity,
-                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                         }
                     }else{
                         openGalleryForImage(QuestionList)
+
                     }
                 }
             }
@@ -339,9 +341,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): Rec
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         updateItems(WriteList, position)
+
                     }
                 })
-
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
@@ -770,7 +772,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context: Context): Rec
             }
 
             //본문내용(텍스트)
-            if(item.docContent=="")
+            if(item.docContent==null)
             {
                 binding2.docContent.visibility = View.GONE
             }else{

@@ -158,7 +158,7 @@ class WritingActivity : AppCompatActivity() {
         }
          */
 
-        // adapter 초기화f
+        // adapter 초기화
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
@@ -371,7 +371,7 @@ class WritingActivity : AppCompatActivity() {
             }else{
                 var id = writeContentList.size
                 writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                    null, null, null, null, null, null
+                    null, null, null, "", null, null
                 ))
 
                 writingAdapter.addItems(
@@ -387,7 +387,7 @@ class WritingActivity : AppCompatActivity() {
         binding.addLinkBtn.setOnClickListener {
             //작성 버전
             var id = writeContentList.size
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+            writeContentList.add(WriteContentData(id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null,
                 null, null, null, null, null, null
             ))
 
@@ -631,8 +631,14 @@ class WritingActivity : AppCompatActivity() {
                             image,
                             data.linkUri)
                         db.InsertContent(content)
+                        try{
+                            contentID = db.getCurrentContentID()
+                        }catch(e:Exception)
+                        {
+                            //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
+                            contentID ++
+                        }
 
-                        contentID = db.getCurrentContentID()
                     }
                 }
 
