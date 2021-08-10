@@ -13,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Backbone"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashActivity">
-        </activity>
-        <activity android:name=".WritingActivity"></activity>
-        <activity android:name=".ReadingActivity"></activity>
+        <activity android:name=".EditingActivity"></activity>
+        <activity android:name=".EditActivity" />
+        <activity android:name=".SplashActivity" />
+        <activity android:name=".WritingActivity" />
+        <activity android:name=".ReadingActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".LockScreenMenuActivity" />
         <activity android:name=".MyQuestionActivity" />

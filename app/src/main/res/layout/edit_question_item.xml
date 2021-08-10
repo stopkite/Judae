@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darkBlue">
+
+    <!-- 질문 추가 -->
+    <ImageView
+        android:id="@+id/qIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/ic_write_question"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/qTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="20dp"
+        android:autoLink="web"
+        android:background="@null"
+        android:fontFamily="@font/songmyung_regular"
+        android:gravity="top"
+        android:hint="Enter Your Q Here"
+        android:textColor="@color/ivory"
+        android:textColorHint="@color/darkGray"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/qIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/aImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintEnd_toEndOf="@id/qTitle"
+        app:layout_constraintStart_toStartOf="@id/qTitle"
+        app:layout_constraintTop_toBottomOf="@id/qTitle" />
+
+
+    <EditText
+        android:id="@+id/aTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:autoLink="web"
+        android:background="@null"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="top"
+        android:hint="질문에 대한 답을 입력하세요.\n\n\n"
+        android:textColor="@color/ivory"
+        android:textColorHint="@color/darkGray"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aImg" />
+
+    <EditText
+        android:id="@+id/linkInsertTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="18dp"
+        android:backgroundTint="@color/greenMain"
+        android:hint="링크를 입력하세요."
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:textColor="@color/white"
+        android:textColorHint="#9A9090"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aTxt" />
+
+    <Button
+        android:id="@+id/linkInsertBtn"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="20dp"
+        android:text="확인"
+        android:textColor="@color/ivory"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
+        app:layout_constraintTop_toBottomOf="@id/aTxt" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_linkArea"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linkInsertTxt">
+
+        <TextView
+            android:id="@+id/linkTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:singleLine="true"
+            android:text="로딩중"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/cl_linkArea"
+            app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+
+        <TextView
+            android:id="@+id/linkContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:maxLines="2"
+            android:text="링크를 임베디드 하는 중입니다."
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/linkTitle"
+            app:layout_constraintTop_toBottomOf="@id/linkTitle" />
+
+
+        <ImageView
+            android:id="@+id/linkIcon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            tools:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/linkContent"
+            app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+        <TextView
+            android:id="@+id/linkUri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:singleLine="true"
+            tools:text = "www.naver.com"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/linkIcon"
+            app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/aDivider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_divider_writing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_linkArea" />
+
+    <ImageButton
+        android:id="@+id/addAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_write_plus_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aDivider" />
+
+    <ImageButton
+        android:id="@+id/qImgAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aImg"
+        app:srcCompat="@drawable/ic_write_add_img" />
+
+    <ImageButton
+        android:id="@+id/qLinkAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qImgAddBtn"
+        app:srcCompat="@drawable/ic_write_add_link" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

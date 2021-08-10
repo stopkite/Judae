@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBlue"
+    tools:context=".EditingActivity">
+
+    <Toolbar
+        android:id="@+id/topToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="28dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_cate_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/saveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="저장"
+                android:enabled="true"
+                android:textColor="@color/ivory"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </Toolbar>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/eventList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topToolBar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_inScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false">
+
+            <EditText
+                android:id="@+id/docTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:autoLink="web"
+                android:background="@null"
+                android:fontFamily="@font/songmyung_regular"
+                android:gravity="top"
+                android:hint="Enter Your title here"
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
+                android:textSize="30sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cl_inScroll" />
+
+            <ImageView
+                android:id="@+id/contentImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_launcher_background"
+                android:adjustViewBounds="true"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
+                app:layout_constraintStart_toStartOf="@id/cl_inScroll"
+                app:layout_constraintTop_toBottomOf="@id/docTitle" />
+
+            <EditText
+                android:id="@+id/docContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:autoLink="web"
+                android:background="@null"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="top"
+                android:hint="내용을 입력하세요. 우측 하단의 질문 추가 버튼을 눌러 질문에 대한 답을 작성해보세요."
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contentImg" />
+
+            <EditText
+                android:id="@+id/linkInsertTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
+                android:autoLink="web"
+                android:backgroundTint="@color/greenMain"
+                android:hint="링크를 입력하세요."
+                android:textColor="@color/ivory"
+                android:textColorHint="@color/darkGray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@id/linkInsertBtn"
+                app:layout_constraintStart_toStartOf="@id/cl_inScroll"
+                app:layout_constraintTop_toBottomOf="@id/docContent" />
+
+            <Button
+                android:id="@+id/linkInsertBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="13dp"
+                android:text="확인"
+                android:textColor="@color/ivory"
+                android:textSize="11sp"
+                app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
+                app:layout_constraintEnd_toEndOf="@id/docTitle"
+                app:layout_constraintTop_toBottomOf="@id/docContent" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_linkArea"
+                android:layout_width="0dp"
+                android:layout_height="81dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/docTitle"
+                app:layout_constraintStart_toStartOf="@id/docTitle"
+                app:layout_constraintTop_toBottomOf="@id/linkInsertTxt">
+
+                <TextView
+                    android:id="@+id/linkTitle"
+                    android:layout_width="367dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:singleLine="true"
+                    android:text="로딩중"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/cl_linkArea"
+                    app:layout_constraintTop_toTopOf="@id/cl_linkArea" />
+
+                <TextView
+                    android:id="@+id/linkContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="2"
+                    android:text="링크를 임베디드 하는 중입니다."
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="9sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/linkTitle"
+                    app:layout_constraintTop_toBottomOf="@id/linkTitle" />
+
+
+                <ImageView
+                    android:id="@+id/linkIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="8dp"
+                    tools:src="@drawable/ic_launcher_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/linkUri"
+                    app:layout_constraintStart_toStartOf="@id/linkContent"
+                    app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+                <TextView
+                    android:id="@+id/linkUri"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:singleLine="true"
+                    tools:text="www.naver.com"
+                    android:textSize="9sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/linkIcon"
+                    app:layout_constraintTop_toBottomOf="@id/linkContent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/docList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_linkArea"
+                tools:listitem="@layout/write_question_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/eventList"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/ic_bg_write_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/ll_eventList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/addContentBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_content"
+                android:text="본문" />
+
+            <ImageButton
+                android:id="@+id/addLinkBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_link"
+                android:text="링크" />
+
+            <ImageButton
+                android:id="@+id/addImgBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_img"
+                android:text="사진" />
+
+            <ImageButton
+                android:id="@+id/addQBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu_q"
+                android:text="질문" />
+        </LinearLayout>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
