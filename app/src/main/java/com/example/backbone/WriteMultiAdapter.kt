@@ -164,7 +164,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                         Log.d("태그", "afterTextChanged")
                         QuestionList.Date = activity.today
                         //updateQuestions에 저장해주기.
-                        updateQuestionItems(QuestionList, position)
+                        //updateQuestionItems(QuestionList, position)
                         //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
@@ -187,7 +187,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             try {
                                 afterTxt = binding.qTitle.getText().toString()
                                 //items[position].
-                                QuestionList.qTitle = s.toString()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
@@ -195,7 +194,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateQuestionItems(QuestionList, position)
+                        QuestionList.qTitle = s.toString()
                     }
                 })
 
@@ -233,8 +232,8 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                         QuestionList.linkUri = s.toString()
                         //updateQuestionItems(QuestionList, position)
                     }
-
                 })
+
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding.linkInsertBtn.setOnClickListener {
                     holder.binding.clLinkArea.visibility = View.VISIBLE
@@ -592,6 +591,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     binding.aTxt.setFocusable(false);
                 }
             }
+
             // 임베드 누르면 인터넷 연결되어서 화면이 넘어가는 리스너
             binding.clLinkArea.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
@@ -750,7 +750,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             }
 
             //본문내용(텍스트)
-            if(item.docContent=="")
+            if(item.docContent==null)
             {
                 binding2.docContent.visibility = View.GONE
             }else{
@@ -972,6 +972,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             }else {
                 binding.qImgAddBtn.setImageDrawable(item.qImgAddBtn?.drawable)
             }
+
             //링크
             if(item.qLinkAddBtn == null){
                 binding.qLinkAddBtn.visibility = View.GONE
@@ -1092,7 +1093,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             }
 
                             bis.close()
-                            setLink(linkUri, title, content, bm1!!)
                             item.linkUri = linkUri
                             item.linkTitle = title
                             item.linkContent = content

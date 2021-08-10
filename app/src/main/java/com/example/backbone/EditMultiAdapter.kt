@@ -1,8 +1,10 @@
 package com.example.backbone
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,6 +17,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
@@ -80,21 +85,20 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 (holder as LoadQHolder).setQList(items[position] as EditloadQuestionData)
                 holder.setIsRecyclable(false)
                 //선택된 아이템에 대한 정보 빼내오기
-                var QuestionItem = items[position] as EditloadQuestionData
+                var QuestionList = items[position] as EditloadQuestionData
 
                 //답변 추가 버튼 눌렀을 때 리스너
                 binding.addAnswer.setOnClickListener {
-                    QuestionItem.ColorChanged = true
+                    QuestionList.ColorChanged = true
 
-                    AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionItem.linkLayout, null, null, null, null,
+                    AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionList.linkLayout, null, null, null, null,
                             null, binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false), position)
                 }
 
-                //답변 작성될 때 리스너
+                //답변 추가될 때 리스너
                 holder.binding.aTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
-
                     //val thisitem= item
                     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                         preTxt = s.toString()
@@ -109,7 +113,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             try {
                                 afterTxt = binding.aTxt.getText().toString()
                                 //items[position].
-                                QuestionItem.aTxt = s.toString()
+                                QuestionList.aTxt = s.toString()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
@@ -118,8 +122,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
+                        Log.d("태그", "afterTextChanged")
+                        QuestionList.aTxt = s.toString()
+                        QuestionList.Date = activity.today
                         //updateQuestions에 저장해주기.
-                        //updateQuestionItems(QuestionItem)
+                        //updateQuestionItems(QuestionList, position)
                         //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
@@ -128,7 +135,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 holder.binding.qTitle.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
-
                     //val thisitem= item
                     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                         preTxt = s.toString()
@@ -143,16 +149,14 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             try {
                                 afterTxt = binding.qTitle.getText().toString()
                                 //items[position].
-                                QuestionItem.qTitle = s.toString()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }
                     }
-
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        //updateQuestionItems(QuestionItem)
+                        QuestionList.qTitle = s.toString()
                     }
                 })
 
@@ -162,9 +166,35 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     holder.binding.linkInsertBtn.visibility = View.VISIBLE
                 }
 
+
+
                 //답변 사진 입력 버튼 눌렀을 때!
                 holder.binding.qImgAddBtn.setOnClickListener {
-                    holder.binding.aImg.visibility = View.VISIBLE
+                    //권한이 허용되어있는지 self로 체크(확인)
+                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                        //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
+                        //이전에 거부한 적이 있는지 확인
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            var dlg = AlertDialog.Builder(context)
+                            dlg.setTitle("권한이 필요한 이유")
+                            dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                            //OK버튼
+                            dlg.setPositiveButton("확인") { dialog, which ->
+                                ActivityCompat.requestPermissions(activity,
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                            }
+                            dlg.setNegativeButton("취소", null)
+                            dlg.show()
+                        } else {
+                            //권한 요청
+                            ActivityCompat.requestPermissions(activity,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                        }
+                    }else{
+                        openGalleryForImage(QuestionList)
+                    }
+
                 }
 
 
@@ -172,7 +202,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
-
                     //val thisitem= item
                     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                         preTxt = s.toString()
@@ -186,23 +215,34 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                         if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
                             try {
                                 afterTxt = binding.linkInsertTxt.getText().toString()
-                                QuestionItem.linkUri = s.toString()
+                                QuestionList.linkUri = s.toString()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }
                     }
-
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        QuestionItem.linkUri = s.toString()
-                        //updateQuestionItems(QuestionItem)
+                        QuestionList.linkUri = s.toString()
+                        //updateQuestionItems(QuestionList, position)
                     }
-
                 })
+
+                //링크 입력 후 확인을 누르면 실행되는 리스너
+                holder.binding.linkInsertBtn.setOnClickListener {
+                    holder.binding.clLinkArea.visibility = View.VISIBLE
+                    holder.binding.linkInsertBtn.visibility = View.GONE
+                    holder.binding.linkInsertTxt.visibility = View.GONE
+                    //입력 받은 링크를 String으로 넣어 준 후
+                    var linkUri = QuestionList.linkUri.toString()
+                    //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
+                    //쓰레드 실행(한번만 실행함.)
+                    holder.loadLink(linkUri, QuestionList)
+                }
+
             }
             is LoadContentHolder -> {
-                (holder as WriteMultiAdapter.LoadQHolder).setQList(items[position] as loadQuestionData)
+                (holder as LoadContentHolder).setContentList(items[position] as EditloadContentData)
                 holder.setIsRecyclable(false)
 
                 //선택된 아이템에 대한 정보 빼내오기
@@ -223,13 +263,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     //count: 새로 추가된 문자열의 개수
                     override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
                         if (binding2.docContent.isFocusable() && !s.toString().equals(preTxt)) {
-                            /*
-                                                        Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
-                            Log.d("태그", "아이템 아이디: ${WriteList.id}")
-                            Log.d("태그", "${s.toString()}")
-                            Log.d("태그", "질문 수정중")
-                             */
-
                             try {
                                 //afterTxt = binding.aTxt.getText().toString()
                                 //items[position].
@@ -242,10 +275,10 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        updateItems(WriteList, position)
 
                     }
                 })
+
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
@@ -274,9 +307,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                         updateItems(WriteList, position)
                     }
                 })
+
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding2.linkInsertBtn.setOnClickListener {
                     holder.binding2.clLinkArea.visibility = View.VISIBLE
+                    holder.binding2.linkInsertBtn.visibility = View.GONE
+                    holder.binding2.linkInsertTxt.visibility = View.GONE
                     //입력 받은 링크를 String으로 넣어 준 후
                     var linkUri = WriteList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
@@ -310,7 +346,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             if (item.aImg != null) {
                 //*****나중에 구현
                 // 삽입 이미지
-                //binding.aImg.setImageDrawable(item.aImg)
+                binding.aImg.setImageBitmap(item.aImg)
             } else {
                 binding.aImg.visibility = View.GONE
             }
@@ -318,11 +354,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             binding.clLinkArea.visibility = View.GONE
             binding.linkInsertTxt.visibility = View.GONE
             binding.linkInsertBtn.visibility = View.GONE
-
-            Log.d("태그", "loadContentList ${item.linkContent}")
-            Log.d("태그", "loadContentList ${item.linkUri}")
-            Log.d("태그", "loadContentList ${item.aTxt}")
-
 
             // 링크
             if (item.linkUri == "" || item.linkUri == null) {
@@ -353,6 +384,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             if (item.aTxt != "" && item.aTxt != null) {
                 // 대답 상태에 따라 색 바꿔줌. - 대답이 2개 이상인 경우를 고려
                 if (item.ColorChanged == true) {
+                    binding.addAnswer.visibility = View.GONE
                     // 대답이 이전 대답일 때
                     var date: String? = item.Date
                     var text: String = item.aTxt + "\n${date}"
@@ -391,6 +423,8 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?) {
+            binding.clLinkArea.visibility = View.VISIBLE
+
             if (bm1 == null) {
                 binding.linkIcon.visibility = View.GONE
             }
@@ -407,13 +441,16 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
         var url1: URL? = null
         var content: String = ""
 
-        private fun loadLink(uri: String, item: EditloadQuestionData) {
+        fun loadLink(uri: String, item: EditloadQuestionData) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
             linkUri = uri
             title = ""
             bm1 = null
             url1 = null
             content = ""
+            isrun = true
+
+
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
                     try {
@@ -503,7 +540,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             item.linkTitle = title
                             item.linkContent = content
                             item.linkIcon = bm1
-                            Log.d("태그", "아이템에 잘 저장 되어있나?? ${item.linkTitle}")
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         }
@@ -528,28 +564,32 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
         var content: String = ""
 
         fun setContentList(item: EditloadContentData) {
-            Log.d("태그", "${item.docContent}")
             //사진 띄우기 **** - 나중에 하기.
             if (item.contentImg != null) {
-                //binding.contentImg.setImageBitmap()
+                binding2.contentImg.setImageBitmap(item.contentImg)
             } else {
                 binding2.contentImg.visibility = View.GONE
             }
 
             //본문내용(텍스트)
-            if (item.docContent == "") {
+            if (item.docContent == null) {
                 binding2.docContent.visibility = View.GONE
             } else {
                 binding2.docContent.setText(item.docContent)
             }
-            binding2.linkInsertTxt.visibility = View.GONE
-            binding2.linkInsertBtn.visibility = View.GONE
-            binding2.clLinkArea.visibility = View.GONE
+
+            if(item.linkInsertTxt != null && item.linkInsertBtn != null)
+            {
+                binding2.linkInsertTxt.visibility = View.VISIBLE
+                binding2.linkInsertBtn.visibility = View.VISIBLE
+            }
 
             // 링크
             if (item.linkUri == "" || item.linkUri == null) {
                 //링크 내용이 없으면?
                 binding2.clLinkArea.visibility = View.GONE
+                binding2.linkInsertTxt.visibility = View.GONE
+                binding2.linkInsertBtn.visibility = View.GONE
             } else {
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
                 if (item.linkContent != null || item.linkTitle != null) {
@@ -727,25 +767,18 @@ uri = linkUri
 
     fun updateItems(item: EditItem, position: Int)
     {
-        //var activity:EditingActivity = EditingActivity()
-        //var EditList = item as EditloadContentData
-        //activity.editContentList[EditList.id].docContent = EditList.docContent
-        //activity.editContentList[EditList.id].linkUri = EditList.linkUri
-    }
+        /*
+                var activity:EditingActivity = EditingActivity()
+        var EditList = item as EditloadContentData
+        activity.editContentList[EditList.id].docContent = EditList.docContent
+        activity.editContentList[EditList.id].linkUri = EditList.linkUri
+         */
 
-    fun updateQuestionItems(item: EditItem, position: Int)
-    {
-        //var activity:EditingActivity = EditingActivity()
-        //var QList = item as EditQuestionData
-        //activity.editQuestionList[QList.id].qTitle = QList.qTitle
-        //activity.editQuestionList[QList.id].linkUri = QList.linkUri
-        //activity.editQuestionList[QList.id].Date = QList.Date
-        //activity.editQuestionList[QList.id].aImg = QList.aImg
-        //activity.editQuestionList[QList.id].aTxt = QList.aTxt
     }
-
 
     /*
+
+
         fun updateLoadQuestionItem(item: EditItem)
     {
         //var activity:EditingActivity = EditingActivity()

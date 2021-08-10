@@ -367,7 +367,7 @@ class WritingActivity : AppCompatActivity() {
             }else{
                 var id = writeContentList.size
                 writeContentList.add(WriteContentData(id, null, null, null, null, null,
-                    null, null, null, null, null, null
+                    null, null, null, "", null, null
                 ))
 
                 writingAdapter.addItems(
@@ -383,7 +383,7 @@ class WritingActivity : AppCompatActivity() {
         binding.addLinkBtn.setOnClickListener {
             //작성 버전
             var id = writeContentList.size
-            writeContentList.add(WriteContentData(id, null, null, null, null, null,
+            writeContentList.add(WriteContentData(id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null,
                 null, null, null, null, null, null
             ))
 

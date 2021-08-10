@@ -254,7 +254,7 @@ class ReadingActivity : AppCompatActivity() {
 
         binding.editBtn.setOnClickListener {
             // 글쓰기 화면으로 이동
-            val writeIntent = Intent(this, WritingActivity::class.java)
+            val writeIntent = Intent(this, EditingActivity::class.java)
             writeIntent.putExtra("data", "${WriteID}")
             startActivity(writeIntent)
         }

@@ -152,118 +152,115 @@ class EditingActivity : AppCompatActivity() {
             binding4.cancelBtn.setOnClickListener {
                 mAlertDialog.dismiss()
             }
+        }
 
 
-            val writeQuestionList = ArrayList<EditloadQuestionData>()
-            val writeContentList = ArrayList<EditloadContentData>()
-            var id = writeContentList.size
 
-            //어댑터 연결
-            writingAdapter = EditMultiAdapter(this, this)
-            binding.docList.adapter = writingAdapter
+        val writeQuestionList = ArrayList<EditloadQuestionData>()
+        val writeContentList = ArrayList<EditloadContentData>()
+        var id = writeContentList.size
 
-            var WriteID: String = ""
-            if(intent.hasExtra("data"))
-            {
-                Log.d("태그", "${WriteID}")
-                WriteID = intent.getStringExtra("data").toString()
-                loadWriting(WriteID, writingAdapter)
-            }
+        //어댑터 연결
+        writingAdapter = EditMultiAdapter(this, this)
+        binding.docList.adapter = writingAdapter
 
-            // 리사이클러 뷰 타입 설정
-            binding.docList.layoutManager = LinearLayoutManager(this)
+        var WriteID: String = ""
+        if(intent.hasExtra("data"))
+        {
+            Log.d("태그", "${WriteID}")
+            WriteID = intent.getStringExtra("data").toString()
+            loadWriting(WriteID, writingAdapter)
+        }
 
-            //하단의 '본문' 버튼 클릭 리스너
-            binding.addContentBTN.setOnClickListener {
-                var checknull = true
-                for (i in 0..writeContentList.size-1){
-                    if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
-                    {
-                        checknull =  false
-                    }
-                }
+        // 리사이클러 뷰 타입 설정
+        binding.docList.layoutManager = LinearLayoutManager(this)
 
-                //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
-                if(!checknull)
+        //하단의 '본문' 버튼 클릭 리스너
+        binding.addContentBTN.setOnClickListener {
+            var checknull = true
+            for (i in 0..writeContentList.size-1){
+                if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
                 {
-
-                }else{
-                    var id = writeContentList.size
-                    writeContentList.add(EditloadContentData(id, null, null, null, null, null,
-                            null, null, null, null, null, null
-                    ))
-
-                    writingAdapter.addItems(
-                            EditloadContentData(
-                                    id, null,null, null, null, null, null,
-                                    null, null, "",null,null
-                            )
-                    )
+                    checknull =  false
                 }
             }
 
-            //하단의 '링크' 버튼 클릭 리스너
-            binding.addLinkBtn.setOnClickListener {
-                //작성 버전
+            //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
+            if(!checknull)
+            {
+
+            }else{
                 var id = writeContentList.size
                 writeContentList.add(EditloadContentData(id, null, null, null, null, null,
-                        null, null, null, null, null, null
+                        null, null, null, "", null, null
                 ))
 
                 writingAdapter.addItems(
                         EditloadContentData(
-                                id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
-                                null, null, null, null, null
+                                id, null,null, null, null, null, null,
+                                null, null, "",null,null
                         )
                 )
             }
+        }
+
+        //하단의 '링크' 버튼 클릭 리스너
+        binding.addLinkBtn.setOnClickListener {
+            //작성 버전
+            var id = writeContentList.size
+            writeContentList.add(EditloadContentData(id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null,
+                    null, null, null, null, null, null
+            ))
+
+            writingAdapter.addItems(
+                    EditloadContentData(
+                            id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
+                            null, null, null, null, null
+                    )
+            )
+        }
 
 
 
-            //하단의 '사진' 버튼 클릭 리스너
-            binding.addImgBtn.setOnClickListener {
-                //setContentView(R.layout.activity_writing)
+        //하단의 '사진' 버튼 클릭 리스너
+        binding.addImgBtn.setOnClickListener {
+            //setContentView(R.layout.activity_writing)
 
-                //viewPager = findViewById(R.id.viewPager)
+            //viewPager = findViewById(R.id.viewPager)
 
-                //권한이 허용되어있는지 self로 체크(확인)
-                if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=
-                        PackageManager.PERMISSION_GRANTED) {
-                    //허용되지 않았을 때 - 권한이 필요한 알림창을 올림
-                    //이전에 거부한 적이 있는지 확인
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        var dlg = AlertDialog.Builder(this)
-                        dlg.setTitle("권한이 필요한 이유")
-                        dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
-                        //OK버튼
-                        dlg.setPositiveButton("확인") { dialog, which ->
-                            ActivityCompat.requestPermissions(this@EditingActivity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
-                        }
-                        dlg.setNegativeButton("취소", null)
-                        dlg.show()
-                    } else {
-                        //권한 요청
-                        ActivityCompat.requestPermissions(this,
+            //권한이 허용되어있는지 self로 체크(확인)
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=
+                    PackageManager.PERMISSION_GRANTED) {
+                //허용되지 않았을 때 - 권한이 필요한 알림창을 올림
+                //이전에 거부한 적이 있는지 확인
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    var dlg = AlertDialog.Builder(this)
+                    dlg.setTitle("권한이 필요한 이유")
+                    dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                    //OK버튼
+                    dlg.setPositiveButton("확인") { dialog, which ->
+                        ActivityCompat.requestPermissions(this@EditingActivity,
                                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                     }
-                }else{
-                    openGalleryForImage()
+                    dlg.setNegativeButton("취소", null)
+                    dlg.show()
+                } else {
+                    //권한 요청
+                    ActivityCompat.requestPermissions(this,
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                 }
+            }else{
+                openGalleryForImage()
             }
+        }
 
 
-            //하단의 '질문' 버튼 클릭 리스너
-            binding.addQBtn.setOnClickListener {
-                //수정 버전
-                    //답변이 한 개일 경우.
-                    writingAdapter.addItems(EditloadQuestionData("본문에서 추가로 넣는 거", null,null,clinkLayout,null,null,null,
-                            null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true))
-
-
-            }
-
-
+        //하단의 '질문' 버튼 클릭 리스너
+        binding.addQBtn.setOnClickListener {
+            //수정 버전
+            //답변이 한 개일 경우.
+            writingAdapter.addItems(EditloadQuestionData("본문에서 추가로 넣는 거", null,null,clinkLayout,null,null,null,
+                    null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true))
         }
 
         var countDT:Int = 0
@@ -346,7 +343,9 @@ class EditingActivity : AppCompatActivity() {
         val q_linkLayout = binding2.clLinkArea
         val c_linkLayout = binding3.clLinkArea
         var isrun:Boolean = false
-//맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
+
+
+        //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
         var WritingArray: ArrayList<Content> = db.getWriting(WriteID)
         binding.docTitle.setText(WritingArray[0].WritingTitle)
         binding.docContent.setText(WritingArray[0].content)
@@ -367,19 +366,23 @@ class EditingActivity : AppCompatActivity() {
         val clinkInsertTxt = binding3.linkInsertTxt
         val clinkInsertBtn = binding3.linkInsertBtn
 
+        binding.clLinkArea.visibility = View.GONE
+        binding.linkInsertTxt.visibility = View.GONE
+        binding.linkInsertBtn.visibility = View.GONE
+
         if(WritingArray[0].link != "")
         {
             //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
             isrun = true
             //쓰레드 실행(한번만 실행함.)
             loadLink(WritingArray[0].link)
-        }else{
-            binding.clLinkArea.visibility = View.GONE
         }
+
         //사진 띄우기 **** - 나중에 하기.
         if(WritingArray[0].Image != null)
         {
-            //binding.contentImg.setImageBitmap()
+            var Image = init(WritingArray[0].Image)
+            binding.contentImg.setImageBitmap(Image)
         }else{
             binding.contentImg.visibility = View.GONE
         }
@@ -397,7 +400,11 @@ class EditingActivity : AppCompatActivity() {
             var LastSize = AnswerSize-1
             if(AnswerSize==1)
             {
-                var Image = init(AnswerArray[0].Image)
+                var Image: Bitmap? = null
+                if (AnswerArray[0].Image != null)
+                {
+                   Image =  init(AnswerArray[0].Image)
+                }
                 //답변이 한 개일 경우.
                 writingAdapter.addItems(EditloadQuestionData(i.toString()+"-0", QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
                         null, AnswerArray[0].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[0].Date, false, false))
@@ -440,7 +447,11 @@ class EditingActivity : AppCompatActivity() {
         for(i in 1..WritingSize-1)
         {
             // 본문 추가
-            var Image = init(WritingArray[i].Image)
+                var Image:Bitmap? = null
+                if(WritingArray[i].Image != null)
+                {
+                    Image = init(WritingArray[i].Image)
+                }
             writingAdapter.addItems(EditloadContentData(0, Image,clinkInsertTxt ,clinkInsertBtn,c_linkLayout,WritingArray[i].link,
                     null,null,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn))
 
@@ -457,7 +468,11 @@ class EditingActivity : AppCompatActivity() {
                 if(AnswerSize==1)
                 {
                     //답변이 한 개일 경우.
-                    var Image = init(AnswerArray[0].Image)
+                    var Image:Bitmap? = null
+                    if(AnswerArray[i].Image != null)
+                    {
+                        Image = init(AnswerArray[i].Image)
+                    }
                     writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
                             null,AnswerArray[0].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[0].Date, false, false))
                 } else if(AnswerSize>1)
@@ -470,19 +485,31 @@ class EditingActivity : AppCompatActivity() {
                     {
                         if(j==0)
                         {
-                            var Image = init(AnswerArray[j].Image)
+                            var Image:Bitmap? = null
+                            if(AnswerArray[j].Image != null)
+                            {
+                                Image = init(AnswerArray[j].Image)
+                            }
                             writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                     null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }else{
-                            var Image = init(AnswerArray[j].Image)
+                            var Image:Bitmap? = null
+                            if(AnswerArray[j].Image != null)
+                            {
+                                Image = init(AnswerArray[j].Image)
+                            }
                             writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                     null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }
                     }
                     //마지막 내용!
-                    var Image = init(AnswerArray[LastSize].Image)
+                    var Image:Bitmap? = null
+                    if(AnswerArray[LastSize].Image != null)
+                    {
+                        Image = init(AnswerArray[LastSize].Image)
+                    }
                     writingAdapter.addItems(EditloadQuestionData(i.toString()+"-last", null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
                             null,AnswerArray[LastSize].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[LastSize].Date, false, false))
                 }else{
@@ -598,7 +625,7 @@ class EditingActivity : AppCompatActivity() {
             }
         }).start()
     }
-    private fun init(ba:ByteArray?): Bitmap? {
+    private fun init(ba:ByteArray?): Bitmap {
         val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba!!.size)
         return bitmap
     }
