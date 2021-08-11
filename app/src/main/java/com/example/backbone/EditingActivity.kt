@@ -103,7 +103,6 @@ class EditingActivity : AppCompatActivity() {
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
-
         val docTitle = binding.docTitle
         var qTitle = binding2.qTitle
         val qTitleText: String = qTitle.getText().toString()
