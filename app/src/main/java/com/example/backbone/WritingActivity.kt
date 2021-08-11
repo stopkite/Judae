@@ -719,29 +719,6 @@ class WritingActivity : AppCompatActivity() {
             val mAlertDialog = mBuilder.show()
 
     }
-
-
-//           // Long 클릭 팝업 띄울 때 이 코드 가져다가 활용해서 쓰면 됨
-//            // 선택 목록
-//            val selectList = arrayOf("변경", "삭제")
-//            var selectDialog =
-//                AlertDialog.Builder(this, R.style.LongClickPopUp)
-//
-//            selectDialog
-//                .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
-//
-//                    // 변경 버튼을 클릭했을 때
-//                    if(which == 0){
-//                        var t1 = Toast.makeText(this, "변경 버튼 클릭", Toast.LENGTH_SHORT)
-//                        t1.show()
-//                    }
-//                    // 삭제 버튼을 클릭했을 때
-//                    else if(which == 1){
-//                        var t1 = Toast.makeText(this, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
-//                        t1.show()
-//                    }
-//                }
-//                ).show()
         }
 
     }

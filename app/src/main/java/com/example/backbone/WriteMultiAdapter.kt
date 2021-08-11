@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -264,6 +266,36 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList)
+                    holder.binding.qLinkAddBtn.visibility = View.GONE
+                }
+
+                //링크 롱클릭 리스너 (공간 관련 해야함)
+                holder.binding.clLinkArea.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if(which == 0){
+                                var t1 = Toast.makeText(context, "변경 버튼 클릭", Toast.LENGTH_SHORT)
+                                t1.show()
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if(which == 1){
+                                var t1 = Toast.makeText(context, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
+                                t1.show()
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.qLinkAddBtn.visibility = View.VISIBLE
+                            }
+                        }
+                        ).show()
+                    true
                 }
 
 
@@ -381,7 +413,8 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, WriteList)
                 }
-            }
+
+             }
             is LoadQHolder -> {
                 (holder as LoadQHolder).setQList(items[position] as loadQuestionData)
                 holder.setIsRecyclable(false)
