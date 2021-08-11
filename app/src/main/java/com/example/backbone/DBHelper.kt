@@ -615,7 +615,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 p.bindBlob(4, answer.Image)
                 p.execute()
             }else{
-                Log.d("태그:", "InsertAnswer ${answer.Link}")
                 var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, ?);")
                 p.bindString(1, answer.QuestionID)
                 p.bindString(2, answer.Content)
@@ -627,49 +626,48 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             }
         }
         else{
-            Log.d("태그:", "InsertAnswer else구문")
             db.execSQL("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "',NULL, '" + answer.Link + "');")
         }
 
         db.close()
     }
 
-
-
-     //WritingActivity
-    //이미지를 올리는 DB
-    //table: 어떤 테이블에 저자할 것인지? content, answer 중?
-    //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
-    /*
-        fun drawImage(table: String, id: String, image:Image)
+    // EditingActivity
+    // 카테고리가 몇번째 인지 받아오는 코드
+    fun getCategoryIndex(writeID:String): Int
     {
-        val values = ContentValues()
-        values.put("image", image.image)
-        //실험 중
-        var db = this.writableDatabase
-        db.insert("Image", null, values)
-        //var p: SQLiteStatement = db.compileStatement("INSERT INTO Image VALUES (?);")
-        //p.bindBlob(1, image)
-        db.close()
-    }
+        Log.d("태그", "getCategoryIndex 시작")
+        var index = -1
+        var cate = WhatisCategory(writeID)
 
-
-    //ReadingActivity
-    //이미지를 받아오는 DB
-    fun showImage(table: String, id: String):Image
-    {
-        //실험 중
+        Log.d("태그", "getCategoryIndex 카테고리 불러옴 : ${cate}")
         var db = this.readableDatabase
-        var cursor = db.rawQuery("select*from Image;", null)
 
-        cursor.moveToFirst()
-        var image:ByteArray = cursor.getBlob(0)
-
-
-        var Memo = Image(image)
+        var cursor: Cursor = db.rawQuery("SELECT ROWID FROM Category WHERE CategoryName = '"+cate+"';", null)
+        cursor.moveToNext()
+        index = cursor.getInt(0)
+        cursor.close()
+        // 디비 닫기
         db.close()
-        return Memo
+
+
+        return index
     }
-     */
+
+    // EditingActivity
+    // 카테고리가 몇번째 인지 받아오는 코드
+    fun WhatisCategory(writeID: String): String
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT * FROM Writing WHERE WriteID = "+writeID+";", null)
+        cursor.moveToNext()
+        var cate = cursor.getString(3)
+        cursor.close()
+        // 디비 닫기
+        db.close()
+
+        return cate
+    }
 
 }
