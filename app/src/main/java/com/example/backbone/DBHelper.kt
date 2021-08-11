@@ -539,7 +539,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var db = this.writableDatabase
         if(content.Image != null)
         {
-            Log.d("태그", "사진 저장")
             var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES (?,?, ?,?);")
 
             p.bindString(1, content.WriteID)
