@@ -4,18 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash"
+    android:background="@drawable/splash_bg"
     tools:context=".SplashActivity">
+
+    <TextView
+        android:id="@+id/splash_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="267dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="“왜?” 라는 질문을 통해‘\n나’를 기록하고 성장시키다."
+        android:textColor="@color/white"
+        android:textFontWeight="300"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@id/splash_logo"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/splash_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="275dp"
         android:background="@android:color/transparent"
         android:src="@drawable/splash_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        app:layout_constraintTop_toBottomOf="@+id/splash_txt">
+
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,10 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteStatement
+import android.graphics.Bitmap
 import android.util.Log
+import java.sql.Types.NULL
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -380,42 +383,55 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         //db읽어올 준비
         var db = this.readableDatabase
 
-        var cursor: Cursor
         var anyArray = ArrayList<Content>()
-
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
-        cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
+        var cursor: Cursor = db.rawQuery("select * from Content WHERE WriteID = '$writeID';", null)
 
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
+
             //빈 객체 생성
             var content:Content = Content()
 
-            content.WriteID = cursor.getString(0)
-            content.ContentID = cursor.getInt(1)
-            content.content=  cursor.getString(2)
-            content.Image =  cursor.getBlob(3)
-            if(cursor.getString(4) == null)
+            if(cursor!=null)
             {
-                content.link = ""
-            }else{
-                content.link = cursor.getString(4)
-            }
+                content.WriteID = cursor.getString(cursor.getColumnIndex("WriteID"))
+                content.ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
+                content.content=  cursor.getString(cursor.getColumnIndex("Content"))
 
-            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${writeID};", null)
-            while(cursor2.moveToNext())
-            {
-                content.WritingTitle = cursor2.getString(1)
-                //해당 content에 해당되는 질문 값을 받아오기.
+                Log.d("태그", "디비 cursor: ${content.content}")
 
+                if(cursor.getBlob(cursor.getColumnIndex("Image")) != null)
+                {
+                    content.Image = cursor.getBlob(cursor.getColumnIndex("Image"))
+                }else{
+                    content.Image = null
+                }
+                if(cursor.getString(cursor.getColumnIndex("Link")) == null)
+                {
+                    content.link = ""
+                }else{
+                    content.link = cursor.getString(cursor.getColumnIndex("Link"))
+                }
+                // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+                var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${writeID};", null)
+                while(cursor2.moveToNext())
+                {
+                    content.WritingTitle = cursor2.getString(1)
+                    //해당 content에 해당되는 질문 값을 받아오기.
+
+                }
+                anyArray.add(content)
             }
-            anyArray.add(content)
         }
-        return anyArray
 
+        cursor.close()
         // 디비 닫기
         db.close()
+
+        return anyArray
+
+
     }
     
     //ReadingActivity
@@ -441,10 +457,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
             anyArray.add(Question(QuestionID, Question))
         }
-        return anyArray
-
         // 디비 닫기
         db.close()
+        return anyArray
+
     }
 
     //ReadingActivity
@@ -455,7 +471,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var Question:String
         var Content: String = ""
         var Date: String
-        var Image: ByteArray
+        var Image: ByteArray? = null
         var Link: String
         //db읽어올 준비
         var db = this.readableDatabase
@@ -472,53 +488,185 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             while (cursor.moveToNext()) {
                 Content = cursor.getString(1)
                 Date=  cursor.getString(2)
-                //Image =  cursor.getBlob(3)
+                if(cursor.getBlob(3) != null)
+                {
+                    Image = cursor.getBlob(3)
+                }
                 Link = ""
                 if(cursor.getString(4) != null)
                 {
                     Link =  cursor.getString(4)
                 }
-                anyArray.add(Answer(QuestionID, Content, Date, Link))
+                anyArray.add(Answer(QuestionID, Content, Date, Image, Link))
             }
 
-        return anyArray
-
+        cursor.close()
         // 디비 닫기
         db.close()
+        return anyArray
+
     }
 
-    /*
-     //WritingActivity
-    //이미지를 올리는 DB
-    //table: 어떤 테이블에 저자할 것인지? content, answer 중?
-    //id: content/answer 테이블의 어느 로우에 저장할지? -> 해당하는 id를 입력하면 됨.
-    fun drawImage(table: String, id: String, image:Image)
+    //WritingActivity
+    //글 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertWriting(writing: Writing)
     {
-        val values = ContentValues()
-        values.put("image", image.image)
-        //실험 중
         var db = this.writableDatabase
-        db.insert("Image", null, values)
-        //var p: SQLiteStatement = db.compileStatement("INSERT INTO Image VALUES (?);")
-        //p.bindBlob(1, image)
+        db.execSQL("INSERT INTO Writing (Title, Date, Category) values ('" + writing.Title + "', '"+writing.Date+"', '"+writing.Category+"');")
+
         db.close()
     }
 
-    //ReadingActivity
-    //이미지를 받아오는 DB
-    fun showImage(table: String, id: String):Image
+    fun getCurrentWriteID():Int
     {
-        //실험 중
         var db = this.readableDatabase
-        var cursor = db.rawQuery("select*from Image;", null)
-
-        cursor.moveToFirst()
-        var image:ByteArray = cursor.getBlob(0)
 
 
-        var Memo = Image(image)
+        var cursor: Cursor = db.rawQuery("select * from Writing;", null)
+        cursor.moveToLast()
+        var WriteID = cursor.getInt(0)
+
+        cursor.close()
+        // 디비 닫기
         db.close()
-        return Memo
+        return WriteID
     }
-     */
+
+    //WritingActivity
+    //내용 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertContent(content: Content)
+    {
+        var db = this.writableDatabase
+        if(content.Image != null)
+        {
+            Log.d("태그", "사진 저장")
+            var p: SQLiteStatement = db.compileStatement("INSERT INTO Content (WriteID, Content, Image, Link) VALUES (?,?, ?,?);")
+
+            p.bindString(1, content.WriteID)
+            p.bindString(2, content.content)
+            p.bindBlob(3, content.Image)
+            p.bindString(4, content.link)
+            p.execute()
+        }else{
+            db.execSQL("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', NULL, '"+content.link+"');")
+        }
+
+
+        db.close()
+    }
+
+    fun getCurrentContentID():Int
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT * FROM Content;", null)
+        cursor.moveToLast()
+        var ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
+
+        cursor.close()
+        // 디비 닫기
+        db.close()
+        return ContentID
+    }
+
+    //WritingActivity
+    //내용 제목, 카테고리, 날짜를 저장하는 기능
+    fun InsertQuestion(question: Question)
+    {
+        var db = this.writableDatabase
+
+            var p: SQLiteStatement = db.compileStatement("INSERT INTO Question (WritingID, ContentID, Content) VALUES (?,?,?);")
+
+            p.bindString(1, question.WritingID)
+            p.bindString(2, question.ContentID)
+            p.bindString(3, question.Content)
+            p.execute()
+
+
+        db.close()
+    }
+
+    fun getCurrentQuestionID():Int
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("select * from Question;", null)
+        cursor.moveToLast()
+        var QuestionID = cursor.getInt(2)
+
+        cursor.close()
+        // 디비 닫기
+        db.close()
+
+        return QuestionID
+    }
+
+    fun InsertAnswer(answer: Answer)
+    {
+        var db = this.writableDatabase
+        if(answer.Image != null) {
+            if(answer.Link == null)
+            {
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, NULL);")
+                p.bindString(1, answer.QuestionID)
+                p.bindString(2, answer.Content)
+                p.bindString(3, answer.Date)
+                p.bindBlob(4, answer.Image)
+                p.execute()
+            }else{
+                var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, ?);")
+                p.bindString(1, answer.QuestionID)
+                p.bindString(2, answer.Content)
+                p.bindString(3, answer.Date)
+                p.bindBlob(4, answer.Image)
+                p.bindString(5, answer.Link)
+
+                p.execute()
+            }
+        }
+        else{
+            db.execSQL("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES ('"+answer.QuestionID+"','" + answer.Content + "', '" + answer.Date + "',NULL, '" + answer.Link + "');")
+        }
+
+        db.close()
+    }
+
+    // EditingActivity
+    // 카테고리가 몇번째 인지 받아오는 코드
+    fun getCategoryIndex(writeID:String): Int
+    {
+        Log.d("태그", "getCategoryIndex 시작")
+        var index = -1
+        var cate = WhatisCategory(writeID)
+
+        Log.d("태그", "getCategoryIndex 카테고리 불러옴 : ${cate}")
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT ROWID FROM Category WHERE CategoryName = '"+cate+"';", null)
+        cursor.moveToNext()
+        index = cursor.getInt(0)
+        cursor.close()
+        // 디비 닫기
+        db.close()
+
+
+        return index
+    }
+
+    // EditingActivity
+    // 카테고리가 몇번째 인지 받아오는 코드
+    fun WhatisCategory(writeID: String): String
+    {
+        var db = this.readableDatabase
+
+        var cursor: Cursor = db.rawQuery("SELECT * FROM Writing WHERE WriteID = "+writeID+";", null)
+        cursor.moveToNext()
+        var cate = cursor.getString(3)
+        cursor.close()
+        // 디비 닫기
+        db.close()
+
+        return cate
+    }
+
 }

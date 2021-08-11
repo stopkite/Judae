@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkBlue"
-    tools:context=".WritingActivity">
+    tools:context=".EditingActivity">
 
     <Toolbar
         android:id="@+id/topToolBar"
@@ -41,7 +41,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="저장"
-                android:enabled="false"
+                android:enabled="true"
                 android:textColor="@color/ivory"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"

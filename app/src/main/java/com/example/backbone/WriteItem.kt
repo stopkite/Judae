@@ -12,23 +12,37 @@ interface WriteItem {
 }
 
 data class WriteQuestionData(
-    override var id: Int, var qTitle: EditText?, var aImg: Bitmap?,
-    var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
-    var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?,
-    var aTxt: EditText?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
+    override var id: Int, var qTitle: String?, var aImg: Bitmap?,
+    var linkInsertTxt: String?, var linkInsertBtn: Button?,
+    var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
+    var aTxt: String?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?, var Date:String?): WriteItem
 
 data class WriteContentData(
         override var id: Int, var contentImg: Bitmap?,
-        var linkInsertTxt:EditText?, var linkInsertBtn:Button?,
-        var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?,
-        var docContent:EditText?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
+        var linkInsertTxt: EditText?, var linkInsertBtn:Button?,
+        var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
+        var docContent:String?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
 
+data class saveQuestionData(override var id: Int, var qTitle: String?, var aImg: Bitmap?,
+                             var linkInsertTxt: EditText?, var linkInsertBtn: Button?,
+                             var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Bitmap?,
+                             var aTxt: String?, var addAnswer: ImageButton?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
+
+data class saveContentData(override var id: Int, var contentImg: Bitmap?,
+                            var linkInsertTxt:String?, var linkInsertBtn:Button?,
+                            var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?,
+                            var docContent:String?, var qImgAddBtn:ImageButton?, var qLinkAddBtn:ImageButton?): WriteItem
+
+
+
+
+//onActivityCalled: 수정의 경우 대답 밑 버튼을 눌러서 추가된 것이면 false, 액티비티에 리스너가 있는 밑에 바에서 질문을 추가 버튼을 눌러서 추가된 것이면 true
 data class loadQuestionData(
-    override var id: Int, var qTitle: String?, var aImg: ByteArray?,
-        var linkLayout: View?, var linkTitle:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
-        var aTxt: String?, var Date:String?, var ColorChanged:Boolean?):WriteItem
+        override var id: String, var qTitle: String?, var aImg: ByteArray?,
+        var linkLayout: View?, var linkTitle:String?, var linkContent: String?, var linkUri:String?, var linkIcon: Bitmap?, var linkImg: Drawable?,
+        var aTxt: String?, var Date:String?, var ColorChanged:Boolean?, var onActivityCalled:Boolean?):WriteItem
 data class loadContentData(override var id: Int, var contentImg: ByteArray?,
-                           var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Drawable?, var linkImg: Drawable?,
+                           var linkLayout: View?, var linkTitle:String?, var linkContent:String?, var linkUri:String?, var linkIcon: Bitmap?, var linkImg: Drawable?,
                            var docContent: String?):WriteItem
 /*
 <<WriteQuestionData>>

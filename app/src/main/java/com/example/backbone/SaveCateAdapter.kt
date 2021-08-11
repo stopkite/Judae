@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,25 +13,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivitySavingBinding
 import com.example.backbone.databinding.SaveCategoryItemBinding
 
-class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<String>,saveBtn: Button):BaseAdapter() {
+class SaveCateAdapter(context: Context, val categoryArrayCat:ArrayList<String>,saveBtn: Button):BaseAdapter() {
 
-    var selectedPosition: Int = -1
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // category_select_item.xml 화면 불러오기
     lateinit var binding: SaveCategoryItemBinding
-
+    var selectedPosition = -1
     // WritingActivity 에서 가져온 저장하기 버튼
     var saveBtn = saveBtn
 
     // single 선택과 버튼 (비)활성화를 위한 변수
-    /*
-        companion object {
-        var selectedPosition = -1
-        var selected = false
-    }
-     */
+    companion object {
 
+    }
 
     // 리스트에 아이템이 몇 개가 들어있는 지 갯수 반환
     override fun getCount(): Int = categoryArrayCat.size
@@ -43,16 +39,22 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
     override fun getView(position: Int, contextView: View?, parent: ViewGroup?): View {
         binding = SaveCategoryItemBinding.inflate(inflater,parent,false)
 
+        /*
+        if(selectedPosition>-1)
+        {
+            binding.popupCategoryRbtn.isChecked = selectedPosition == position
+        }
+         */
+
+
 
         // 라디오 버튼 - 카테고리 이름 설정
         binding.popupCategoryRbtn.text = categoryArrayCat[position]
-                //categoryArrayCat[position].categoryRadioBtn.text
 
         // 라디오 버튼 클릭 이벤트
         //다중선택 방지 코드
         binding.popupCategoryRbtn.isChecked = selectedPosition == position
         binding.popupCategoryRbtn.setOnClickListener {
-            //selected = !selected
             selectedPosition = position
             notifyDataSetChanged()
         }
@@ -65,5 +67,10 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
         }
 
         return binding.root
+    }
+
+    fun setPosition(position: Int){
+        selectedPosition = position -2
+        notifyDataSetChanged()
     }
 }

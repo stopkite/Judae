@@ -31,4 +31,10 @@ class Question {
         this.Content = Content
         this.WritingID = WritingID
     }
+    constructor(WritingID:String, ContentID:String,Content:String)
+    {
+        this.ContentID = ContentID
+        this.Content = Content
+        this.WritingID = WritingID
+    }
 }

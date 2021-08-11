@@ -69,8 +69,7 @@ class ReadingActivity : AppCompatActivity() {
         var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
         binding.docTitle.setText("${WritingArray[0].WritingTitle}")
         binding.docContent.setText("${WritingArray[0].content}")
-
-        if(WritingArray[0].link != "")
+        if(WritingArray[0].link != "" && WritingArray[0].link != "http://wwww.youtube.com/watch?v=MDeuDrlBKqwhttp://wwww.youtube.com/watch?v=MDeuDrlBKqw")
         {
             //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
             isrun = true
@@ -100,8 +99,14 @@ class ReadingActivity : AppCompatActivity() {
             var LastSize = AnswerSize-1
             if(AnswerSize==1)
             {
+                var Image: Bitmap? = null
+                if(AnswerArray[0].Image != null)
+                {
+                    Image = init(AnswerArray[0].Image)
+                }
+
                 //답변이 한 개일 경우.
-                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[0].Link,null,
                         null,AnswerArray[0].Content, AnswerArray[0].Date, false))
             } else if(AnswerSize>1)
             {
@@ -111,19 +116,30 @@ class ReadingActivity : AppCompatActivity() {
                 //
                 for(j in 0..AnswerSize-2)
                 {
+                    var Image: Bitmap? = null
+                    if(AnswerArray[j].Image != null)
+                    {
+                        Image = init(AnswerArray[j].Image)
+                    }
+
                     if(j==0)
                     {
-                        readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                         readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }else{
-                        readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                        readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                 null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }
                 }
+                var Image: Bitmap? = null
+                if(AnswerArray[LastSize].Image != null)
+                {
+                    Image = init(AnswerArray[LastSize].Image)
+                }
                 //마지막 내용!
-                readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                         null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
             }else{
                 //질문만 있고, 대답 없는 경우.
@@ -137,8 +153,14 @@ class ReadingActivity : AppCompatActivity() {
         //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
         for(i in 1..WritingSize-1)
         {
+            var Image: Bitmap? = null
+            if(WritingArray[i].Image != null)
+            {
+                Image = init(WritingArray[i].Image)
+            }
+
             // 본문 추가
-            readingAdapter.addItems(ReadContentData(WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
+            readingAdapter.addItems(ReadContentData(Image,c_linkLayout,null,null,WritingArray[i].link,
                     null,null,WritingArray[i].content))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
@@ -147,14 +169,22 @@ class ReadingActivity : AppCompatActivity() {
 
             for(i in 0..QuestionIDSize-1)
             {
+
                 //Question에 해당하는 대답 객체 리스트 받아오기
                 var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
                 var AnswerSize = AnswerArray.size
                 var LastSize = AnswerSize-1
+
                 if(AnswerSize==1)
                 {
+                    var Image: Bitmap? = null
+                    if(AnswerArray[0].Image != null)
+                    {
+                        Image = init(AnswerArray[0].Image)
+                    }
+
                     //답변이 한 개일 경우.
-                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,AnswerArray[0].Link,null,
+                    readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[0].Link,null,
                             null,AnswerArray[0].Content, AnswerArray[0].Date, false))
                 } else if(AnswerSize>1)
                 {
@@ -164,19 +194,30 @@ class ReadingActivity : AppCompatActivity() {
                     //
                     for(j in 0..AnswerSize-2)
                     {
+                        var Image: Bitmap? = null
+                        if(AnswerArray[j].Image != null)
+                        {
+                            Image = init(AnswerArray[j].Image)
+                        }
+
                         if(j==0)
                         {
-                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         }else{
-                            readingAdapter.addItems(ReadQuestionData(null,AnswerArray[j].Image,q_linkLayout,null,AnswerArray[j].Link,null,
+                            readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[j].Link,null,
                                     null,AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         }
                     }
+                    var Image: Bitmap? = null
+                    if(AnswerArray[LastSize].Image != null)
+                    {
+                        Image = init(AnswerArray[LastSize].Image)
+                    }
                     //마지막 내용!
-                    readingAdapter.addItems(ReadQuestionData(null,AnswerArray[LastSize].Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
+                    readingAdapter.addItems(ReadQuestionData(null,Image,q_linkLayout,null,AnswerArray[LastSize].Link,null,
                             null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
                 }else{
                     //질문만 있고, 대답 없는 경우.
@@ -212,14 +253,14 @@ class ReadingActivity : AppCompatActivity() {
 
         binding.editBtn.setOnClickListener {
             // 글쓰기 화면으로 이동
-            val writeIntent = Intent(this, WritingActivity::class.java)
+            val writeIntent = Intent(this, EditingActivity::class.java)
             writeIntent.putExtra("data", "${WriteID}")
             startActivity(writeIntent)
         }
     }
 
-    private fun init(ba:ByteArray): Bitmap? {
-        val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba.size)
+    private fun init(ba:ByteArray?): Bitmap? {
+        val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba!!.size)
         return bitmap
     }
 
@@ -297,15 +338,21 @@ class ReadingActivity : AppCompatActivity() {
                         if (title == "") {
                             title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                         }
-                        if (bm1 == null) {
-                            binding.linkIcon.visibility = View.GONE
-                        }
                         isrun = false
                     }
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                        Log.d("태그", "${title}, ${content}")
+                        if(title == null)
+                        {
+                            binding.clLinkArea.visibility = View.GONE
+                        }
+
                         var adapter = ReadMultiAdapter(this)
+                        if (bm1 == null) {
+                            binding.linkIcon.visibility = View.GONE
+                        }
                         binding.docList.adapter = adapter
                         binding.linkUri.text = linkUri
                         binding.linkTitle.text = title
@@ -314,7 +361,6 @@ class ReadingActivity : AppCompatActivity() {
                     })
                 } catch (e: Exception) {
                     //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
-
                 }
             }
         }).start()
