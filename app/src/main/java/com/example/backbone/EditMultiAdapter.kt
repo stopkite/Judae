@@ -608,11 +608,15 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                         binding2.linkIcon.visibility = View.GONE
                     }
                 }else{
-                    Log.d("태그", "if구문 들어옴 ${item.linkUri}")
                     // 링크 정보를 불러오는 것이 처음 일때!
                     binding2.clLinkArea.visibility = View.VISIBLE
                     loadLink(item.linkUri.toString(), item)
                 }
+            }
+
+            binding2.clLinkArea.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
+                binding2.root.context.startActivity(intent)
             }
         }
 

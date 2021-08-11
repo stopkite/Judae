@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -20,7 +19,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -413,136 +411,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, WriteList)
                 }
-
-             }
-            is LoadQHolder -> {
-                (holder as LoadQHolder).setQList(items[position] as loadQuestionData)
-                holder.setIsRecyclable(false)
-                //선택된 아이템에 대한 정보 빼내오기
-                var QuestionItem = items[position] as loadQuestionData
-
-                //답변 추가 버튼 눌렀을 때 리스너
-                binding.addAnswer.setOnClickListener {
-                    QuestionItem.ColorChanged = true
-
-                    AddAnswer(loadQuestionData("추가로 넣는 거", null,null,QuestionItem.linkLayout,null,null, null,null,
-                        null,null, activity.today, false, false), position)
-                }
-
-                //답변 작성될 때 리스너
-                holder.binding.aTxt.addTextChangedListener(object : TextWatcher {
-                    var preTxt: String? = null
-                    var afterTxt: String? = null
-
-                    //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                        preTxt = s.toString()
-                    }
-
-                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
-                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
-                    //before: 삭제된 기존 문자열의 개수
-                    //count: 새로 추가된 문자열의 개수
-                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
-                        if (binding.aTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            try {
-                                afterTxt = binding.aTxt.getText().toString()
-                                //items[position].
-                                QuestionItem.aTxt = s.toString()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-
-                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
-                    override fun afterTextChanged(s: Editable) {
-                        //updateQuestions에 저장해주기.
-                        //updateQuestionItems(QuestionItem)
-                        //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
-                    }
-                })
-
-                //질문 입력됐을 때 리스너
-                holder.binding.qTitle.addTextChangedListener(object : TextWatcher {
-                    var preTxt: String? = null
-                    var afterTxt: String? = null
-
-                    //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                        preTxt = s.toString()
-                    }
-
-                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
-                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
-                    //before: 삭제된 기존 문자열의 개수
-                    //count: 새로 추가된 문자열의 개수
-                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
-                        if (binding.qTitle.isFocusable() && !s.toString().equals(preTxt)) {
-                            try {
-                                afterTxt = binding.qTitle.getText().toString()
-                                //items[position].
-                                QuestionItem.qTitle = s.toString()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-
-                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
-                    override fun afterTextChanged(s: Editable) {
-                        //updateQuestionItems(QuestionItem)
-                    }
-                })
-
-                //답변 링크 입력 버튼 눌렀을 때!
-                holder.binding.qLinkAddBtn.setOnClickListener {
-                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
-                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
-                }
-
-                //답변 사진 입력 버튼 눌렀을 때!
-                holder.binding.qImgAddBtn.setOnClickListener {
-                    holder.binding.aImg.visibility = View.VISIBLE
-                }
-
-
-                //답변 링크 입력됐을 때 리스너
-                holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
-                    var preTxt: String? = null
-                    var afterTxt: String? = null
-
-                    //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                        preTxt = s.toString()
-                    }
-
-                    //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
-                    //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
-                    //before: 삭제된 기존 문자열의 개수
-                    //count: 새로 추가된 문자열의 개수
-                    override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
-                        if (binding.linkInsertTxt.isFocusable() && !s.toString().equals(preTxt)) {
-                            try {
-                                afterTxt = binding.linkInsertTxt.getText().toString()
-                                QuestionItem.linkUri = s.toString()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-
-                    //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
-                    override fun afterTextChanged(s: Editable) {
-                        QuestionItem.linkUri = s.toString()
-                        //updateQuestionItems(QuestionItem)
-                    }
-
-                })
-            }
-            is LoadContentHolder -> {
-
-                holder.setContentList(items[position] as loadContentData)
             }
         }
     }
@@ -1074,14 +942,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 binding.aTxt.setText(spannableString)
             }
 
-        }
-
-/*
-        companion object Factory {
-            fun create(parent: ViewGroup): MyQHolder {
+            binding.clLinkArea.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
+                binding.root.context.startActivity(intent)
             }
         }
- */
+
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
         {
@@ -1285,6 +1151,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             }else{
                 binding2.docContent.setText(item.docContent)
             }
+
+            binding2.clLinkArea.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
+                binding2.root.context.startActivity(intent)
+            }
+
         }
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap)
@@ -1299,14 +1171,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             binding2.linkIcon.setImageBitmap(bm1)
         }
 
-        /*
-                companion object Factory {
-            fun create(parent: ViewGroup): MyContentHolder {
-                val binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return MyContentHolder(binding2)
-            }
-        }
-         */
+
 
 
         fun loadLink(url: String, item:WriteContentData) {
@@ -1550,9 +1415,11 @@ uri = linkUri
                         if (photo != null) {
                             photo.close()
                         }
+                        Log.d("태그", "잘되나?")
+                        Log.d("태그", "${itemInfo?.aTxt}")
                         this.itemInfo?.aImg = img
-                        this.binding.aImg.visibility = View.VISIBLE
-                        this.binding.aImg.setImageBitmap(img)
+                        binding.aImg.visibility = View.VISIBLE
+                        binding.aImg.setImageBitmap(img)
 
                     }
                 }

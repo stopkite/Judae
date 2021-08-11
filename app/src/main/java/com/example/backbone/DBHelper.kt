@@ -384,47 +384,55 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         //db읽어올 준비
         var db = this.readableDatabase
 
-        var cursor: Cursor
         var anyArray = ArrayList<Content>()
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
-        cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
+        var cursor: Cursor = db.rawQuery("select * from Content WHERE WriteID = '$writeID';", null)
 
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
+
             //빈 객체 생성
             var content:Content = Content()
 
-            content.WriteID = cursor.getString(0)
-            content.ContentID = cursor.getInt(1)
-            content.content=  cursor.getString(2)
-
-            if(cursor.getBlob(3) != null)
+            if(cursor!=null)
             {
-                content.Image = cursor.getBlob(3)
-            }else{
-                content.Image = null
-            }
-            if(cursor.getString(4) == null)
-            {
-                content.link = ""
-            }else{
-                content.link = cursor.getString(4)
-            }
+                content.WriteID = cursor.getString(cursor.getColumnIndex("WriteID"))
+                content.ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
+                content.content=  cursor.getString(cursor.getColumnIndex("Content"))
 
-            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${writeID};", null)
-            while(cursor2.moveToNext())
-            {
-                content.WritingTitle = cursor2.getString(1)
-                //해당 content에 해당되는 질문 값을 받아오기.
+                Log.d("태그", "디비 cursor: ${content.content}")
 
+                if(cursor.getBlob(cursor.getColumnIndex("Image")) != null)
+                {
+                    content.Image = cursor.getBlob(cursor.getColumnIndex("Image"))
+                }else{
+                    content.Image = null
+                }
+                if(cursor.getString(cursor.getColumnIndex("Link")) == null)
+                {
+                    content.link = ""
+                }else{
+                    content.link = cursor.getString(cursor.getColumnIndex("Link"))
+                }
+                // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+                var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${writeID};", null)
+                while(cursor2.moveToNext())
+                {
+                    content.WritingTitle = cursor2.getString(1)
+                    //해당 content에 해당되는 질문 값을 받아오기.
+
+                }
+                anyArray.add(content)
             }
-            anyArray.add(content)
         }
-        return anyArray
 
+        cursor.close()
         // 디비 닫기
         db.close()
+
+        return anyArray
+
+
     }
     
     //ReadingActivity
@@ -450,10 +458,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
             anyArray.add(Question(QuestionID, Question))
         }
-        return anyArray
-
         // 디비 닫기
         db.close()
+        return anyArray
+
     }
 
     //ReadingActivity
@@ -493,10 +501,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 anyArray.add(Answer(QuestionID, Content, Date, Image, Link))
             }
 
-        return anyArray
-
+        cursor.close()
         // 디비 닫기
         db.close()
+        return anyArray
+
     }
 
     //WritingActivity
@@ -518,6 +527,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         cursor.moveToLast()
         var WriteID = cursor.getInt(0)
 
+        cursor.close()
+        // 디비 닫기
+        db.close()
         return WriteID
     }
 
@@ -548,10 +560,12 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.readableDatabase
 
-        var cursor: Cursor = db.rawQuery("select * from Content ;", null)
+        var cursor: Cursor = db.rawQuery("SELECT * FROM Content;", null)
         cursor.moveToLast()
-        var ContentID = cursor.getInt(1)
+        var ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
 
+        cursor.close()
+        // 디비 닫기
         db.close()
         return ContentID
     }
@@ -561,7 +575,14 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     fun InsertQuestion(question: Question)
     {
         var db = this.writableDatabase
-        db.execSQL("INSERT INTO Question (WritingID, ContentID, Content) values ('" + question.WritingID + "', '"+question.ContentID+"', '"+question.Content+"');")
+
+            var p: SQLiteStatement = db.compileStatement("INSERT INTO Question (WritingID, ContentID, Content) VALUES (?,?,?);")
+
+            p.bindString(1, question.WritingID)
+            p.bindString(2, question.ContentID)
+            p.bindString(3, question.Content)
+            p.execute()
+
 
         db.close()
     }
@@ -574,6 +595,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         cursor.moveToLast()
         var QuestionID = cursor.getInt(2)
 
+        cursor.close()
+        // 디비 닫기
+        db.close()
+
         return QuestionID
     }
 
@@ -581,10 +606,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.writableDatabase
         if(answer.Image != null) {
-            Log.d("태그:", "InsertAnswer if구문 사진 저장하는 경우.")
-            Log.d("태그:", "InsertAnswer ${answer.Content}")
-            Log.d("태그:", "InsertAnswer ${answer.QuestionID}")
-            Log.d("태그:", "InsertAnswer ${answer.Image}")
             if(answer.Link == null)
             {
                 var p: SQLiteStatement = db.compileStatement("INSERT INTO Answer (QuestionID, Content, Date, Image, Link) VALUES (?,?, ?, ?, NULL);")

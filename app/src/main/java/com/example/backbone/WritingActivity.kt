@@ -146,17 +146,7 @@ class WritingActivity : AppCompatActivity() {
         var categoryList = ArrayList<String>()
         //카테고리 정보를 DB에서 받아와 배열에 담기.
         categoryList = db.getCategory()
-
-        //배열의 크기만큼 카테고리 아이템 설정하기.
-        //배열로 받아온 글 객체를 순서대로 출력하기.
-        /*
-                for(i in 0..(categoryList.size-1))
-        {
-            categoryList.add(
-                    SaveCateListData("${categoryList[i]}")
-            )
-        }
-         */
+        categoryList.removeAt(0)
 
         // adapter 초기화
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
@@ -268,7 +258,7 @@ class WritingActivity : AppCompatActivity() {
             //val bitmapDrawable = drawable
             val bitmap = drawable
             val stream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, stream)
             val byteArray = stream.toByteArray()
 
             return byteArray
