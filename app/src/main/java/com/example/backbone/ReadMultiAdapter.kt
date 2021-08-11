@@ -296,11 +296,8 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
             binding2.clLinkArea.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
-
                 binding2.root.context.startActivity(intent)
-
             }
-
         }
 
 

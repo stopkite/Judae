@@ -97,6 +97,7 @@ class EditingActivity : AppCompatActivity() {
         var categoryList = ArrayList<String>()
         //카테고리 정보를 DB에서 받아와 배열에 담기.
         categoryList = db.getCategory()
+        categoryList.removeAt(0)
 
         // adapter 초기화
         saveCateAdapter = SaveCateAdapter(this, categoryList, binding5.cateSaveBtn)
@@ -466,9 +467,9 @@ class EditingActivity : AppCompatActivity() {
                 {
                     //답변이 한 개일 경우.
                     var Image:Bitmap? = null
-                    if(AnswerArray[i].Image != null)
+                    if(AnswerArray[0].Image != null)
                     {
-                        Image = init(AnswerArray[i].Image)
+                        Image = init(AnswerArray[0].Image)
                     }
                     writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
                             null,AnswerArray[0].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[0].Date, false, false))
