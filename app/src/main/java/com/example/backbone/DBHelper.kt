@@ -384,31 +384,34 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         //db읽어올 준비
         var db = this.readableDatabase
 
-        var cursor: Cursor
         var anyArray = ArrayList<Content>()
         //매개변수로 받아온 글 ID를 가진 내용 부분 다 불러오기
-        cursor = db.rawQuery("select * from Content WHERE WriteID = '"+writeID+"';", null)
+        var cursor: Cursor = db.rawQuery("select * from Content WHERE WriteID = '$writeID';", null)
 
         //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
         while (cursor.moveToNext()) {
+
+            Log.d("태그", "디비 cursor: ${cursor.count}")
+
             //빈 객체 생성
             var content:Content = Content()
+            content.WriteID = cursor.getString(cursor.getColumnIndex("WriteID"))
+            content.ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
+            content.content=  cursor.getString(cursor.getColumnIndex("Content"))
 
-            content.WriteID = cursor.getString(0)
-            content.ContentID = cursor.getInt(1)
-            content.content=  cursor.getString(2)
+            Log.d("태그", "디비 getWriting: ${content.content}")
 
-            if(cursor.getBlob(3) != null)
+            if(cursor.getBlob(cursor.getColumnIndex("Image")) != null)
             {
-                content.Image = cursor.getBlob(3)
+                content.Image = cursor.getBlob(cursor.getColumnIndex("Image"))
             }else{
                 content.Image = null
             }
-            if(cursor.getString(4) == null)
+            if(cursor.getString(cursor.getColumnIndex("Link")) == null)
             {
                 content.link = ""
             }else{
-                content.link = cursor.getString(4)
+                content.link = cursor.getString(cursor.getColumnIndex("Link"))
             }
 
             // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
@@ -423,6 +426,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         }
         return anyArray
 
+        cursor.close()
         // 디비 닫기
         db.close()
     }
@@ -548,9 +552,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     {
         var db = this.readableDatabase
 
-        var cursor: Cursor = db.rawQuery("select * from Content ;", null)
+        var cursor: Cursor = db.rawQuery("SELECT * FROM Content;", null)
         cursor.moveToLast()
-        var ContentID = cursor.getInt(1)
+        var ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
 
         db.close()
         return ContentID

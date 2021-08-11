@@ -88,7 +88,6 @@ class ReadingActivity : AppCompatActivity() {
 
         var WritingSize = WritingArray.size
 
-        Log.d("태그", "${WritingSize}")
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
         var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
         var QuestionIDSize = QuestionIDArray.size

@@ -77,8 +77,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
     // 질문 Holder
     class MyQHolder(val binding: ReadQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: ReadQuestionData) {
-            Log.d("태그", "${item.aTxt}")
-            Log.d("태그", "${item.qTitle}")
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
                 binding.qIcon.visibility = View.GONE
@@ -98,7 +96,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
 
             // 링크
             if(item.linkUri != ""&&item.linkUri != null && item.linkUri != "null"){
-                Log.d("태그", "링크 있음! ${item.linkUri}")
                 //링크 내용이 없으면?
                 loadLink(item.linkUri.toString())
             }else{
@@ -290,12 +287,18 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
                 binding2.docContent.text = item.docContent
             }
 
-            Log.d("태그", "${item.linkUri}")
             if(item.linkUri != ""){
                 binding2.clLinkArea.visibility = View.VISIBLE
                 loadLink(item.linkUri.toString())
             }else{
                 binding2.clLinkArea.visibility = View.GONE
+            }
+
+            binding2.clLinkArea.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
+
+                binding2.root.context.startActivity(intent)
+
             }
 
         }
