@@ -104,6 +104,7 @@ class EditingActivity : AppCompatActivity() {
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
 
+
         val docTitle = binding.docTitle
         var qTitle = binding2.qTitle
         val qTitleText: String = qTitle.getText().toString()
@@ -163,8 +164,8 @@ class EditingActivity : AppCompatActivity() {
         var WriteID: String = ""
         if(intent.hasExtra("data"))
         {
-            Log.d("태그", "${WriteID}")
             WriteID = intent.getStringExtra("data").toString()
+
             loadWriting(WriteID, writingAdapter)
         }
 
@@ -270,6 +271,12 @@ class EditingActivity : AppCompatActivity() {
 
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
+
+            Log.d("태그", "카테고리 WriteID: ${WriteID}")
+            var cateIndex = db.getCategoryIndex(WriteID)
+            Log.d("태그", "카테고리 position: ${cateIndex}")
+            // 저장되어있는 카테고리로 카테고리 어댑터 라디오 버튼 미리 설정해주기.
+            saveCateAdapter.setPosition(cateIndex)
 
             // view의 중복 사용을 방지하기 위한 코드
             if (binding5.root.parent != null)

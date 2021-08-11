@@ -1,6 +1,7 @@
 package com.example.backbone
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivitySavingBinding
 import com.example.backbone.databinding.SaveCategoryItemBinding
 
-class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<String>,saveBtn: Button):BaseAdapter() {
+class SaveCateAdapter(context: Context, val categoryArrayCat:ArrayList<String>,saveBtn: Button):BaseAdapter() {
 
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -38,10 +39,17 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
     override fun getView(position: Int, contextView: View?, parent: ViewGroup?): View {
         binding = SaveCategoryItemBinding.inflate(inflater,parent,false)
 
+        /*
+        if(selectedPosition>-1)
+        {
+            binding.popupCategoryRbtn.isChecked = selectedPosition == position
+        }
+         */
+
+
 
         // 라디오 버튼 - 카테고리 이름 설정
         binding.popupCategoryRbtn.text = categoryArrayCat[position]
-                //categoryArrayCat[position].categoryRadioBtn.text
 
         // 라디오 버튼 클릭 이벤트
         //다중선택 방지 코드
@@ -61,4 +69,8 @@ class SaveCateAdapter(context: Context, private val categoryArrayCat:ArrayList<S
         return binding.root
     }
 
+    fun setPosition(position: Int){
+        selectedPosition = position -2
+        notifyDataSetChanged()
+    }
 }

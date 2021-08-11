@@ -1447,7 +1447,7 @@ uri = linkUri
                         this.itemInfo?.aImg = img
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
-
+                        this.notifyDataSetChanged()
                     }
                 }
             }
