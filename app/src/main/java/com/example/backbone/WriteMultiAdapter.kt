@@ -4,8 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -19,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -258,16 +261,20 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding.linkInsertBtn.setOnClickListener {
+                    holder.binding.linkInsertBtn.visibility = View.GONE
+                    holder.binding.linkInsertTxt.visibility = View.GONE
                     holder.binding.clLinkArea.visibility = View.VISIBLE
                     //입력 받은 링크를 String으로 넣어 준 후
                     var linkUri = QuestionList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList)
-                    holder.binding.qLinkAddBtn.visibility = View.GONE
+                    holder.binding.qLinkAddBtn.setClickable(false)
+                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    holder.binding.linkInsertTxt.setText("")
                 }
 
-                //링크 롱클릭 리스너 (공간 관련 해야함)
+                //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
@@ -278,18 +285,16 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
 
                             // 변경 버튼을 클릭했을 때
                             if(which == 0){
-                                var t1 = Toast.makeText(context, "변경 버튼 클릭", Toast.LENGTH_SHORT)
-                                t1.show()
                                 holder.binding.clLinkArea.visibility = View.GONE
                                 holder.binding.linkInsertBtn.visibility = View.VISIBLE
                                 holder.binding.linkInsertTxt.visibility = View.VISIBLE
                             }
                             // 삭제 버튼을 클릭했을 때
                             else if(which == 1){
-                                var t1 = Toast.makeText(context, "삭제 버튼 클릭", Toast.LENGTH_SHORT)
-                                t1.show()
                                 holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.qLinkAddBtn.visibility = View.VISIBLE
+                                holder.binding.qLinkAddBtn.setClickable(true)
+                                holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.linkUri = null
                             }
                         }
                         ).show()
@@ -323,9 +328,37 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                         }
                     }else{
                         openGalleryForImage(QuestionList)
+                        holder.binding.qImgAddBtn.setClickable(false)
+                        holder.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
 
                     }
                 }
+
+                //사진 롱클릭 리스너 (변경, 삭제)
+                holder.binding.aImg.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if(which == 0){
+                                openGalleryForImage(QuestionList)
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if(which == 1){
+                                holder.binding.aImg.visibility = View.GONE
+                                holder.binding.qImgAddBtn.setClickable(true)
+                                holder.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.aImg = null
+                            }
+                        }
+                        ).show()
+                    true
+                }
+
             }
             is MyContentHolder -> {
                 //holder.setContentList(items[position] as WriteContentData)
@@ -1355,12 +1388,6 @@ uri = linkUri
     private lateinit var itemClickListner: ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListner = itemClickListener
-    }
-
-    // answer 이미지, 링크 추가 시 사용
-    fun modifyItems(position: Int, item: WriteItem) {
-        this.items.set(position, item)
-        this.notifyDataSetChanged()
     }
 
     class ContentDiffUtil(private val oldList: List<WriteItem>, private val currentList: List<WriteItem>) : DiffUtil.Callback() {
