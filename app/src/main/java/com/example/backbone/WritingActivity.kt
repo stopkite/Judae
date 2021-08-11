@@ -258,7 +258,7 @@ class WritingActivity : AppCompatActivity() {
             //val bitmapDrawable = drawable
             val bitmap = drawable
             val stream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, stream)
             val byteArray = stream.toByteArray()
 
             return byteArray
