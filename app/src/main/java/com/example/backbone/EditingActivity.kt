@@ -637,7 +637,7 @@ class EditingActivity : AppCompatActivity() {
 
 
     val REQUEST_TAKE_ALBUM = 2
-    private fun openGalleryForImage() {
+    fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         this.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)

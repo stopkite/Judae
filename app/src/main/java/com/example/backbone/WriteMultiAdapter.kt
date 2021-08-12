@@ -635,6 +635,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     binding.addAnswer.visibility = View.GONE
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
+
                 }else{
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date

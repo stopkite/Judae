@@ -3,8 +3,10 @@ package com.example.backbone
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -167,37 +169,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 }
 
 
-
-                //답변 사진 입력 버튼 눌렀을 때!
-                holder.binding.qImgAddBtn.setOnClickListener {
-                    //권한이 허용되어있는지 self로 체크(확인)
-                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-                        //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
-                        //이전에 거부한 적이 있는지 확인
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            var dlg = AlertDialog.Builder(context)
-                            dlg.setTitle("권한이 필요한 이유")
-                            dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
-                            //OK버튼
-                            dlg.setPositiveButton("확인") { dialog, which ->
-                                ActivityCompat.requestPermissions(activity,
-                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
-                            }
-                            dlg.setNegativeButton("취소", null)
-                            dlg.show()
-                        } else {
-                            //권한 요청
-                            ActivityCompat.requestPermissions(activity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
-                        }
-                    }else{
-                        openGalleryForImage(QuestionList)
-                    }
-
-                }
-
-
                 //답변 링크 입력됐을 때 리스너
                 holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
@@ -230,14 +201,103 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding.linkInsertBtn.setOnClickListener {
-                    holder.binding.clLinkArea.visibility = View.VISIBLE
                     holder.binding.linkInsertBtn.visibility = View.GONE
                     holder.binding.linkInsertTxt.visibility = View.GONE
+                    holder.binding.clLinkArea.visibility = View.VISIBLE
                     //입력 받은 링크를 String으로 넣어 준 후
                     var linkUri = QuestionList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList)
+                    holder.binding.qLinkAddBtn.setClickable(false)
+                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    holder.binding.linkInsertTxt.setText("")
+                }
+
+                //링크 롱클릭 리스너 (변경, 삭제)
+                holder.binding.clLinkArea.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.qLinkAddBtn.setClickable(true)
+                                holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.linkUri = null
+                            }
+                        }
+                        ).show()
+                    true
+                }
+
+
+
+                //답변 사진 입력 버튼 눌렀을 때!
+                holder.binding.qImgAddBtn.setOnClickListener {
+                    //권한이 허용되어있는지 self로 체크(확인)
+                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                        //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
+                        //이전에 거부한 적이 있는지 확인
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            var dlg = AlertDialog.Builder(context)
+                            dlg.setTitle("권한이 필요한 이유")
+                            dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
+                            //OK버튼
+                            dlg.setPositiveButton("확인") { dialog, which ->
+                                ActivityCompat.requestPermissions(activity,
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                            }
+                            dlg.setNegativeButton("취소", null)
+                            dlg.show()
+                        } else {
+                            //권한 요청
+                            ActivityCompat.requestPermissions(activity,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                        }
+                    }else{
+                        openGalleryForImage(QuestionList)
+                        holder.binding.qImgAddBtn.setClickable(false)
+                        holder.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    }
+
+                }
+
+                //사진 롱클릭 리스너 (변경, 삭제)
+                holder.binding.aImg.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                openGalleryForImage(QuestionList)
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.aImg.visibility = View.GONE
+                                holder.binding.qImgAddBtn.setClickable(true)
+                                holder.binding.qImgAddBtn.imageTintList =
+                                    ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.aImg = null
+                            }
+                        }
+                        ).show()
+                    true
                 }
 
             }
@@ -310,14 +370,65 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding2.linkInsertBtn.setOnClickListener {
-                    holder.binding2.clLinkArea.visibility = View.VISIBLE
                     holder.binding2.linkInsertBtn.visibility = View.GONE
                     holder.binding2.linkInsertTxt.visibility = View.GONE
+                    holder.binding2.clLinkArea.visibility = View.VISIBLE
                     //입력 받은 링크를 String으로 넣어 준 후
-                    var linkUri = WriteList.linkUri.toString()
+                    var linkUri2 = WriteList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
-                    holder.loadLink(linkUri, WriteList)
+                    holder.loadLink(linkUri2, WriteList)
+                    holder.binding2.linkInsertTxt.setText("")
+                }
+
+                //링크 롱클릭 리스너 (변경, 삭제) //뭔가 이상함 ㅎㅎ;;
+                holder.binding2.clLinkArea.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if(which == 0){
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                removeItems(position)
+                                holder.binding2.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding2.linkInsertTxt.visibility = View.VISIBLE
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if(which == 1){
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
+                    true
+                }
+
+                //사진 롱클릭 리스너 (변경, 삭제)
+                holder.binding2.contentImg.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                activity.openGalleryForImage()
+                                removeItems(position)
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding2.contentImg.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
+                    true
                 }
 
             }
@@ -396,8 +507,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                     binding.aTxt.setText(spannableString)
                     binding.addAnswer.visibility = View.GONE
-                    binding.aTxt.setClickable(false);
-                    binding.aTxt.setFocusable(false);
+                    binding.aTxt.setClickable(false)
+                    binding.aTxt.setFocusable(false)
+                    binding.qImgAddBtn.setClickable(false)
+                    binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qLinkAddBtn.setEnabled(false)
+                    binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 } else {
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date
@@ -411,6 +526,10 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.aTxt.setText(spannableString)
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
+                    binding.qImgAddBtn.setClickable(false)
+                    binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qLinkAddBtn.setClickable(false)
+                    binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
             }
             // 임베드 누르면 인터넷 연결되어서 화면이 넘어가는 리스너
@@ -882,6 +1001,13 @@ uri = linkUri
                 }
             }
         }
+    }
+
+    fun removeItems(position: Int) {
+        this.items.removeAt(position)
+        this.notifyItemRemoved(position)
+        this.notifyDataSetChanged()
+
     }
 
 }
