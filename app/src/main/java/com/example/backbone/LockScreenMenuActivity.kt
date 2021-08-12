@@ -33,7 +33,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
             //만약 사용자 User 테이블이 존재한다면 암호 변경 리스너 활성화
             binding.changePWTxt.isEnabled = true
             //만약 사용자 User 테이블이 존재한다면 암호 변경 글씨 색 흰색으로
-            binding.changePWTxt.setTextColor(Color.parseColor("#ffffff"))
+            binding.changePWTxt.setTextColor(Color.WHITE)
 
         }catch (e: Exception){
             //존재 하지 않으면 익셉션 발생하므로 그냥 flag 변수 false로 설정해주기.
@@ -42,7 +42,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
             //만약 사용자 User 테이블이 존재하지 않는다면 암호 변경 리스너 비활성화
             binding.changePWTxt.isEnabled = false
             //만약 사용자 User 테이블이 존재하지 않는다면 암호 변경 글씨 색 회색으로
-            binding.changePWTxt.setTextColor(Color.parseColor("#808080"))
+            binding.changePWTxt.setTextColor(Color.GRAY)
         }
 
         //뒤로가기 버튼 클릭 리스너

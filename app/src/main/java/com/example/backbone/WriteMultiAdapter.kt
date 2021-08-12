@@ -4,8 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -19,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -77,6 +80,26 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
         }
     }
 
+    /*
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        TYPE_Question -> {
+            val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return MyQHolder(binding)
+        }
+        TYPE_Content -> {
+            MyContentHolder.create(parent)
+        }
+        TYPE_RCQuestion -> {
+            LoadQHolder.create(parent)
+        }
+        TYPE_RContent -> {
+            LoadContentHolder.create(parent)
+        }
+        else -> {
+            throw IllegalStateException("Not Found ViewHolder Type $viewType")
+        }
+    }
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
         val view: View?
         return when (viewType) {
@@ -120,8 +143,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding.aTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
+
                     //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
                         preTxt = s.toString()
                     }
 
@@ -155,8 +184,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding.qTitle.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
+
                     //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
                         preTxt = s.toString()
                     }
 
@@ -175,15 +210,16 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             }
                         }
                     }
+
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         QuestionList.qTitle = s.toString()
                         //updateQuestionItems(QuestionList, position)
                         if (s.length > 0) {
                             activity.countQT = 1
-                            Log.d("count","${activity.countDT}")
-                            Log.d("count","${activity.countDC}")
-                            Log.d("count","${activity.countQT}")
+                            Log.d("count", "${activity.countDT}")
+                            Log.d("count", "${activity.countDC}")
+                            Log.d("count", "${activity.countQT}")
                             if (activity.countDT == 1 && activity.countDC == 1 && activity.countQT == 1) {
                                 activity.setEnabledTrue()
                             } else {
@@ -191,7 +227,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             }
                         } else {
                             activity.countQT = 0
-                            if (activity.countDT == 1 && activity.countDC == 1 && activity.countQT ==1) {
+                            if (activity.countDT == 1 && activity.countDC == 1 && activity.countQT == 1) {
                                 activity.setEnabledTrue()
                             } else {
                                 activity.setEnabledFalse()
@@ -210,8 +246,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
+
                     //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
                         preTxt = s.toString()
                     }
 
@@ -229,6 +271,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             }
                         }
                     }
+
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         QuestionList.linkUri = s.toString()
@@ -238,12 +281,45 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding.linkInsertBtn.setOnClickListener {
+                    holder.binding.linkInsertBtn.visibility = View.GONE
+                    holder.binding.linkInsertTxt.visibility = View.GONE
                     holder.binding.clLinkArea.visibility = View.VISIBLE
                     //입력 받은 링크를 String으로 넣어 준 후
                     var linkUri = QuestionList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList)
+                    holder.binding.qLinkAddBtn.setClickable(false)
+                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    holder.binding.linkInsertTxt.setText("")
+                }
+
+                //링크 롱클릭 리스너 (변경, 삭제)
+                holder.binding.clLinkArea.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.qLinkAddBtn.setClickable(true)
+                                holder.binding.qLinkAddBtn.imageTintList =
+                                    ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.linkUri = null
+                            }
+                        }
+                        ).show()
+                    true
                 }
 
 
@@ -251,30 +327,73 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding.qImgAddBtn.setOnClickListener {
                     //binding.aImg.visibility = View.VISIBLE
                     //권한이 허용되어있는지 self로 체크(확인)
-                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
                         //이전에 거부한 적이 있는지 확인
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                activity,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            )
+                        ) {
                             var dlg = AlertDialog.Builder(context)
                             dlg.setTitle("권한이 필요한 이유")
                             dlg.setMessage("사진 정보를 얻기 위해서는 외부 저장소 권한이 필수로 필요합니다")
                             //OK버튼
                             dlg.setPositiveButton("확인") { dialog, which ->
-                                ActivityCompat.requestPermissions(activity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                                ActivityCompat.requestPermissions(
+                                    activity,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                    REQUEST_READ_EXTERNAL_STORAGE
+                                )
                             }
                             dlg.setNegativeButton("취소", null)
                             dlg.show()
                         } else {
                             //권한 요청
-                            ActivityCompat.requestPermissions(activity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                            ActivityCompat.requestPermissions(
+                                activity,
+                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                REQUEST_READ_EXTERNAL_STORAGE
+                            )
                         }
-                    }else{
-                        openGalleryForImage(QuestionList)
+                    } else {
+                        if (QuestionList.aImg == null) {
+                            openGalleryForImage(QuestionList)
+                        }
+
                     }
                 }
+
+                //사진 롱클릭 리스너 (변경, 삭제)
+                holder.binding.aImg.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                openGalleryForImage(QuestionList)
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.aImg.visibility = View.GONE
+                                holder.binding.qImgAddBtn.setClickable(true)
+                                holder.binding.qImgAddBtn.imageTintList =
+                                    ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.aImg = null
+                            }
+                        }
+                        ).show()
+                    true
+                }
+
             }
             is MyContentHolder -> {
                 //holder.setContentList(items[position] as WriteContentData)
@@ -289,8 +408,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding2.docContent.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
+
                     //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
                         preTxt = s.toString()
                     }
 
@@ -326,8 +451,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
+
                     //val thisitem= item
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
                         preTxt = s.toString()
                     }
 
@@ -345,6 +476,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             }
                         }
                     }
+
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
                         WriteList.linkUri = s.toString()
@@ -353,14 +485,68 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 })
                 //링크 입력 후 확인을 누르면 실행되는 리스너
                 holder.binding2.linkInsertBtn.setOnClickListener {
+                    holder.binding2.linkInsertBtn.visibility = View.GONE
+                    holder.binding2.linkInsertTxt.visibility = View.GONE
                     holder.binding2.clLinkArea.visibility = View.VISIBLE
                     //입력 받은 링크를 String으로 넣어 준 후
-                    var linkUri = WriteList.linkUri.toString()
+                    var linkUri2 = WriteList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
-                    holder.loadLink(linkUri, WriteList)
+                    holder.loadLink(linkUri2, WriteList)
+                    holder.binding2.linkInsertTxt.setText("")
+                }
+
+                //링크 롱클릭 리스너 (변경, 삭제) //뭔가 이상함 ㅎㅎ;;
+                holder.binding2.clLinkArea.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if(which == 0){
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                //removeItems(position)
+                                holder.binding2.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding2.linkInsertTxt.visibility = View.VISIBLE
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if(which == 1){
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
+                    true
+                }
+
+                //사진 롱클릭 리스너 (변경, 삭제)
+                holder.binding2.contentImg.setOnLongClickListener {
+                    val selectList = arrayOf("변경", "삭제")
+                    var selectDialog =
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+
+                    selectDialog
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                activity.openGalleryForImage()
+                                removeItems(position)
+                            }
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding2.contentImg.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
+                    true
                 }
             }
+
         }
     }
 
@@ -396,6 +582,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             binding.clLinkArea.visibility = View.GONE
             binding.linkInsertTxt.visibility = View.GONE
             binding.linkInsertBtn.visibility = View.GONE
+
+            Log.d("태그", "loadContentList ${item.linkContent}")
+            Log.d("태그", "loadContentList ${item.linkUri}")
+            Log.d("태그", "loadContentList ${item.aTxt}")
+
+
 
             // 링크
             if(item.linkUri == ""||item.linkUri == null){
@@ -443,6 +635,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                     binding.addAnswer.visibility = View.GONE
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
+
                 }else{
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date
@@ -1282,6 +1475,12 @@ uri = linkUri
         this.items.add(item)
         this.notifyDataSetChanged()
     }
+    fun removeItems(position: Int) {
+        this.items.removeAt(position)
+        this.notifyItemRemoved(position)
+        this.notifyDataSetChanged()
+
+    }
 
     fun AddAnswer(item: WriteItem, position: Int) {
         //선택한 대답 바로 밑에 내용 추가.
@@ -1298,12 +1497,6 @@ uri = linkUri
     private lateinit var itemClickListner: ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListner = itemClickListener
-    }
-
-    // answer 이미지, 링크 추가 시 사용
-    fun modifyItems(position: Int, item: WriteItem) {
-        this.items.set(position, item)
-        this.notifyDataSetChanged()
     }
 
     class ContentDiffUtil(private val oldList: List<WriteItem>, private val currentList: List<WriteItem>) : DiffUtil.Callback() {
@@ -1364,6 +1557,8 @@ uri = linkUri
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
                         this.notifyDataSetChanged()
+                        binding.qImgAddBtn.setClickable(false)
+                        binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                     }
                 }
             }
