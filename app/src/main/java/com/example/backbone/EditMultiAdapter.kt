@@ -93,8 +93,8 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 binding.addAnswer.setOnClickListener {
                     QuestionList.ColorChanged = true
 
-                    AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionList.linkLayout, null, null, null, null,
-                            null, binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false), position)
+                    AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionList.linkLayout, null, null, "", null,
+                            "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false), position)
                 }
 
                 //답변 추가될 때 리스너
@@ -163,10 +163,13 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 })
 
                 //답변 링크 입력 버튼 눌렀을 때!
-                holder.binding.qLinkAddBtn.setOnClickListener {
-                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
-                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                if (QuestionList.linkUri == "" && QuestionList.ColorChanged == false && QuestionList.aTxt == "") {
+                    holder.binding.qLinkAddBtn.setOnClickListener {
+                        holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                        holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                    }
                 }
+
 
 
                 //답변 링크 입력됐을 때 리스너
@@ -267,9 +270,9 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                         }
                     }else{
-                        openGalleryForImage(QuestionList)
-                        holder.binding.qImgAddBtn.setClickable(false)
-                        holder.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                        if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.aTxt == "") {
+                            openGalleryForImage(QuestionList)
+                        }
                     }
 
                 }
@@ -381,7 +384,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     holder.binding2.linkInsertTxt.setText("")
                 }
 
-                //링크 롱클릭 리스너 (변경, 삭제) //뭔가 이상함 ㅎㅎ;;
+                //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding2.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
@@ -393,7 +396,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             // 변경 버튼을 클릭했을 때
                             if(which == 0){
                                 holder.binding2.clLinkArea.visibility = View.GONE
-                                removeItems(position)
                                 holder.binding2.linkInsertBtn.visibility = View.VISIBLE
                                 holder.binding2.linkInsertTxt.visibility = View.VISIBLE
                             }
@@ -996,6 +998,8 @@ uri = linkUri
                         this.itemInfo?.aImg = img
                         this.binding.aImg.visibility = View.VISIBLE
                         this.binding.aImg.setImageBitmap(img)
+                        binding.qImgAddBtn.setClickable(false)
+                        binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
 
                     }
                 }

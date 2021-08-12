@@ -361,9 +361,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             )
                         }
                     } else {
-                        openGalleryForImage(QuestionList)
-                        holder.binding.qImgAddBtn.setClickable(false)
-                        holder.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                        if (QuestionList.aImg == null) {
+                            openGalleryForImage(QuestionList)
+                        }
 
                     }
                 }
@@ -508,7 +508,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                             // 변경 버튼을 클릭했을 때
                             if(which == 0){
                                 holder.binding2.clLinkArea.visibility = View.GONE
-                                removeItems(position)
+                                //removeItems(position)
                                 holder.binding2.linkInsertBtn.visibility = View.VISIBLE
                                 holder.binding2.linkInsertTxt.visibility = View.VISIBLE
                             }
@@ -1557,6 +1557,8 @@ uri = linkUri
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
                         this.notifyDataSetChanged()
+                        binding.qImgAddBtn.setClickable(false)
+                        binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                     }
                 }
             }

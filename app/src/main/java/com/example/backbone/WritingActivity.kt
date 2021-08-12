@@ -978,6 +978,7 @@ class WritingActivity : AppCompatActivity() {
                                 null, null, null, null, null
                             )
                         )
+
                     }
 
                 }
