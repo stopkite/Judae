@@ -158,7 +158,8 @@ class SearchActivity : AppCompatActivity() {
         Handler().postDelayed({ binding.searchView.clearFocus() }, 100)
 
         binding.searchView.setOnClickListener(View.OnClickListener
-        { binding.searchView.setIconified(false)})
+        { binding.searchView.isIconified = false }
+        )
 
     }
 

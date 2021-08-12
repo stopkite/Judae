@@ -92,9 +92,10 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 //답변 추가 버튼 눌렀을 때 리스너
                 binding.addAnswer.setOnClickListener {
                     QuestionList.ColorChanged = true
+                    binding.addAnswer.visibility = View.GONE
 
                     AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionList.linkLayout, null, null, "", null,
-                            "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false), position)
+                            "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false, false), position)
                 }
 
                 //답변 추가될 때 리스너
@@ -163,13 +164,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 })
 
                 //답변 링크 입력 버튼 눌렀을 때!
-                if (QuestionList.linkUri == "" && QuestionList.ColorChanged == false && QuestionList.aTxt == "") {
-                    holder.binding.qLinkAddBtn.setOnClickListener {
+                holder.binding.qLinkAddBtn.setOnClickListener {
+                        if ((QuestionList.linkUri == null||QuestionList.linkUri == "" )&& QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
                         holder.binding.linkInsertTxt.visibility = View.VISIBLE
                         holder.binding.linkInsertBtn.visibility = View.VISIBLE
                     }
                 }
-
 
 
                 //답변 링크 입력됐을 때 리스너
@@ -270,11 +270,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
                         }
                     }else{
-                        if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.aTxt == "") {
+                        //이미지 내용이 없고, 대답이 추가 안 되어있으며, 새로 생긴 답변일 경우에만 클릭 가능하도록.
+                        if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
                             openGalleryForImage(QuestionList)
                         }
                     }
-
                 }
 
                 //사진 롱클릭 리스너 (변경, 삭제)
@@ -289,6 +289,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             // 변경 버튼을 클릭했을 때
                             if (which == 0) {
                                 openGalleryForImage(QuestionList)
+                                Log.d("태그", "${QuestionList.aTxt}")
                             }
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {
@@ -451,17 +452,24 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 binding.qTitle.setFocusable(false);
             }
 
+            //맨 첫번째 질문일 경우
             if (item.onActivityCalled == true) {
                 binding.qIcon.visibility = View.VISIBLE
                 binding.qTitle.visibility = View.VISIBLE
             }
 
             if (item.aImg != null) {
-                //*****나중에 구현
                 // 삽입 이미지
+                binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 binding.aImg.setImageBitmap(item.aImg)
             } else {
                 binding.aImg.visibility = View.GONE
+            }
+
+            if(item.isloadData==true)
+            {
+                binding.qImgAddBtn.isClickable = false
+                binding.qLinkAddBtn.isClickable = false
             }
 
             binding.clLinkArea.visibility = View.GONE
@@ -473,6 +481,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             } else {
+                binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
                 if (item.linkContent != null || item.linkTitle != null) {
                     binding.clLinkArea.visibility = View.VISIBLE
@@ -528,8 +537,23 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.aTxt.setText(spannableString)
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
+                    //binding.qImgAddBtn.setClickable(false)
+                    //binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    //binding.qLinkAddBtn.setClickable(false)
+                    //binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                }
+            }else{
+                //답변이 입력되지 않은 상황일 때!
+
+                if(item.isloadData == true && item.aImg != null)
+                {
+                    //만약 불러온 데이터인데 답변 텍스트는 안 쓰여져 있고, 이미지 삽입 되어있을 때
                     binding.qImgAddBtn.setClickable(false)
                     binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                }
+                if(item.isloadData == true && item.linkUri != null)
+                {
+                    //만약 불러온 데이터인데 답변 텍스트는 안 쓰여져 있고, 링크 삽입 되어있을 때
                     binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
@@ -615,7 +639,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                         } else {
                             if (!linkUri.contains("http")) {
                                 linkUri = "https://${linkUri}"
-                                Log.d("태그", "링크 고침: ${linkUri}")
                             }
                             val doc = Jsoup.connect("${linkUri}").get()
                             var favicon: String
@@ -656,6 +679,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
+                            if(content=="")
+                            {
+                                content = "${title}를 이용하실 수 있습니다."
+                            }
+
                             item.linkUri = linkUri
                             item.linkTitle = title
                             item.linkContent = content
@@ -701,8 +729,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             binding2.linkInsertBtn.visibility = View.GONE
             binding2.linkInsertTxt.visibility = View.GONE
 
-            Log.d("태그", "${item.docContent}")
-            Log.d("태그", "${item.linkUri}")
             // 링크
             if(item.linkUri == ""||item.linkUri == null){
                 if(item.linkInsertTxt != null && item.linkInsertBtn != null)
@@ -742,10 +768,17 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
         }
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?) {
+            binding2.clLinkArea.visibility = View.VISIBLE
             binding2.linkUri.text = linkUri
             binding2.linkTitle.text = title
             binding2.linkContent.text = content
-            binding2.linkIcon.setImageBitmap(bm1)
+            if(bm1 == null)
+            {
+                binding2.linkIcon.setImageBitmap(bm1)
+            }else{
+                binding2.linkIcon.visibility = View.GONE
+            }
+
         }
 
         companion object Factory {
@@ -794,14 +827,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             if (bm1 == null) {
                                 binding2.linkIcon.visibility = View.GONE
                             }
-
-
                             bis.close()
                             item.linkUri = linkUri
                             item.linkTitle = title
                             item.linkContent = content
                             item.linkIcon = bm1
-                            Log.d("태그", "아이템에 잘 저장 되어있나?? ${item.linkTitle}")
                             setLink(linkUri, title, content, bm1)
                             isrun = false
                         } else {
@@ -847,17 +877,16 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             if (title == "") {
                                 title = doc.select("meta[property=\"og:site_name\"]").attr("content")
                             }
-                            if (bm1 == null) {
-                                binding2.linkIcon.visibility = View.GONE
+                            if(content=="")
+                            {
+                                content = "${title}를 이용하실 수 있습니다."
                             }
-
                             //선택된 아이템에 대한 정보 빼내오기
                             item.linkUri = linkUri
                             item.linkTitle = title
                             item.linkContent = content
                             item.linkIcon = bm1
                             setLink(linkUri, title, content, bm1)
-                            Log.d("태그", "아이템에 잘 저장 되어있나?? ${item.linkTitle}")
                             isrun = false
                         }
                     } catch (e: Exception) {
@@ -979,6 +1008,8 @@ uri = linkUri
     var itemInfo: EditloadQuestionData? = null
     private fun openGalleryForImage(item: EditloadQuestionData) {
         itemInfo = item
+        Log.d("태그", "${itemInfo?.qTitle}")
+        Log.d("태그", "${itemInfo?.aTxt}")
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
@@ -1000,7 +1031,7 @@ uri = linkUri
                         this.binding.aImg.setImageBitmap(img)
                         binding.qImgAddBtn.setClickable(false)
                         binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
-
+                        notifyDataSetChanged()
                     }
                 }
             }

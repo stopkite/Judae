@@ -92,6 +92,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             {
                 writing.Question = cursor2.getInt(0)
             }
+
+            // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
+            writing.Date = writing.Date.substring(0, 10)
+
             anyArray+=writing
 
         }
@@ -594,6 +598,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         var QuestionID = cursor.getInt(2)
 
         cursor.close()
+
         // 디비 닫기
         db.close()
 

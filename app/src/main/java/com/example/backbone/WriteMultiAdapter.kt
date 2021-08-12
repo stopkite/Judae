@@ -52,29 +52,16 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
     companion object {
         private const val TYPE_Question = 0
         private const val TYPE_Content = 1
-        private const val TYPE_RContent = 2
-        private const val TYPE_RCQuestion = 3
     }
 
     override fun getItemViewType(position: Int) = when (items[position]) {
         is WriteQuestionData -> {
             TYPE_Question
         }
-        is saveQuestionData -> {
-            TYPE_Question
-        }
         is WriteContentData -> {
             TYPE_Content
         }
-        is saveContentData -> {
-            TYPE_Content
-        }
-        is loadContentData -> {
-            TYPE_RContent
-        }
-        is loadQuestionData -> {
-            TYPE_RCQuestion
-        }
+
         else -> {
             throw IllegalStateException("Not Found ViewHolder Type")
         }
@@ -112,13 +99,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
                 //MyContentHolder.create(parent)
                 binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyContentHolder(binding2)
-            }
-            TYPE_RCQuestion -> {
-                binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return LoadQHolder(binding)
-            }
-            TYPE_RContent -> {
-                LoadContentHolder.create(parent)
             }
             else -> {
                 throw IllegalStateException("Not Found ViewHolder Type $viewType")

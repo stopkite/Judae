@@ -258,7 +258,7 @@ class EditingActivity : AppCompatActivity() {
             //수정 버전
             //답변이 한 개일 경우.
             writingAdapter.addItems(EditloadQuestionData("본문에서 추가로 넣는 거", null,null,clinkLayout,null,null,null,
-                    null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true))
+                    null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true, false))
         }
 
         var countDT:Int = 0
@@ -411,7 +411,7 @@ class EditingActivity : AppCompatActivity() {
                 }
                 //답변이 한 개일 경우.
                 writingAdapter.addItems(EditloadQuestionData(i.toString()+"-0", QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
-                        null, AnswerArray[0].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[0].Date, false, false))
+                        null, AnswerArray[0].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[0].Date, false, false, true))
             } else if(AnswerSize>1)
             {
                 //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
@@ -423,24 +423,24 @@ class EditingActivity : AppCompatActivity() {
                     {
                         var Image = init(AnswerArray[j].Image)
                         writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                null,AnswerArray[j].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[j].Date, true, false))
+                                null,AnswerArray[j].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[j].Date, true, false, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }else{
                         var Image = init(AnswerArray[j].Image)
                         writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false))
+                                null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }
                 }
                 //마지막 내용!
                 var Image = init(AnswerArray[LastSize].Image)
                 writingAdapter.addItems(EditloadQuestionData(i.toString()+"-last", null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
-                        null,AnswerArray[LastSize].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[LastSize].Date, false, false))
+                        null,AnswerArray[LastSize].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[LastSize].Date, false, false, true))
             }else{
                 Log.d("태그", "${QuestionIDArray[i].Content}")
                 //질문만 있고, 대답 없는 경우.
                 writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                        null,null,null, null, null, null,false, false))
+                        null,null,null, null, null, null,false, false, true))
 
             }
         }
@@ -479,7 +479,7 @@ class EditingActivity : AppCompatActivity() {
                         Image = init(AnswerArray[0].Image)
                     }
                     writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
-                            null,AnswerArray[0].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[0].Date, false, false))
+                            null,AnswerArray[0].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[0].Date, false, false, true))
                 } else if(AnswerSize>1)
                 {
                     //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
@@ -496,7 +496,7 @@ class EditingActivity : AppCompatActivity() {
                                 Image = init(AnswerArray[j].Image)
                             }
                             writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                    null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false))
+                                    null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }else{
                             var Image:Bitmap? = null
@@ -505,7 +505,7 @@ class EditingActivity : AppCompatActivity() {
                                 Image = init(AnswerArray[j].Image)
                             }
                             writingAdapter.addItems(EditloadQuestionData(i.toString()+"-${j}", null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                    null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false))
+                                    null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }
                     }
@@ -516,11 +516,11 @@ class EditingActivity : AppCompatActivity() {
                         Image = init(AnswerArray[LastSize].Image)
                     }
                     writingAdapter.addItems(EditloadQuestionData(i.toString()+"-last", null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
-                            null,AnswerArray[LastSize].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[LastSize].Date, false, false))
+                            null,AnswerArray[LastSize].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[LastSize].Date, false, false, true))
                 }else{
                     //질문만 있고, 대답 없는 경우.
                     writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                            null,null,addBtn, qAddImgBtn,qAddLinkBtn,null, false, false))
+                            null,null,addBtn, qAddImgBtn,qAddLinkBtn,null, false, false, true))
 
                 }
             }

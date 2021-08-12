@@ -30,6 +30,7 @@ import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -69,11 +70,11 @@ class WritingActivity : AppCompatActivity() {
     private val REQUEST_READ_EXTERNAL_STORAGE = 1000
 
     @RequiresApi(Build.VERSION_CODES.O)
-    var now = LocalDate.now()
+    var now = LocalDateTime.now()
     @RequiresApi(Build.VERSION_CODES.O)
-    var localDateTime: LocalDate = LocalDate.parse(now.toString())
+    var localDateTime: LocalDateTime = LocalDateTime.parse(now.toString())
     @RequiresApi(Build.VERSION_CODES.O)
-    var formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+    var formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm")
     @RequiresApi(Build.VERSION_CODES.O)
     var today = formatter.format(localDateTime)
 
@@ -705,8 +706,6 @@ class WritingActivity : AppCompatActivity() {
             // view의 중복 사용을 방지하기 위한 코드
             if (binding5.root.parent != null)
                 (binding5.root.parent as ViewGroup).removeView(binding5.root)
-
-            val mAlertDialog = mBuilder.show()
 
     }
         }
