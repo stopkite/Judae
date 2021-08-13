@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -70,6 +71,10 @@ class EditingActivity : AppCompatActivity() {
     val writeContentList = ArrayList<EditloadContentData>()
     var id = writeContentList.size
 
+    // 로드된 내용의 마지막 ContentID를 받아오는 메소드
+    var currentContentID: Int = -1
+    // 로드된 내용 이후 추가 되는 본문 내용 아이템의 위치를 받는 메소드
+    var FirstAddItemPos: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,7 +181,7 @@ class EditingActivity : AppCompatActivity() {
         binding.addContentBTN.setOnClickListener {
             var checknull = true
             for (i in 0..writeContentList.size-1){
-                if(writeContentList[i].docContent == null&&writeContentList[i].linkUri == null)
+                if(writeContentList[i].docContent == null&&writeContentList[i].linkUri == null&&writeContentList[i].contentImg == null)
                 {
                     checknull =  false
                 }
@@ -185,18 +190,19 @@ class EditingActivity : AppCompatActivity() {
             //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
             if(!checknull)
             {
-
+                //내용을 다 입력해달라는 본문 메시지를 입력함.
+                Toast.makeText(this, "본문 내용을 모두 입력해주세요.", Toast.LENGTH_LONG).show()
             }else{
                 var id = writeContentList.size
-                writeContentList.add(EditloadContentData(id, null, null, null, null, null,
-                        null, null, null, "", null, null
+                currentContentID = currentContentID + 1
+                writeContentList.add(EditloadContentData(id, currentContentID, null, null, null, null, null,
+                        null, null, null, "", null, null, false
                 ))
-                Log.d("태그", "추가되고 난 후 ${writeContentList.size}")
 
                 writingAdapter.addItems(
                         EditloadContentData(
-                                id, null,null, null, null, null, null,
-                                null, null, "",null,null
+                                id, currentContentID, null,null, null, null, null, null,
+                                null, null, "",null,null, false
                         )
                 )
             }
@@ -206,14 +212,16 @@ class EditingActivity : AppCompatActivity() {
         binding.addLinkBtn.setOnClickListener {
             //작성 버전
             var id = writeContentList.size
-            writeContentList.add(EditloadContentData(id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null,
-                    null, null, null, null, null, null
+            currentContentID = currentContentID + 1
+            writeContentList.add(EditloadContentData(id, currentContentID,null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null,
+                    null, null, null, null, null, null, false
             ))
 
+            Log.d("태그", "추가되고 난 후 ${currentContentID}")
             writingAdapter.addItems(
                     EditloadContentData(
-                            id, null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
-                            null, null, null, null, null
+                            id, currentContentID,null, clinkInsertTxt, clinkInsertBtn, clinkLayout, null, null,
+                            null, null, null, null, null, false
                     )
             )
         }
@@ -261,6 +269,8 @@ class EditingActivity : AppCompatActivity() {
                     null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true, false))
         }
 
+
+
         var countDT:Int = 0
         var countDC:Int = 0
         var countQT:Int = 0
@@ -272,9 +282,7 @@ class EditingActivity : AppCompatActivity() {
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
-            Log.d("태그", "카테고리 WriteID: ${WriteID}")
             var cateIndex = db.getCategoryIndex(WriteID)
-            Log.d("태그", "카테고리 position: ${cateIndex}")
             // 저장되어있는 카테고리로 카테고리 어댑터 라디오 버튼 미리 설정해주기.
             saveCateAdapter.setPosition(cateIndex)
 
@@ -284,6 +292,9 @@ class EditingActivity : AppCompatActivity() {
 
             val mAlertDialog = mBuilder.show()
 
+            //본문 내용 저장을 위해 필요한 변수
+            var image: ByteArray? = null
+            var contentID: Int = -1
 
             // 저장 -> 확인 버튼 다이얼로그
             binding5.cateSaveBtn.setOnClickListener {
@@ -292,7 +303,55 @@ class EditingActivity : AppCompatActivity() {
 
                 var writing = Writing(docTitle.getText().toString(), today, category)
 
-                // 카테고리 저장 팝업업
+                Log.d("태그", "아이템 갯수: ${writingAdapter.itemCount}")
+                for(i in 0 until writingAdapter.itemCount)
+                {
+                    //질문/응답 하는 부분이라면?
+                    if(writingAdapter.getItemViewType(i) == 0){
+
+                    }else if(writingAdapter.getItemViewType(i) == 1){
+                        //본문 부분이라면?
+                        var data = writingAdapter.items[i] as EditloadContentData
+
+
+                        // 본문 추가 DB 관리!
+                        if(!data.loadData!!)
+                        {
+                            // DB에 새롭게 추가해주기!
+                            if(data.contentImg != null)
+                            {
+                                image = drawableToByteArray(data.contentImg!!)
+                                Log.d("태그", "${data.contentID}, ${image}")
+                            }else{
+                                image = null
+                            }
+
+                            var content = Content(
+                                    WriteID,
+                                    data.docContent,
+                                    image,
+                                    data.linkUri)
+                            db.InsertContent(content)
+                            try{
+                                contentID = db.getCurrentContentID()
+                            }catch(e:Exception)
+                            {
+                                //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
+                                contentID ++
+                            }
+                        }
+                        // 기존에 있던 item의 본문 수정 DB 관리
+
+                        // 기존에 있던 본문 삭제에 대한 DB 관리
+                    }
+                }
+
+                var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
+                t1.show()
+                finish()
+
+                /*
+                                // 카테고리 저장 팝업업
                 val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
                 // view의 중복 사용을 방지하기 위한 코드
@@ -300,20 +359,21 @@ class EditingActivity : AppCompatActivity() {
                     (binding5.root.parent as ViewGroup).removeView(binding5.root)
 
                 val mAlertDialog = mBuilder.show()
-            }
-        }
-        
-        fun drawableToByteArray(drawable: Bitmap?): ByteArray {
-            //val bitmapDrawable = drawable
-            val bitmap = drawable
-            val stream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val byteArray = stream.toByteArray()
+                 */
 
-            return byteArray
+            }
         }
     }
 
+    private fun drawableToByteArray(contentImg: Bitmap): ByteArray? {
+        //val bitmapDrawable = drawable
+        val bitmap = contentImg
+        val stream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        val byteArray = stream.toByteArray()
+
+        return byteArray
+    }
 
 
     // 뒤로 가기 버튼 눌렀을 때
@@ -376,8 +436,6 @@ class EditingActivity : AppCompatActivity() {
 
         if(WritingArray[0].link != "")
         {
-            //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
-            isrun = true
             //쓰레드 실행(한번만 실행함.)
             loadLink(WritingArray[0].link)
         }
@@ -392,6 +450,9 @@ class EditingActivity : AppCompatActivity() {
         }
 
         var WritingSize = WritingArray.size
+
+        currentContentID = WritingArray[WritingSize-1].ContentID
+        Log.d("태그", "마지막 contentID: ${currentContentID}")
 
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
         var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
@@ -437,7 +498,6 @@ class EditingActivity : AppCompatActivity() {
                 writingAdapter.addItems(EditloadQuestionData(i.toString()+"-last", null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
                         null,AnswerArray[LastSize].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[LastSize].Date, false, false, true))
             }else{
-                Log.d("태그", "${QuestionIDArray[i].Content}")
                 //질문만 있고, 대답 없는 경우.
                 writingAdapter.addItems(EditloadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                         null,null,null, null, null, null,false, false, true))
@@ -457,8 +517,9 @@ class EditingActivity : AppCompatActivity() {
                     Image = init(WritingArray[i].Image)
                 }
 
-            writingAdapter.addItems(EditloadContentData(id, Image,null ,null,null,null,
-                    null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn))
+
+            writingAdapter.addItems(EditloadContentData(id, WritingArray[i].ContentID, Image,null ,null,null,null,
+                    null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn, true))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
             var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
@@ -658,15 +719,17 @@ class EditingActivity : AppCompatActivity() {
                         if (photo != null) {
                             photo.close()
                         }
+                        currentContentID= currentContentID + 1
                         var id = writeContentList.size
-                        writeContentList.add(EditloadContentData(id, img, null, null, null, null,
-                                null, null, null, null, null, null
+                        writeContentList.add(EditloadContentData(id,currentContentID, img, null, null, null, null,
+                                null, null, null, null, null, null, false
                         ))
                         writingAdapter.addItems(
-                                EditloadContentData(id, img, null, null, null, null, null,
-                                        null, null, null, null, null
+                                EditloadContentData(id,currentContentID, img, null, null, null, null, null,
+                                        null, null, null, null, null, false
                                 )
                         )
+
                     }
 
                 }

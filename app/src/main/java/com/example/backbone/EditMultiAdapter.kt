@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
@@ -459,9 +460,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             }
 
             if (item.aImg != null) {
-                // 삽입 이미지
-                binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                //삽입 이미지
+                binding.aImg.visibility = View.VISIBLE
                 binding.aImg.setImageBitmap(item.aImg)
+                binding.aImg.setImageBitmap(item.aImg)
+                //binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
             } else {
                 binding.aImg.visibility = View.GONE
             }
@@ -927,12 +930,9 @@ uri = linkUri
     fun updateItems(item: EditItem, position: Int)
     {
         var WriteList = item as EditloadContentData
-        Log.d("태그", "${WriteList.id}")
-        Log.d("태그", "본문 추가: ${activity.writeContentList.size}")
         activity.writeContentList[WriteList.id].docContent = WriteList.docContent
         activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
     }
-
     /*
 
 
@@ -1008,8 +1008,6 @@ uri = linkUri
     var itemInfo: EditloadQuestionData? = null
     private fun openGalleryForImage(item: EditloadQuestionData) {
         itemInfo = item
-        Log.d("태그", "${itemInfo?.qTitle}")
-        Log.d("태그", "${itemInfo?.aTxt}")
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
@@ -1029,9 +1027,10 @@ uri = linkUri
                         this.itemInfo?.aImg = img
                         this.binding.aImg.visibility = View.VISIBLE
                         this.binding.aImg.setImageBitmap(img)
-                        binding.qImgAddBtn.setClickable(false)
-                        binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
-                        notifyDataSetChanged()
+
+                        this.binding.qImgAddBtn.setClickable(false)
+                        this.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                        this.notifyDataSetChanged()
                     }
                 }
             }

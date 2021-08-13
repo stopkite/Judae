@@ -108,8 +108,6 @@ class WritingActivity : AppCompatActivity() {
     val writeContentList = ArrayList<WriteContentData>()
     var id = writeContentList.size
 
-    val saveQuestionList = ArrayList<saveQuestionData>()
-    val saveContentList = ArrayList<saveContentData>()
 
     var countDT:Int = 0
     var countDC:Int = 0
@@ -564,16 +562,10 @@ class WritingActivity : AppCompatActivity() {
                 // 맨 첫번째로 나오는 데이터 position 0이 content이면 해당 content 데이터 그냥 insert
                 for(i in 0..writingAdapter.itemCount-1)
                 {
-                    Log.d("태그", "for구문 들어옴")
                     //질문/응답 하는 부분이라면?
                     if(writingAdapter.getItemViewType(i) == 0){
-                        Log.d("태그", "if구문 들어옴")
                         //질문 저장 - 질문 ID를 받아와 대답에도 넣어주기.
                         var data = writingAdapter.items[i] as WriteQuestionData
-                        Log.d("태그", "${data.linkInsertTxt}")
-                        Log.d("태그", "${data.aTxt}")
-                        Log.d("태그", "${data.aImg}")
-                        Log.d("태그", "${data.qTitle}")
                         if(data.qTitle != null && data.qTitle != "")
                         {
                             question = Question(WriteID, contentID.toString(), data.qTitle!!)
@@ -629,7 +621,6 @@ class WritingActivity : AppCompatActivity() {
                             //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
                             contentID ++
                         }
-
                     }
                 }
 
