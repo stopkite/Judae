@@ -1070,7 +1070,6 @@ uri = linkUri
         activity.writeContentList[WriteList.id].docContent = WriteList.docContent
         if(WriteList.linkUri != "")
         {
-            Log.d("태그", "updateItems 링크: ${WriteList.linkUri}")
             activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
         }
         activity.writeContentList[WriteList.id].contentImg = WriteList.contentImg

@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -379,6 +381,37 @@ class EditingActivity : AppCompatActivity() {
 
             }
         }
+
+
+
+        binding.docContent.addTextChangedListener(object : TextWatcher {
+            var preTxt: String? = null
+            var afterTxt: String? = null
+            //val thisitem= item
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                preTxt = s.toString()
+            }
+
+            //start 위치에서 before 문자열 갯수의 문자열이 count 갯수만큼 변경되었을 때 호출
+            //CharSequence: 새로 입력한 문자열이 추가된 EditText의 값
+            //before: 삭제된 기존 문자열의 개수
+            //count: 새로 추가된 문자열의 개수
+            override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
+                if (binding.docContent.isFocusable() && !s.toString().equals(preTxt)) {
+                    try {
+                        writeContentList[0].docContent = s.toString()
+                        writeUpdateList.add(0)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
+            override fun afterTextChanged(s: Editable) {
+
+            }
+        })
     }
 
     private fun drawableToByteArray(contentImg: Bitmap): ByteArray? {
@@ -465,6 +498,11 @@ class EditingActivity : AppCompatActivity() {
             binding.contentImg.visibility = View.GONE
         }
 
+
+        var id = writeContentList.size
+        writeContentList.add(EditloadContentData(id, WritingArray[0].ContentID, null,null ,null,null,null,
+                null,null,null, WritingArray[0].content, qAddImgBtn, qAddLinkBtn, true))
+
         var WritingSize = WritingArray.size
 
         currentContentID = WritingArray[WritingSize-1].ContentID
@@ -537,7 +575,6 @@ class EditingActivity : AppCompatActivity() {
             writingAdapter.addItems(EditloadContentData(id, WritingArray[i].ContentID, Image,null ,null,null,null,
                     null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn, true))
 
-            Log.d("태그", "${WritingArray[i].ContentID}")
             writeContentList.add(EditloadContentData(id, WritingArray[i].ContentID, Image,null ,null,null,null,
             null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn, true))
 
@@ -717,7 +754,6 @@ class EditingActivity : AppCompatActivity() {
         val bitmap = BitmapFactory.decodeByteArray(ba, 0,ba!!.size)
         return bitmap
     }
-
 
     val REQUEST_TAKE_ALBUM = 2
     fun openGalleryForImage() {
