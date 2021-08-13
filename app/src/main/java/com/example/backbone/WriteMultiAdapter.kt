@@ -1520,9 +1520,33 @@ uri = linkUri
         activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
     }
 
+    private val REQUEST_TAKE_PHOTO = 0
+    var ContentItem: WriteContentData? = null
+    private fun EditGalleryImage(item: WriteContentData) {
+        ContentItem = item
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_PHOTO)
+    }
+
+
     @Override
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode){
+            0->{
+                // 본문에서 사진 변경할 때 사용
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_PHOTO) {
+                    if (data != null) {
+                        var photo: InputStream? = activity.contentResolver.openInputStream(data.getData()!!)
+                        val img = BitmapFactory.decodeStream(photo)
+                        if (photo != null) {
+                            photo.close()
+                        }
+                        this.ContentItem?.contentImg = img
+                        this.notifyDataSetChanged()
+                    }
+                }
+            }
             1 -> {
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_ALBUM) {
                     if (data != null) {
@@ -1531,8 +1555,6 @@ uri = linkUri
                         if (photo != null) {
                             photo.close()
                         }
-                        Log.d("태그", "잘되나?")
-                        Log.d("태그", "${itemInfo?.aTxt}")
                         this.itemInfo?.aImg = img
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)

@@ -303,7 +303,6 @@ class EditingActivity : AppCompatActivity() {
 
                 var writing = Writing(docTitle.getText().toString(), today, category)
 
-                Log.d("태그", "아이템 갯수: ${writingAdapter.itemCount}")
                 for(i in 0 until writingAdapter.itemCount)
                 {
                     //질문/응답 하는 부분이라면?
@@ -313,7 +312,7 @@ class EditingActivity : AppCompatActivity() {
                         //본문 부분이라면?
                         var data = writingAdapter.items[i] as EditloadContentData
 
-
+                        // 새로 추가된 본문
                         // 본문 추가 DB 관리!
                         if(!data.loadData!!)
                         {
@@ -321,7 +320,6 @@ class EditingActivity : AppCompatActivity() {
                             if(data.contentImg != null)
                             {
                                 image = drawableToByteArray(data.contentImg!!)
-                                Log.d("태그", "${data.contentID}, ${image}")
                             }else{
                                 image = null
                             }
@@ -342,7 +340,9 @@ class EditingActivity : AppCompatActivity() {
                         }
                         // 기존에 있던 item의 본문 수정 DB 관리
 
+
                         // 기존에 있던 본문 삭제에 대한 DB 관리
+
                     }
                 }
 
@@ -708,6 +708,10 @@ class EditingActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode){
+            0->{
+                // 본문에서 사진 변경할 때 사용
+                writingAdapter.onActivityResult(requestCode, resultCode, data)
+            }
             1->{
                 writingAdapter.onActivityResult(requestCode, resultCode, data)
             }

@@ -246,7 +246,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 }
 
 
-
                 //답변 사진 입력 버튼 눌렀을 때!
                 holder.binding.qImgAddBtn.setOnClickListener {
                     //권한이 허용되어있는지 self로 체크(확인)
@@ -344,6 +343,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     }
                 })
 
+                // 링크 정보 수정
                 holder.binding2.linkInsertTxt.addTextChangedListener(object : TextWatcher {
                     var preTxt: String? = null
                     var afterTxt: String? = null
@@ -422,8 +422,9 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                             // 변경 버튼을 클릭했을 때
                             if (which == 0) {
-                                activity.openGalleryForImage()
-                                removeItems(position)
+                                EditGalleryImage(WriteList)
+                                //activity.openGalleryForImage()
+                                //removeItems(position)
                             }
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {
@@ -1013,9 +1014,33 @@ uri = linkUri
         activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_ALBUM)
     }
 
+    private val REQUEST_TAKE_PHOTO = 0
+    var ContentItem: EditloadContentData? = null
+    private fun EditGalleryImage(item: EditloadContentData) {
+        ContentItem = item
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        activity.startActivityForResult(Intent.createChooser(intent, "Get Album"), REQUEST_TAKE_PHOTO)
+    }
+
+
     @Override
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode){
+            0->{
+                // 본문에서 사진 변경할 때 사용
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_PHOTO) {
+                    if (data != null) {
+                        var photo: InputStream? = activity.contentResolver.openInputStream(data.getData()!!)
+                        val img = BitmapFactory.decodeStream(photo)
+                        if (photo != null) {
+                            photo.close()
+                        }
+                        this.ContentItem?.contentImg = img
+                        this.notifyDataSetChanged()
+                    }
+                }
+            }
             1 -> {
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_ALBUM) {
                     if (data != null) {

@@ -948,6 +948,10 @@ class WritingActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode){
+            0->{
+                // 본문에서 사진 변경할 때 사용
+                writingAdapter.onActivityResult(requestCode, resultCode, data)
+            }
             1->{
                 writingAdapter.onActivityResult(requestCode, resultCode, data)
             }
