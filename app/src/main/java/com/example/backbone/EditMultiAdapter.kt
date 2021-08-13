@@ -220,28 +220,31 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding.clLinkArea.setOnLongClickListener {
-                    val selectList = arrayOf("변경", "삭제")
-                    var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                    if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
+                        val selectList = arrayOf("변경", "삭제")
+                        var selectDialog =
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
-                    selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        selectDialog
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if (which == 0) {
-                                holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
-                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    holder.binding.clLinkArea.visibility = View.GONE
+                                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding.clLinkArea.visibility = View.GONE
+                                    holder.binding.qLinkAddBtn.setClickable(true)
+                                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.WHITE)
+                                    QuestionList.linkUri = null
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if (which == 1) {
-                                holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.qLinkAddBtn.setClickable(true)
-                                holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.WHITE)
-                                QuestionList.linkUri = null
-                            }
-                        }
-                        ).show()
+                            ).show()
+                    }
+
                     true
                 }
 
@@ -279,28 +282,30 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //사진 롱클릭 리스너 (변경, 삭제)
                 holder.binding.aImg.setOnLongClickListener {
-                    val selectList = arrayOf("변경", "삭제")
-                    var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                    if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
+                        val selectList = arrayOf("변경", "삭제")
+                        var selectDialog =
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
-                    selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        selectDialog
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if (which == 0) {
-                                openGalleryForImage(QuestionList)
-                                Log.d("태그", "${QuestionList.aTxt}")
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    openGalleryForImage(QuestionList)
+                                    Log.d("태그", "${QuestionList.aTxt}")
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding.aImg.visibility = View.GONE
+                                    holder.binding.qImgAddBtn.setClickable(true)
+                                    holder.binding.qImgAddBtn.imageTintList =
+                                        ColorStateList.valueOf(Color.WHITE)
+                                    QuestionList.aImg = null
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if (which == 1) {
-                                holder.binding.aImg.visibility = View.GONE
-                                holder.binding.qImgAddBtn.setClickable(true)
-                                holder.binding.qImgAddBtn.imageTintList =
-                                    ColorStateList.valueOf(Color.WHITE)
-                                QuestionList.aImg = null
-                            }
-                        }
-                        ).show()
+                            ).show()
+                    }
                     true
                 }
 
