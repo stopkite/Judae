@@ -403,7 +403,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 content.ContentID = cursor.getInt(cursor.getColumnIndex("ContentID"))
                 content.content=  cursor.getString(cursor.getColumnIndex("Content"))
 
-                Log.d("태그", "디비 cursor: ${content.content}")
+                if(content.content == "")
+                {
+                    content.content = null.toString()
+                }
 
                 if(cursor.getBlob(cursor.getColumnIndex("Image")) != null)
                 {
@@ -671,6 +674,30 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
         db.close()
 
         return cate
+    }
+
+    //EditingActivity
+    //기존에 존재하던 ContentDB에 내용정보를 저장하는 기능
+    fun EditContent(content: Content)
+    {
+        Log.d("태그", "링크: ${content.link}")
+        var db = this.writableDatabase
+        if(content.Image != null)
+        {
+            var p: SQLiteStatement = db.compileStatement("UPDATE Content SET Content = ?, Image = ?, Link = ? WHERE ContentID =?  AND WriteID = ?;")
+
+            p.bindString(1, content.content)
+            p.bindBlob(2, content.Image)
+            p.bindString(3, content.link)
+            p.bindString(4, content.ContentID.toString())
+            p.bindString(5, content.WriteID)
+            p.execute()
+        }else{
+            db.execSQL("UPDATE Content SET Content = '"+content.content+"', Link = '"+content.link+"'  WHERE ContentID =${content.ContentID.toString()}  AND WriteID = '"+content.WriteID+"';")
+        }
+
+
+        db.close()
     }
 
 }

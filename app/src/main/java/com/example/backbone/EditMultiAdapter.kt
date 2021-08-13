@@ -339,7 +339,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        updateItems(WriteList, position)
+                        updateItems(WriteList)
                     }
                 })
 
@@ -368,8 +368,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     }
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        WriteList.linkUri = s.toString()
-                        updateItems(WriteList, position)
+                        updateItems(WriteList)
                     }
                 })
 
@@ -724,7 +723,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             }
 
             //본문내용(텍스트)
-            if (item.docContent == null) {
+            if (item.docContent == "null") {
                 binding2.docContent.visibility = View.GONE
             } else {
                 binding2.docContent.setText(item.docContent)
@@ -928,12 +927,6 @@ uri = linkUri
 
     override fun getItemCount() = items.size
 
-    fun updateItems(item: EditItem, position: Int)
-    {
-        var WriteList = item as EditloadContentData
-        activity.writeContentList[WriteList.id].docContent = WriteList.docContent
-        activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
-    }
     /*
 
 
@@ -1037,6 +1030,11 @@ uri = linkUri
                             photo.close()
                         }
                         this.ContentItem?.contentImg = img
+                        //데이터베이스에서 불러온 본문을 수정했을 경우 -> 수정했음을 표시(updateItems 사용)
+                        if(this.ContentItem?.loadData == true&&ContentItem != null)
+                        {
+                            updateItems(ContentItem!!)
+                        }
                         this.notifyDataSetChanged()
                     }
                 }
@@ -1059,6 +1057,21 @@ uri = linkUri
                     }
                 }
             }
+        }
+    }
+
+    private fun updateItems(item: EditloadContentData) {
+        var WriteList = item as EditloadContentData
+        activity.writeContentList[WriteList.id].docContent = WriteList.docContent
+        if(WriteList.linkUri != "")
+        {
+            Log.d("태그", "updateItems 링크: ${WriteList.linkUri}")
+            activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
+        }
+        activity.writeContentList[WriteList.id].contentImg = WriteList.contentImg
+        if(WriteList.loadData == true)
+        {
+            activity.writeUpdateList.add(WriteList.id)
         }
     }
 

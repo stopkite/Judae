@@ -69,7 +69,8 @@ class EditingActivity : AppCompatActivity() {
 
     val writeQuestionList = ArrayList<EditloadQuestionData>()
     val writeContentList = ArrayList<EditloadContentData>()
-    var id = writeContentList.size
+    // DB에서 로드 되는 데이터 중 수정된 데이터를 담는 리스트
+    val writeUpdateList = ArrayList<Int>()
 
     // 로드된 내용의 마지막 ContentID를 받아오는 메소드
     var currentContentID: Int = -1
@@ -314,13 +315,11 @@ class EditingActivity : AppCompatActivity() {
 
                         // 새로 추가된 본문
                         // 본문 추가 DB 관리!
-                        if(!data.loadData!!)
-                        {
+                        if(!data.loadData!!) {
                             // DB에 새롭게 추가해주기!
-                            if(data.contentImg != null)
-                            {
+                            if (data.contentImg != null) {
                                 image = drawableToByteArray(data.contentImg!!)
-                            }else{
+                            } else {
                                 image = null
                             }
 
@@ -330,15 +329,13 @@ class EditingActivity : AppCompatActivity() {
                                     image,
                                     data.linkUri)
                             db.InsertContent(content)
-                            try{
+                            try {
                                 contentID = db.getCurrentContentID()
-                            }catch(e:Exception)
-                            {
+                            } catch (e: Exception) {
                                 //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
-                                contentID ++
+                                contentID++
                             }
                         }
-                        // 기존에 있던 item의 본문 수정 DB 관리
 
 
                         // 기존에 있던 본문 삭제에 대한 DB 관리
@@ -346,20 +343,31 @@ class EditingActivity : AppCompatActivity() {
                     }
                 }
 
+                // 기존에 있던 item의 본문 수정 DB 관리
+                // 기존에 있던 데이터 중 수정된 데이터의 WriteID를 가진 친구들의 중복을 제거한 후 Update해주기.
+                for(i in 0 .. writeUpdateList.distinct().size -1)
+                {
+                    // DB에 새롭게 추가해주기!
+                    if (writeContentList[writeUpdateList.distinct()[i]].contentImg != null) {
+                        image = drawableToByteArray(writeContentList[writeUpdateList.distinct()[i]].contentImg!!)
+                    } else {
+                        image = null
+                    }
+                    var content = Content(
+                            WriteID,
+                            writeContentList[writeUpdateList.distinct()[i]].contentID,
+                            writeContentList[writeUpdateList.distinct()[i]].docContent,
+                            image,
+                            writeContentList[writeUpdateList.distinct()[i]].linkUri
+                    )
+
+                    //DB에 업데이트 해주기.
+                    db.EditContent(content)
+                }
+
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
                 finish()
-
-                /*
-                                // 카테고리 저장 팝업업
-                val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
-
-                // view의 중복 사용을 방지하기 위한 코드
-                if (binding5.root.parent != null)
-                    (binding5.root.parent as ViewGroup).removeView(binding5.root)
-
-                val mAlertDialog = mBuilder.show()
-                 */
 
             }
         }
@@ -452,7 +460,6 @@ class EditingActivity : AppCompatActivity() {
         var WritingSize = WritingArray.size
 
         currentContentID = WritingArray[WritingSize-1].ContentID
-        Log.d("태그", "마지막 contentID: ${currentContentID}")
 
         //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
         var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
@@ -517,9 +524,16 @@ class EditingActivity : AppCompatActivity() {
                     Image = init(WritingArray[i].Image)
                 }
 
+            var id = writeContentList.size
 
             writingAdapter.addItems(EditloadContentData(id, WritingArray[i].ContentID, Image,null ,null,null,null,
                     null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn, true))
+
+            Log.d("태그", "${WritingArray[i].ContentID}")
+            writeContentList.add(EditloadContentData(id, WritingArray[i].ContentID, Image,null ,null,null,null,
+            null,WritingArray[i].link,null, WritingArray[i].content, qAddImgBtn, qAddLinkBtn, true))
+
+
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
             var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
