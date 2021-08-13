@@ -693,11 +693,21 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             p.bindString(5, content.WriteID)
             p.execute()
         }else{
-            db.execSQL("UPDATE Content SET Content = '"+content.content+"', Link = '"+content.link+"'  WHERE ContentID =${content.ContentID.toString()}  AND WriteID = '"+content.WriteID+"';")
+            db.execSQL("UPDATE Content SET Content = '"+content.content+"', Link = '"+content.link+"'  WHERE ContentID =${content.ContentID.toString()};")
         }
 
 
         db.close()
     }
 
+    //EditingActivity
+    //기존에 존재하던 ContentDB를 삭제하는 기능
+    fun deleteContent(contentID: Int)
+    {
+        var db = this.writableDatabase
+        db.execSQL("DELETE FROM Content WHERE ContentID = "+contentID+";")
+        db.execSQL("UPDATE Question SET ContentID = '"+(contentID-1)+"'  WHERE ContentID ='${contentID}';")
+
+        db.close()
+    }
 }

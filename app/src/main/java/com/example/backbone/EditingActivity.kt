@@ -71,6 +71,8 @@ class EditingActivity : AppCompatActivity() {
     val writeContentList = ArrayList<EditloadContentData>()
     // DB에서 로드 되는 데이터 중 수정된 데이터를 담는 리스트
     val writeUpdateList = ArrayList<Int>()
+    // DB에서 로드 되는 데이터 중 삭제된 데이터를 담는 리스트
+    val writeDeleteList = ArrayList<Int>()
 
     // 로드된 내용의 마지막 ContentID를 받아오는 메소드
     var currentContentID: Int = -1
@@ -336,10 +338,6 @@ class EditingActivity : AppCompatActivity() {
                                 contentID++
                             }
                         }
-
-
-                        // 기존에 있던 본문 삭제에 대한 DB 관리
-
                     }
                 }
 
@@ -363,6 +361,16 @@ class EditingActivity : AppCompatActivity() {
 
                     //DB에 업데이트 해주기.
                     db.EditContent(content)
+                }
+
+                // 기존에 있던 본문 삭제에 대한 DB 관리
+                for(i in 0 .. writeDeleteList.distinct().size -1)
+                {
+                    //삭제하려고 지정한 본문 ID를 불러옴.
+                   var ContentID = writeDeleteList.distinct()[i]
+
+                    //DB에 업데이트 해주기.
+                    db.deleteContent(ContentID)
                 }
 
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)

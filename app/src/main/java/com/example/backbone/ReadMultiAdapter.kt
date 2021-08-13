@@ -271,7 +271,6 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
     class MyContentHolder(val binding2: ReadContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
         fun setContentList(item: ReadContentData) {
             //사진 띄우기 **** - 나중에 하기.
-            Log.d("태그", "${item.docContent}")
             if(item.contentImg != null)
             {
                 binding2.contentImg.setImageBitmap(item.contentImg)
@@ -280,7 +279,7 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             }
 
             //본문내용(텍스트)
-            if(item.docContent=="")
+            if(item.docContent=="" || item.docContent == "null")
             {
                 binding2.docContent.visibility = View.GONE
             }else{

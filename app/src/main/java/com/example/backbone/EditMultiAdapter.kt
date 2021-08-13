@@ -403,7 +403,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             // 삭제 버튼을 클릭했을 때
                             else if(which == 1){
                                 holder.binding2.clLinkArea.visibility = View.GONE
-                                removeItems(position)
+                                removeItems(WriteList, position)
                             }
                         }
                         ).show()
@@ -428,7 +428,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {
                                 holder.binding2.contentImg.visibility = View.GONE
-                                removeItems(position)
+                                removeItems(WriteList, position)
                             }
                         }
                         ).show()
@@ -1075,11 +1075,17 @@ uri = linkUri
         }
     }
 
-    fun removeItems(position: Int) {
+    fun removeItems(item: EditloadContentData, position: Int) {
+        var WriteList = item
+        if(item.loadData == true)
+        {
+            // DB에서 불러온 데이터일때만 실행하기.
+            activity.writeDeleteList.add(WriteList.contentID)
+        }
+
         this.items.removeAt(position)
         this.notifyItemRemoved(position)
         this.notifyDataSetChanged()
-
     }
 
 }
