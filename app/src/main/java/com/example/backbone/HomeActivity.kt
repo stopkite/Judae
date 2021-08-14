@@ -161,6 +161,7 @@ class HomeActivity : AppCompatActivity() {
      }
      override fun onResume(){
          super.onResume()
+         /*
          //DBHelper와 이어주도록 클래스 선언
          var db: DBHelper = DBHelper(this)
 
@@ -198,93 +199,17 @@ class HomeActivity : AppCompatActivity() {
          }
 
          // 어댑터 변수 초기화
-         homeDocListAdapter = HomeDocListAdapter(this, myDocList)
+         /*
+                  homeDocListAdapter = HomeDocListAdapter(this, myDocList)
 
          // 만든 어댑터 recyclerview에 연결
          docList.adapter = homeDocListAdapter
-
-         // 아이템 구분선 색상 설정
-         val dividerItemDecoration = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
-         dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
-
-         // 아이템 구분선 삽입
-         binding.root.findViewById<RecyclerView>(R.id.docList).addItemDecoration(dividerItemDecoration)
-
-         // 리사이클러 뷰 타입 설정
-         docList.layoutManager = LinearLayoutManager(this)
+          */
 
 
-         // 카테고리 설정 창 뜨게 하는 버튼 리스너
-         binding.clDropCate.setOnClickListener {
-             //changeFragment(BottomFragmentList())
-             loadCategory(db)
-         }
+         homeDocListAdapter.setData(myDocList)
 
-         if (intent.hasExtra("home")) {
-             // 뒤로가기 버튼을 통해 넘어온 홈화면이라면
-             binding.root.openDrawer(Gravity.LEFT)
-         }
-
-         // 환경 설정 탭
-         // 버튼을 누르면 환경설정 창이 뜨게 만들기
-         binding.settingBtn.setOnClickListener {
-             binding.root.openDrawer(Gravity.LEFT)
-         }
-
-         // 메뉴 목록에 들어갈 데이터 설정
-         var naviList = arrayListOf(
-                 NavigationItemModel("나의 질문 리스트"),
-                 NavigationItemModel("앱 암호 설정"),
-         )
-
-         // 어댑터 설정
-         naviAdapter = NavigationAdapter(naviList)
-
-         // 어댑터 연결
-         binding.navigationRv.adapter = naviAdapter
-
-         // 아이템 구분선 색상 설정
-         val dividerItemDecoration2 = DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
-         dividerItemDecoration2.setDrawable(resources.getDrawable(R.drawable.recycler_divider_qlist))
-
-         // 아이템 구분선 삽입
-         binding.root.findViewById<RecyclerView>(R.id.navigation_rv).addItemDecoration(dividerItemDecoration)
-
-         binding.navigationRv.layoutManager = LinearLayoutManager(this)
-         binding.navigationRv.setHasFixedSize(true)
-
-         binding.navigationRv.addOnItemTouchListener(NaviTouchListener(this, object : ClickListener {
-             override fun onClick(view: View, position: Int) {
-                 when (position) {
-                     0 -> {
-                         // 나의 질문 리스트 화면으로 이동
-                         val myQListIntent = Intent(this@HomeActivity, MyQuestionActivity::class.java)
-                         startActivity(myQListIntent)
-                     }
-
-                     1 -> {
-                         // 앱 암호 설정 화면으로 이동
-                         val lockScreenMenuIntent = Intent(this@HomeActivity, LockScreenMenuActivity::class.java)
-                         startActivity(lockScreenMenuIntent)
-                     }
-                 }
-             }
-         }))
-
-         //검색 버튼 클릭 리스너
-         binding.searchBtn.setOnClickListener {
-             // 홈 화면으로 이동
-             val searchIntent = Intent(this@HomeActivity, SearchActivity::class.java)
-             startActivity(searchIntent)
-         }
-
-         //글쓰기 화면으로 이동하는 버튼 리스너
-         binding.clHomeWriteBtn.setOnClickListener {
-             // 글쓰기 화면으로 이동
-             val writeIntent = Intent(this@HomeActivity, WritingActivity::class.java)
-             startActivity(writeIntent)
-             finish()
-         }
+          */
 
      }
 

@@ -246,7 +246,8 @@ class ReadingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //DBHelper와 이어주도록 클래스 선언
+    /*
+            //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 
         var binding = ActivityReadingBinding.inflate(layoutInflater)
@@ -443,6 +444,7 @@ class ReadingActivity : AppCompatActivity() {
             writeIntent.putExtra("data", "${WriteID}")
             startActivity(writeIntent)
         }
+     */
     }
 
     private fun init(ba: ByteArray?): Bitmap? {

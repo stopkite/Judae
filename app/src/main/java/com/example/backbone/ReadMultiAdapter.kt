@@ -32,13 +32,16 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
     private lateinit var binding: ReadQuestionItemBinding
     private lateinit var binding2: ReadContentItemBinding
     var context = context
-    private val items = mutableListOf<ReadItem>()
+    private var items = mutableListOf<ReadItem>()
 
     companion object {
         private const val TYPE_Question = 0
         private const val TYPE_Content = 1
     }
-
+    fun setData(data : ArrayList<ReadItem>){
+        this.items = data
+        notifyDataSetChanged()
+    }
     override fun getItemViewType(position: Int) = when (items[position]) {
         is ReadQuestionData -> {
             TYPE_Question
