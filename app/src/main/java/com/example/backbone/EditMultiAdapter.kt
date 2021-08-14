@@ -447,7 +447,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
     // 질문 Holder
     class LoadQHolder(val binding: EditQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: EditloadQuestionData) {
-            Log.d("태그", "${item.aTxt}")
             // 질문 제목
             if (item.qTitle == "" || item.qTitle == null) {
                 binding.qIcon.visibility = View.GONE
@@ -485,7 +484,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             binding.linkInsertBtn.visibility = View.GONE
 
             // 링크
-            if (item.linkUri == "" || item.linkUri == null) {
+            if (item.linkUri == "" || item.linkUri == null || item.linkUri == "null") {
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             } else {

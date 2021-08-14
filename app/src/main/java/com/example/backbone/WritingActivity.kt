@@ -582,16 +582,14 @@ class WritingActivity : AppCompatActivity() {
                         }else{
                             image = null
                         }
-                        Log.d("태그", "image: ${image}")
                         //대답 저장
                         if(data.aTxt != null && data.aTxt != "")
                         {
                             answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkUri)
-                            Log.d("태그", "얘로 저장이 됐나?")
+
                         }else{
                             answer = Answer(questionID.toString(), null, data.Date, image, data.linkUri)
                         }
-                        Log.d("태그", "answer: ${answer.Content}")
                         db.InsertAnswer(answer)
                     }else{
                         //본문 부분이라면?
