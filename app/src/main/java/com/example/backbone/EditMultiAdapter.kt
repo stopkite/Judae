@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -91,12 +92,18 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 var QuestionList = items[position] as EditloadQuestionData
 
                 //답변 추가 버튼 눌렀을 때 리스너
-                binding.addAnswer.setOnClickListener {
-                    QuestionList.ColorChanged = true
-                    binding.addAnswer.visibility = View.GONE
+                holder.binding.addAnswer.setOnClickListener {
+                    if(QuestionList.aTxt == "")
+                    {
+                        Toast.makeText(context, "답변을 입력해주세요.", Toast.LENGTH_LONG).show()
+                    }else{
+                        QuestionList.ColorChanged = true
+                        binding.addAnswer.visibility = View.GONE
 
-                    AddAnswer(EditloadQuestionData(QuestionList.id, QuestionList.QuestionID ,null, null, QuestionList.linkLayout, null, null, "", null,
-                            "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false, false), position)
+                        AddAnswer(EditloadQuestionData(QuestionList.id, QuestionList.QuestionID ,null, null, QuestionList.linkLayout, null, null, "", null,
+                                "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false, false), position)
+
+                    }
                 }
 
                 //답변 추가될 때 리스너
@@ -516,6 +523,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.addAnswer.visibility = View.GONE
                     // 대답이 이전 대답일 때
                     var date: String? = item.Date
+                    date = date!!.substring(0, 10)
                     var text: String = item.aTxt + "\n${date}"
                     var start = text.indexOf(date!!)
                     var end = start + date!!.length
@@ -1026,7 +1034,7 @@ uri = linkUri
         when (requestCode){
             0->{
                 // 본문에서 사진 변경할 때 사용
-                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_PHOTO) {
+                if (resultCode == Activity.RESULT_OK && requestCode == 0) {
                     if (data != null) {
                         var photo: InputStream? = activity.contentResolver.openInputStream(data.getData()!!)
                         val img = BitmapFactory.decodeStream(photo)
@@ -1044,20 +1052,23 @@ uri = linkUri
                 }
             }
             1 -> {
-                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_ALBUM) {
+                if (resultCode == Activity.RESULT_OK && requestCode == 1) {
                     if (data != null) {
                         var photo: InputStream? = activity.contentResolver.openInputStream(data.getData()!!)
                         val img = BitmapFactory.decodeStream(photo)
                         if (photo != null) {
                             photo.close()
                         }
+                        Log.d("태그", "추가가 되냐!!!")
+                        Log.d("태그", "${img}")
                         this.itemInfo?.aImg = img
-                        this.binding.aImg.visibility = View.VISIBLE
-                        this.binding.aImg.setImageBitmap(img)
-
+                        Log.d("태그", "${itemInfo?.aImg}")
+                        binding.aImg.visibility = View.VISIBLE
+                        binding.aImg.setImageBitmap(img)
+                        Log.d("태그", "사진 띄우는 레이아웃 Visibility: ${binding.aImg.isVisible}")
+                        this.notifyDataSetChanged()
                         this.binding.qImgAddBtn.setClickable(false)
                         this.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
-                        this.notifyDataSetChanged()
                     }
                 }
             }

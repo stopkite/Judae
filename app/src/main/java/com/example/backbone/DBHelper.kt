@@ -85,6 +85,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             writing.WriteID = cursor.getInt(0)
             writing.Title = cursor.getString(1)
             writing. Date=  cursor.getString(2)
+
+            // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
+            writing.Date = writing.Date.substring(0, 10)
+
             writing. Category =  cursor.getString(3)
 
             cursor2 =db.rawQuery("SELECT COUNT(*) FROM Question WHERE WritingID = '${writing.WriteID}';", null)
@@ -93,8 +97,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 writing.Question = cursor2.getInt(0)
             }
 
-            // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
-            writing.Date = writing.Date.substring(0, 10)
 
             anyArray+=writing
 
@@ -495,6 +497,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             while (cursor.moveToNext()) {
                 Content = cursor.getString(1)
                 Date=  cursor.getString(2)
+
+                // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
+                Date = Date.substring(0, 10)
+
                 if(cursor.getBlob(3) != null)
                 {
                     Image = cursor.getBlob(3)
