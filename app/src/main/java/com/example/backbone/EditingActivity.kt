@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
+import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
@@ -441,6 +442,15 @@ class EditingActivity : AppCompatActivity() {
 
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
+
+                /*
+                                var readingActivity: ReadingActivity? = ReadingActivity()
+                // 이전 화면 읽기 화면으로 넘어가기.
+                if (readingActivity != null) {
+                    readingActivity.refresh(WriteID)
+                }
+                 */
+
                 finish()
 
             }
