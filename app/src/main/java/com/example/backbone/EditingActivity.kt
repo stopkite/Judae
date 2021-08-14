@@ -150,26 +150,32 @@ class EditingActivity : AppCompatActivity() {
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
             //변경된 부분 없으면 바로 finish 해주기
-            if(writeUpdateList.distinct().isEmpty()){
-                finish()
-            } else {
-                val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
+            for(i in 0 until writingAdapter.itemCount) {
+                var data = writingAdapter.items[i] as EditloadQuestionData
+                var data2 = writingAdapter.items[i] as EditloadContentData
 
-                // view의 중복 사용을 방지하기 위한 코드
-                if (binding4.root.parent != null)
-                    (binding4.root.parent as ViewGroup).removeView(binding4.root)
-
-                val mAlertDialog = mBuilder.show()
-
-                // 확인 버튼 다이얼로그
-                binding4.confirmBtn.setOnClickListener {
-                    // 이전 화면으로 이동
+                if (writeUpdateList.distinct().isEmpty() || data.isloadData == false || data2.loadData == false) {
                     finish()
-                }
+                } else {
+                    val mBuilder =
+                        AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
 
-                //취소 버튼 다이얼로그
-                binding4.cancelBtn.setOnClickListener {
-                    mAlertDialog.dismiss()
+                    // view의 중복 사용을 방지하기 위한 코드
+                    if (binding4.root.parent != null)
+                        (binding4.root.parent as ViewGroup).removeView(binding4.root)
+
+                    val mAlertDialog = mBuilder.show()
+
+                    // 확인 버튼 다이얼로그
+                    binding4.confirmBtn.setOnClickListener {
+                        // 이전 화면으로 이동
+                        finish()
+                    }
+
+                    //취소 버튼 다이얼로그
+                    binding4.cancelBtn.setOnClickListener {
+                        mAlertDialog.dismiss()
+                    }
                 }
             }
 
