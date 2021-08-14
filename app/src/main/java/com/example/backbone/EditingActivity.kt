@@ -149,25 +149,30 @@ class EditingActivity : AppCompatActivity() {
 
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
-
-            val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
-
-            // view의 중복 사용을 방지하기 위한 코드
-            if (binding4.root.parent != null)
-                (binding4.root.parent as ViewGroup).removeView(binding4.root)
-
-            val mAlertDialog = mBuilder.show()
-
-            // 확인 버튼 다이얼로그
-            binding4.confirmBtn.setOnClickListener {
-                // 이전 화면으로 이동
+            //변경된 부분 없으면 바로 finish 해주기
+            if(writeUpdateList.distinct().isEmpty()){
                 finish()
+            } else {
+                val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
+
+                // view의 중복 사용을 방지하기 위한 코드
+                if (binding4.root.parent != null)
+                    (binding4.root.parent as ViewGroup).removeView(binding4.root)
+
+                val mAlertDialog = mBuilder.show()
+
+                // 확인 버튼 다이얼로그
+                binding4.confirmBtn.setOnClickListener {
+                    // 이전 화면으로 이동
+                    finish()
+                }
+
+                //취소 버튼 다이얼로그
+                binding4.cancelBtn.setOnClickListener {
+                    mAlertDialog.dismiss()
+                }
             }
 
-            //취소 버튼 다이얼로그
-            binding4.cancelBtn.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
         }
 
 
@@ -443,13 +448,13 @@ class EditingActivity : AppCompatActivity() {
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
 
-                /*
-                                var readingActivity: ReadingActivity? = ReadingActivity()
+
+                /*var readingActivity: ReadingActivity? = ReadingActivity()
                 // 이전 화면 읽기 화면으로 넘어가기.
                 if (readingActivity != null) {
                     readingActivity.refresh(WriteID)
                 }
-                 */
+                */
 
                 finish()
 
