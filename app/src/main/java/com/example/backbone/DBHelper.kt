@@ -710,4 +710,25 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         db.close()
     }
+
+    //EditingActivity
+    //글 정보 (카테고리, 제목)를 변경하는 기능
+    fun updateWriting(WriteID: String, which:String, updateData:String)
+    {
+        var db = this.writableDatabase
+        if(which == "카테고리")
+        {
+            db.execSQL("UPDATE Writing SET Category = '"+updateData+"'  WHERE WriteID ='${WriteID}';")
+        }
+        if(which == "제목")
+        {
+            db.execSQL("UPDATE Writing SET Title = '"+updateData+"'  WHERE WriteID ='${WriteID}';")
+        }
+        if(which == "날짜")
+        {
+            db.execSQL("UPDATE Writing SET Date = '"+updateData+"'  WHERE WriteID ='${WriteID}';")
+        }
+
+        db.close()
+    }
 }

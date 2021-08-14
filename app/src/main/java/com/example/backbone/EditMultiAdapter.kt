@@ -95,7 +95,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     QuestionList.ColorChanged = true
                     binding.addAnswer.visibility = View.GONE
 
-                    AddAnswer(EditloadQuestionData("추가로 넣는 거", null, null, QuestionList.linkLayout, null, null, "", null,
+                    AddAnswer(EditloadQuestionData(QuestionList.id, QuestionList.QuestionID ,null, null, QuestionList.linkLayout, null, null, "", null,
                             "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false, false), position)
                 }
 

@@ -46,6 +46,7 @@ class EditingActivity : AppCompatActivity() {
     //DBHelper와 이어주도록 클래스 선언
     var db: DBHelper = DBHelper(this)
 
+    private lateinit var WritingArray: ArrayList<Content>
     // 리사이클러뷰에 붙일 어댑터 선언
     private lateinit var writingAdapter:EditMultiAdapter
 
@@ -271,7 +272,7 @@ class EditingActivity : AppCompatActivity() {
         binding.addQBtn.setOnClickListener {
             //수정 버전
             //답변이 한 개일 경우.
-            writingAdapter.addItems(EditloadQuestionData(currentContentID, null,null,clinkLayout,null,null,null,
+            writingAdapter.addItems(EditloadQuestionData(currentContentID, "", null,null,clinkLayout,null,null,null,
                     null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true, false))
         }
 
@@ -283,8 +284,6 @@ class EditingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
-
-
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
@@ -305,9 +304,20 @@ class EditingActivity : AppCompatActivity() {
             // 저장 -> 확인 버튼 다이얼로그
             binding5.cateSaveBtn.setOnClickListener {
                 var index = saveCateAdapter.selectedPosition
-                var category = categoryList[index]
+                var category = ""
+                var title = ""
+                if(cateIndex != index)
+                {
+                    category = categoryList[index]
+                    db.updateWriting(WriteID, "카테고리", category)
+                }
+                if(WritingArray[0].WritingTitle != binding.docTitle.text.toString())
+                {
+                    title = binding.docTitle.text.toString()
+                    db.updateWriting(WriteID, "제목", title)
+                }
+                db.updateWriting(WriteID, "날짜", today)
 
-                var writing = Writing(docTitle.getText().toString(), today, category)
 
                 for(i in 0 until writingAdapter.itemCount)
                 {
@@ -318,33 +328,54 @@ class EditingActivity : AppCompatActivity() {
                         var answer:Answer = Answer()
 
                         var data = writingAdapter.items[i] as EditloadQuestionData
-                        // 새로 추가된 질문
-                        if(!data.isloadData!!) {
-                            if(data.qTitle != null && data.qTitle != "")
+                        
+                        // 새로 추가된 질문과 답 관련
+                        if(!data.isloadData!!){
+                            // 본문에서 아예 새로 추가된 질문일때 
+                            if(data.QuestionID == "")
                             {
-                                question = Question(WriteID, data.id.toString(), data.qTitle!!)
-                            }else{
-                                question = Question(WriteID, data.id.toString())
-                            }
-                            db.InsertQuestion(question)
-                            questionID = db.getCurrentQuestionID()
+                                if(data.qTitle != null && data.qTitle != "")
+                                {
+                                    question = Question(WriteID, data.id.toString(), data.qTitle!!)
+                                }else{
+                                    question = Question(WriteID, data.id.toString())
+                                }
+                                db.InsertQuestion(question)
+                                questionID = db.getCurrentQuestionID()
 
-                            if(data.aImg != null)
-                            {
-                                image = drawableToByteArray(data.aImg!!)
-                            }else{
-                                image = null
-                            }
-                            //대답 저장
-                            if(data.aTxt != null && data.aTxt != "")
-                            {
-                                answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkUri)
+                                if(data.aImg != null)
+                                {
+                                    image = drawableToByteArray(data.aImg!!)
+                                }else{
+                                    image = null
+                                }
+                                //대답 저장
+                                if(data.aTxt != null && data.aTxt != "")
+                                {
+                                    answer = Answer(questionID.toString(), data.aTxt, data.Date, image, data.linkUri)
 
+                                }else{
+                                    answer = Answer(questionID.toString(), null, data.Date, image, data.linkUri)
+                                }
+                                db.InsertAnswer(answer)
                             }else{
-                                answer = Answer(questionID.toString(), null, data.Date, image, data.linkUri)
-                            }
-                            db.InsertAnswer(answer)
+                                // 답변을 추가하는 거라면!
+                                if(data.aImg != null)
+                                {
+                                    image = drawableToByteArray(data.aImg!!)
+                                }else{
+                                    image = null
+                                }
+                                //대답 저장
+                                if(data.aTxt != null && data.aTxt != "")
+                                {
+                                    answer = Answer(data.QuestionID, data.aTxt, data.Date, image, data.linkUri)
 
+                                }else{
+                                    answer = Answer(data.QuestionID, null, data.Date, image, data.linkUri)
+                                }
+                                db.InsertAnswer(answer)
+                            }
                         }
                     }else if(writingAdapter.getItemViewType(i) == 1){
                         //본문 부분이라면?
@@ -484,7 +515,6 @@ class EditingActivity : AppCompatActivity() {
 
     private fun loadWriting(WriteID: String, writingAdapter: EditMultiAdapter)
     {
-        Log.d("태그", "${WriteID}")
         binding2 = EditQuestionItemBinding.inflate(layoutInflater)
         val q_linkLayout = binding2.clLinkArea
         val c_linkLayout = binding3.clLinkArea
@@ -492,7 +522,7 @@ class EditingActivity : AppCompatActivity() {
 
 
         //맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
-        var WritingArray: ArrayList<Content> = db.getWriting(WriteID)
+        WritingArray = db.getWriting(WriteID)
         binding.docTitle.setText(WritingArray[0].WritingTitle)
         binding.docContent.setText(WritingArray[0].content)
         val addBtn = binding2.addAnswer
@@ -557,7 +587,7 @@ class EditingActivity : AppCompatActivity() {
                    Image =  init(AnswerArray[0].Image)
                 }
                 //답변이 한 개일 경우.
-                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
+                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
                         null, AnswerArray[0].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[0].Date, false, false, true))
             } else if(AnswerSize>1)
             {
@@ -568,24 +598,37 @@ class EditingActivity : AppCompatActivity() {
                 {
                     if(j==0)
                     {
-                        var Image = init(AnswerArray[j].Image)
-                        writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                        var Image: Bitmap? = null
+                        if(AnswerArray[j].Image != null)
+                        {
+                            Image = init(AnswerArray[j].Image)
+                        }
+
+                        writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                 null,AnswerArray[j].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[j].Date, true, false, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }else{
-                        var Image = init(AnswerArray[j].Image)
-                        writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                        var Image: Bitmap? = null
+                        if(AnswerArray[j].Image != null)
+                        {
+                            Image = init(AnswerArray[j].Image)
+                        }
+                        writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                 null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                         writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                     }
                 }
                 //마지막 내용!
-                var Image = init(AnswerArray[LastSize].Image)
-                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[LastSize].ContentID, null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
+                var Image: Bitmap? = null
+                if(AnswerArray[LastSize].Image != null)
+                {
+                    Image = init(AnswerArray[LastSize].Image)
+                }
+                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
                         null,AnswerArray[LastSize].Content, addBtn, qAddImgBtn,qAddLinkBtn,AnswerArray[LastSize].Date, false, false, true))
             }else{
                 //질문만 있고, 대답 없는 경우.
-                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                         null,null,null, null, null, null,false, false, true))
 
             }
@@ -631,7 +674,7 @@ class EditingActivity : AppCompatActivity() {
                     {
                         Image = init(AnswerArray[0].Image)
                     }
-                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
+                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[0].Link,
                             null,AnswerArray[0].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[0].Date, false, false, true))
                 } else if(AnswerSize>1)
                 {
@@ -648,7 +691,7 @@ class EditingActivity : AppCompatActivity() {
                             {
                                 Image = init(AnswerArray[j].Image)
                             }
-                            writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                            writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                     null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }else{
@@ -657,7 +700,7 @@ class EditingActivity : AppCompatActivity() {
                             {
                                 Image = init(AnswerArray[j].Image)
                             }
-                            writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
+                            writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, null,Image,q_linkLayout,null,null,AnswerArray[j].Link,
                                     null,AnswerArray[j].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[j].Date, true, false, true))
                             writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
                         }
@@ -668,11 +711,11 @@ class EditingActivity : AppCompatActivity() {
                     {
                         Image = init(AnswerArray[LastSize].Image)
                     }
-                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
+                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, null,Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
                             null,AnswerArray[LastSize].Content,addBtn, qAddImgBtn,qAddLinkBtn, AnswerArray[LastSize].Date, false, false, true))
                 }else{
                     //질문만 있고, 대답 없는 경우.
-                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
+                    writingAdapter.addItems(EditloadQuestionData(QuestionIDArray[i].ContentID, QuestionIDArray[i].QuestionID, QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                             null,null,addBtn, qAddImgBtn,qAddLinkBtn,null, false, false, true))
 
                 }
