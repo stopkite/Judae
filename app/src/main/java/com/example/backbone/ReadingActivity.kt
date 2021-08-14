@@ -240,9 +240,12 @@ class ReadingActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
 
-    override fun onRestart() {
-        super.onRestart()
+    override fun onResume() {
+        super.onResume()
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 

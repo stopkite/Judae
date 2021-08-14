@@ -156,9 +156,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
-
-     override fun onRestart(){
-         super.onRestart()
+     override fun onPause() {
+         super.onPause()
+     }
+     override fun onResume(){
+         super.onResume()
          //DBHelper와 이어주도록 클래스 선언
          var db: DBHelper = DBHelper(this)
 
