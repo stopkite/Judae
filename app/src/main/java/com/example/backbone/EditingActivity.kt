@@ -329,7 +329,10 @@ class EditingActivity : AppCompatActivity() {
                         var answer:Answer = Answer()
 
                         var data = writingAdapter.items[i] as EditloadQuestionData
-                        
+
+                        Log.d("태그", "저장 전 내용 확인: ${data.aTxt}")
+                        Log.d("태그", "저장 전 내용 확인 사진: ${data.aImg}")
+
                         // 새로 추가된 질문과 답 관련
                         if(!data.isloadData!!){
                             // 본문에서 아예 새로 추가된 질문일때 
@@ -360,6 +363,8 @@ class EditingActivity : AppCompatActivity() {
                                 }
                                 db.InsertAnswer(answer)
                             }else{
+                                Log.d("태그", "저장 전 내용 확인: ${data.aTxt}")
+                                Log.d("태그", "저장 전 내용 확인 사진: ${data.aImg}")
                                 // 답변을 추가하는 거라면!
                                 if(data.aImg != null)
                                 {

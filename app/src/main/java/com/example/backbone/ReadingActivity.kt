@@ -180,6 +180,7 @@ class ReadingActivity : AppCompatActivity() {
                         var Image: Bitmap? = null
                         if (AnswerArray[j].Image != null) {
                             Image = init(AnswerArray[j].Image)
+                            Log.d("태그", "사진 불러옴: ${Image}")
                         }
 
                         if (j == 0) {
