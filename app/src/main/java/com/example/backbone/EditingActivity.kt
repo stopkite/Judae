@@ -150,11 +150,7 @@ class EditingActivity : AppCompatActivity() {
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
             //변경된 부분 없으면 바로 finish 해주기
-            for(i in 0 until writingAdapter.itemCount) {
-                var data = writingAdapter.items[i] as EditloadQuestionData
-                var data2 = writingAdapter.items[i] as EditloadContentData
-
-                if (writeUpdateList.distinct().isEmpty() || data.isloadData == false || data2.loadData == false) {
+                if (writeUpdateList.distinct().isEmpty()) {
                     finish()
                 } else {
                     val mBuilder =
@@ -177,7 +173,6 @@ class EditingActivity : AppCompatActivity() {
                         mAlertDialog.dismiss()
                     }
                 }
-            }
 
         }
 
