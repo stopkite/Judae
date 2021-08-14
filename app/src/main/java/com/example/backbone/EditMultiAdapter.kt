@@ -552,23 +552,25 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.aTxt.setText(spannableString)
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
-                    //binding.qImgAddBtn.setClickable(false)
-                    //binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
-                    //binding.qLinkAddBtn.setClickable(false)
-                    //binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
-                }
-            }else{
-                //답변이 입력되지 않은 상황일 때!
-
-                if(item.isloadData == true && item.aImg != null)
-                {
-                    //만약 불러온 데이터인데 답변 텍스트는 안 쓰여져 있고, 이미지 삽입 되어있을 때
                     binding.qImgAddBtn.setClickable(false)
                     binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qLinkAddBtn.setEnabled(false)
+                    binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
-                if(item.isloadData == true && item.linkUri != null)
+            }else{
+                if(item.isloadData == true)
                 {
-                    //만약 불러온 데이터인데 답변 텍스트는 안 쓰여져 있고, 링크 삽입 되어있을 때
+                    var date: String? = item.Date
+                    var text: String = item.aTxt + "\n${date}"
+                    var start = text.indexOf(date!!)
+                    var end = start + date!!.length
+                    val spannableString = SpannableString(text)
+                    spannableString.setSpan(ForegroundColorSpan(Color.GRAY), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.aTxt.setText(spannableString)
+                    binding.qImgAddBtn.setClickable(false)
+                    binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                     binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
