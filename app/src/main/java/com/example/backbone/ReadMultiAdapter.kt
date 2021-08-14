@@ -80,15 +80,17 @@ class ReadMultiAdapter(context: Context): RecyclerView.Adapter<RecyclerView.View
             // 질문 제목
             if(item.qTitle == ""|| item.qTitle == null){
                 binding.qIcon.visibility = View.GONE
+                //질문 부분 삭제하는 코드
                 binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.text = item.qTitle
+                binding.qTitle.setText(item.qTitle)
             }
 
             if(item.aImg != null)
             {
-                //*****나중에 구현
+                Log.d("태그", "${item.qTitle}, ${item.aImg}")
                 // 삽입 이미지
+                binding.aImg.visibility = View.VISIBLE
                 binding.aImg.setImageBitmap(item.aImg)
             }else{
                 binding.aImg.visibility = View.GONE

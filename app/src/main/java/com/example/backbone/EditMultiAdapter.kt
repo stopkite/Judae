@@ -469,11 +469,9 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 binding.qIcon.visibility = View.VISIBLE
                 binding.qTitle.visibility = View.VISIBLE
             }
-
+            binding.aImg.visibility = View.VISIBLE
             if (item.aImg != null) {
                 //삽입 이미지
-                binding.aImg.visibility = View.VISIBLE
-                binding.aImg.setImageBitmap(item.aImg)
                 binding.aImg.setImageBitmap(item.aImg)
                 //binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
             } else {
