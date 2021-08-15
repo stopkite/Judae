@@ -66,27 +66,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
             throw IllegalStateException("Not Found ViewHolder Type")
         }
     }
-
-    /*
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        TYPE_Question -> {
-            val binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return MyQHolder(binding)
-        }
-        TYPE_Content -> {
-            MyContentHolder.create(parent)
-        }
-        TYPE_RCQuestion -> {
-            LoadQHolder.create(parent)
-        }
-        TYPE_RContent -> {
-            LoadContentHolder.create(parent)
-        }
-        else -> {
-            throw IllegalStateException("Not Found ViewHolder Type $viewType")
-        }
-    }
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
         val view: View?
         return when (viewType) {
@@ -513,8 +492,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, context:Context): Recy
 
                             // 변경 버튼을 클릭했을 때
                             if (which == 0) {
-                                activity.openGalleryForImage()
-                                removeItems(position)
+                                EditGalleryImage(WriteList)
                             }
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {

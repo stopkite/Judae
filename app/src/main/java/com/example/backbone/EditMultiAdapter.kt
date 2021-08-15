@@ -227,7 +227,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding.clLinkArea.setOnLongClickListener {
-                    if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
+                    if (QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
                         val selectList = arrayOf("변경", "삭제")
                         var selectDialog =
                             AlertDialog.Builder(context, R.style.LongClickPopUp)
@@ -289,7 +289,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //사진 롱클릭 리스너 (변경, 삭제)
                 holder.binding.aImg.setOnLongClickListener {
-                    if (QuestionList.aImg == null && QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
+                    if (QuestionList.ColorChanged == false && QuestionList.isloadData == false) {
                         val selectList = arrayOf("변경", "삭제")
                         var selectDialog =
                             AlertDialog.Builder(context, R.style.LongClickPopUp)
@@ -473,7 +473,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             if (item.aImg != null) {
                 //삽입 이미지
                 binding.aImg.setImageBitmap(item.aImg)
-                //binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
             } else {
                 binding.aImg.visibility = View.GONE
             }

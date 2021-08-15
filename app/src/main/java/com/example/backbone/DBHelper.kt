@@ -498,8 +498,12 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
                 Content = cursor.getString(1)
                 Date=  cursor.getString(2)
 
-                // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
-                Date = Date.substring(0, 10)
+                if(Date.length>0)
+                {
+                    // 글 날짜 부분 subString으로 시간 제외한 날짜만 넣기.
+                    Date = Date.substring(0, 10)
+                }
+
 
                 if(cursor.getBlob(3) != null)
                 {
