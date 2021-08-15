@@ -488,14 +488,6 @@ class EditingActivity : AppCompatActivity() {
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
 
-
-                /*var readingActivity: ReadingActivity? = ReadingActivity()
-                // 이전 화면 읽기 화면으로 넘어가기.
-                if (readingActivity != null) {
-                    readingActivity.refresh(WriteID)
-                }
-                */
-
                 finish()
 
             }

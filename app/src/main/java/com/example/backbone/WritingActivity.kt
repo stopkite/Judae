@@ -552,8 +552,6 @@ class WritingActivity : AppCompatActivity() {
                 private const val TYPE_RContent = 2
                 private const val TYPE_RCQuestion = 3
                  */
-                Log.d("태그", "${writingAdapter.getItemViewType(0)}")
-                Log.d("태그", "${writingAdapter.itemCount}")
                 var question:Question = Question()
                 var questionID = -1
                 var answer:Answer = Answer()
@@ -594,10 +592,6 @@ class WritingActivity : AppCompatActivity() {
                     }else{
                         //본문 부분이라면?
                         var data = writingAdapter.items[i] as WriteContentData
-                        if(data.docContent != null && data.docContent != "")
-                        {
-
-                        }
 
                         if(data.contentImg != null)
                         {
@@ -606,18 +600,28 @@ class WritingActivity : AppCompatActivity() {
                             image = null
                         }
 
+                        if(data.linkInsertTxt?.visibility == View.VISIBLE)
+                        {
+                            data.linkUri = ""
+                        }
+
                         var content = Content(
                             writing.WriteID.toString(),
                             data.docContent,
                             image,
                             data.linkUri)
-                        db.InsertContent(content)
-                        try{
-                            contentID = db.getCurrentContentID()
-                        }catch(e:Exception)
+                        if(content.content == "" && content.Image == null && content.link == "")
                         {
-                            //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
-                            contentID ++
+
+                        }else{
+                            db.InsertContent(content)
+                            try{
+                                contentID = db.getCurrentContentID()
+                            }catch(e:Exception)
+                            {
+                                //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
+                                contentID ++
+                            }
                         }
                     }
                 }
