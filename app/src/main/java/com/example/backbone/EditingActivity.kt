@@ -174,6 +174,31 @@ class EditingActivity : AppCompatActivity() {
         }
 
 
+        //삭제 클릭 리스너
+        /*
+        // 해당 글에 속하는 ContentID를 받아옴.
+        var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
+
+
+         for (i in 0..WritingArray - 1) {
+                db.deleteContent(WritingArray[i].ContentID.toString())
+
+                 //Content에 해당하는 QuestionID를 받아옴.
+                var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
+
+                         for (i in 0..QuestionIDSize - 1) {
+                // 해당하는 Question&Answer를 데베에서 삭제
+                db.deleteQuestion(QuestionIDArray[i].QuestionID)
+         }
+         }
+
+         // 모든 내용들이 다 삭제되었으면, 글 삭제.
+
+         db.deleteWriting(WriteID.toString())
+
+
+         */
+
         //어댑터 연결
         writingAdapter = EditMultiAdapter(this, this)
         binding.docList.adapter = writingAdapter

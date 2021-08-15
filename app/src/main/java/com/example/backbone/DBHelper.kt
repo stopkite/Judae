@@ -741,4 +741,37 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         db.close()
     }
+    
+    //EditingActivity
+    //글 삭제하는 기능
+    fun deleteQuestion(QuestionID: String)
+    {
+        var db = this.writableDatabase
+
+        db.execSQL("DELETE FROM Answer WHERE QuestionID = '"+QuestionID+"';")
+        db.execSQL("DELETE FROM Question WHERE QuestionID = ${QuestionID};")
+
+        db.close()
+    }
+
+    //EditingActivity
+    //글 내용 삭제하는 기능
+    fun deleteContent(ContentID: String)
+    {
+        var db = this.writableDatabase
+
+        db.execSQL("DELETE FROM Content WHERE ContentID = "+ContentID+";")
+
+        db.close()
+    }
+    //EditingActivity
+    //글 삭제하는 기능
+    fun deleteWriting(WriteID: String)
+    {
+        var db = this.writableDatabase
+
+        db.execSQL("DELETE FROM Writing WHERE WriteID = "+WriteID+";")
+
+        db.close()
+    }
 }
