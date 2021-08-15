@@ -102,7 +102,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                         AddAnswer(EditloadQuestionData(QuestionList.id, QuestionList.QuestionID ,null, null, QuestionList.linkLayout, null, null, "", null,
                                 "", binding.addAnswer, binding.qImgAddBtn, binding.qLinkAddBtn, activity.today, false, false, false), position)
-
+                        activity.save++
                     }
                 }
 
