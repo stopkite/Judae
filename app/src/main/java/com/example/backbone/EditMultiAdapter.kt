@@ -529,6 +529,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     spannableString.setSpan(ForegroundColorSpan(Color.GRAY), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.aTxt.setText("")
                     binding.aTxt.setText(spannableString)
                     binding.addAnswer.visibility = View.GONE
                     binding.aTxt.setClickable(false)
@@ -547,6 +548,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     spannableString.setSpan(ForegroundColorSpan(Color.GRAY), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.aTxt.setText("")
                     binding.aTxt.setText(spannableString)
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
@@ -556,7 +558,8 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
             }else{
-                if(item.isloadData == true)
+                /*
+                                if(item.isloadData == true)
                 {
                     var date: String? = item.Date
                     var text: String = item.aTxt + "\n${date}"
@@ -572,6 +575,8 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
+                 */
+
             }
             // 임베드 누르면 인터넷 연결되어서 화면이 넘어가는 리스너
             binding.clLinkArea.setOnClickListener {

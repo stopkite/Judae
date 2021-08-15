@@ -152,7 +152,6 @@ class HomeActivity : AppCompatActivity() {
             // 글쓰기 화면으로 이동
             val writeIntent = Intent(this@HomeActivity, WritingActivity::class.java)
             startActivity(writeIntent)
-            finish()
         }
 
     }
