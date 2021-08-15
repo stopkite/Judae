@@ -73,7 +73,6 @@ class EditingActivity : AppCompatActivity() {
 
     // 본문으로 추가된 질문에 대한 배열 정보를 가진 질문 리스트
     val writeQuestionList = ArrayList<EditloadQuestionData>()
-
     val writeContentList = ArrayList<EditloadContentData>()
     // DB에서 로드 되는 데이터 중 수정된 데이터를 담는 리스트
     val writeUpdateList = ArrayList<Int>()
@@ -97,7 +96,6 @@ class EditingActivity : AppCompatActivity() {
 
         // 글쓰기 취소 팝업창 레이아웃
         binding4 = CancelWritingBinding.inflate(layoutInflater)
-
 
         // 카테고리 저장 요소가 담긴 레이아웃
         binding5 = ActivitySavingBinding.inflate(layoutInflater)
@@ -137,7 +135,6 @@ class EditingActivity : AppCompatActivity() {
         var docContent = binding3.docContent
         //docContent = findViewById(R.id.docContent);
         val docContentText: String = docContent.getText().toString()
-
         val contentImg = binding3.contentImg
         val clinkLayout = binding3.clLinkArea
         val clinkIcon = binding3.linkIcon
@@ -150,7 +147,7 @@ class EditingActivity : AppCompatActivity() {
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
             //변경된 부분 없으면 바로 finish 해주기
-                if (writeUpdateList.distinct().isEmpty()) {
+                if (writeQuestionList == null && writeContentList == null) {
                     finish()
                 } else {
                     val mBuilder =
