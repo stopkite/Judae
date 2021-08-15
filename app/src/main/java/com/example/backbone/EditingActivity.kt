@@ -84,6 +84,8 @@ class EditingActivity : AppCompatActivity() {
     // 로드된 내용 이후 추가 되는 본문 내용 아이템의 위치를 받는 메소드
     var FirstAddItemPos: Int = -1
 
+    var save:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -147,7 +149,7 @@ class EditingActivity : AppCompatActivity() {
         // 글쓰기 취소 버튼 눌렀을 때 뜨는 팝업
         binding.cancelButton.setOnClickListener {
             //변경된 부분 없으면 바로 finish 해주기
-                if (writeQuestionList == null && writeContentList == null) {
+                if (writeUpdateList.size == 0 && writeDeleteList.size == 0 && save == 0) {
                     finish()
                 } else {
                     val mBuilder =
@@ -217,6 +219,7 @@ class EditingActivity : AppCompatActivity() {
                                 null, null, "",null,null, false
                         )
                 )
+                save++
             }
         }
 
@@ -235,6 +238,7 @@ class EditingActivity : AppCompatActivity() {
                             null, null, null, null, null, false
                     )
             )
+            save++
         }
 
 
@@ -278,13 +282,21 @@ class EditingActivity : AppCompatActivity() {
             //답변이 한 개일 경우.
             writingAdapter.addItems(EditloadQuestionData(currentContentID, "", null,null,clinkLayout,null,null,null,
                     null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true, false))
+            save++
         }
 
+        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        docTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.length > 0) {
+                    save++
+                } else {
 
-
-        var countDT:Int = 0
-        var countDC:Int = 0
-        var countQT:Int = 0
+                }
+            }
+        })
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
@@ -885,6 +897,7 @@ class EditingActivity : AppCompatActivity() {
                                         null, null, null, null, null, false
                                 )
                         )
+                        save++
 
                     }
 
