@@ -159,6 +159,9 @@ class HomeActivity : AppCompatActivity() {
      override fun onPause() {
          super.onPause()
      }
+     override fun onRestart() {
+         super.onRestart()
+     }
      override fun onResume(){
          super.onResume()
          /*

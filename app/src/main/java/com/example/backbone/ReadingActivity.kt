@@ -244,6 +244,10 @@ class ReadingActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    override fun onRestart() {
+        super.onRestart()
+    }
+
     override fun onResume() {
         super.onResume()
     /*
