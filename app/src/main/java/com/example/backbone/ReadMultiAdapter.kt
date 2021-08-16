@@ -1,27 +1,19 @@
 package com.example.backbone
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
-import android.icu.lang.UCharacter.IndicPositionalCategory.RIGHT
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
 import org.jsoup.Jsoup
@@ -130,7 +122,6 @@ class ReadMultiAdapter(contxt: Context): RecyclerView.Adapter<RecyclerView.ViewH
 
             if(item.aImg != null)
             {
-                Log.d("태그", "${item.qTitle}, ${item.aImg}")
                 // 삽입 이미지
                 binding.aImg.visibility = View.VISIBLE
                 binding.aImg.setImageBitmap(item.aImg)
@@ -271,8 +262,6 @@ class ReadMultiAdapter(contxt: Context): RecyclerView.Adapter<RecyclerView.ViewH
                             var doc: Document
                             try{
                                 doc = Jsoup.connect("${linkUri}").get()
-
-                                Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
                                 var link: String
                                 if (linkUri.contains("google")) {
@@ -452,7 +441,6 @@ class ReadMultiAdapter(contxt: Context): RecyclerView.Adapter<RecyclerView.ViewH
                                     binding2.linkIcon.visibility = View.GONE
                                 }
 
-                                Log.d("태그", "제목: ${title}")
                                 bis.close()
 
                                 if(title != "")
@@ -474,8 +462,6 @@ class ReadMultiAdapter(contxt: Context): RecyclerView.Adapter<RecyclerView.ViewH
                             var doc: Document
                             try{
                                 doc = Jsoup.connect("${linkUri}").get()
-
-                                Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
                                 var link: String
                                 if (linkUri.contains("google")) {

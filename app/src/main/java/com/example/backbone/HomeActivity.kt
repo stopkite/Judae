@@ -2,6 +2,7 @@
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -163,20 +164,8 @@ class HomeActivity : AppCompatActivity() {
      }
      override fun onResume(){
          super.onResume()
-         /*
          //DBHelper와 이어주도록 클래스 선언
          var db: DBHelper = DBHelper(this)
-
-         // (activity_home.xml)을 현재 보여줄 화면으로 설정!
-         // activity_home.xml 에서 해당 요소들 가져오고 싶을 때
-         // binding.아이디 이름 으로 가져오면 됩니다.
-         // (단, 이때 아이디는 완전 똑같지 않음 : 대문자/소문자가 바뀜 -> 하다보면 알 거임!
-         binding = ActivityHomeBinding.inflate(layoutInflater)
-         setContentView(binding.root)
-
-         // xml에서 리사이클러뷰(docList)를 가져와서 변수 선언
-         docList = binding.docList
-
          // HomeDocListData 클래스를 담는 배열 생성
          val myDocList = ArrayList<HomeDocListData>()
          //DB에서 받아올 Writing 객체 리스트를 담는 배열 생성
@@ -195,23 +184,10 @@ class HomeActivity : AppCompatActivity() {
          //배열로 받아온 글 객체를 순서대로 출력하기.
          for (i in 0..(Array.size - 1)) {
              myDocList.add(
-                     HomeDocListData("${Array[i].WriteID}","${Array[i].Title}", "${Array[i].Category}",
-                             "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
+                 HomeDocListData("${Array[i].WriteID}","${Array[i].Title}", "${Array[i].Category}",
+                     "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
-
-         // 어댑터 변수 초기화
-         /*
-                  homeDocListAdapter = HomeDocListAdapter(this, myDocList)
-
-         // 만든 어댑터 recyclerview에 연결
-         docList.adapter = homeDocListAdapter
-          */
-
-
-         homeDocListAdapter.setData(myDocList)
-
-          */
 
      }
 

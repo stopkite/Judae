@@ -43,13 +43,12 @@ class ReadingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 
-        var binding = ActivityReadingBinding.inflate(layoutInflater)
-        var binding2 = ReadQuestionItemBinding.inflate(layoutInflater)
-        var binding3 = ReadContentItemBinding.inflate(layoutInflater)
+        binding = ActivityReadingBinding.inflate(layoutInflater)
+        binding2 = ReadQuestionItemBinding.inflate(layoutInflater)
+        binding3 = ReadContentItemBinding.inflate(layoutInflater)
         var binding4 = PopupWritingDelBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -185,7 +184,6 @@ class ReadingActivity : AppCompatActivity() {
                         var Image: Bitmap? = null
                         if (AnswerArray[j].Image != null) {
                             Image = init(AnswerArray[j].Image)
-                            Log.d("태그", "사진 불러옴: ${Image}")
                         }
 
                         if (j == 0) {
@@ -219,19 +217,6 @@ class ReadingActivity : AppCompatActivity() {
 
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this)
-        //var ba:ByteArray = db.showImage("","")
-        //init(ba)
-
-        //그림 저장하는 코드
-        //val drawable = getDrawable(R.mipmap.ic_launcher)
-        //val bitmap = bitmapDrawable.bitmap
-        //var byteArray: ByteArray = drawableToByteArray(drawable!!)
-        //val image = Image(byteArray)
-        //db.drawImage("","", image)
-        //그림 읽어오는 코드
-        //val memo = db.showImage("","")
-        //val bitmap = init(memo.image)
-        //binding.contentImg.setImageDrawable(drawable)
 
         binding.cancelButton.setOnClickListener {
             finish()
@@ -256,7 +241,29 @@ class ReadingActivity : AppCompatActivity() {
 
             // 확인 버튼 다이얼로그
             binding4.delBtn.setOnClickListener {
-                // 데이터 삭제 여기서 다루면 됩니다아이이이이이ㅣㅇㅇ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                //삭제 클릭 리스너
+                // 해당 글에 속하는 ContentID를 받아옴.
+                var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
+
+
+                for (i in 0..WritingArray.size - 1) {
+                    db.deleteContent(WritingArray[i].ContentID.toString())
+
+                    //Content에 해당하는 QuestionID를 받아옴.
+                    var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
+
+                    for (i in 0..QuestionIDArray.size - 1) {
+                        // 해당하는 Question&Answer를 데베에서 삭제
+                        db.deleteQuestion(QuestionIDArray[i].QuestionID)
+                    }
+                }
+
+                 // 모든 내용들이 다 삭제되었으면, 글 삭제.
+
+                 db.deleteWriting(WriteID.toString())
+
+                finish()
             }
 
             //취소 버튼 다이얼로그
@@ -276,26 +283,13 @@ class ReadingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-    /*
-            //DBHelper와 이어주도록 클래스 선언
+        //DBHelper와 이어주도록 클래스 선언
         var db: DBHelper = DBHelper(this)
 
-        var binding = ActivityReadingBinding.inflate(layoutInflater)
-        var binding2 = ReadQuestionItemBinding.inflate(layoutInflater)
-        var binding3 = ReadContentItemBinding.inflate(layoutInflater)
-
-        setContentView(binding.root)
 
         // 질문 xml 에서 가져온 요소들
-        var qTitle = binding2.qTitle
-        var aImg = binding2.aImg
         var q_linkLayout = binding2.clLinkArea
-        var aTxt = binding2.aTxt
-
-        // 본문 xml에서 가져온 요소들
-        var contentImg = binding3.contentImg
         var c_linkLayout = binding3.clLinkArea
-        var docContent = binding3.docContent
 
         readingAdapter = ReadMultiAdapter(this)
 
@@ -339,7 +333,7 @@ class ReadingActivity : AppCompatActivity() {
 
                 //답변이 한 개일 경우.
                 readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, Image, q_linkLayout, null, AnswerArray[0].Link, null,
-                        null, AnswerArray[0].Content, AnswerArray[0].Date, false))
+                    null, AnswerArray[0].Content, AnswerArray[0].Date, false))
             } else if (AnswerSize > 1) {
                 //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
                 //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
@@ -353,11 +347,11 @@ class ReadingActivity : AppCompatActivity() {
 
                     if (j == 0) {
                         readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, Image, q_linkLayout, null, AnswerArray[j].Link, null,
-                                null, AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            null, AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     } else {
                         readingAdapter.addItems(ReadQuestionData(null, Image, q_linkLayout, null, AnswerArray[j].Link, null,
-                                null, AnswerArray[j].Content, AnswerArray[j].Date, true))
+                            null, AnswerArray[j].Content, AnswerArray[j].Date, true))
                         readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                     }
                 }
@@ -367,11 +361,11 @@ class ReadingActivity : AppCompatActivity() {
                 }
                 //마지막 내용!
                 readingAdapter.addItems(ReadQuestionData(null, Image, q_linkLayout, null, AnswerArray[LastSize].Link, null,
-                        null, AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                    null, AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
             } else {
                 //질문만 있고, 대답 없는 경우.
                 readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, null, q_linkLayout, null, null, null,
-                        null, null, null, false))
+                    null, null, null, false))
 
             }
         }
@@ -386,7 +380,7 @@ class ReadingActivity : AppCompatActivity() {
 
             // 본문 추가
             readingAdapter.addItems(ReadContentData(Image, c_linkLayout, null, null, WritingArray[i].link,
-                    null, null, WritingArray[i].content))
+                null, null, WritingArray[i].content))
 
             //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
             var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
@@ -407,7 +401,7 @@ class ReadingActivity : AppCompatActivity() {
 
                     //답변이 한 개일 경우.
                     readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, Image, q_linkLayout, null, AnswerArray[0].Link, null,
-                            null, AnswerArray[0].Content, AnswerArray[0].Date, false))
+                        null, AnswerArray[0].Content, AnswerArray[0].Date, false))
                 } else if (AnswerSize > 1) {
                     //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
                     //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
@@ -421,11 +415,11 @@ class ReadingActivity : AppCompatActivity() {
 
                         if (j == 0) {
                             readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, Image, q_linkLayout, null, AnswerArray[j].Link, null,
-                                    null, AnswerArray[j].Content, AnswerArray[j].Date, true))
+                                null, AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         } else {
                             readingAdapter.addItems(ReadQuestionData(null, Image, q_linkLayout, null, AnswerArray[j].Link, null,
-                                    null, AnswerArray[j].Content, AnswerArray[j].Date, true))
+                                null, AnswerArray[j].Content, AnswerArray[j].Date, true))
                             readingAdapter.notifyItemChanged(readingAdapter.itemCount, "color")
                         }
                     }
@@ -435,11 +429,11 @@ class ReadingActivity : AppCompatActivity() {
                     }
                     //마지막 내용!
                     readingAdapter.addItems(ReadQuestionData(null, Image, q_linkLayout, null, AnswerArray[LastSize].Link, null,
-                            null, AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
+                        null, AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false))
                 } else {
                     //질문만 있고, 대답 없는 경우.
                     readingAdapter.addItems(ReadQuestionData(QuestionIDArray[i].Content, null, q_linkLayout, null, null, null,
-                            null, null, null, false))
+                        null, null, null, false))
 
                 }
             }
@@ -447,34 +441,6 @@ class ReadingActivity : AppCompatActivity() {
         }
 
         binding.docList.adapter = readingAdapter
-
-        // 리사이클러 뷰 타입 설정
-        binding.docList.layoutManager = LinearLayoutManager(this)
-        //var ba:ByteArray = db.showImage("","")
-        //init(ba)
-
-        //그림 저장하는 코드
-        //val drawable = getDrawable(R.mipmap.ic_launcher)
-        //val bitmap = bitmapDrawable.bitmap
-        //var byteArray: ByteArray = drawableToByteArray(drawable!!)
-        //val image = Image(byteArray)
-        //db.drawImage("","", image)
-        //그림 읽어오는 코드
-        //val memo = db.showImage("","")
-        //val bitmap = init(memo.image)
-        //binding.contentImg.setImageDrawable(drawable)
-
-        binding.cancelButton.setOnClickListener {
-            finish()
-        }
-
-        binding.editBtn.setOnClickListener {
-            // 글쓰기 화면으로 이동
-            val writeIntent = Intent(this, EditingActivity::class.java)
-            writeIntent.putExtra("data", "${WriteID}")
-            startActivity(writeIntent)
-        }
-     */
     }
 
     private fun init(ba: ByteArray?): Bitmap? {
@@ -561,7 +527,6 @@ class ReadingActivity : AppCompatActivity() {
                     this@ReadingActivity.runOnUiThread(java.lang.Runnable {
                         //어답터 연결하기
                         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-                        Log.d("태그", "${title}, ${content}")
                         if (title == null) {
                             binding.clLinkArea.visibility = View.GONE
                         }

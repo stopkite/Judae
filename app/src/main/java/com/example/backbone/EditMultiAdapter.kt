@@ -18,7 +18,6 @@ import android.text.*
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -139,12 +138,8 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        Log.d("태그", "afterTextChanged")
                         QuestionList.aTxt = s.toString()
                         QuestionList.Date = activity.today
-                        //updateQuestions에 저장해주기.
-                        //updateQuestionItems(QuestionList, position)
-                        //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
 
@@ -305,7 +300,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 // 변경 버튼을 클릭했을 때
                                 if (which == 0) {
                                     openGalleryForImage(QuestionList)
-                                    Log.d("태그", "${QuestionList.aTxt}")
                                 }
                                 // 삭제 버튼을 클릭했을 때
                                 else if (which == 1) {
@@ -583,8 +577,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                 }
             }else{
-                /*
-                                if(item.isloadData == true)
+                if(item.isloadData == true)
                 {
                     var date: String? = item.Date
                     var text: String = item.aTxt + "\n${date}"
@@ -600,7 +593,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
-                 */
 
             }
         }
@@ -677,8 +669,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 if (bm1 == null) {
                                     binding.linkIcon.visibility = View.GONE
                                 }
-
-                                Log.d("태그", "제목: ${title}")
                                 bis.close()
                                 item.linkUri = linkUri
                                 item.linkTitle = title
@@ -705,8 +695,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             var doc:Document
                             try{
                                 doc = Jsoup.connect("${linkUri}").get()
-
-                                Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
                                 var link: String
                                 if (linkUri.contains("google")) {
@@ -919,7 +907,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                     binding2.linkIcon.visibility = View.GONE
                                 }
 
-                                Log.d("태그", "제목: ${title}")
                                 bis.close()
                                 item.linkUri = linkUri
                                 item.linkTitle = title
@@ -947,8 +934,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                             var doc: Document
                             try{
                                 doc = Jsoup.connect("${linkUri}").get()
-
-                                Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
                                 var link: String
                                 if (linkUri.contains("google")) {
@@ -1167,13 +1152,10 @@ uri = linkUri
                         if (photo != null) {
                             photo.close()
                         }
-                        Log.d("태그", "추가가 되냐!!!")
-                        Log.d("태그", "${img}")
                         this.itemInfo?.aImg = img
-                        Log.d("태그", "${itemInfo?.aImg}")
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
-                        Log.d("태그", "사진 띄우는 레이아웃 Visibility: ${binding.aImg.isVisible}")
+
                         this.notifyDataSetChanged()
                         this.binding.qImgAddBtn.setClickable(false)
                         this.binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
