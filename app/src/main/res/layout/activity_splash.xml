@@ -13,15 +13,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="267dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="“왜?” 라는 질문을 통해‘\n나’를 기록하고 성장시키다."
+        android:text="“왜?” 라는 질문을 통해\n‘나’를 기록하고 성장시키다."
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textFontWeight="300"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@id/splash_logo"
-        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageView
         android:id="@+id/splash_logo"
