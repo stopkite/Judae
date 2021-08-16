@@ -189,6 +189,11 @@ class HomeActivity : AppCompatActivity() {
              )
          }
 
+         // 어댑터 변수 초기화
+         homeDocListAdapter = HomeDocListAdapter(this, myDocList)
+
+         // 만든 어댑터 recyclerview에 연결
+         docList.adapter = homeDocListAdapter
      }
 
      //선언: BottomFragmentList.kt
