@@ -158,11 +158,9 @@ class HomeActivity : AppCompatActivity() {
     }
      override fun onPause() {
          super.onPause()
-         Log.d("태그", "onPause")
      }
      override fun onRestart() {
          super.onRestart()
-         Log.d("태그", "onRestart")
      }
      override fun onResume(){
          super.onResume()
@@ -190,12 +188,7 @@ class HomeActivity : AppCompatActivity() {
                      "| ${Array[i].Date}", "|", resources.getDrawable(R.drawable.ic_qcount, null), "${Array[i].Question}")
              )
          }
-         Log.d("태그", "onResume")
-         // 어댑터 변수 초기화
-         homeDocListAdapter = HomeDocListAdapter(this, myDocList)
 
-         // 만든 어댑터 recyclerview에 연결
-         docList.adapter = homeDocListAdapter
      }
 
      //선언: BottomFragmentList.kt

@@ -1,14 +1,10 @@
 package com.example.backbone
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
-import android.graphics.Bitmap
-import android.util.Log
-import java.sql.Types.NULL
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -665,11 +661,9 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     // 카테고리가 몇번째 인지 받아오는 코드
     fun getCategoryIndex(writeID:String): Int
     {
-        Log.d("태그", "getCategoryIndex 시작")
         var index = -1
         var cate = WhatisCategory(writeID)
 
-        Log.d("태그", "getCategoryIndex 카테고리 불러옴 : ${cate}")
         var db = this.readableDatabase
 
         var cursor: Cursor = db.rawQuery("SELECT ROWID FROM Category WHERE CategoryName = '"+cate+"';", null)
@@ -703,7 +697,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
     //기존에 존재하던 ContentDB에 내용정보를 저장하는 기능
     fun EditContent(content: Content)
     {
-        Log.d("태그", "링크: ${content.link}")
         var db = this.writableDatabase
         if(content.Image != null)
         {

@@ -298,7 +298,6 @@ class WritingActivity : AppCompatActivity() {
         val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
         val first = pref.getBoolean("isFirst", false)
         if (first == false) {
-            Log.d("Is first Time?", "first")
             val editor = pref.edit()
             editor.putBoolean("isFirst", true)
             editor.commit()
@@ -317,7 +316,6 @@ class WritingActivity : AppCompatActivity() {
                 )
             )
         } else {
-            Log.d("Is first Time?", "not first")
         }
 
         //시작할 때 title과 content만 뜨도록 하기
@@ -335,7 +333,6 @@ class WritingActivity : AppCompatActivity() {
         var WriteID: String = ""
         if(intent.hasExtra("data"))
         {
-            Log.d("태그", "${WriteID}")
             WriteID = intent.getStringExtra("data").toString()
             loadWriting(WriteID, writingAdapter)
         }
@@ -456,8 +453,6 @@ class WritingActivity : AppCompatActivity() {
             override fun afterTextChanged(editable: Editable) {
                     if (editable.length > 0) {
                         countDT = 1
-                        Log.d("count","${countDC}")
-                        Log.d("count","${countQT}")
                         if (countDT == 1 && countDC == 1 && countQT ==1) {
                             binding.saveBtn.setEnabled(true)
                         } else {
@@ -636,66 +631,6 @@ class WritingActivity : AppCompatActivity() {
                 t1.show()
                 finish()
 
-                /*
-                //본문 객체 저장 <sContent>
-                for (i in 0..(writeContentList.size - 1)) {
-                    if (writeContentList[i].docContent != null) {
-                        ContentArray.add(i, sContent(writeContentList[i].docContent, null, null))
-                        //Log.d("출력","${writeContentList[i].docContent}")
-                    } else if (writeContentList[i].contentImg != null) {
-                        ContentArray.add(i, sContent(null, writeContentList[i].contentImg, null))
-                        //Log.d("출력","${writeContentList[i].contentImg}")
-                    } else {
-                        ContentArray.add(i, sContent(null, null, writeContentList[i].linkUri))
-                        //Log.d("출력","${writeContentList[i].linkUri}")
-                    }
-                }
-
-            //질문 객체 저장 <sQuestion>
-            /*for (i in 0..(writeQuestionList.size - 1)) {
-                if (writeQuestionList[i].qTitle != null ) {
-                    QuestionArray.add(i, sQuestion(writeQuestionList[i].qTitle))
-                    Log.d("출력","${writeQuestionList[i].qTitle}")
-                }
-            }
-
-                //답변 객체 저장 <sAnswer> - 아직 사진이랑 링크 추가 구현이 안되어서 null로 나옴
-                for (i in 0..(writeQuestionList.size - 1)) {
-                    //글, 사진, 링크 모두 있을 때
-                    if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri != null) {
-                        AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, writeQuestionList[i].aImg, writeQuestionList[i].linkUri))
-
-                        //글, 사진만 있을 때
-                    } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri == null) {
-                        AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, writeQuestionList[i].aImg, null))
-
-                        //글, 링크만 있을 때
-                    } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg == null && writeQuestionList[i].linkUri != null) {
-                        AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, null, writeQuestionList[i].linkUri))
-
-                        //사진, 링크만 있을 때
-                    } else if (writeQuestionList[i].aTxt == null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri != null) {
-                        AnswerArray.add(i, sAnswer(null, today, writeQuestionList[i].aImg, writeQuestionList[i].linkUri))
-
-                        //글만 있을 때
-                    } else if (writeQuestionList[i].aTxt != null && writeQuestionList[i].aImg == null && writeQuestionList[i].linkUri == null) {
-                        AnswerArray.add(i, sAnswer(writeQuestionList[i].aTxt, today, null, null))
-                        Log.d("출력","${writeQuestionList[i].aTxt}")
-
-                        //사진만 있을 때
-                    } else if (writeQuestionList[i].aTxt == null && writeQuestionList[i].aImg != null && writeQuestionList[i].linkUri == null) {
-                        AnswerArray.add(i, sAnswer(null, today, writeQuestionList[i].aImg, null))
-
-                        //링크만 있을 때
-                    } else {
-                        AnswerArray.add(i, sAnswer(null, today, null, writeQuestionList[i].linkUri))
-                    }
-
-                 */
-            }
-        }
-            }*/
-
 
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
@@ -711,7 +646,6 @@ class WritingActivity : AppCompatActivity() {
 
     private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
     {
-        Log.d("태그", "${WriteID}")
         binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
         val q_linkLayout = binding2.clLinkArea
         val c_linkLayout = binding3.clLinkArea
@@ -776,7 +710,6 @@ class WritingActivity : AppCompatActivity() {
                 writingAdapter.addItems(loadQuestionData(i.toString()+"-last", null,AnswerArray[LastSize].Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
                     null,null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false, false))
             }else{
-                Log.d("태그", "${QuestionIDArray[i].Content}")
                 //질문만 있고, 대답 없는 경우.
                 writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                     null,null,null, null, false, false))
