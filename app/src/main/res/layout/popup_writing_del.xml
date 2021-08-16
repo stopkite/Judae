@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    tools:context=".SavingActivity">
+    android:background="@android:color/transparent">
 
     <TextView
-        android:id="@+id/editTitle"
+        android:id="@+id/delTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="18dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="쓰기 화면에서 나가시겠습니까?"
+        android:text="글을 삭제하시겠습니까?"
         android:textColor="@color/ivory"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,17 +22,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/editContent"
+        android:id="@+id/delContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="작성 중이던 글은 사라집니다."
+        android:text="삭제된 글은 복구할 수 없습니다."
         android:textColor="#CCECECEC"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/editTitle"
-        app:layout_constraintStart_toStartOf="@+id/editTitle"
-        app:layout_constraintTop_toBottomOf="@+id/editTitle" />
+        app:layout_constraintEnd_toEndOf="@+id/delTitle"
+        app:layout_constraintStart_toStartOf="@+id/delTitle"
+        app:layout_constraintTop_toBottomOf="@+id/delTitle" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancelBtn"
@@ -47,24 +46,24 @@
         android:textColor="@color/greenMain"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
-        app:layout_constraintStart_toStartOf="@+id/editContent"
-        app:layout_constraintTop_toBottomOf="@+id/editContent" />
+        app:layout_constraintEnd_toStartOf="@+id/delBtn"
+        app:layout_constraintStart_toStartOf="@+id/delContent"
+        app:layout_constraintTop_toBottomOf="@+id/delContent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/confirmBtn"
+        android:id="@+id/delBtn"
         android:layout_width="0dp"
         android:layout_height="36dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="58dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/ic_bg_pop_ok"
-        android:text="확인"
+        android:text="삭제"
         android:textColor="@color/ivory"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editContent"
+        app:layout_constraintEnd_toEndOf="@+id/delContent"
         app:layout_constraintStart_toEndOf="@+id/cancelBtn"
-        app:layout_constraintTop_toBottomOf="@+id/editContent" />
+        app:layout_constraintTop_toBottomOf="@+id/delContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

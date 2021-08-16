@@ -32,15 +32,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/saveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="저장"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_write_done"
                 android:enabled="true"
                 android:textColor="@color/ivory"
                 android:textSize="15sp"

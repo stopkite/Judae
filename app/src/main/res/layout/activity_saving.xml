@@ -7,7 +7,7 @@
     android:background="@android:color/transparent">
 
     <TextView
-        android:id="@+id/cancelTitle"
+        android:id="@+id/editTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -43,7 +43,7 @@
         android:scrollbarThumbVertical="@color/scrollbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cancelTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle"
         tools:listitem="@layout/save_category_item">
 
     </ListView>

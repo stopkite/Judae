@@ -7,7 +7,7 @@
     android:background="@android:color/transparent">
 
     <TextView
-        android:id="@+id/cancelTitle"
+        android:id="@+id/editTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/cancelContent"
+        android:id="@+id/editContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -30,9 +30,9 @@
         android:text="변경화면은 사라집니다."
         android:textColor="#CCECECEC"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/cancelTitle"
-        app:layout_constraintStart_toStartOf="@+id/cancelTitle"
-        app:layout_constraintTop_toBottomOf="@+id/cancelTitle" />
+        app:layout_constraintEnd_toEndOf="@+id/editTitle"
+        app:layout_constraintStart_toStartOf="@+id/editTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancelBtn"
@@ -47,8 +47,8 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
-        app:layout_constraintStart_toStartOf="@+id/cancelContent"
-        app:layout_constraintTop_toBottomOf="@+id/cancelContent" />
+        app:layout_constraintStart_toStartOf="@+id/editContent"
+        app:layout_constraintTop_toBottomOf="@+id/editContent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confirmBtn"
@@ -62,8 +62,8 @@
         android:textColor="@color/ivory"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cancelContent"
+        app:layout_constraintEnd_toEndOf="@+id/editContent"
         app:layout_constraintStart_toEndOf="@+id/cancelBtn"
-        app:layout_constraintTop_toBottomOf="@+id/cancelContent" />
+        app:layout_constraintTop_toBottomOf="@+id/editContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.ActivityReadingBinding
+import com.example.backbone.databinding.PopupWritingDelBinding
 import com.example.backbone.databinding.ReadContentItemBinding
 import com.example.backbone.databinding.ReadQuestionItemBinding
 import org.jsoup.Jsoup
@@ -26,6 +29,7 @@ class ReadingActivity : AppCompatActivity() {
 
     private lateinit var binding2: ReadQuestionItemBinding
     private lateinit var binding3: ReadContentItemBinding
+    private lateinit var binindg4: PopupWritingDelBinding
 
     private lateinit var readingAdapter: ReadMultiAdapter
 
@@ -46,6 +50,7 @@ class ReadingActivity : AppCompatActivity() {
         var binding = ActivityReadingBinding.inflate(layoutInflater)
         var binding2 = ReadQuestionItemBinding.inflate(layoutInflater)
         var binding3 = ReadContentItemBinding.inflate(layoutInflater)
+        var binding4 = PopupWritingDelBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
@@ -237,6 +242,27 @@ class ReadingActivity : AppCompatActivity() {
             val writeIntent = Intent(this, EditingActivity::class.java)
             writeIntent.putExtra("data", "${WriteID}")
             startActivity(writeIntent)
+        }
+
+        binding.delBtn.setOnClickListener {
+            // 글 삭제 팝업
+            val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
+
+            // view의 중복 사용을 방지하기 위한 코드
+            if (binding4.root.parent != null)
+                (binding4.root.parent as ViewGroup).removeView(binding4.root)
+
+            val mAlertDialog = mBuilder.show()
+
+            // 확인 버튼 다이얼로그
+            binding4.delBtn.setOnClickListener {
+                // 데이터 삭제 여기서 다루면 됩니다아이이이이이ㅣㅇㅇ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
+
+            //취소 버튼 다이얼로그
+            binding4.cancelBtn.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
         }
     }
 
