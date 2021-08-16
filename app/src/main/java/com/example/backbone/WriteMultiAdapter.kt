@@ -256,7 +256,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList, context)
                     holder.binding.qLinkAddBtn.setClickable(false)
-                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    holder.binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
                 }
 
@@ -555,11 +555,14 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
             }else{
                 // 대답 삽입 이미지
                 binding.aImg.setImageBitmap(item.aImg)
+                binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
             }
 
             // 링크
             if(item.linkLayout == null){
                 binding.clLinkArea.visibility = View.GONE
+            } else {
+                binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
             }
 
             // 링크 삽입이 이뤄지는 곳(editText영역)
@@ -1238,8 +1241,8 @@ uri = linkUri
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
                         this.notifyDataSetChanged()
-                        binding.qImgAddBtn.setClickable(false)
-                        binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                        this.binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
+
                     }
                 }
             }

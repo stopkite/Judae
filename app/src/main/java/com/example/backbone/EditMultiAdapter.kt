@@ -226,8 +226,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList, context)
-                    holder.binding.qLinkAddBtn.setClickable(false)
-                    holder.binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    holder.binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
                 }
 
@@ -499,7 +498,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
             if (item.aImg != null) {
                 //삽입 이미지
                 binding.aImg.setImageBitmap(item.aImg)
-                binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
             } else {
                 binding.aImg.visibility = View.GONE
             }
@@ -519,7 +518,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             } else {
-                binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
                 if (item.linkContent != null || item.linkTitle != null) {
                     binding.clLinkArea.visibility = View.VISIBLE
@@ -561,9 +560,9 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.aTxt.setClickable(false)
                     binding.aTxt.setFocusable(false)
                     binding.qImgAddBtn.setClickable(false)
-                    binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                     binding.qLinkAddBtn.setEnabled(false)
-                    binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                 } else {
                     // 대답이 마지막 대답일 때
                     var date: String? = item.Date
@@ -579,9 +578,9 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.aTxt.setClickable(false);
                     binding.aTxt.setFocusable(false);
                     binding.qImgAddBtn.setClickable(false)
-                    binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                     binding.qLinkAddBtn.setEnabled(false)
-                    binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                    binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                 }
             }else{
                 /*
@@ -1177,7 +1176,7 @@ uri = linkUri
                         Log.d("태그", "사진 띄우는 레이아웃 Visibility: ${binding.aImg.isVisible}")
                         this.notifyDataSetChanged()
                         this.binding.qImgAddBtn.setClickable(false)
-                        this.binding.qImgAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
+                        this.binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                     }
                 }
             }

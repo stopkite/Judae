@@ -5,8 +5,10 @@ import android.R.attr.button
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.*
 import android.text.Editable
 import android.text.TextWatcher
@@ -422,7 +424,6 @@ class WritingActivity : AppCompatActivity() {
             }
         }
 
-
         //하단의 '질문' 버튼 클릭 리스너
         binding.addQBtn.setOnClickListener {
             //수정 버전
@@ -445,6 +446,7 @@ class WritingActivity : AppCompatActivity() {
                         null, "",null,"", null, qAddImgBtn, qAddLinkBtn, null
                     )
                 )
+
             }
 
         }
@@ -629,7 +631,7 @@ class WritingActivity : AppCompatActivity() {
 
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
-                startActivity(Intent(this, HomeActivity::class.java))
+                //startActivity(Intent(this, HomeActivity::class.java))
                 finish()
 
                 /*
