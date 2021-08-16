@@ -574,6 +574,11 @@ class WritingActivity : AppCompatActivity() {
                         questionID = db.getCurrentQuestionID()
 
 
+                        if(data.aTxt == "")
+                        {
+                            data.aTxt = "질문에 대한 답을 입력하세요."
+                            data.Date = today
+                        }
                         if(data.aImg != null)
                         {
                             image = drawableToByteArray(data.aImg)
@@ -629,7 +634,6 @@ class WritingActivity : AppCompatActivity() {
 
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
-                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
 
                 /*

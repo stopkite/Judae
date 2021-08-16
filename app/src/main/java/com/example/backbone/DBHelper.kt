@@ -16,34 +16,51 @@ import java.sql.Types.NULL
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
     //추후 수정 예정
-        /*
      //대답 테이블
-        db!!.execSQL("CREATE TABLE Answer (QustionID TEXT NOT NULL,AnswerID INTEGER NOT NULL,Content TEXT,PRIMARY KEY(AnswerID));")
+        db!!.execSQL("CREATE TABLE \"Answer\" (\n" +
+                "\t\"QuestionID\"\tTEXT NOT NULL,\n" +
+                "\t\"Content\"\tTEXT NOT NULL,\n" +
+                "\t\"Date\"\tTEXT NOT NULL,\n" +
+                "\t\"Image\"\tBLOB,\n" +
+                "\t\"Link\"\tTEXT\n" +
+                ")")
 
         //글 테이블
         db!!.execSQL("CREATE TABLE \"Writing\" (\n" +
                 "\t\"WriteID\"\tINTEGER,\n" +
-                "\t\"Content\"\tTEXT,\n" +
                 "\t\"Title\"\tTEXT NOT NULL,\n" +
                 "\t\"Date\"\tTEXT NOT NULL,\n" +
                 "\t\"Category\"\tTEXT NOT NULL,\n" +
                 "\tPRIMARY KEY(\"WriteID\" AUTOINCREMENT)\n" +
                 ")")
 
-        //글 테이블
+        //질문 테이블
         db!!.execSQL("CREATE TABLE \"Question\" (\n" +
-                "                \"WritingID\"\tTEXT,\n" +
-                "                \"ContentID\"\tTEXT NOT NULL,\n" +
-                "                \"QuestionID\"\tINTEGER NOT NULL UNIQUE,\n" +
-                "                \"Content\"\tTEXT NOT NULL,\n" +
-                "                \"Image\"\tBLOB,\n" +
-                "                PRIMARY KEY(\"QuestionID\" AUTOINCREMENT)\n" +
-                "        );")
+                "\t\"WritingID\"\tTEXT,\n" +
+                "\t\"ContentID\"\tTEXT NOT NULL,\n" +
+                "\t\"QuestionID\"\tINTEGER NOT NULL UNIQUE,\n" +
+                "\t\"Content\"\tTEXT NOT NULL,\n" +
+                "\tPRIMARY KEY(\"QuestionID\" AUTOINCREMENT)\n" +
+                ")")
 
+        //글 내용 테이블
+        db!!.execSQL("CREATE TABLE \"Content\" (\n" +
+                "\t\"WriteID\"\tTEXT NOT NULL,\n" +
+                "\t\"ContentID\"\tINTEGER NOT NULL,\n" +
+                "\t\"Content\"\tTEXT,\n" +
+                "\t\"Image\"\tBLOB,\n" +
+                "\t\"Link\"\tTEXT,\n" +
+                "\tPRIMARY KEY(\"ContentID\" AUTOINCREMENT)\n" +
+                ")")
 
-         */
+        //카테고리 테이블
+        db!!.execSQL("CREATE TABLE \"Category\" (\n" +
+                "\t\"CategoryName\"\tTEXT NOT NULL UNIQUE\n" +
+                ")")
 
-
+        db!!.execSQL("INSERT INTO Category values ('전체');")
+        db!!.execSQL("INSERT INTO Category values ('기본');")
+        db!!.execSQL("INSERT INTO Category values ('일상');")
     }
 
     //버전을 업그레이드 하면 실행 -> 기존에 있던 테이블을 삭제한 후 실행.
@@ -567,8 +584,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             db.execSQL("INSERT INTO Content (WriteID, Content, Image, Link) VALUES ('" + content.WriteID + "', '"+content.content+"', NULL, '"+content.link+"');")
         }
 
-
-        db.close()
     }
 
     fun getCurrentContentID():Int
@@ -598,8 +613,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             p.bindString(3, question.Content)
             p.execute()
 
-
-        db.close()
     }
 
     fun getCurrentQuestionID():Int

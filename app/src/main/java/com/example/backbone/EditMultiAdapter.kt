@@ -584,8 +584,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
             }else{
-                /*
-                                if(item.isloadData == true)
+                if(item.isloadData == true)
                 {
                     var date: String? = item.Date
                     var text: String = item.aTxt + "\n${date}"
@@ -601,7 +600,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
-                 */
 
             }
         }
