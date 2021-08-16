@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="18dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="정말 이미지를 삭제하시겠습니까?"
+        android:text="이미지를 삭제하시겠습니까?"
         android:textColor="@color/ivory"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
