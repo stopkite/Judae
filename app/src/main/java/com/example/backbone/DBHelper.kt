@@ -247,13 +247,15 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var Content:String = cursor.getString(3)
             var q:Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
 
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
-            while(cursor2.moveToNext())
-            {
-                q.WritingTitle = cursor2.getString(2)
+            if(q.WritingID != "" ) {
+                var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
+                while(cursor2.moveToNext())
+                {
+                    q.WritingTitle = cursor2.getString(2)
+                }
+                anyArray.add(q)
             }
 
-            anyArray.add(q)
         }
 
         return anyArray
@@ -323,15 +325,17 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var QuestionID: Int = cursor.getInt(2)
             var Content: String = cursor.getString(3)
             var q: Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
-            
-            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
-            while(cursor2.moveToNext())
-            {
-                q.WritingTitle = cursor2.getString(2)
-            }
 
-            qList.add(q)
+            if (q.WritingID != "") {
+                // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+                var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
+                while(cursor2.moveToNext())
+                {
+                    q.WritingTitle = cursor2.getString(2)
+                }
+
+                qList.add(q)
+            }
         }
 
         return qList
