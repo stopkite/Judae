@@ -2,6 +2,7 @@ package com.example.backbone
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import com.example.backbone.databinding.ActivityHomeBinding
 import com.example.backbone.databinding.FragmentBottomEditBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragment(){
     var db:DBHelper = db
     private lateinit var binding:FragmentBottomEditBinding
+    private lateinit var binding2: ActivityHomeBinding
     //mainactivity의 함수를 사용하기 위해 호출해준 부분
     var hoemActivity: HomeActivity? = null
 
@@ -43,11 +46,17 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
                 //수정 후 다시 업데이트된 카테고리 리스트 화면을 가기 위한 코드
                 val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.beginTransaction().remove(this).commit()
-                fragmentManager.popBackStack()
 
+
+                var afterCate:String = editText.text.toString()
                 //홈 화면에 해당 카테고리가 띄워져 있다면 내용 갱신
                 //그 후 카테고리 화면 띄우게 하기
                 hoemActivity?.loadCategory(db)
+                val cate = binding2.cateName.text
+                hoemActivity?.refresh("${cate}", db)
+
+                fragmentManager.popBackStack()
+
             }
             else if(editText.text.toString().equals(cateName)){
                 //이전 카테고리 내용과 중복 된다면?
@@ -67,8 +76,8 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
             //삭제 후 다시 업데이트된 카테고리 리스트 화면을 가기 위한 코드
             val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction().remove(this).commit()
+            hoemActivity?.refresh("전체", db)
             fragmentManager.popBackStack()
-            hoemActivity?.loadCategory(db)
         }
 
         //뒤로가기 버튼
@@ -76,8 +85,9 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
             // 카테고리 리스트 화면으로 이동
             val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction().remove(this).commit()
-            fragmentManager.popBackStack()
             hoemActivity?.loadCategory(db)
+            hoemActivity?.refresh("전체", db)
+            fragmentManager.popBackStack()
         }
 
         return view
@@ -87,6 +97,7 @@ class BottomFragmentEdit(db: DBHelper, ctName:String)  : BottomSheetDialogFragme
     override fun onAttach(context: Context) {
         super.onAttach(context)
         binding = FragmentBottomEditBinding.inflate(layoutInflater)
+        binding2 = ActivityHomeBinding.inflate(layoutInflater)
         hoemActivity = getActivity() as HomeActivity
     }
 

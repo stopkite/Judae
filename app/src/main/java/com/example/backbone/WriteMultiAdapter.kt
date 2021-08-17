@@ -360,10 +360,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     true
                 }
                 holder.binding.clLinkArea.setOnClickListener {
-                    if(binding.linkTitle.text != "404Error")
+                    Log.d("태그", "${holder.binding.linkTitle.text}")
+                    if(holder.binding.linkTitle.text != "404Error")
                     {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${QuestionList.linkUri}"))
-                        binding.root.context.startActivity(intent)
+                        holder.binding.root.context.startActivity(intent)
                     }else{
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                 "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
@@ -373,7 +374,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
             }
             is MyContentHolder -> {
                 //holder.setContentList(items[position] as WriteContentData)
-
                 (holder as MyContentHolder).setContentList(items[position] as WriteContentData)
                 holder.setIsRecyclable(false)
 
@@ -522,10 +522,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 }
 
                 holder.binding2.clLinkArea.setOnClickListener {
-                    if(binding2.linkTitle.text != "404Error")
+                    Log.d("태그", "${holder.binding2.linkTitle.text}")
+                    if(holder.binding2.linkTitle.text != "404Error")
                     {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${WriteList.linkUri}"))
-                        binding2.root.context.startActivity(intent)
+                        holder.binding2.root.context.startActivity(intent)
                     }else{
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                 "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
@@ -642,11 +643,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
                 binding.aTxt.setText(spannableString)
             }
-
-            binding.clLinkArea.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
-                binding.root.context.startActivity(intent)
-            }
         }
 
 
@@ -714,6 +710,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                     title = doc.title()
                                     content = doc.select("meta[property=\"og:description\"]").attr("content")
                                 }
+
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+                                }
+
                                 url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
@@ -733,9 +735,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 if(title != "")
                                 {
                                     setLink(linkUri, title, content, bm1)
+                                }else{
+                                    isrun = false
                                 }
 
-                                isrun = false
+
                             }catch (e: UnknownHostException)
                             {
                                 Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
@@ -799,6 +803,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 {
                                     content = "${title}를 이용하실 수 있습니다."
                                 }
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
+                                }
+
                                 item.linkUri = linkUri
                                 item.linkTitle = title
                                 item.linkContent = content
@@ -840,6 +850,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
+
+            Log.d("태그", "MyContentHolder")
+
             if(item.contentImg == null)
             {
                 binding2.contentImg.visibility = View.GONE
@@ -852,8 +865,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
             binding2.clLinkArea.visibility = View.GONE
             binding2.linkInsertBtn.visibility = View.GONE
             binding2.linkInsertTxt.visibility = View.GONE
-
-            Log.d("태그", "${item.linkUri}")
             // 링크
             if(item.linkUri == ""||item.linkUri == null){
                 if(item.linkInsertTxt != null && item.linkInsertBtn != null)
@@ -899,11 +910,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 binding2.docContent.setText(item.docContent)
             }
 
-            binding2.clLinkArea.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${item.linkUri}"))
-                binding2.root.context.startActivity(intent)
-            }
-
         }
 
         fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
@@ -944,6 +950,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
             Thread(Runnable {
                 while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                    Log.d("태그", "링크 스레드 실행 중")
                     try {
                         if (linkUri.contains("naver")) {
                             if (!linkUri.contains("https://")) {
@@ -975,7 +982,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                     binding2.linkIcon.visibility = View.GONE
                                 }
 
-                                Log.d("태그", "제목: ${title}")
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
+                                }
+
                                 bis.close()
                                 item.linkUri = linkUri
                                 item.linkTitle = title
@@ -1006,7 +1018,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                             try{
                                 doc = Jsoup.connect("${linkUri}").get()
 
-                                Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
                                 var link: String
                                 if (linkUri.contains("google")) {
@@ -1052,6 +1063,13 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 {
                                     content = "${title}를 이용하실 수 있습니다."
                                 }
+
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
+                                }
+
                                 item.linkUri = linkUri
                                 item.linkTitle = title
                                 item.linkContent = content

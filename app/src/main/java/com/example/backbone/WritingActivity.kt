@@ -345,6 +345,7 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
+            Log.d("태그", "본문 버튼 눌림")
             var checknull = true
             for (i in 0..writeContentList.size-1){
                 if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
@@ -352,17 +353,19 @@ class WritingActivity : AppCompatActivity() {
                     checknull =  false
                 }
             }
-
+            Log.d("태그", "${checknull}")
             //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
             if(!checknull)
             {
 
             }else{
+                Log.d("태그", "본문은 추가가 되는 걸까?")
                 var id = writeContentList.size
                 writeContentList.add(WriteContentData(id, null, null, null, null, null,
                     null, null, null, "", null, null
                 ))
 
+                Log.d("태그", "id: ${writeContentList.size}")
                 writingAdapter.addItems(
                     WriteContentData(
                         id, null,null, null, null, null, null,

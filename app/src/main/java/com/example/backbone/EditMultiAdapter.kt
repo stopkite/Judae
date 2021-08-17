@@ -18,6 +18,7 @@ import android.text.*
 import android.text.style.AlignmentSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -315,10 +316,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     true
                 }
                 holder.binding.clLinkArea.setOnClickListener {
-                    if(binding.linkTitle.text != "404Error")
+                    Log.d("태그", "${holder.binding.linkTitle.text}")
+                    if(holder.binding.linkTitle.text != "404Error")
                     {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${QuestionList.linkUri}"))
-                        binding.root.context.startActivity(intent)
+                        holder.binding.root.context.startActivity(intent)
                     }else{
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                 "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
@@ -456,10 +458,11 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                     true
                 }
                 holder.binding2.clLinkArea.setOnClickListener {
-                    if(binding2.linkTitle.text != "404Error")
+                    Log.d("태그", "${holder.binding2.linkTitle.text}")
+                    if(holder.binding2.linkTitle.text != "404Error")
                     {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${WriteList.linkUri}"))
-                        binding2.root.context.startActivity(intent)
+                        holder.binding2.root.context.startActivity(intent)
                     }else{
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                                      "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
@@ -675,6 +678,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 item.linkContent = content
                                 item.linkIcon = bm1
 
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
+                                }
+
                                 if(title != "")
                                 {
                                     setLink(linkUri, title, content, bm1)
@@ -739,6 +748,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 if(content=="")
                                 {
                                     content = "${title}를 이용하실 수 있습니다."
+                                }
+
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
                                 }
 
                                 item.linkUri = linkUri
@@ -907,6 +922,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                     binding2.linkIcon.visibility = View.GONE
                                 }
 
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
+                                }
+
                                 bis.close()
                                 item.linkUri = linkUri
                                 item.linkTitle = title
@@ -978,6 +999,12 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 if(content=="")
                                 {
                                     content = "${title}를 이용하실 수 있습니다."
+                                }
+
+                                if(title == "")
+                                {
+                                    throw UnknownHostException()
+
                                 }
 
                                 item.linkUri = linkUri
