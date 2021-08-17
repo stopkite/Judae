@@ -32,7 +32,6 @@ class MyQListAdapter(context: MyQuestionActivity, var myQList:ArrayList<MyQListD
         holder.itemView.setOnClickListener {
             Intent(context, ReadingActivity::class.java).apply {
                 putExtra("data", myQList[position].writeID.toString())
-                Log.d("태그", "${myQList[position].writeID}")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }.run { context.startActivity(this) }
         }

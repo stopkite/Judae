@@ -81,7 +81,7 @@ class TitleTabFragment : Fragment() {
         for (i in 0..(wList.size - 1)) {
             myDocList.add(
                 SearchDocListData("${wList[i].Title}", "${wList[i].Category}",
-                    "${wList[i].Date}", "${wList[i].WriteID}")
+                    "| ${wList[i].Date}", "${wList[i].WriteID}")
             )
         }
         // 어댑터 변수 초기화

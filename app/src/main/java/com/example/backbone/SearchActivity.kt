@@ -1,10 +1,7 @@
 package com.example.backbone
 
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -173,7 +170,10 @@ class SearchActivity : AppCompatActivity() {
         fragmentTransaction!!.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         fragmentTransaction!!.commit()
 
-// 각각의 탭들을 누를 때, framgent 변경
+        qList = db.searchQuestion("")
+        wList = db.searchWriting("")
+
+        // 각각의 탭들을 누를 때, framgent 변경
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 // creating cases for fragment
@@ -203,6 +203,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {
 
             }
+
         })
 
         //검색 창 클릭 리스너

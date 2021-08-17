@@ -328,7 +328,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
             while(cursor2.moveToNext())
             {
-                q.WritingTitle = cursor2.getString(2)
+                q.WritingTitle = cursor2.getString(1)
             }
 
             qList.add(q)
@@ -381,7 +381,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
                 writing.WriteID = cursor3.getInt(0)
                 writing.Title = cursor3.getString(1)
-                writing.Date =  cursor3.getString(2)
+                if(writing.WriteID!=-1)
+                {
+                    var date =  cursor3.getString(2)
+                    writing.Date = date.substring(0, 10)
+                }
                 writing.Category =  cursor3.getString(3)
 
                 wList.add(writing)
