@@ -49,12 +49,16 @@ class SearchActivity : AppCompatActivity() {
                 when (tab.position) {
                     // '질문' 탭 화면으로 변경
 
-                    0 -> {fragment = QuestionTabFragment()
-                        Tag = "Q"}
+                    0 -> {
+                        fragment = QuestionTabFragment()
+                        Tag = "Q"
+                    }
 
                     // '글' 탭 화면으로 변경
-                    1 -> {fragment = TitleTabFragment()
-                        Tag = "W"}
+                    1 -> {
+                        fragment = TitleTabFragment()
+                        Tag = "W"
+                    }
                 }
 
 
@@ -83,13 +87,13 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(query)
                     wList = db.searchWriting(query)
                 }
-                for(fragment: Fragment in supportFragmentManager.fragments) {
+                for (fragment: Fragment in supportFragmentManager.fragments) {
                     if (fragment.isVisible) {
                         val tag = fragment.tag
                         lateinit var frag: Fragment
                         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
                         supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                        when(tag) {
+                        when (tag) {
                             "Q" -> {
                                 frag = QuestionTabFragment()
                             }
@@ -116,13 +120,13 @@ class SearchActivity : AppCompatActivity() {
                     wList = db.searchWriting(newText)
                 }
 
-                for(fragment: Fragment in supportFragmentManager.fragments) {
+                for (fragment: Fragment in supportFragmentManager.fragments) {
                     if (fragment.isVisible) {
                         val tag = fragment.tag
                         lateinit var frag: Fragment
                         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
                         supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                        when(tag) {
+                        when (tag) {
                             "Q" -> {
                                 frag = QuestionTabFragment()
                             }
@@ -162,6 +166,12 @@ class SearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        var tabLayout = binding.tabLayout
+        var tab: TabLayout.Tab? = tabLayout.getTabAt(0)
+        if (tab != null) {
+            tab.select()
+        }
+
         //화면을 키면 기본으로 보여지는 fragment 설정
         fragment = QuestionTabFragment()
         fragmentManager = supportFragmentManager
@@ -180,12 +190,16 @@ class SearchActivity : AppCompatActivity() {
                 when (tab.position) {
                     // '질문' 탭 화면으로 변경
 
-                    0 -> {fragment = QuestionTabFragment()
-                        Tag = "Q"}
+                    0 -> {
+                        fragment = QuestionTabFragment()
+                        Tag = "Q"
+                    }
 
                     // '글' 탭 화면으로 변경
-                    1 -> {fragment = TitleTabFragment()
-                        Tag = "W"}
+                    1 -> {
+                        fragment = TitleTabFragment()
+                        Tag = "W"
+                    }
                 }
 
 
@@ -215,13 +229,13 @@ class SearchActivity : AppCompatActivity() {
                     qList = db.searchQuestion(query)
                     wList = db.searchWriting(query)
                 }
-                for(fragment: Fragment in supportFragmentManager.fragments) {
+                for (fragment: Fragment in supportFragmentManager.fragments) {
                     if (fragment.isVisible) {
                         val tag = fragment.tag
                         lateinit var frag: Fragment
                         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
                         supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                        when(tag) {
+                        when (tag) {
                             "Q" -> {
                                 frag = QuestionTabFragment()
                             }
@@ -248,13 +262,13 @@ class SearchActivity : AppCompatActivity() {
                     wList = db.searchWriting(newText)
                 }
 
-                for(fragment: Fragment in supportFragmentManager.fragments) {
+                for (fragment: Fragment in supportFragmentManager.fragments) {
                     if (fragment.isVisible) {
                         val tag = fragment.tag
                         lateinit var frag: Fragment
                         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
                         supportFragmentManager.popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                        when(tag) {
+                        when (tag) {
                             "Q" -> {
                                 frag = QuestionTabFragment()
                             }
