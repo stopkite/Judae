@@ -330,12 +330,9 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
         binding.clLinkArea.visibility = View.GONE
 
-
-
         var WriteID: String = ""
         if(intent.hasExtra("data"))
         {
-            Log.d("태그", "${WriteID}")
             WriteID = intent.getStringExtra("data").toString()
             loadWriting(WriteID, writingAdapter)
         }
@@ -395,9 +392,6 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '사진' 버튼 클릭 리스너
         binding.addImgBtn.setOnClickListener {
-            //setContentView(R.layout.activity_writing)
-
-            //viewPager = findViewById(R.id.viewPager)
 
             //권한이 허용되어있는지 self로 체크(확인)
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=
@@ -499,14 +493,21 @@ class WritingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
-            // 카테고리 저장 팝업업
-            val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
+            if(countDT == 1 && countDC == 1 && countQT ==1)
+            {
+                // 카테고리 저장 팝업업
+                val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 
-            // view의 중복 사용을 방지하기 위한 코드
-            if (binding5.root.parent != null)
-                (binding5.root.parent as ViewGroup).removeView(binding5.root)
+                // view의 중복 사용을 방지하기 위한 코드
+                if (binding5.root.parent != null)
+                    (binding5.root.parent as ViewGroup).removeView(binding5.root)
 
-            val mAlertDialog = mBuilder.show()
+                val mAlertDialog = mBuilder.show()
+            }else{
+                var t1 = Toast.makeText(this, "내용을 모두 입력해주세요.", Toast.LENGTH_SHORT)
+                t1.show()
+            }
+
 
 
             // 확인 버튼 다이얼로그
