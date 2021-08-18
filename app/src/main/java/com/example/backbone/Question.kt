@@ -11,6 +11,8 @@ class Question {
 
     //MyQuestionActivity에 띄우기 위해 필요한 해당 질문이 속한 글 제목
     var WritingTitle: String = ""
+
+    var Date:String = ""
     //lateinit var Image: Blob
 
     //기본 생성자

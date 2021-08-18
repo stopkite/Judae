@@ -49,7 +49,7 @@ class QHolder(val binding: MyQuestionItemBinding, var context: Context): Recycle
     fun setQList(myQList:MyQListData){
         binding.myQImg.setImageDrawable(myQList.icon)
         binding.myQQContent.text = myQList.qContent
-        binding.myQQTitle.text = myQList.qTitle
+        binding.myQQTitle.text = myQList.qDate
 
     }
 

@@ -77,7 +77,7 @@ class QuestionTabFragment() : Fragment() {
         {
 
             myDocList.add(MyQListData(resources.getDrawable(R.drawable.ic_q_list_question),
-                    "${qList[i].Content}", "${qList[i].WritingTitle}", "${qList[i].WritingID}"))
+                    "${qList[i].Content}", "${qList[i].Date}", "${qList[i].WritingID}"))
 
         }
         // 어댑터 변수 초기화
