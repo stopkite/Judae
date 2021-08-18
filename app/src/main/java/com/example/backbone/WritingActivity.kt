@@ -499,8 +499,6 @@ class WritingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
-
-
             // 카테고리 저장 팝업업
             val mBuilder = AlertDialog.Builder(this, R.style.CateSaveDialogTheme).setView(binding5.root)
 

@@ -422,12 +422,17 @@ class EditingActivity : AppCompatActivity() {
                                     data.docContent,
                                     image,
                                     data.linkUri)
-                            db.InsertContent(content)
-                            try {
-                                contentID = db.getCurrentContentID()
-                            } catch (e: Exception) {
-                                //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
-                                contentID++
+                            if(content.content == "" && content.Image == null && content.link == "")
+                            {
+
+                            }else {
+                                db.InsertContent(content)
+                                try {
+                                    contentID = db.getCurrentContentID()
+                                } catch (e: Exception) {
+                                    //데이터(사진) 크기가 너무 큰 경우 발생하는 익셉션
+                                    contentID++
+                                }
                             }
                         }
                     }
