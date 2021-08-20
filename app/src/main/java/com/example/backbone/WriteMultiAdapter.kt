@@ -256,7 +256,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     //쓰레드 실행(한번만 실행함.)
                     holder.loadLink(linkUri, QuestionList, context)
                     holder.binding.qLinkAddBtn.setClickable(false)
-                    holder.binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
+                    binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
                 }
 
@@ -330,6 +330,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                         if (QuestionList.aImg == null) {
                             openGalleryForImage(QuestionList)
                         }
+
                     }
                 }
 
@@ -1257,6 +1258,8 @@ uri = linkUri
                         this.itemInfo?.aImg = img
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
+                        this.notifyDataSetChanged()
+                        binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                         binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                         notifyDataSetChanged()
                         Log.d("태그", "순서가 어케 되는 겨?onActivityResult 함수 안")
