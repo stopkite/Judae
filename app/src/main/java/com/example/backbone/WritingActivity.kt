@@ -345,7 +345,7 @@ class WritingActivity : AppCompatActivity() {
             Log.d("태그", "본문 버튼 눌림")
             var checknull = true
             for (i in 0..writeContentList.size-1){
-                if(writeContentList[i].docContent == null&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
+                if(writeContentList[i].docContent == ""&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
                 {
                     checknull =  false
                 }

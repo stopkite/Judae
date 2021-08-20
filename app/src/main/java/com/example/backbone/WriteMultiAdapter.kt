@@ -330,7 +330,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                         if (QuestionList.aImg == null) {
                             openGalleryForImage(QuestionList)
                         }
-
                     }
                 }
 
@@ -1258,8 +1257,9 @@ uri = linkUri
                         this.itemInfo?.aImg = img
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
-                        this.notifyDataSetChanged()
-                        this.binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
+                        binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
+                        notifyDataSetChanged()
+                        Log.d("태그", "순서가 어케 되는 겨?onActivityResult 함수 안")
 
                     }
                 }

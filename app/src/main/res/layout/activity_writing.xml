@@ -95,8 +95,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_launcher_background"
                 android:adjustViewBounds="true"
+                android:src="@drawable/ic_launcher_background"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/cl_inScroll"
                 app:layout_constraintStart_toStartOf="@id/cl_inScroll"
@@ -146,8 +146,8 @@
                 android:text="확인"
                 android:textColor="@color/ivory"
                 android:textSize="11sp"
-                app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
                 app:layout_constraintEnd_toEndOf="@id/docTitle"
+                app:layout_constraintStart_toEndOf="@id/linkInsertTxt"
                 app:layout_constraintTop_toBottomOf="@id/docContent" />
 
 
@@ -198,11 +198,11 @@
                     android:layout_height="0dp"
                     android:layout_marginEnd="3dp"
                     android:layout_marginBottom="8dp"
-                    tools:src="@drawable/ic_launcher_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/linkUri"
                     app:layout_constraintStart_toStartOf="@id/linkContent"
-                    app:layout_constraintTop_toBottomOf="@id/linkContent" />
+                    app:layout_constraintTop_toBottomOf="@id/linkContent"
+                    tools:src="@drawable/ic_launcher_background" />
 
                 <TextView
                     android:id="@+id/linkUri"
@@ -212,15 +212,14 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/roboto_regular"
                     android:singleLine="true"
-                    tools:text="www.naver.com"
                     android:textSize="9sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/linkIcon"
-                    app:layout_constraintTop_toBottomOf="@id/linkContent" />
+                    app:layout_constraintTop_toBottomOf="@id/linkContent"
+                    tools:text="www.naver.com" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <androidx.recyclerview.widget.RecyclerView
