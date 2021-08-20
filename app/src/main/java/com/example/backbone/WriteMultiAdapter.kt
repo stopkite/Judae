@@ -1,7 +1,6 @@
 package com.example.backbone
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
@@ -22,18 +21,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
-import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.BufferedInputStream
@@ -45,7 +41,7 @@ import java.net.UnknownHostException
 
 private var isrun:Boolean = false
 
-class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private lateinit var binding:WriteQuestionItemBinding
     private lateinit var binding2:WriteContentItemBinding
     private lateinit var binding3:ActivityWritingBinding
@@ -81,9 +77,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 return MyQHolder(binding)
             }
             TYPE_Content -> {
-                //MyContentHolder.create(parent)
                 binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return MyContentHolder(binding2)
+                binding3 = ActivityWritingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return MyContentHolder(binding2, activity)
             }
             else -> {
                 throw IllegalStateException("Not Found ViewHolder Type $viewType")
@@ -111,10 +107,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                        s: CharSequence,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                            s: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -152,10 +148,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                        s: CharSequence,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                            s: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -214,10 +210,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                        s: CharSequence,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                            s: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -258,33 +254,34 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     holder.binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
+
                 }
 
                 //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if (which == 0) {
-                                holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
-                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    holder.binding.clLinkArea.visibility = View.GONE
+                                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding.clLinkArea.visibility = View.GONE
+                                    holder.binding.qLinkAddBtn.setClickable(true)
+                                    holder.binding.qLinkAddBtn.imageTintList =
+                                            ColorStateList.valueOf(Color.WHITE)
+                                    QuestionList.linkUri = null
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if (which == 1) {
-                                holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.qLinkAddBtn.setClickable(true)
-                                holder.binding.qLinkAddBtn.imageTintList =
-                                    ColorStateList.valueOf(Color.WHITE)
-                                QuestionList.linkUri = null
-                            }
-                        }
-                        ).show()
+                            ).show()
                     true
                 }
 
@@ -294,16 +291,16 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     //binding.aImg.visibility = View.VISIBLE
                     //권한이 허용되어있는지 self로 체크(확인)
                     if (ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        ) != PackageManager.PERMISSION_GRANTED
+                                    context,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                            ) != PackageManager.PERMISSION_GRANTED
                     ) {
                         //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
                         //이전에 거부한 적이 있는지 확인
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                                activity,
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                            )
+                                        activity,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE
+                                )
                         ) {
                             var dlg = AlertDialog.Builder(context)
                             dlg.setTitle("권한이 필요한 이유")
@@ -311,9 +308,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                             //OK버튼
                             dlg.setPositiveButton("확인") { dialog, which ->
                                 ActivityCompat.requestPermissions(
-                                    activity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                                    REQUEST_READ_EXTERNAL_STORAGE
+                                        activity,
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                        REQUEST_READ_EXTERNAL_STORAGE
                                 )
                             }
                             dlg.setNegativeButton("취소", null)
@@ -321,9 +318,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                         } else {
                             //권한 요청
                             ActivityCompat.requestPermissions(
-                                activity,
-                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                                REQUEST_READ_EXTERNAL_STORAGE
+                                    activity,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                    REQUEST_READ_EXTERNAL_STORAGE
                             )
                         }
                     } else {
@@ -338,34 +335,33 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 holder.binding.aImg.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if (which == 0) {
-                                openGalleryForImage(QuestionList)
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    openGalleryForImage(QuestionList)
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding.aImg.visibility = View.GONE
+                                    holder.binding.qImgAddBtn.setClickable(true)
+                                    holder.binding.qImgAddBtn.imageTintList =
+                                            ColorStateList.valueOf(Color.WHITE)
+                                    QuestionList.aImg = null
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if (which == 1) {
-                                holder.binding.aImg.visibility = View.GONE
-                                holder.binding.qImgAddBtn.setClickable(true)
-                                holder.binding.qImgAddBtn.imageTintList =
-                                    ColorStateList.valueOf(Color.WHITE)
-                                QuestionList.aImg = null
-                            }
-                        }
-                        ).show()
+                            ).show()
                     true
                 }
                 holder.binding.clLinkArea.setOnClickListener {
                     Log.d("태그", "${holder.binding.linkTitle.text}")
-                    if(holder.binding.linkTitle.text != "404Error")
-                    {
+                    if (holder.binding.linkTitle.text != "404Error") {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${QuestionList.linkUri}"))
                         holder.binding.root.context.startActivity(intent)
-                    }else{
+                    } else {
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                 "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
                     }
@@ -373,7 +369,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
             }
             is MyContentHolder -> {
-                //holder.setContentList(items[position] as WriteContentData)
                 (holder as MyContentHolder).setContentList(items[position] as WriteContentData)
                 holder.setIsRecyclable(false)
 
@@ -387,10 +382,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                        s: CharSequence,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                            s: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -430,10 +425,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                        s: CharSequence,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                            s: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -468,33 +463,35 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                     var linkUri2 = WriteList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
-                    holder.loadLink(linkUri2, WriteList, context)
                     holder.binding2.linkInsertTxt.setText("")
+                    binding3.docContent.requestFocus(View.FOCUS_DOWN)
+                    holder.loadLink(linkUri2, WriteList, context)
+                    activity.hideKeyboard()
                 }
 
                 //링크 롱클릭 리스너 (변경, 삭제) //뭔가 이상함 ㅎㅎ;;
                 holder.binding2.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if(which == 0){
-                                holder.binding2.clLinkArea.visibility = View.GONE
-                                //removeItems(position)
-                                holder.binding2.linkInsertBtn.visibility = View.VISIBLE
-                                holder.binding2.linkInsertTxt.visibility = View.VISIBLE
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    holder.binding2.clLinkArea.visibility = View.GONE
+                                    //removeItems(position)
+                                    holder.binding2.linkInsertBtn.visibility = View.VISIBLE
+                                    holder.binding2.linkInsertTxt.visibility = View.VISIBLE
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding2.clLinkArea.visibility = View.GONE
+                                    removeItems(position)
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if(which == 1){
-                                holder.binding2.clLinkArea.visibility = View.GONE
-                                removeItems(position)
-                            }
-                        }
-                        ).show()
+                            ).show()
                     true
                 }
 
@@ -502,32 +499,31 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 holder.binding2.contentImg.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                        AlertDialog.Builder(context, R.style.LongClickPopUp)
+                            AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                            // 변경 버튼을 클릭했을 때
-                            if (which == 0) {
-                                EditGalleryImage(WriteList)
+                                // 변경 버튼을 클릭했을 때
+                                if (which == 0) {
+                                    EditGalleryImage(WriteList)
+                                }
+                                // 삭제 버튼을 클릭했을 때
+                                else if (which == 1) {
+                                    holder.binding2.contentImg.visibility = View.GONE
+                                    removeItems(position)
+                                }
                             }
-                            // 삭제 버튼을 클릭했을 때
-                            else if (which == 1) {
-                                holder.binding2.contentImg.visibility = View.GONE
-                                removeItems(position)
-                            }
-                        }
-                        ).show()
+                            ).show()
                     true
                 }
 
                 holder.binding2.clLinkArea.setOnClickListener {
                     Log.d("태그", "${holder.binding2.linkTitle.text}")
-                    if(holder.binding2.linkTitle.text != "404Error")
-                    {
+                    if (holder.binding2.linkTitle.text != "404Error") {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${WriteList.linkUri}"))
                         holder.binding2.root.context.startActivity(intent)
-                    }else{
+                    } else {
                         Toast.makeText(context, "         유효하지 않은 링크입니다. \n" +
                                 "            링크를 수정해주세요.", Toast.LENGTH_SHORT).show()
                     }
@@ -657,7 +653,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 binding.linkTitle.text = title
                 binding.linkContent.text = content
                 binding.linkIcon.setImageBitmap(bm1)
-            }catch(e:Exception)
+            }catch (e: Exception)
             {
                 if(bm1 == null)
                 {
@@ -668,7 +664,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 binding.linkContent.text = content
                 binding.linkIcon.setImageBitmap(bm1)
             }
+
         }
+
 
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
@@ -677,7 +675,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
         var url1: URL? = null
         var content:String = ""
 
-        fun loadLink(linkUri: String, item: WriteQuestionData, context:Context) {
+        fun loadLink(linkUri: String, item: WriteQuestionData, context: Context) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
             var linkUri = linkUri
             title = ""
@@ -693,7 +691,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
-                            try{
+                            try {
                                 //linkIcon에 파비콘 추출해서 삽입하기
                                 val doc = Jsoup.connect("${linkUri}").get()
 
@@ -711,8 +709,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                     content = doc.select("meta[property=\"og:description\"]").attr("content")
                                 }
 
-                                if(title == "")
-                                {
+                                if (title == "") {
                                     throw UnknownHostException()
                                 }
 
@@ -732,30 +729,30 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 item.linkContent = content
                                 item.linkIcon = bm1
 
-                                if(title != "")
-                                {
+                                if (title != "") {
                                     setLink(linkUri, title, content, bm1)
-                                }else{
+                                } else {
                                     isrun = false
                                 }
 
 
-                            }catch (e: UnknownHostException)
-                            {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                        " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            } catch (e: UnknownHostException) {
+                                Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
+                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
+                                }
                                 isrun = false
                                 item.linkUri = ""
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                setLink("", "404Error", "유효하지 않은 링크입니다.", null)
                             }
 
                         } else {
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
-                            var doc:Document
-                            try{
-                               doc = Jsoup.connect("${linkUri}").get()
+                            var doc: Document
+                            try {
+                                doc = Jsoup.connect("${linkUri}").get()
 
                                 Log.d("태그", "Document로 불러오나?")
                                 var favicon: String
@@ -799,12 +796,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 if (bm1 == null) {
                                     binding.linkIcon.visibility = View.GONE
                                 }
-                                if(content=="")
-                                {
+                                if (content == "") {
                                     content = "${title}를 이용하실 수 있습니다."
                                 }
-                                if(title == "")
-                                {
+                                if (title == "") {
                                     throw UnknownHostException()
 
                                 }
@@ -814,22 +809,21 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 item.linkContent = content
                                 item.linkIcon = bm1
 
-                                 if(item.linkUri != "")
-                                {
+                                if (item.linkUri != "") {
                                     setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon)
                                 }
 
 
                                 isrun = false
-                            }catch (e: UnknownHostException)
-                            {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                        " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            } catch (e: UnknownHostException) {
+                                Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
+                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
+                                }
                                 isrun = false
                                 item.linkUri = ""
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                setLink("", "404Error", "유효하지 않은 링크입니다.", null)
                             }
-
                         }
                     } catch (e: Exception) {
 
@@ -840,7 +834,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
     }
 
     // 본문 Hodler
-    class MyContentHolder(val binding2: WriteContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
+    class MyContentHolder(val binding2: WriteContentItemBinding, var activity: WritingActivity) : RecyclerView.ViewHolder(binding2.root) {
 
         // 링크 삽입 관련 메소드
         var linkUri: String = ""
@@ -850,8 +844,12 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
-
-            Log.d("태그", "MyContentHolder")
+            Log.d("태그", "setContentList${item.id}")
+            Log.d("태그", "setContentList${item.docContent}")
+            if(item.id == activity.currentContentID)
+            {
+                binding2.docContent.requestFocus(View.FOCUS_DOWN)
+            }
 
             if(item.contentImg == null)
             {
@@ -912,7 +910,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
 
         }
 
-        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
+        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?, item: WriteContentData)
         {
             try{
                 if(bm1 == null)
@@ -923,7 +921,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 binding2.linkTitle.text = title
                 binding2.linkContent.text = content
                 binding2.linkIcon.setImageBitmap(bm1)
-            }catch(e:Exception)
+            }catch (e: Exception)
             {
                 if(bm1 == null)
                 {
@@ -934,12 +932,18 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                 binding2.linkContent.text = content
                 binding2.linkIcon.setImageBitmap(bm1)
             }
+            updateItems(item)
+            Log.d("태그", "링크 스레드 실행 끝")
+        }
+
+        private fun updateItems(item: WriteContentData) {
+            var WriteList = item as WriteContentData
+            activity.writeContentList[WriteList.id].docContent = WriteList.docContent
+            activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
         }
 
 
-
-
-        fun loadLink(linkUri: String, item: WriteContentData, context:Context) {
+        fun loadLink(linkUri: String, item: WriteContentData, context: Context) {
             //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
             var linkUri = linkUri
             title = ""
@@ -956,7 +960,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
-                            try{
+                            try {
                                 //linkIcon에 파비콘 추출해서 삽입하기
                                 val doc = Jsoup.connect("${linkUri}").get()
 
@@ -982,8 +986,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                     binding2.linkIcon.visibility = View.GONE
                                 }
 
-                                if(title == "")
-                                {
+                                if (title == "") {
                                     throw UnknownHostException()
 
                                 }
@@ -994,28 +997,28 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 item.linkContent = content
                                 item.linkIcon = bm1
 
-                                if(title != "")
-                                {
-                                    setLink(linkUri, title, content, bm1)
+                                if (title != "") {
+                                    setLink(linkUri, title, content, bm1, item)
                                 }
 
                                 isrun = false
-                            }catch (e: UnknownHostException)
-                            {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                        " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            } catch (e: UnknownHostException) {
+                                Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
+                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
+                                }
                                 isrun = false
                                 item.linkInsertTxt = null
                                 item.linkUri = ""
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                setLink("", "404Error", "유효하지 않은 링크입니다.", null, item)
                             }
 
                         } else {
                             if (!linkUri.contains("https://")) {
                                 linkUri = "https://${linkUri}"
                             }
-                            var doc:Document
-                            try{
+                            var doc: Document
+                            try {
                                 doc = Jsoup.connect("${linkUri}").get()
 
                                 var favicon: String
@@ -1059,13 +1062,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 if (bm1 == null) {
                                     binding2.linkIcon.visibility = View.GONE
                                 }
-                                if(content=="")
-                                {
+                                if (content == "") {
                                     content = "${title}를 이용하실 수 있습니다."
                                 }
 
-                                if(title == "")
-                                {
+                                if (title == "") {
                                     throw UnknownHostException()
 
                                 }
@@ -1075,19 +1076,19 @@ class WriteMultiAdapter(writingActivity: WritingActivity,contxt:Context): Recycl
                                 item.linkContent = content
                                 item.linkIcon = bm1
 
-                                if(item.linkUri != "")
-                                {
-                                    setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon)
+                                if (item.linkUri != "") {
+                                    setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon, item)
                                 }
                                 isrun = false
-                            }catch (e: UnknownHostException)
-                            {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                        " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            } catch (e: UnknownHostException) {
+                                Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
+                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
+                                }
                                 isrun = false
                                 item.linkInsertTxt = null
                                 item.linkUri = ""
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                setLink("", "404Error", "유효하지 않은 링크입니다.", null, item)
                             }
 
                         }
@@ -1121,7 +1122,7 @@ uri = linkUri
 
     override fun getItemCount() = items.size
 
-    fun updateItems(item: WriteItem, position: Int)
+    fun updateItems(item: WriteItem, position:Int)
     {
         //var activity:WritingActivity = WritingActivity()
         var WriteList = item as WriteContentData
@@ -1152,21 +1153,20 @@ uri = linkUri
      */
 
     fun addItems(item: WriteItem) {
-        this.items.add(item)
+        Log.d("태그", "addItems 불러와지냐?")
+        Log.d("태그", "${item.id}")
+        this.items.add(getItemCount(), item)
+        var itemsize = getItemCount(); // 배열 사이즈 다시 확인
+        Log.d("태그", "여기까지 내려와지나?")
+        Log.d("태그", "${isrun}")
         this.notifyDataSetChanged()
+        this.notifyItemInserted(getItemCount())
     }
     fun removeItems(position: Int) {
         this.items.removeAt(position)
         this.notifyItemRemoved(position)
         this.notifyDataSetChanged()
 
-    }
-
-    fun AddAnswer(item: WriteItem, position: Int) {
-        //선택한 대답 바로 밑에 내용 추가.
-        this.items.add(position+1, item)
-
-        this.notifyDataSetChanged()
     }
 
     interface ItemClickListener{
@@ -1233,7 +1233,7 @@ uri = linkUri
     @Override
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode){
-            0->{
+            0 -> {
                 // 본문에서 사진 변경할 때 사용
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_TAKE_PHOTO) {
                     if (data != null) {

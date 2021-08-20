@@ -3,6 +3,7 @@ package com.example.backbone
 import android.Manifest
 import android.R.attr.button
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,6 +14,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -23,6 +25,7 @@ import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.backbone.databinding.*
+import com.google.android.material.internal.ContextUtils.getActivity
 import org.jsoup.Jsoup
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
@@ -35,6 +38,7 @@ import java.time.format.DateTimeFormatter
 
 
 class WritingActivity : AppCompatActivity() {
+    var currentContentID: Int  =-1
     private lateinit var binding:ActivityWritingBinding
 
     private lateinit var binding2:WriteQuestionItemBinding
@@ -353,6 +357,7 @@ class WritingActivity : AppCompatActivity() {
 
             }else{
                 var id = writeContentList.size
+                currentContentID = id
                 writeContentList.add(WriteContentData(id, null, null, null, null, null,
                     null, null, null, "", null, null
                 ))
@@ -364,6 +369,10 @@ class WritingActivity : AppCompatActivity() {
                     )
                 )
             }
+
+            binding.docContent.requestFocus(View.FOCUS_DOWN)
+            binding.docList.scrollToPosition(writingAdapter.getItemCount()-1)
+            writingAdapter.notifyItemInserted(writingAdapter.getItemCount())
         }
 
         //하단의 '링크' 버튼 클릭 리스너
@@ -504,7 +513,7 @@ class WritingActivity : AppCompatActivity() {
 
 
 
-            // 확인 버튼 다이얼로그
+            // 저장 버튼 다이얼로그
             binding5.cateSaveBtn.setOnClickListener {
                 var index = saveCateAdapter.selectedPosition
                 var category = categoryList[index]
@@ -642,6 +651,10 @@ class WritingActivity : AppCompatActivity() {
     }
         }
 
+    }
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
