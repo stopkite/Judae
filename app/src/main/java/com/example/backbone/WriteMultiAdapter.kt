@@ -75,7 +75,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
             TYPE_Question -> {
                 binding = WriteQuestionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 binding3 = ActivityWritingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return MyQHolder(binding)
+                return MyQHolder(binding, activity)
             }
             TYPE_Content -> {
                 binding2 = WriteContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -251,7 +251,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     var linkUri = QuestionList.linkUri.toString()
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
-                    holder.loadLink(linkUri, QuestionList, context)
+                    activity.QuestionloadLink(linkUri, QuestionList, context)
                     holder.binding.qLinkAddBtn.setClickable(false)
                     binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
@@ -538,7 +538,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
         }
     }
     // 질문 Holder
-    class MyQHolder(val binding: WriteQuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyQHolder(val binding: WriteQuestionItemBinding, var activity: WritingActivity) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
 
             val REQUEST_READ_EXTERNAL_STORAGE = 1000
@@ -628,7 +628,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 }else{
                     // 링크 정보를 불러오는 것이 처음 일때!
                     binding.clLinkArea.visibility = View.VISIBLE
-                    loadLink(item.linkUri.toString(), item, WritingActivity())
+                    activity.QuestionloadLink(item.linkUri.toString(), item, WritingActivity())
                 }
             }
 
@@ -647,196 +647,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
         }
 
 
-        fun setLink(linkUri: String, title: String, content: String, bm1: Bitmap?)
-        {
-            try{
-                if(bm1 == null)
-                {
-                    binding.linkIcon.visibility = View.GONE
-                }
-                binding.linkUri.text = linkUri
-                binding.linkTitle.text = title
-                binding.linkContent.text = content
-                binding.linkIcon.setImageBitmap(bm1)
-            }catch (e: Exception)
-            {
-                if(bm1 == null)
-                {
-                    binding.linkIcon.visibility = View.GONE
-                }
-                binding.linkUri.text = linkUri
-                binding.linkTitle.text = title
-                binding.linkContent.text = content
-                binding.linkIcon.setImageBitmap(bm1)
-            }
-
-        }
 
 
-        // 링크 삽입 관련 메소드
-        var linkUri: String = ""
-        var title: String = ""
-        var bm1: Bitmap? = null
-        var url1: URL? = null
-        var content:String = ""
 
-        fun loadLink(linkUri: String, item: WriteQuestionData, context: Context) {
-            //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-            var linkUri = linkUri
-            title = ""
-            bm1 = null
-            url1 = null
-            content = ""
-            isrun = true
-            var thisContext:Context = context
-
-            Thread(Runnable {
-                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
-                    try {
-                        if (linkUri.contains("naver")) {
-                            if (!linkUri.contains("https://")) {
-                                linkUri = "https://${linkUri}"
-                            }
-                            try {
-                                //linkIcon에 파비콘 추출해서 삽입하기
-                                val doc = Jsoup.connect("${linkUri}").get()
-
-                                //제목 들고 오기
-                                val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                                if (linkUri.contains("blog")) {
-                                    val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
-                                    title = doc2.title()
-                                    content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                                } else if (linkUri == "https://www.naver.com/") {
-                                    title = doc.title()
-                                    content = doc.select("meta[name=\"og:description\"]").attr("content")
-                                } else {
-                                    title = doc.title()
-                                    content = doc.select("meta[property=\"og:description\"]").attr("content")
-                                }
-
-                                if (title == "") {
-                                    throw UnknownHostException()
-                                }
-
-                                url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
-                                var conn: URLConnection = url1!!.openConnection()
-                                conn.connect()
-                                var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
-                                bm1 = BitmapFactory.decodeStream(bis)
-                                if (bm1 == null) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
-
-                                bis.close()
-                                item.linkUri = linkUri
-                                item.linkTitle = title
-                                item.linkContent = content
-                                item.linkIcon = bm1
-
-                                if (title != "") {
-                                    setLink(linkUri, title, content, bm1)
-                                } else {
-                                    isrun = false
-                                }
-
-
-                            } catch (e: UnknownHostException) {
-                                Handler(Looper.getMainLooper()).post {
-                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
-                                }
-                                isrun = false
-                                item.linkUri = ""
-                                setLink("", "404Error", "유효하지 않은 링크입니다.", null)
-                            }
-
-                        } else {
-                            if (!linkUri.contains("https://")) {
-                                linkUri = "https://${linkUri}"
-                            }
-                            var doc: Document
-                            try {
-                                doc = Jsoup.connect("${linkUri}").get()
-
-                                Log.d("태그", "Document로 불러오나?")
-                                var favicon: String
-                                var link: String
-                                if (linkUri.contains("google")) {
-                                    favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                    link = "https://www.google.com" + favicon
-                                    url1 = URL("${link}")
-                                } else {
-                                    //파비콘 이미지 들고 오기
-                                    favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                    if (favicon == "") {
-                                        favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
-                                    }
-                                    if (!favicon.contains("https:")) {
-                                        link = "https://" + favicon
-                                        url1 = URL("${link}")
-                                    } else {
-                                        url1 = URL("${favicon}")
-                                    }
-                                }
-
-                                try {
-                                    var conn: URLConnection = url1!!.openConnection()
-                                    conn.connect()
-                                    var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
-                                    bm1 = BitmapFactory.decodeStream(bis)
-                                    bis.close()
-                                } catch (e: Exception) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
-                                title = doc.title()
-
-                                content = doc.select("meta[name=\"description\"]").attr("content")
-                                if (content == "") {
-                                    content = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                                }
-                                if (title == "") {
-                                    title = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                                }
-                                if (bm1 == null) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
-                                if (content == "") {
-                                    content = "${title}를 이용하실 수 있습니다."
-                                }
-                                if (title == "") {
-                                    throw UnknownHostException()
-
-                                }
-
-                                item.linkUri = linkUri
-                                item.linkTitle = title
-                                item.linkContent = content
-                                item.linkIcon = bm1
-
-                                if (item.linkUri != "") {
-                                    setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon)
-                                }
-
-
-                                isrun = false
-                            } catch (e: UnknownHostException) {
-                                Handler(Looper.getMainLooper()).post {
-                                    Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                            " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show()
-                                }
-                                isrun = false
-                                item.linkUri = ""
-                                setLink("", "404Error", "유효하지 않은 링크입니다.", null)
-                            }
-                        }
-                    } catch (e: Exception) {
-
-                    }
-
-                }
-            }).start()
-        }
     }
 
     // 본문 Hodler
