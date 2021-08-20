@@ -298,7 +298,6 @@ class WritingActivity : AppCompatActivity() {
         val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
         val first = pref.getBoolean("isFirst", false)
         if (first == false) {
-            Log.d("Is first Time?", "first")
             val editor = pref.edit()
             editor.putBoolean("isFirst", true)
             editor.commit()
@@ -317,7 +316,6 @@ class WritingActivity : AppCompatActivity() {
                 )
             )
         } else {
-            Log.d("Is first Time?", "not first")
         }
 
         //시작할 때 title과 content만 뜨도록 하기
@@ -342,7 +340,6 @@ class WritingActivity : AppCompatActivity() {
 
         //하단의 '본문' 버튼 클릭 리스너
         binding.addContentBTN.setOnClickListener {
-            Log.d("태그", "본문 버튼 눌림")
             var checknull = true
             for (i in 0..writeContentList.size-1){
                 if(writeContentList[i].docContent == ""&&writeContentList[i].contentImg ==null && writeContentList[i].linkUri == null)
@@ -350,19 +347,16 @@ class WritingActivity : AppCompatActivity() {
                     checknull =  false
                 }
             }
-            Log.d("태그", "${checknull}")
             //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
             if(!checknull)
             {
 
             }else{
-                Log.d("태그", "본문은 추가가 되는 걸까?")
                 var id = writeContentList.size
                 writeContentList.add(WriteContentData(id, null, null, null, null, null,
                     null, null, null, "", null, null
                 ))
 
-                Log.d("태그", "id: ${writeContentList.size}")
                 writingAdapter.addItems(
                     WriteContentData(
                         id, null,null, null, null, null, null,
@@ -516,7 +510,7 @@ class WritingActivity : AppCompatActivity() {
                 var category = categoryList[index]
                 //1. 첫번째 Writing 테이블에 입력해주기 - 내용만 입력하면 됨!
 
-                //Log로 확인하라고 일부러 주석 안지웠어요 ~
+
                 // 제목, 본문, 사진, 링크, 질문, 답변 객체에 따로 저장
                 // 제목 객체 저장 <sWriting>
                 var writing = Writing(docTitle.getText().toString(), today, category)
