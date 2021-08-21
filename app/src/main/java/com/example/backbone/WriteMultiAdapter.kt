@@ -134,11 +134,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //EditText의 Text가 변경된 것을 다른 곳에 통보할 때 사용.
                     override fun afterTextChanged(s: Editable) {
-                        Log.d("태그", "afterTextChanged")
                         QuestionList.Date = activity.today
-                        //updateQuestions에 저장해주기.
-                        //updateQuestionItems(QuestionList, position)
-                        //Log.d("태그", "afterTextChanged ${QuestionList.id}: ${QuestionList.aTxt}")
                     }
                 })
 
@@ -179,9 +175,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                         //updateQuestionItems(QuestionList, position)
                         if (s.length > 0) {
                             activity.countQT = 1
-                            Log.d("count", "${activity.countDT}")
-                            Log.d("count", "${activity.countDC}")
-                            Log.d("count", "${activity.countQT}")
                             if (activity.countDT == 1 && activity.countDC == 1 && activity.countQT == 1) {
                                 activity.setEnabledTrue()
                             } else {
@@ -358,7 +351,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     true
                 }
                 holder.binding.clLinkArea.setOnClickListener {
-                    Log.d("태그", "${holder.binding.linkTitle.text}")
                     if (holder.binding.linkTitle.text != "404Error") {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${QuestionList.linkUri}"))
                         holder.binding.root.context.startActivity(intent)
@@ -397,16 +389,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     //count: 새로 추가된 문자열의 개수
                     override fun onTextChanged(s: CharSequence, i: Int, i2: Int, i3: Int) {
                         if (binding2.docContent.isFocusable() && !s.toString().equals(preTxt)) {
-                            /*
-                                                        Log.d("태그", "초기화 되었는지 확인: ${afterTxt}")
-                            Log.d("태그", "아이템 아이디: ${WriteList.id}")
-                            Log.d("태그", "${s.toString()}")
-                            Log.d("태그", "질문 수정중")
-                             */
+
 
                             try {
-                                //afterTxt = binding.aTxt.getText().toString()
-                                //items[position].
                                 WriteList.docContent = s.toString()
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -524,7 +509,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 }
 
                 holder.binding2.clLinkArea.setOnClickListener {
-                    Log.d("태그", "${holder.binding2.linkTitle.text}")
                     if (holder.binding2.linkTitle.text != "404Error") {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("${WriteList.linkUri}"))
                         holder.binding2.root.context.startActivity(intent)
@@ -617,8 +601,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
         var content:String = ""
 
         fun setContentList(item: WriteContentData) {
-            Log.d("태그", "setContentList${item.id}")
-            Log.d("태그", "setContentList${item.docContent}")
 
             if(item.id == activity.currentContentID)
             {
@@ -707,7 +689,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 binding2.linkIcon.setImageBitmap(bm1)
             }
             updateItems(item)
-            Log.d("태그", "링크 스레드 실행 끝")
         }
 
         private fun updateItems(item: WriteContentData) {
@@ -771,12 +752,8 @@ uri = linkUri
      */
 
     fun addItems(item: WriteItem) {
-        Log.d("태그", "addItems 불러와지냐?")
-        Log.d("태그", "${item.id}")
         this.items.add(getItemCount(), item)
         var itemsize = getItemCount(); // 배열 사이즈 다시 확인
-        Log.d("태그", "여기까지 내려와지나?")
-        Log.d("태그", "${isrun}")
         this.notifyDataSetChanged()
         this.notifyItemInserted(getItemCount())
     }
@@ -880,7 +857,6 @@ uri = linkUri
                         binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                         binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                         notifyDataSetChanged()
-                        Log.d("태그", "순서가 어케 되는 겨?onActivityResult 함수 안")
 
                     }
                 }
