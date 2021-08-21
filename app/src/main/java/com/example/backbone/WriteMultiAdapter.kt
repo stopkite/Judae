@@ -108,10 +108,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int,
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -149,10 +149,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int,
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -211,10 +211,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int,
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -262,27 +262,27 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 holder.binding.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                            AlertDialog.Builder(context, R.style.LongClickPopUp)
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                                // 변경 버튼을 클릭했을 때
-                                if (which == 0) {
-                                    holder.binding.clLinkArea.visibility = View.GONE
-                                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
-                                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
-                                }
-                                // 삭제 버튼을 클릭했을 때
-                                else if (which == 1) {
-                                    holder.binding.clLinkArea.visibility = View.GONE
-                                    holder.binding.qLinkAddBtn.setClickable(true)
-                                    holder.binding.qLinkAddBtn.imageTintList =
-                                            ColorStateList.valueOf(Color.WHITE)
-                                    QuestionList.linkUri = null
-                                }
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding.linkInsertTxt.visibility = View.VISIBLE
                             }
-                            ).show()
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.clLinkArea.visibility = View.GONE
+                                holder.binding.qLinkAddBtn.setClickable(true)
+                                holder.binding.qLinkAddBtn.imageTintList =
+                                    ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.linkUri = null
+                            }
+                        }
+                        ).show()
                     true
                 }
 
@@ -292,16 +292,16 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     //binding.aImg.visibility = View.VISIBLE
                     //권한이 허용되어있는지 self로 체크(확인)
                     if (ContextCompat.checkSelfPermission(
-                                    context,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE
-                            ) != PackageManager.PERMISSION_GRANTED
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
                     ) {
                         //허용되지 않았을 때 - 권한이 필요한 알림창을 올림 )
                         //이전에 거부한 적이 있는지 확인
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                                        activity,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE
-                                )
+                                activity,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            )
                         ) {
                             var dlg = AlertDialog.Builder(context)
                             dlg.setTitle("권한이 필요한 이유")
@@ -309,9 +309,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                             //OK버튼
                             dlg.setPositiveButton("확인") { dialog, which ->
                                 ActivityCompat.requestPermissions(
-                                        activity,
-                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                                        REQUEST_READ_EXTERNAL_STORAGE
+                                    activity,
+                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                    REQUEST_READ_EXTERNAL_STORAGE
                                 )
                             }
                             dlg.setNegativeButton("취소", null)
@@ -319,9 +319,9 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                         } else {
                             //권한 요청
                             ActivityCompat.requestPermissions(
-                                    activity,
-                                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                                    REQUEST_READ_EXTERNAL_STORAGE
+                                activity,
+                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                REQUEST_READ_EXTERNAL_STORAGE
                             )
                         }
                     } else {
@@ -336,25 +336,25 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 holder.binding.aImg.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                            AlertDialog.Builder(context, R.style.LongClickPopUp)
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                                // 변경 버튼을 클릭했을 때
-                                if (which == 0) {
-                                    openGalleryForImage(QuestionList)
-                                }
-                                // 삭제 버튼을 클릭했을 때
-                                else if (which == 1) {
-                                    holder.binding.aImg.visibility = View.GONE
-                                    holder.binding.qImgAddBtn.setClickable(true)
-                                    holder.binding.qImgAddBtn.imageTintList =
-                                            ColorStateList.valueOf(Color.WHITE)
-                                    QuestionList.aImg = null
-                                }
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                openGalleryForImage(QuestionList)
                             }
-                            ).show()
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding.aImg.visibility = View.GONE
+                                holder.binding.qImgAddBtn.setClickable(true)
+                                holder.binding.qImgAddBtn.imageTintList =
+                                    ColorStateList.valueOf(Color.WHITE)
+                                QuestionList.aImg = null
+                            }
+                        }
+                        ).show()
                     true
                 }
                 holder.binding.clLinkArea.setOnClickListener {
@@ -383,10 +383,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int,
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -426,10 +426,10 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                     //val thisitem= item
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int,
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int,
                     ) {
                         preTxt = s.toString()
                     }
@@ -478,25 +478,25 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 holder.binding2.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                            AlertDialog.Builder(context, R.style.LongClickPopUp)
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                                // 변경 버튼을 클릭했을 때
-                                if (which == 0) {
-                                    holder.binding2.clLinkArea.visibility = View.GONE
-                                    //removeItems(position)
-                                    holder.binding2.linkInsertBtn.visibility = View.VISIBLE
-                                    holder.binding2.linkInsertTxt.visibility = View.VISIBLE
-                                }
-                                // 삭제 버튼을 클릭했을 때
-                                else if (which == 1) {
-                                    holder.binding2.clLinkArea.visibility = View.GONE
-                                    removeItems(position)
-                                }
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                //removeItems(position)
+                                holder.binding2.linkInsertBtn.visibility = View.VISIBLE
+                                holder.binding2.linkInsertTxt.visibility = View.VISIBLE
                             }
-                            ).show()
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding2.clLinkArea.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
                     true
                 }
 
@@ -504,22 +504,22 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                 holder.binding2.contentImg.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
-                            AlertDialog.Builder(context, R.style.LongClickPopUp)
+                        AlertDialog.Builder(context, R.style.LongClickPopUp)
 
                     selectDialog
-                            .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
+                        .setItems(selectList, DialogInterface.OnClickListener { dialog, which ->
 
-                                // 변경 버튼을 클릭했을 때
-                                if (which == 0) {
-                                    EditGalleryImage(WriteList)
-                                }
-                                // 삭제 버튼을 클릭했을 때
-                                else if (which == 1) {
-                                    holder.binding2.contentImg.visibility = View.GONE
-                                    removeItems(position)
-                                }
+                            // 변경 버튼을 클릭했을 때
+                            if (which == 0) {
+                                EditGalleryImage(WriteList)
                             }
-                            ).show()
+                            // 삭제 버튼을 클릭했을 때
+                            else if (which == 1) {
+                                holder.binding2.contentImg.visibility = View.GONE
+                                removeItems(position)
+                            }
+                        }
+                        ).show()
                     true
                 }
 
@@ -544,112 +544,66 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
             val REQUEST_READ_EXTERNAL_STORAGE = 1000
             var context = binding.aImg.context
 
+            // 질문 제목
             if(item.qTitle == null){
-                //binding.qTitle.visibility = View.GONE
+            binding.qTitle.visibility = View.GONE
             }else{
-                binding.qTitle.setText(item.qTitle)
+            binding.qTitle.setText(item.qTitle)
             }
 
-
-            if(item.aImg == null)
-            {
-                binding.aImg.visibility = View.GONE
-            }else{
-                // 대답 삽입 이미지
+            binding.aImg.visibility = View.VISIBLE
+            if (item.aImg != null) {
+                //삽입 이미지
                 binding.aImg.setImageBitmap(item.aImg)
                 binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
+            } else {
+                binding.aImg.visibility = View.GONE
             }
 
+            binding.clLinkArea.visibility = View.GONE
+            binding.linkInsertTxt.visibility = View.GONE
+            binding.linkInsertBtn.visibility = View.GONE
+            binding.addAnswer.visibility = View.GONE
+
             // 링크
-            if(item.linkLayout == null){
+            if (item.linkUri == "" || item.linkUri == null || item.linkUri == "null") {
+                //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             } else {
                 binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
-            }
-
-            // 링크 삽입이 이뤄지는 곳(editText영역)
-            if(item.linkInsertTxt == null){
-                binding.linkInsertTxt.visibility = View.GONE
-            }
-
-            // 링크 삽입이 이뤄지는 곳(버튼 영역)
-            if(item.linkInsertTxt == null){
-                binding.linkInsertBtn.visibility = View.GONE
-            }
-
-            // 링크된 요소들
-            binding.linkTitle.setText(item.linkTitle)
-            binding.linkUri.setText(item.linkUri)
-           // binding.linkIcon.setImageDrawable(item.linkIcon.dr)
-
-            // 대답
-            binding.aTxt.setText(item.aTxt)
-
-            // 대답 추가 버튼
-            if(item.addAnswer == null){
-                binding.addAnswer.visibility = View.GONE
-            }else {
-                binding.addAnswer.setImageDrawable(item.addAnswer?.drawable)
-            }
-
-            //이미지 추가 버튼
-            if(item.qImgAddBtn == null){
-                binding.qImgAddBtn.visibility = View.GONE
-            }else {
-                binding.qImgAddBtn.setImageDrawable(item.qImgAddBtn?.drawable)
-            }
-            //링크
-            if(item.qLinkAddBtn == null){
-                binding.qLinkAddBtn.visibility = View.GONE
-            }else {
-                binding.qLinkAddBtn.setImageDrawable(item.qLinkAddBtn?.drawable)
-            }
-
-            // 링크
-            if(item.linkUri == ""||item.linkUri == null){
-                //링크 내용이 없으면?
-                binding.clLinkArea.visibility = View.GONE
-            }else{
                 // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
-                if(item.linkContent != null || item.linkTitle != null)
-                {
+                if (item.linkContent != null || item.linkTitle != null) {
                     binding.clLinkArea.visibility = View.VISIBLE
                     binding.linkTitle.text = item.linkTitle.toString()
                     binding.linkContent.text = item.linkContent.toString()
                     binding.linkUri.text = item.linkUri.toString()
-                    if(item.linkIcon != null)
-                    {
+                    if (item.linkIcon != null) {
                         binding.linkIcon.setImageBitmap(item.linkIcon)
-                    }else{
+                    } else {
                         binding.linkIcon.visibility = View.GONE
                     }
                     //링크 내용이 있으면?
                     //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
-                }else{
+                }
+                else {
                     // 링크 정보를 불러오는 것이 처음 일때!
                     binding.clLinkArea.visibility = View.VISIBLE
                     activity.QuestionloadLink(item.linkUri.toString(), item, WritingActivity())
                 }
             }
 
-            if(item.Date != null)
-            {
-                var date: String? = item.Date
-                var text:String = item.aTxt + "\n${date}"
-                var start = text.indexOf(date!!)
-                var end = start + date!!.length
-                val spannableString = SpannableString(text)
-                spannableString.setSpan(ForegroundColorSpan(Color.GRAY), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                spannableString.setSpan(RelativeSizeSpan(0.8f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
-                binding.aTxt.setText(spannableString)
+            // 대답 내용 삽입
+            if (item.aTxt != "" && item.aTxt != null) {
+                binding.addAnswer.visibility = View.GONE
+                binding.aTxt.setClickable(false)
+                binding.aTxt.setFocusable(false)
+                binding.qImgAddBtn.setClickable(false)
+                binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
+                binding.qLinkAddBtn.setEnabled(false)
+                binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
+
             }
         }
-
-
-
-
-
     }
 
     // 본문 Hodler

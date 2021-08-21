@@ -632,158 +632,158 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
         var content: String = ""
 
         fun loadLink(linkUri: String, item: EditloadQuestionData, context:Context) {
-            //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
-            var linkUri = linkUri
-            title = ""
-            bm1 = null
-            url1 = null
-            content = ""
-            isrun = true
+        //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
+        var linkUri = linkUri
+        title = ""
+        bm1 = null
+        url1 = null
+        content = ""
+        isrun = true
 
-            Thread(Runnable {
-                while (isrun) {//네이버의 경우에만 해당되는 것 같아.
-                    try {
-                        if (linkUri.contains("naver")) {
-                            if (!linkUri.contains("https://")) {
-                                linkUri = "https://${linkUri}"
+        Thread(Runnable {
+            while (isrun) {//네이버의 경우에만 해당되는 것 같아.
+                try {
+                    if (linkUri.contains("naver")) {
+                        if (!linkUri.contains("https://")) {
+                            linkUri = "https://${linkUri}"
+                        }
+                        try{
+                            //linkIcon에 파비콘 추출해서 삽입하기
+                            val doc = Jsoup.connect("${linkUri}").get()
+
+                            //제목 들고 오기
+                            val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
+                            if (linkUri.contains("blog")) {
+                                val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
+                                title = doc2.title()
+                                content = doc2.select("meta[property=\"og:description\"]").attr("content")
+                            } else if (linkUri == "https://www.naver.com/") {
+                                title = doc.title()
+                                content = doc.select("meta[name=\"og:description\"]").attr("content")
+                            } else {
+                                title = doc.title()
+                                content = doc.select("meta[property=\"og:description\"]").attr("content")
                             }
-                            try{
-                                //linkIcon에 파비콘 추출해서 삽입하기
-                                val doc = Jsoup.connect("${linkUri}").get()
+                            url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
+                            var conn: URLConnection = url1!!.openConnection()
+                            conn.connect()
+                            var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
+                            bm1 = BitmapFactory.decodeStream(bis)
+                            if (bm1 == null) {
+                                binding.linkIcon.visibility = View.GONE
+                            }
+                            bis.close()
+                            item.linkUri = linkUri
+                            item.linkTitle = title
+                            item.linkContent = content
+                            item.linkIcon = bm1
 
-                                //제목 들고 오기
-                                val link2 = doc.select("body").select("iframe[id=mainFrame]").attr("src")//.attr("content")
-                                if (linkUri.contains("blog")) {
-                                    val doc2 = Jsoup.connect("https://blog.naver.com/${link2}").get()
-                                    title = doc2.title()
-                                    content = doc2.select("meta[property=\"og:description\"]").attr("content")
-                                } else if (linkUri == "https://www.naver.com/") {
-                                    title = doc.title()
-                                    content = doc.select("meta[name=\"og:description\"]").attr("content")
-                                } else {
-                                    title = doc.title()
-                                    content = doc.select("meta[property=\"og:description\"]").attr("content")
+                            if(title == "")
+                            {
+                                throw UnknownHostException()
+
+                            }
+
+                            if(title != "")
+                            {
+                                setLink(linkUri, title, content, bm1)
+                            }
+
+                            isrun = false
+                        }catch (e: UnknownHostException)
+                        {
+                            Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            isrun = false
+                            setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                        }
+
+                    } else {
+                        if (!linkUri.contains("https://")) {
+                            linkUri = "https://${linkUri}"
+                        }
+                        var doc:Document
+                        try{
+                            doc = Jsoup.connect("${linkUri}").get()
+                            var favicon: String
+                            var link: String
+                            if (linkUri.contains("google")) {
+                                favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
+                                link = "https://www.google.com" + favicon
+                                url1 = URL("${link}")
+                            } else {
+                                //파비콘 이미지 들고 오기
+                                favicon = doc.select("link[rel=\"icon\"]").attr("href")
+                                if (favicon == "") {
+                                    favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
                                 }
-                                url1 = URL("https://ssl.pstatic.net/sstatic/search/favicon/favicon_191118_pc.ico")
+                                if (!favicon.contains("https:")) {
+                                    link = "https://" + favicon
+                                    url1 = URL("${link}")
+                                } else {
+                                    url1 = URL("${favicon}")
+                                }
+                            }
+
+                            try {
                                 var conn: URLConnection = url1!!.openConnection()
                                 conn.connect()
                                 var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
                                 bm1 = BitmapFactory.decodeStream(bis)
-                                if (bm1 == null) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
                                 bis.close()
-                                item.linkUri = linkUri
-                                item.linkTitle = title
-                                item.linkContent = content
-                                item.linkIcon = bm1
+                            } catch (e: Exception) {
+                                binding.linkIcon.visibility = View.GONE
+                            }
+                            title = doc.title()
 
-                                if(title == "")
-                                {
-                                    throw UnknownHostException()
-
-                                }
-
-                                if(title != "")
-                                {
-                                    setLink(linkUri, title, content, bm1)
-                                }
-
-                                isrun = false
-                            }catch (e: UnknownHostException)
+                            content = doc.select("meta[name=\"description\"]").attr("content")
+                            if (content == "") {
+                                content = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if (title == "") {
+                                title = doc.select("meta[property=\"og:site_name\"]").attr("content")
+                            }
+                            if (bm1 == null) {
+                                binding.linkIcon.visibility = View.GONE
+                            }
+                            if(content=="")
                             {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
-                                isrun = false
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                content = "${title}를 이용하실 수 있습니다."
                             }
 
-                        } else {
-                            if (!linkUri.contains("https://")) {
-                                linkUri = "https://${linkUri}"
-                            }
-                            var doc:Document
-                            try{
-                                doc = Jsoup.connect("${linkUri}").get()
-                                var favicon: String
-                                var link: String
-                                if (linkUri.contains("google")) {
-                                    favicon = doc.select("meta[itemprop=\"image\"]").attr("content")
-                                    link = "https://www.google.com" + favicon
-                                    url1 = URL("${link}")
-                                } else {
-                                    //파비콘 이미지 들고 오기
-                                    favicon = doc.select("link[rel=\"icon\"]").attr("href")
-                                    if (favicon == "") {
-                                        favicon = doc.select("link[rel=\"SHORTCUT ICON\"]").attr("href")
-                                    }
-                                    if (!favicon.contains("https:")) {
-                                        link = "https://" + favicon
-                                        url1 = URL("${link}")
-                                    } else {
-                                        url1 = URL("${favicon}")
-                                    }
-                                }
-
-                                try {
-                                    var conn: URLConnection = url1!!.openConnection()
-                                    conn.connect()
-                                    var bis: BufferedInputStream = BufferedInputStream(conn.getInputStream())
-                                    bm1 = BitmapFactory.decodeStream(bis)
-                                    bis.close()
-                                } catch (e: Exception) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
-                                title = doc.title()
-
-                                content = doc.select("meta[name=\"description\"]").attr("content")
-                                if (content == "") {
-                                    content = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                                }
-                                if (title == "") {
-                                    title = doc.select("meta[property=\"og:site_name\"]").attr("content")
-                                }
-                                if (bm1 == null) {
-                                    binding.linkIcon.visibility = View.GONE
-                                }
-                                if(content=="")
-                                {
-                                    content = "${title}를 이용하실 수 있습니다."
-                                }
-
-                                if(title == "")
-                                {
-                                    throw UnknownHostException()
-
-                                }
-
-                                item.linkUri = linkUri
-                                item.linkTitle = title
-                                item.linkContent = content
-                                item.linkIcon = bm1
-
-                                if(item.linkUri != "")
-                                {
-                                    setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon)
-                                }
-
-
-                                isrun = false
-                            }catch (e: UnknownHostException)
+                            if(title == "")
                             {
-                                Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
-                                        " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
-                                isrun = false
-                                setLink("","404Error", "유효하지 않은 링크입니다.", null)
+                                throw UnknownHostException()
+
                             }
 
+                            item.linkUri = linkUri
+                            item.linkTitle = title
+                            item.linkContent = content
+                            item.linkIcon = bm1
+
+                            if(item.linkUri != "")
+                            {
+                                setLink(item.linkUri!!, item.linkTitle!!, item.linkContent!!, item.linkIcon)
+                            }
+
+
+                            isrun = false
+                        }catch (e: UnknownHostException)
+                        {
+                            Handler(Looper.getMainLooper()).post { Toast.makeText(context, "                 유효하지 않은 링크입니다. \n" +
+                                    " 입력을 원한다면 하이퍼링크를 이용해주세요.", Toast.LENGTH_SHORT).show() }
+                            isrun = false
+                            setLink("","404Error", "유효하지 않은 링크입니다.", null)
                         }
-                    } catch (e: Exception) {
 
                     }
+                } catch (e: Exception) {
+
                 }
-            }).start()
-        }
+            }
+        }).start()
     }
+}
 
     // 본문 Hodler
     class LoadContentHolder(val binding2: EditContentItemBinding) : RecyclerView.ViewHolder(binding2.root) {
