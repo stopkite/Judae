@@ -64,8 +64,8 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 암호 설정 화면으로 이동
-            val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
-            startActivity(lockSetIntent)
+            //val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockScreenMenuActivity::class.java)
+            //startActivity(lockSetIntent)
             finish()
         }
 
@@ -185,7 +185,6 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                         // 암호 변경 화면일 경우 암호 설정 화면으로 넘어가기
                         val lockSetIntent = Intent(this@LockedScreenOnceActivity, LockedScreenSetActivity::class.java)
                         lockSetIntent.putExtra("reset", "${UserPassWord}")
-                        Log.d("태그","${UserPassWord}")
                         startActivity(lockSetIntent)
                         finish()
                     } else if (intent.hasExtra("no")) {
@@ -207,7 +206,6 @@ class LockedScreenOnceActivity : AppCompatActivity(), View.OnClickListener {
                     //해당 내용 UI에 반영하기 위해 콜백 함수로 이용.
                     passNumber(PWList)
                 }
-
             }
         }
 

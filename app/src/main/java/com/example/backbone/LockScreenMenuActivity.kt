@@ -48,9 +48,6 @@ class LockScreenMenuActivity : AppCompatActivity() {
         //뒤로가기 버튼 클릭 리스너
         binding.backBtn.setOnClickListener {
             // 홈 화면으로 이동
-            val HomeIntent = Intent(this@LockScreenMenuActivity, HomeActivity::class.java)
-            HomeIntent.putExtra("home", "lock")
-            startActivity(HomeIntent)
             finish()
         }
 
@@ -60,6 +57,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
                 // 스위치 활성화시 암호 설정 화면으로 이동
                 val lockScreenSetIntent = Intent(this@LockScreenMenuActivity, LockedScreenSetActivity::class.java)
                 startActivity(lockScreenSetIntent)
+                finish()
             }
 
             else {
@@ -67,6 +65,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
                 val lockScreenIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
                 lockScreenIntent.putExtra("no", "no")
                 startActivity(lockScreenIntent)
+                finish()
             }
 
         }
@@ -77,6 +76,7 @@ class LockScreenMenuActivity : AppCompatActivity() {
             val lockScreenSetIntent = Intent(this@LockScreenMenuActivity, LockedScreenOnceActivity::class.java)
             lockScreenSetIntent.putExtra("reset", "reset")
             startActivity(lockScreenSetIntent)
+            finish()
         }
 
         setContentView(binding.root)

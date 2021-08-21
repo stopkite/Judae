@@ -45,7 +45,7 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(binding.root)
 
-        UserPassWord = intent.getStringExtra("key").toString()
+        UserPassWord = intent.getStringExtra("reset").toString()
 
         // 각각의 버튼에 클릭 이벤트 달아주기
         binding.key0.setOnClickListener(this)
@@ -65,7 +65,7 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
         binding.pwSetBtn.setOnClickListener {
             if(PWList.size==4)
             {
-                if(intent.hasExtra("key"))
+                if(intent.hasExtra("reset"))
                 {
                     db.updatePassword(UserPassWord, passCode)
                 }else{

@@ -164,6 +164,8 @@ class HomeActivity : AppCompatActivity() {
      }
      override fun onResume(){
          super.onResume()
+
+
          //DBHelper와 이어주도록 클래스 선언
          var db: DBHelper = DBHelper(this)
          // HomeDocListData 클래스를 담는 배열 생성

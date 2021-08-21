@@ -439,7 +439,6 @@ class ReadingActivity : AppCompatActivity() {
             }
         }
 
-
         binding.docList.adapter = readingAdapter
     }
 

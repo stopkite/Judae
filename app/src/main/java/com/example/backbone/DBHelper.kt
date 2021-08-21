@@ -250,7 +250,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
             while(cursor2.moveToNext())
             {
-                q.WritingTitle = cursor2.getString(2)
+
+                var date = cursor2.getString(2)
+
+                q.Date = date.substring(0,10)
             }
 
             anyArray.add(q)
@@ -323,18 +326,18 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
             var QuestionID: Int = cursor.getInt(2)
             var Content: String = cursor.getString(3)
             var q: Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
-            
-            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
-            while(cursor2.moveToNext())
-            {
-                if(q.WritingID != "")
+
+            if(q.WritingID != "")
+            {            // 검색한 질문 객체에 해당 되는 글의 제목 받아오기
+                var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
+                while(cursor2.moveToNext())
                 {
                     var date:String = cursor2.getString(2)
                     q.Date = date.substring(0,10)
                 }
 
             }
+
 
             qList.add(q)
         }

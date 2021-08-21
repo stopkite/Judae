@@ -159,24 +159,24 @@ class LockedScreenActivity : AppCompatActivity(), View.OnClickListener {
                 binding.PW4.colorFilter = null
             }
             1 -> {  PW1 = PWList[0]
-                binding.PW1.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW1.setColorFilter(resources.getColor(R.color.greenMain))
                 binding.PW2.colorFilter = null
                 binding.PW3.colorFilter = null
                 binding.PW4.colorFilter = null
             }
 
             2 -> {  PW2 = PWList[1]
-                binding.PW2.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW2.setColorFilter(resources.getColor(R.color.greenMain))
                 binding.PW3.colorFilter = null
                 binding.PW4.colorFilter = null
             }
 
             3 -> {  PW3 = PWList[2]
-                binding.PW3.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW3.setColorFilter(resources.getColor(R.color.greenMain))
                 binding.PW4.colorFilter = null}
 
             4 -> {  PW4 = PWList[3]
-                binding.PW4.setColorFilter(resources.getColor(R.color.purple_200))
+                binding.PW4.setColorFilter(resources.getColor(R.color.greenMain))
                 passCode = PW1 + PW2 + PW3 + PW4 // 4자리 비밀번호 입력받기 완료!
 
                 // 여기서 passCode가 기존에 등록해 놓은 것과 일치하면 홈화면으로 통과시키기
