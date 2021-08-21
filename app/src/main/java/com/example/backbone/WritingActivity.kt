@@ -728,7 +728,6 @@ class WritingActivity : AppCompatActivity() {
                 //질문만 있고, 대답 없는 경우.
                 writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
                     null,null,null, null, false, false))
-
             }
         }
 
@@ -906,7 +905,6 @@ class WritingActivity : AppCompatActivity() {
         var content:String = ""
         Thread(Runnable {
             while (isrun) {//네이버의 경우에만 해당되는 것 같아.
-                Log.d("태그", "adapterContentloadLink 링크 스레드 실행 중")
                 try {
                     if (linkUri.contains("naver")) {
                         if (!linkUri.contains("https://")) {
@@ -1085,7 +1083,6 @@ class WritingActivity : AppCompatActivity() {
         }
         writeContentList[item.id].docContent = item.docContent
         writeContentList[item.id].linkUri = item.linkUri
-        Log.d("태그", "링크 스레드 실행 끝")
     }
 
 
@@ -1167,8 +1164,6 @@ class WritingActivity : AppCompatActivity() {
                         var doc: Document
                         try {
                             doc = Jsoup.connect("${linkUri}").get()
-
-                            Log.d("태그", "Document로 불러오나?")
                             var favicon: String
                             var link: String
                             if (linkUri.contains("google")) {

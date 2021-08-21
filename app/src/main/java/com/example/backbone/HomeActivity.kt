@@ -255,7 +255,6 @@ class HomeActivity : AppCompatActivity() {
      //현재 홈화면에 띄워진 리스트 내용만 갱신해주는 것임! refresh함수와 다름.
      //업데이트된 내용 리사이클러뷰에 갱신한 후 카테고리 리스트 다시 띄워줌
      public fun loadCategory(db: DBHelper){
-         Log.d("태그", "loadCategory")
 
          // HomeDocListData 클래스를 담는 배열 생성
          val myDocList = ArrayList<HomeDocListData>()

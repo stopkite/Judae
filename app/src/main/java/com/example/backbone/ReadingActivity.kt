@@ -437,8 +437,8 @@ class ReadingActivity : AppCompatActivity() {
 
                 }
             }
-
         }
+
 
         binding.docList.adapter = readingAdapter
     }
@@ -530,7 +530,6 @@ class ReadingActivity : AppCompatActivity() {
                         if (title == null) {
                             binding.clLinkArea.visibility = View.GONE
                         }
-
                         var adapter = ReadMultiAdapter(this)
                         if (bm1 == null) {
                             binding.linkIcon.visibility = View.GONE
@@ -540,6 +539,8 @@ class ReadingActivity : AppCompatActivity() {
                         binding.linkTitle.text = title
                         binding.linkContent.text = content
                         binding.linkIcon.setImageBitmap(bm1)
+                        adapter.notifyDataSetChanged()
+                        isrun = false
                     })
                 } catch (e: Exception) {
                     //링크가 올바르지 않을때->안내 토스트 메시지를 띄움
