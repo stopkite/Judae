@@ -177,7 +177,6 @@ class EditingActivity : AppCompatActivity() {
                         mAlertDialog.dismiss()
                     }
                 }
-
         }
 
 
@@ -285,7 +284,7 @@ class EditingActivity : AppCompatActivity() {
         binding.addQBtn.setOnClickListener {
             //수정 버전
             //답변이 한 개일 경우.
-            writingAdapter.addItems(EditloadQuestionData(currentContentID, "", null,null,clinkLayout,null,null,null,
+            writingAdapter.addItems(EditloadQuestionData(currentContentID, "", "",null,clinkLayout,null,null,null,
                     null,null,addBtn, qAddImgBtn,qAddLinkBtn, today, false, true, false))
             save++
         }
@@ -528,25 +527,28 @@ class EditingActivity : AppCompatActivity() {
 
     // 뒤로 가기 버튼 눌렀을 때
     override fun onBackPressed() {
-        val mBuilder = AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
-
-        // view의 중복 사용을 방지하기 위한 코드
-        if (binding4.root.parent != null)
-            (binding4.root.parent as ViewGroup).removeView(binding4.root)
-
-        val mAlertDialog = mBuilder.show()
-
-        // 확인 버튼 다이얼로그
-        binding4.confirmBtn.setOnClickListener {
-            // 홈 화면으로 이동
-            //val backIntent = Intent(this@WritingActivity, HomeActivity::class.java)
-            //startActivity(backIntent)
+        if (writeUpdateList.size == 0 && writeDeleteList.size == 0 && save == 0) {
             finish()
-        }
+        } else {
+            val mBuilder =
+                    AlertDialog.Builder(this, R.style.MyDialogTheme).setView(binding4.root)
 
-        //취소 버튼 다이얼로그
-        binding4.cancelBtn.setOnClickListener {
-            mAlertDialog.dismiss()
+            // view의 중복 사용을 방지하기 위한 코드
+            if (binding4.root.parent != null)
+                (binding4.root.parent as ViewGroup).removeView(binding4.root)
+
+            val mAlertDialog = mBuilder.show()
+
+            // 확인 버튼 다이얼로그
+            binding4.confirmBtn.setOnClickListener {
+                // 이전 화면으로 이동
+                finish()
+            }
+
+            //취소 버튼 다이얼로그
+            binding4.cancelBtn.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
         }
     }
 
@@ -1246,7 +1248,6 @@ class EditingActivity : AppCompatActivity() {
             binding2.linkContent.text = content
             binding2.linkIcon.setImageBitmap(bm1)
         }
-
     }
 
     private fun init(ba:ByteArray?): Bitmap {

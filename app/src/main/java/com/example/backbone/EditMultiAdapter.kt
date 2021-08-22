@@ -99,7 +99,7 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
 
                 //답변 추가 버튼 눌렀을 때 리스너
                 holder.binding.addAnswer.setOnClickListener {
-                    if(QuestionList.qTitle == ""||QuestionList.qTitle == null)
+                    if(QuestionList.qTitle == "")
                     {
                         Toast.makeText(context, "질문을 입력해주세요.", Toast.LENGTH_SHORT).show()
                     }else if(QuestionList.aTxt == ""||QuestionList.aTxt == null)
