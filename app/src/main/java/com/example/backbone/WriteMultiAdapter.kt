@@ -580,12 +580,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
             if (item.aTxt != "" && item.aTxt != null) {
                 binding.aTxt.setText( item.aTxt.toString() )
                 binding.addAnswer.visibility = View.GONE
-                binding.aTxt.setClickable(false)
-                binding.aTxt.setFocusable(false)
-                binding.qImgAddBtn.setClickable(false)
-                binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
-                binding.qLinkAddBtn.setEnabled(false)
-                binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
 
             }
         }
