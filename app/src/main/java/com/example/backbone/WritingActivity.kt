@@ -285,7 +285,8 @@ class WritingActivity : AppCompatActivity() {
             //위에 본문 입력이 안 된 것이 있으면 본문 추가가 되지 않음.
             if(!checknull)
             {
-
+                //내용을 다 입력해달라는 본문 메시지를 입력함.
+                Toast.makeText(this, "본문 내용을 모두 입력해주세요.", Toast.LENGTH_LONG).show()
             }else{
                 var id = writeContentList.size
                 currentContentID = id
