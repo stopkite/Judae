@@ -158,69 +158,6 @@ class WritingActivity : AppCompatActivity() {
         // 리스트뷰에 방금 생성한 adapter를 붙여서 화면에 연결해준다.
         cateList.adapter = saveCateAdapter
 
-        class qSave(
-            qTitle: String, aImg: ByteArray?,
-            linkLayout: View?, linkTitle: String, linkUri: String, linkIcon: ByteArray?,
-            aTxt: String,
-        ) {
-            var qTitle = qTitle
-            var aImg = aImg
-            var linkLayout = linkLayout
-            var linkTitle = linkTitle
-            var linkUri = linkUri
-            var linkIcon = linkIcon
-            var aTxt = aTxt
-
-        }
-        var questionsave = ArrayList<qSave>()
-
-        class cSave(
-            contentImg: ByteArray?,
-            linkLayout: View?, linkTitle: String?, linkContent: String?, linkUri:String?, linkIcon: Bitmap?,
-            docContent: String) {
-            var contentImg = contentImg
-            var linkLayout = linkLayout
-            var linkTitle = linkTitle
-            var linkContent = linkContent
-            var linkUri = linkUri
-            var linkIcon = linkIcon
-            var docContent = docContent
-
-        }
-        var contentsave = ArrayList<cSave>()
-
-        //저장하기 위한 객체 생성
-        //answer 객체
-        class sAnswer(content: String?, date: String, image: Bitmap?, link: String?){
-            var content = content
-            var date = date
-            var image = image
-            var link = link
-        }
-        var AnswerArray = ArrayList<sAnswer>()
-
-        //content 객체
-        class sContent(content: String?, image: Bitmap?, link: String?) {
-            var content = content
-            var image = image
-            var link = link
-        }
-        var ContentArray = ArrayList<sContent>()
-
-        //question 객체
-        class sQuestion (content: String?) {
-            var content = content
-        }
-        var QuestionArray = ArrayList<sQuestion>()
-
-        //writing 객체
-        class sWriting (title: String, date: String, category: String) {
-            var title = title
-            var date = date
-            var category = category
-        }
-
-
         val docTitle = binding.docTitle
         val docTitleText: String = docTitle.getText().toString()
 
@@ -260,7 +197,6 @@ class WritingActivity : AppCompatActivity() {
 
 
         fun drawableToByteArray(drawable: Bitmap?): ByteArray {
-            //val bitmapDrawable = drawable
             val bitmap = drawable
             val stream = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, stream)
@@ -334,13 +270,6 @@ class WritingActivity : AppCompatActivity() {
         binding.linkTitle.visibility = View.GONE
         binding.clLinkArea.visibility = View.GONE
 
-        var WriteID: String = ""
-        if(intent.hasExtra("data"))
-        {
-            WriteID = intent.getStringExtra("data").toString()
-            loadWriting(WriteID, writingAdapter)
-        }
-
         // 리사이클러 뷰 타입 설정
         binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
@@ -392,7 +321,6 @@ class WritingActivity : AppCompatActivity() {
                 )
             )
         }
-
 
 
         //하단의 '사진' 버튼 클릭 리스너
@@ -639,7 +567,6 @@ class WritingActivity : AppCompatActivity() {
 
                 var t1 = Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT)
                 t1.show()
-                //startActivity(Intent(this, HomeActivity::class.java))
                 finish()
 
 
@@ -659,140 +586,6 @@ class WritingActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    private fun loadWriting(WriteID: String, writingAdapter: WriteMultiAdapter)
-    {
-        binding2 = WriteQuestionItemBinding.inflate(layoutInflater)
-        val q_linkLayout = binding2.clLinkArea
-        val c_linkLayout = binding3.clLinkArea
-        var isrun:Boolean = false
-//맨처음 본문-질문에 띄울 내용 불러오기.(multi adapter 사용X)
-        var WritingArray: ArrayList<Content> = db.getWriting("${WriteID}")
-        binding.docTitle.setText("${WritingArray[0].WritingTitle}")
-        binding.docContent.setText("${WritingArray[0].content}")
-
-        if(WritingArray[0].link != "")
-        {
-            //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
-            isrun = true
-            //쓰레드 실행(한번만 실행함.)
-            loadLink(WritingArray[0].link)
-        }else{
-            binding.clLinkArea.visibility = View.GONE
-        }
-        //사진 띄우기 **** - 나중에 하기.
-        if(WritingArray[0].Image != null)
-        {
-            //binding.contentImg.setImageBitmap()
-        }else{
-            binding.contentImg.visibility = View.GONE
-        }
-
-        var WritingSize = WritingArray.size
-
-        //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
-        var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[0].WriteID, WritingArray[0].ContentID.toString())
-        var QuestionIDSize = QuestionIDArray.size
-        for(i in 0..QuestionIDSize-1)
-        {
-            //Question에 해당하는 대답 객체 리스트 받아오기
-            var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
-            var AnswerSize = AnswerArray.size
-            var LastSize = AnswerSize-1
-            if(AnswerSize==1)
-            {
-                //답변이 한 개일 경우.
-                writingAdapter.addItems(loadQuestionData(i.toString()+"-0", QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,null,AnswerArray[0].Link,
-                    null, null, AnswerArray[0].Content, AnswerArray[0].Date, false, false))
-            } else if(AnswerSize>1)
-            {
-                //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
-                //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
-                //답변의 갯수 만큼 반복문 - 첫번째
-                for(j in 0..AnswerSize-2)
-                {
-                    if(j==0)
-                    {
-                        writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                            null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
-                        writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
-                    }else{
-                        writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", null,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                            null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
-                        writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
-                    }
-                }
-                //마지막 내용!
-                writingAdapter.addItems(loadQuestionData(i.toString()+"-last", null,AnswerArray[LastSize].Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
-                    null,null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false, false))
-            }else{
-                //질문만 있고, 대답 없는 경우.
-                writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                    null,null,null, null, false, false))
-            }
-        }
-
-
-
-        //맨 처음 내용을 출력한 후 그다음 부터 본문 Content 덩이를 출력함.
-        for(i in 1..WritingSize-1)
-        {
-            // 본문 추가
-            writingAdapter.addItems(loadContentData(0, WritingArray[i].Image,c_linkLayout,null,null,WritingArray[i].link,
-                null,null,WritingArray[i].content))
-
-            //한 글 내용에 들어가 있는 질문 객체 리스트 구하기. 1-1), 1-2)번 질문의 ID
-            var QuestionIDArray: ArrayList<Question> = db.getQuestionID(WritingArray[i].WriteID, WritingArray[i].ContentID.toString())
-            var QuestionIDSize = QuestionIDArray.size
-
-            for(i in 0..QuestionIDSize-1)
-            {
-                //Question에 해당하는 대답 객체 리스트 받아오기
-                var AnswerArray: ArrayList<Answer> = db.getAnswer(QuestionIDArray[i].QuestionID)
-                var AnswerSize = AnswerArray.size
-                var LastSize = AnswerSize-1
-                if(AnswerSize==1)
-                {
-                    //답변이 한 개일 경우.
-                    writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,AnswerArray[0].Image,q_linkLayout,null,null,AnswerArray[0].Link,
-                        null,null,AnswerArray[0].Content, AnswerArray[0].Date, false, false))
-                } else if(AnswerSize>1)
-                {
-                    //답변의 갯수가 2개 이상일 때 -> 기존에 있던 답변에서 답변을 추가했을 경우!
-                    //답변수가 1개 이상이면? -> 맨 마지막 내용을 제외하고는 흰색 내용으로 띄워야 함.
-                    //답변의 갯수 만큼 반복문 - 첫번째
-                    //
-                    for(j in 0..AnswerSize-2)
-                    {
-                        if(j==0)
-                        {
-                            writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", QuestionIDArray[i].Content,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
-                            writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
-                        }else{
-                            writingAdapter.addItems(loadQuestionData(i.toString()+"-${j}", null,AnswerArray[j].Image,q_linkLayout,null,null,AnswerArray[j].Link,
-                                null,null,AnswerArray[j].Content, AnswerArray[j].Date, true, false))
-                            writingAdapter.notifyItemChanged(writingAdapter.itemCount, "color")
-                        }
-                    }
-                    //마지막 내용!
-                    writingAdapter.addItems(loadQuestionData(i.toString()+"-last", null,AnswerArray[LastSize].Image,q_linkLayout,null,null,AnswerArray[LastSize].Link,
-                        null,null,AnswerArray[LastSize].Content, AnswerArray[LastSize].Date, false, false))
-                }else{
-                    //질문만 있고, 대답 없는 경우.
-                    writingAdapter.addItems(loadQuestionData(i.toString(), QuestionIDArray[i].Content,null,q_linkLayout,null,null,null,
-                        null,null,null, null, false, false))
-
-                }
-            }
-
-        }
-
-        binding.docList.adapter = writingAdapter
-
-        // 리사이클러 뷰 타입 설정
-        binding.docList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-    }
     private fun loadLink(linkUri: String) {
         //함수 실행하면 쓰레드에 필요한 메소드 다 null해주기
         linktitle = ""

@@ -59,9 +59,6 @@ class MyQuestionActivity : AppCompatActivity() {
         //뒤로가기 버튼 클릭 리스너
         binding.myQBackBtn.setOnClickListener {
             // 홈 화면으로 이동
-            //val HomeIntent = Intent(this@MyQuestionActivity, HomeActivity::class.java)
-            //HomeIntent.putExtra("home", "q")
-            //startActivity(HomeIntent)
             finish()
         }
     }

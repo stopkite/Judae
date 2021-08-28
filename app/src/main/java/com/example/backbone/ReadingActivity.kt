@@ -81,12 +81,6 @@ class ReadingActivity : AppCompatActivity() {
         } else {
             binding.clLinkArea.visibility = View.GONE
         }
-        //사진 띄우기 **** - 나중에 하기.
-        if (WritingArray[0].Image != null) {
-            //binding.contentImg.setImageBitmap()
-        } else {
-            binding.contentImg.visibility = View.GONE
-        }
 
         var WritingSize = WritingArray.size
 

@@ -524,7 +524,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
     // 질문 Holder
     class MyQHolder(val binding: WriteQuestionItemBinding, var activity: WritingActivity) : RecyclerView.ViewHolder(binding.root) {
         fun setQList(item: WriteQuestionData) {
-
+            Log.d("태그", "${item.aTxt}")
             val REQUEST_READ_EXTERNAL_STORAGE = 1000
             var context = binding.aImg.context
 
@@ -578,6 +578,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
             // 대답 내용 삽입
             if (item.aTxt != "" && item.aTxt != null) {
+                binding.aTxt.setText( item.aTxt.toString() )
                 binding.addAnswer.visibility = View.GONE
                 binding.aTxt.setClickable(false)
                 binding.aTxt.setFocusable(false)
@@ -651,11 +652,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     activity.adapterContentloadLink(item.linkUri.toString(), item, context = WritingActivity())
                 }
             }
-
-            // 링크된 요소들
-            /*binding2.linkTitle.text = item.linkTitle
-            binding2.linkUri.text = item.linkUri
-            binding2.linkIcon.setImageDrawable(item.linkIcon)*/
 
             // 본문내용(텍스트)
             if(item.docContent == null){
