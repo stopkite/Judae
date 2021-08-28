@@ -12,7 +12,7 @@
         android:id="@+id/splash_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/splash_bg"
+        android:src="@drawable/bg_splash"
         android:scaleType="fitXY"
         android:background="@color/black"/>
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="267dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="“왜?” 라는 질문을 통해\n‘나’를 기록하고 성장시키다."
+        android:text="\u0022왜?\u0022라는 질문을 통해\n\u0027나\u0027를 기록하고 성장시키다."
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textFontWeight="300"

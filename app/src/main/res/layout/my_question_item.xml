@@ -31,6 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:text="1.질문 내용이 나타납니다?"
             android:textColor="@color/ivory"
             android:textSize="14sp" />
@@ -43,6 +45,8 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_regular"
             android:text="질문이 적힌 글의 제목을 표시합니다."
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="#99ECECEC"
             android:layout_marginBottom="12dp"
             android:textSize="12sp" />
