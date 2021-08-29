@@ -308,7 +308,6 @@ class EditMultiAdapter(editActivity: EditingActivity, context:Context): Recycler
                                 // 삭제 버튼을 클릭했을 때
                                 else if (which == 1) {
                                     holder.binding.aImg.visibility = View.GONE
-                                    holder.binding.qImgAddBtn.setClickable(true)
                                     holder.binding.qImgAddBtn.imageTintList =
                                         ColorStateList.valueOf(Color.WHITE)
                                     QuestionList.aImg = null

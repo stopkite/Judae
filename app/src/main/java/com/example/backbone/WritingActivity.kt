@@ -236,14 +236,13 @@ class WritingActivity : AppCompatActivity() {
 
 
         //최초 실행 여부 판단하는 구문
-        //최초 실행 여부 판단하는 구문
         val pref = getSharedPreferences("isFirst", MODE_PRIVATE)
         val first = pref.getBoolean("isFirst", false)
         if (first == false) {
             val editor = pref.edit()
             editor.putBoolean("isFirst", true)
             editor.commit()
-            //앱 최초 실행시 하고 싶은 작업
+            //앱 최초 실행시 질문-답변도 화면에 띄우기
             var id = writeQuestionList.size
 
             writeQuestionList.add(WriteQuestionData(id, qTitleText, null, null, null, null, null, null, null,null,

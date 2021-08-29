@@ -193,8 +193,11 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
 
                 //답변 링크 입력 버튼 눌렀을 때!
                 holder.binding.qLinkAddBtn.setOnClickListener {
-                    holder.binding.linkInsertTxt.visibility = View.VISIBLE
-                    holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                    //링크가 없을 때만 실행되도록
+                    if (QuestionList.linkUri == "" ) {
+                        holder.binding.linkInsertTxt.visibility = View.VISIBLE
+                        holder.binding.linkInsertBtn.visibility = View.VISIBLE
+                    }
                 }
 
                 //답변 링크 입력됐을 때 리스너
@@ -245,8 +248,6 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     //loadLink에 있는 쓰레드를 구동시키기 위해서는 isrun이 ture가 되어있어야 함.
                     //쓰레드 실행(한번만 실행함.)
                     activity.QuestionloadLink(linkUri, QuestionList, context)
-                    holder.binding.qLinkAddBtn.setClickable(false)
-                    binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
                     holder.binding.linkInsertTxt.setText("")
 
                 }
@@ -269,10 +270,8 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {
                                 holder.binding.clLinkArea.visibility = View.GONE
-                                holder.binding.qLinkAddBtn.setClickable(true)
-                                holder.binding.qLinkAddBtn.imageTintList =
-                                    ColorStateList.valueOf(Color.WHITE)
-                                QuestionList.linkUri = null
+                                holder.binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link)
+                                QuestionList.linkUri = ""
                             }
                         }
                         ).show()
@@ -318,6 +317,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                             )
                         }
                     } else {
+                        //이미지가 없을 때만 실행되도록
                         if (QuestionList.aImg == null) {
                             openGalleryForImage(QuestionList)
                         }
@@ -341,9 +341,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                             // 삭제 버튼을 클릭했을 때
                             else if (which == 1) {
                                 holder.binding.aImg.visibility = View.GONE
-                                holder.binding.qImgAddBtn.setClickable(true)
-                                holder.binding.qImgAddBtn.imageTintList =
-                                    ColorStateList.valueOf(Color.WHITE)
+                                holder.binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img)
                                 QuestionList.aImg = null
                             }
                         }
@@ -459,7 +457,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     activity.hideKeyboard()
                 }
 
-                //링크 롱클릭 리스너 (변경, 삭제) //뭔가 이상함 ㅎㅎ;;
+                //링크 롱클릭 리스너 (변경, 삭제)
                 holder.binding2.clLinkArea.setOnLongClickListener {
                     val selectList = arrayOf("변경", "삭제")
                     var selectDialog =
@@ -536,6 +534,8 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
             }
 
             binding.aImg.visibility = View.VISIBLE
+
+            //이미지
             if (item.aImg != null) {
                 //삽입 이미지
                 binding.aImg.setImageBitmap(item.aImg)
@@ -550,29 +550,19 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
             binding.addAnswer.visibility = View.GONE
 
             // 링크
-            if (item.linkUri == "" || item.linkUri == null || item.linkUri == "null") {
+            if (item.linkUri == "") {
                 //링크 내용이 없으면?
                 binding.clLinkArea.visibility = View.GONE
             } else {
                 binding.qLinkAddBtn.setImageResource(R.drawable.ic_write_add_link_done)
-                // 링크 정보는 있는데. 두번째로 불러온 정보일 때 -> 첫번째 정보에서 이미 받아온 링크 내용, 이미지 등 정보가 있을 때
-                if (item.linkContent != null || item.linkTitle != null) {
-                    binding.clLinkArea.visibility = View.VISIBLE
-                    binding.linkTitle.text = item.linkTitle.toString()
-                    binding.linkContent.text = item.linkContent.toString()
-                    binding.linkUri.text = item.linkUri.toString()
-                    if (item.linkIcon != null) {
-                        binding.linkIcon.setImageBitmap(item.linkIcon)
-                    } else {
-                        binding.linkIcon.visibility = View.GONE
-                    }
-                    //링크 내용이 있으면?
-                    //binding.clLinkArea.visibility = item.linkLayout?.visibility!!
-                }
-                else {
-                    // 링크 정보를 불러오는 것이 처음 일때!
-                    binding.clLinkArea.visibility = View.VISIBLE
-                    activity.QuestionloadLink(item.linkUri.toString(), item, WritingActivity())
+                binding.clLinkArea.visibility = View.VISIBLE
+                binding.linkTitle.text = item.linkTitle.toString()
+                binding.linkContent.text = item.linkContent.toString()
+                binding.linkUri.text = item.linkUri.toString()
+                if (item.linkIcon != null) {
+                    binding.linkIcon.setImageBitmap(item.linkIcon)
+                } else {
+                    binding.linkIcon.visibility = View.GONE
                 }
             }
 
@@ -747,6 +737,8 @@ uri = linkUri
         this.notifyDataSetChanged()
         this.notifyItemInserted(getItemCount())
     }
+
+    //아이템 삭제 함수
     fun removeItems(position: Int) {
         this.items.removeAt(position)
         this.notifyItemRemoved(position)
@@ -844,8 +836,6 @@ uri = linkUri
                         binding.aImg.visibility = View.VISIBLE
                         binding.aImg.setImageBitmap(img)
                         this.notifyDataSetChanged()
-                        binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
-                        binding.qImgAddBtn.setImageResource(R.drawable.ic_write_add_img_done)
                         notifyDataSetChanged()
 
                     }
