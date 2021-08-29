@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto_regular"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:text="글의 제목을 표시합니다."
         android:textColor="@color/ivory"
         android:textSize="14sp"
