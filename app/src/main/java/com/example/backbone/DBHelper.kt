@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteStatement
+import android.util.Log
 
 //sql문으로 DB 연결시켜주는 클래스
 
@@ -237,27 +238,31 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Backbone.db", null,
 
         var anyArray = ArrayList<Question>()
 
-        var cursor: Cursor = db.rawQuery("SELECT*FROM Question;", null)
-        //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
-        while (cursor.moveToNext()) {
-            //클래스 생성에 필요한 내용 받아오기
-            var WritingID:String = cursor.getString(0)
-            var ContentID:String = cursor.getString(1)
-            var QuestionID: Int = cursor.getInt(2)
-            var Content:String = cursor.getString(3)
-            var q:Question = Question(WritingID, ContentID, QuestionID.toString(), Content)
+        var cursor2:Cursor =db.rawQuery("select * from Writing order by date ASC;", null)
+        while(cursor2.moveToNext()) {
+            var date = cursor2.getString(2)
+            var Date: String = date.substring(0, 10)
+            var WritingID:String = cursor2.getString(0)
 
-            var cursor2:Cursor =db.rawQuery("SELECT*FROM Writing WHERE WriteID = ${q.WritingID};", null)
-            while(cursor2.moveToNext())
-            {
 
-                var date = cursor2.getString(2)
+            var cursor: Cursor = db.rawQuery("SELECT*FROM Question WHERE WritingID = '${WritingID}';", null)
+            //결과값이 끝날 때 까지 - 글 객체 생성한 뒤, 해당 객체 내용 띄우기
+            while (cursor.moveToNext()) {
+                //클래스 생성에 필요한 내용 받아오기
+                var ContentID:String = cursor.getString(1)
+                var QuestionID:String = cursor.getInt(2).toString()
+                var Content:String = cursor.getString(3)
+                var q:Question = Question(WritingID, ContentID, QuestionID, Content, Date)
 
-                q.Date = date.substring(0,10)
+
+                anyArray.add(q)
             }
 
-            anyArray.add(q)
         }
+
+
+
+
 
         return anyArray
 

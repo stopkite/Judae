@@ -33,6 +33,14 @@ class Question {
         this.Content = Content
         this.WritingID = WritingID
     }
+    constructor(WritingID:String, ContentID:String, QuestionID:String, Content:String, Date:String)
+    {
+        this.ContentID = ContentID
+        this.QuestionID = QuestionID
+        this.Content = Content
+        this.WritingID = WritingID
+        this.Date = Date
+    }
     constructor(WritingID:String, ContentID:String,Content:String)
     {
         this.ContentID = ContentID
