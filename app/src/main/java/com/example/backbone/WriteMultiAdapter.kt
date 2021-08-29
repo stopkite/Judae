@@ -721,16 +721,6 @@ uri = linkUri
     }
 
 
-    /*
-        fun updateLoadQuestionItem(item: WriteItem)
-    {
-        //var activity:WritingActivity = WritingActivity()
-        var WriteList = item as ReadQuestionData
-        activity.writeContentList[WriteList.id].docContent = WriteList.docContent
-        activity.writeContentList[WriteList.id].linkUri = WriteList.linkUri
-    }
-     */
-
     fun addItems(item: WriteItem) {
         this.items.add(getItemCount(), item)
         var itemsize = getItemCount(); // 배열 사이즈 다시 확인
@@ -754,38 +744,6 @@ uri = linkUri
     private lateinit var itemClickListner: ItemClickListener
     fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListner = itemClickListener
-    }
-
-    class ContentDiffUtil(private val oldList: List<WriteItem>, private val currentList: List<WriteItem>) : DiffUtil.Callback() {
-
-        override fun getOldListSize(): Int = oldList.size
-
-        override fun getNewListSize(): Int = currentList.size
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == currentList[newItemPosition].id
-
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldList = oldList[oldItemPosition]
-            val currentList = currentList[newItemPosition]
-
-            return oldList == currentList
-        }
-
-    }
-
-    fun updateList(items: List<WriteItem>?) {
-        items?.let {
-            val diffCallback = ContentDiffUtil(this.items, items)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-            this.items.run {
-                clear()
-                addAll(items)
-                diffResult.dispatchUpdatesTo(this@WriteMultiAdapter)
-            }
-        }
     }
 
     private val REQUEST_TAKE_ALBUM = 1
