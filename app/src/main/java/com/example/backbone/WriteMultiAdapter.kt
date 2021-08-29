@@ -453,7 +453,7 @@ class WriteMultiAdapter(writingActivity: WritingActivity, contxt: Context): Recy
                     binding3.docContent.requestFocus(View.FOCUS_DOWN)
                     //어답터 연결하기
                     binding3.docList.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                    var adapter = ReadMultiAdapter(context)
+                    var adapter = WriteMultiAdapter(activity, context)
                     binding3.docList.adapter = adapter
                     activity.adapterContentloadLink(linkUri2, WriteList, context)
                     activity.hideKeyboard()
