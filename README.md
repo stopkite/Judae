@@ -1,11 +1,13 @@
 # Guru3
 
-## * 줏대
-*2021-07-05: 프로젝트 시작
+## 줏대
+*2021-07-05~2021-08-30*
 
-*자신의 생각을 끊임없이 질문/대답하는 어플
 
-## * 구성원
+계속해서 왜? 라는 질문을 통해 어떤 문제에 철학적으로 접근할 수 있도록 유도하고 생각의 확장을 서포트 하는 앱
+
+
+## 구성원
 
 
 ✏기획: 강예원
@@ -16,9 +18,15 @@
 
 🎨디자인: 유은서, 하예림
 
-## *캘린더 api
 
-1. 날짜 설정하는 api
-[https://www.ienlab.net/entry/SpongeBobSun의-mCalendarView-라이브러리-사용하기](https://www.ienlab.net/entry/SpongeBobSun%EC%9D%98-mCalendarView-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
-2. 기간 설정하는 api
-[https://youngest-programming.tistory.com/338](https://youngest-programming.tistory.com/338)
+## 핵심 기능 설명서📚
+
+1. 암호 입력 화면
+2. 홈 화면
+3. 질문 리스트 화면
+4. 암호 설정 화면
+5. 검색 화면
+6. 쓰기 화면
+7. 읽기 화면
+8. 수정 화면
+
