@@ -379,7 +379,7 @@ class WritingActivity : AppCompatActivity() {
 
         }
 
-        //만약 제목, 본문, 질문이 하나 이상 입력되어 있다면
+        //만약 제목, 본문이 하나 이상 입력되어 있다면
         docTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -426,6 +426,7 @@ class WritingActivity : AppCompatActivity() {
 
         // 저장 버튼 클릭 리스너
         binding.saveBtn.setOnClickListener {
+            //각 count 변수가 모두 1일 경우 저장
             if(countDT == 1 && countDC == 1 && countQT ==1)
             {
                 // 카테고리 저장 팝업업
