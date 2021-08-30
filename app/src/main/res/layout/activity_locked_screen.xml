@@ -86,35 +86,56 @@
             android:layout_height="wrap_content">
 
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_1"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="1"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_2"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="2"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_3"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="3"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
         </TableRow>
 
         <TableRow
@@ -122,35 +143,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_4"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="4"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_5"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="5"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_6"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="6"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
         </TableRow>
 
         <TableRow
@@ -158,35 +200,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_7"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="7"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_8"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="8"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_9"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="9"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
         </TableRow>
 
         <TableRow
@@ -194,35 +257,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_reset"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="초기화"
                 android:textColor="@color/ivory"
                 android:textSize="18sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_0"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="0"
                 android:textColor="@color/ivory"
                 android:textSize="32sp" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/key_del"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/effect_pw_btn"
                 android:text="삭제"
                 android:textColor="@color/ivory"
                 android:textSize="18sp" />
+            </RelativeLayout>
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
