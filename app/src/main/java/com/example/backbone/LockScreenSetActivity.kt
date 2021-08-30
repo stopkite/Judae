@@ -61,6 +61,13 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
         binding.keyDel.setOnClickListener(this)
         binding.keyReset.setOnClickListener(this)
 
+        //PWList에 0번 입력
+        if(PWList.size<4)
+        {
+            PWList.add("0")
+            passNumber(PWList)
+        }
+
         //체크 버튼 클릭 리스너
         binding.pwSetBtn.setOnClickListener {
             if(PWList.size==4)
@@ -99,54 +106,83 @@ class LockedScreenSetActivity : AppCompatActivity(), View.OnClickListener {
             //0번을 누르면
             binding.key0 -> {
                 //PWList에 0번 입력
-                PWList.add("0")
-                //
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("0")
+                    passNumber(PWList)
+                }
             }
 
             binding.key1 -> {
-                PWList.add("1")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("1")
+                    passNumber(PWList)
+                }
             }
 
             binding.key2 -> {
-                PWList.add("2")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("2")
+                    passNumber(PWList)
+                }
             }
 
             binding.key3 -> {
-                PWList.add("3")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("3")
+                    passNumber(PWList)
+                }
             }
 
             binding.key4 -> {
-                PWList.add("4")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("4")
+                    passNumber(PWList)
+                }
             }
 
             binding.key5 -> {
-                PWList.add("5")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("5")
+                    passNumber(PWList)
+                }
             }
 
             binding.key6 -> {
-                PWList.add("6")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("6")
+                    passNumber(PWList)
+                }
             }
 
             binding.key7 -> {
-                PWList.add("7")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("7")
+                    passNumber(PWList)
+                }
             }
 
             binding.key8 -> {
-                PWList.add("8")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("8")
+                    passNumber(PWList)
+                }
             }
 
             binding.key9 -> {
-                PWList.add("9")
-                passNumber(PWList)
+                if(PWList.size<4)
+                {
+                    PWList.add("9")
+                    passNumber(PWList)
+                }
             }
 
             binding.keyDel -> { // 삭제 버튼

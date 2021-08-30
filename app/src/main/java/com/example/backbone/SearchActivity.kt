@@ -60,8 +60,6 @@ class SearchActivity : AppCompatActivity() {
                         Tag = "W"
                     }
                 }
-
-
                 val fm = supportFragmentManager
                 val ft = fm.beginTransaction()
                 ft.replace(R.id.frameLayout, fragment, Tag)
