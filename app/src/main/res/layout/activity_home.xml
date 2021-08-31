@@ -151,14 +151,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/navigation_rv"
             android:layout_width="250dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="25dp"
             android:layout_weight="1"
             android:scrollbarThumbHorizontal="@null"
             android:scrollbarThumbVertical="@null"
-            tools:listitem="@layout/navi_drawer_item"></androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/navi_drawer_item" />
 
     </LinearLayout>
     <!-- Custom Navigation Drawer End -->

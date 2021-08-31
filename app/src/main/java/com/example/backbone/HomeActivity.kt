@@ -121,7 +121,6 @@ class HomeActivity : AppCompatActivity() {
         binding.root.findViewById<RecyclerView>(R.id.navigation_rv).addItemDecoration(dividerItemDecoration)
 
         binding.navigationRv.layoutManager = LinearLayoutManager(this)
-        binding.navigationRv.setHasFixedSize(true)
 
         binding.navigationRv.addOnItemTouchListener(NaviTouchListener(this, object : ClickListener {
             override fun onClick(view: View, position: Int) {
