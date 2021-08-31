@@ -4,11 +4,19 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('C:\\Users\\Swim\\AndroidStudioProjects\\Backbone\\app\\appKey\\isKey.jks')
+            storePassword 'wnteo2021!'
+            keyAlias 'isKey'
+            keyPassword 'wnteo2021!'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.backbone"
+        applicationId "com.juksooon.backbone"
         minSdkVersion 24
         targetSdkVersion 30
         vectorDrawables.useSupportLibrary = true
@@ -16,6 +24,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
 
     viewBinding {

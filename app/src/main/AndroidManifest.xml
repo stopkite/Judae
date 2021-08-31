@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.backbone">
+    package="com.juksooon.backbone">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,23 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Backbone"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditingActivity"/>
-        <activity android:name=".SplashActivity" >
+        <activity android:name="com.juksooon.backbone.EditingActivity"/>
+        <activity android:name="com.juksooon.backbone.SplashActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".WritingActivity" />
-        <activity android:name=".ReadingActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".LockScreenMenuActivity" />
-        <activity android:name=".MyQuestionActivity" />
-        <activity android:name=".LockedScreenActivity" />
-        <activity android:name=".HomeActivity"/>
-        <activity android:name=".LockedScreenSetActivity" />
-        <activity android:name=".LockedScreenOnceActivity" />
+        <activity android:name="com.juksooon.backbone.WritingActivity" />
+        <activity android:name="com.juksooon.backbone.ReadingActivity" />
+        <activity android:name="com.juksooon.backbone.SearchActivity" />
+        <activity android:name="com.juksooon.backbone.LockScreenMenuActivity" />
+        <activity android:name="com.juksooon.backbone.MyQuestionActivity" />
+        <activity android:name="com.juksooon.backbone.LockedScreenActivity" />
+        <activity android:name="com.juksooon.backbone.HomeActivity"/>
+        <activity android:name="com.juksooon.backbone.LockedScreenSetActivity" />
+        <activity android:name="com.juksooon.backbone.LockedScreenOnceActivity" />
     </application>
 
 </manifest>
