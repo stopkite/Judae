@@ -8,16 +8,17 @@
 ## 구성원
 
 
-✏기획: 강예원
+✏기획: [강예원](https://github.com/yeew3658)
 
-💻백엔드: 김수영
+💻백엔드: [김수영](https://github.com/eminentecero)
 
-💻프론트엔드: 양아영, 정지연
+💻프론트엔드: [양아영](https://github.com/a-young0210), [정지연](https://github.com/stopkite)
 
-🎨디자인: 유은서, 하유림
+🎨디자인: [유은서](https://github.com/silverwest8), [하유림](https://github.com/YurimHa)
 
 ## 플로우 차트
-![1630685715527](https://user-images.githubusercontent.com/62979643/132036348-8a7e6ed2-9abd-4455-bc7f-7113eaac391f.jpg)
+<img src = "https://user-images.githubusercontent.com/62979643/132036348-8a7e6ed2-9abd-4455-bc7f-7113eaac391f.jpg" width ="300" />   
+
 [자세히 보기 링크](https://miro.com/app/board/o9J_l7zPWdg=/)
 
 
