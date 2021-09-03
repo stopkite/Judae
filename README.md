@@ -22,7 +22,7 @@
 [1. 암호 입력 화면](https://github.com/stopkite/Judae/wiki/1.-%EC%95%94%ED%98%B8-%EC%9E%85%EB%A0%A5-%ED%99%94%EB%A9%B4)   
 [2. 홈 화면](https://github.com/stopkite/Judae/wiki/2.-%ED%99%88-%ED%99%94%EB%A9%B4)   
 [3. 질문 리스트 화면](https://github.com/stopkite/Judae/wiki/3.-%EC%A7%88%EB%AC%B8-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%ED%99%94%EB%A9%B4)   
-[4. 암호 설정 화면](https://github.com/stopkite/Judae/wiki/4.-%EC%95%94%ED%98%B8-%EC%84%A4%EC%A0%95-%ED%99%94%EB%A9%B4(%EB%A9%94%EB%89%B4%E2%86%92%EC%95%94%ED%98%B8-%EC%84%A4%EC%A0%95))
+[4. 암호 설정 화면](https://github.com/stopkite/Judae/wiki/4.-%EC%95%94%ED%98%B8-%EC%84%A4%EC%A0%95-%ED%99%94%EB%A9%B4(%EB%A9%94%EB%89%B4%E2%86%92%EC%95%94%ED%98%B8-%EC%84%A4%EC%A0%95))   
 [5. 쓰기 화면](https://github.com/stopkite/Judae/wiki/5.-%EC%93%B0%EA%B8%B0%ED%99%94%EB%A9%B4)   
 [6. 읽기 화면](https://github.com/stopkite/Judae/wiki/6.-%EC%9D%BD%EA%B8%B0-%ED%99%94%EB%A9%B4)   
 [7. 수정 화면](https://github.com/stopkite/Judae/wiki/7.-%EC%88%98%EC%A0%95%ED%99%94%EB%A9%B4)   
