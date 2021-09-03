@@ -16,6 +16,10 @@
 
 🎨디자인: 유은서, 하유림
 
+## 플로우 차트
+![1630685715527](https://user-images.githubusercontent.com/62979643/132036348-8a7e6ed2-9abd-4455-bc7f-7113eaac391f.jpg)
+[자세히 보기 링크](https://miro.com/app/board/o9J_l7zPWdg=/)
+
 
 ## 핵심 기능 설명서📚
 
